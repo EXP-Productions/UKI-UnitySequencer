@@ -1,0 +1,201 @@
+fileFormatVersion: 2
+guid: 85f96500cff30cf43a64054db9a0eaf9
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Default
+    100004: Object_1
+    100006: Object_3
+    100008: Object_4
+    100010: Object_5
+    100012: Object_7
+    100014: Object_8
+    100016: Pins
+    100018: Rotational
+    100020: solid UKI Complete - everything
+    100022: 'solid UKI Complete - everything                                                 '
+    100024: solid UKI Complete - everything                                                  1
+    100026: solid UKI Complete - everything                                                 _10
+    100028: solid UKI Complete - everything                                                 _11
+    100030: solid UKI Complete - everything                                                 _2
+    100032: solid UKI Complete - everything                                                 _3
+    100034: solid UKI Complete - everything                                                 _3
+      1
+    100036: solid UKI Complete - everything                                                 _4
+    100038: solid UKI Complete - everything                                                 _5
+    100040: solid UKI Complete - everything                                                 _6
+    100042: solid UKI Complete - everything                                                 _7
+    100044: solid UKI Complete - everything                                                 _8
+    100046: solid UKI Complete - everything                                                 _8
+      1
+    100048: solid UKI Complete - everything                                                 _9
+    100050: transform1
+    100052: transform2
+    100054: transform3
+    100056: transform4
+    100058: transform5
+    100060: transform6
+    100062: transform7
+    100064: transform8
+    100066: transform9
+    400000: //RootNode
+    400002: Default
+    400004: Object_1
+    400006: Object_3
+    400008: Object_4
+    400010: Object_5
+    400012: Object_7
+    400014: Object_8
+    400016: Pins
+    400018: Rotational
+    400020: solid UKI Complete - everything
+    400022: 'solid UKI Complete - everything                                                 '
+    400024: solid UKI Complete - everything                                                  1
+    400026: solid UKI Complete - everything                                                 _10
+    400028: solid UKI Complete - everything                                                 _11
+    400030: solid UKI Complete - everything                                                 _2
+    400032: solid UKI Complete - everything                                                 _3
+    400034: solid UKI Complete - everything                                                 _3
+      1
+    400036: solid UKI Complete - everything                                                 _4
+    400038: solid UKI Complete - everything                                                 _5
+    400040: solid UKI Complete - everything                                                 _6
+    400042: solid UKI Complete - everything                                                 _7
+    400044: solid UKI Complete - everything                                                 _8
+    400046: solid UKI Complete - everything                                                 _8
+      1
+    400048: solid UKI Complete - everything                                                 _9
+    400050: transform1
+    400052: transform2
+    400054: transform3
+    400056: transform4
+    400058: transform5
+    400060: transform6
+    400062: transform7
+    400064: transform8
+    400066: transform9
+    2100000: Material_2
+    2300000: Object_1
+    2300002: Object_3
+    2300004: Object_4
+    2300006: Object_5
+    2300008: Object_7
+    2300010: Object_8
+    2300012: solid UKI Complete - everything
+    2300014: solid UKI Complete - everything                                                 _10
+    2300016: solid UKI Complete - everything                                                 _11
+    2300018: solid UKI Complete - everything                                                 _3
+    2300020: solid UKI Complete - everything                                                 _8
+      1
+    2300022: solid UKI Complete - everything                                                 _9
+    3300000: Object_1
+    3300002: Object_3
+    3300004: Object_4
+    3300006: Object_5
+    3300008: Object_7
+    3300010: Object_8
+    3300012: solid UKI Complete - everything
+    3300014: solid UKI Complete - everything                                                 _10
+    3300016: solid UKI Complete - everything                                                 _11
+    3300018: solid UKI Complete - everything                                                 _3
+    3300020: solid UKI Complete - everything                                                 _8
+      1
+    3300022: solid UKI Complete - everything                                                 _9
+    4300000: solid UKI Complete - everything                                                 _11
+    4300002: Object_5
+    4300004: Object_8
+    4300006: Object_4
+    4300008: solid UKI Complete - everything                                                 _10
+    4300010: solid UKI Complete - everything
+    4300012: solid UKI Complete - everything                                                 _8
+    4300014: Object_1
+    4300016: solid UKI Complete - everything                                                 _9
+    4300018: Object_3
+    4300020: Object_7
+    4300022: solid UKI Complete - everything                                                 _3
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

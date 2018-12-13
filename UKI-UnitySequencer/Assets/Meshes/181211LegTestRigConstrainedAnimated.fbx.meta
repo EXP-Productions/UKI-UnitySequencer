@@ -1,0 +1,256 @@
+fileFormatVersion: 2
+guid: 7e51acfe6fc734b469b5a4d5e0d3aee5
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Ankle
+    100004: Ankle Actuator
+    100006: Default
+    100008: Hip
+    100010: HIp Actuator
+    100012: Hip Fixed
+    100014: Hip Rotator
+    100016: Knee Actuator
+    100018: Knee Fixed
+    100020: Object_10
+    100022: Object_11
+    100024: Object_12
+    100026: Object_2
+    100028: Object_3
+    100030: Object_4
+    100032: Object_5
+    100034: Object_6
+    100036: Object_7
+    100038: Object_8
+    100040: Object_9
+    100042: Pivots
+    100044: solid UKI Complete - everything
+    100046: solid UKI Complete - everything_10
+    100048: solid UKI Complete - everything_11
+    100050: solid UKI Complete - everything_12
+    100052: solid UKI Complete - everything_13
+    100054: solid UKI Complete - everything_14
+    100056: solid UKI Complete - everything_15
+    100058: solid UKI Complete - everything_16
+    100060: solid UKI Complete - everything_17
+    100062: solid UKI Complete - everything_2
+    100064: solid UKI Complete - everything_3
+    100066: solid UKI Complete - everything_4
+    100068: solid UKI Complete - everything_5
+    100070: solid UKI Complete - everything_6
+    100072: solid UKI Complete - everything_7
+    100074: solid UKI Complete - everything_7 1
+    100076: solid UKI Complete - everything_8
+    100078: solid UKI Complete - everything_9
+    100080: transform1
+    100082: transform2
+    400000: //RootNode
+    400002: Ankle
+    400004: Ankle Actuator
+    400006: Default
+    400008: Hip
+    400010: HIp Actuator
+    400012: Hip Fixed
+    400014: Hip Rotator
+    400016: Knee Actuator
+    400018: Knee Fixed
+    400020: Object_10
+    400022: Object_11
+    400024: Object_12
+    400026: Object_2
+    400028: Object_3
+    400030: Object_4
+    400032: Object_5
+    400034: Object_6
+    400036: Object_7
+    400038: Object_8
+    400040: Object_9
+    400042: Pivots
+    400044: solid UKI Complete - everything
+    400046: solid UKI Complete - everything_10
+    400048: solid UKI Complete - everything_11
+    400050: solid UKI Complete - everything_12
+    400052: solid UKI Complete - everything_13
+    400054: solid UKI Complete - everything_14
+    400056: solid UKI Complete - everything_15
+    400058: solid UKI Complete - everything_16
+    400060: solid UKI Complete - everything_17
+    400062: solid UKI Complete - everything_2
+    400064: solid UKI Complete - everything_3
+    400066: solid UKI Complete - everything_4
+    400068: solid UKI Complete - everything_5
+    400070: solid UKI Complete - everything_6
+    400072: solid UKI Complete - everything_7
+    400074: solid UKI Complete - everything_7 1
+    400076: solid UKI Complete - everything_8
+    400078: solid UKI Complete - everything_9
+    400080: transform1
+    400082: transform2
+    2100000: Material_1
+    2300000: Object_10
+    2300002: Object_11
+    2300004: Object_12
+    2300006: Object_2
+    2300008: Object_3
+    2300010: Object_4
+    2300012: Object_5
+    2300014: Object_6
+    2300016: Object_7
+    2300018: Object_8
+    2300020: Object_9
+    2300022: solid UKI Complete - everything
+    2300024: solid UKI Complete - everything_10
+    2300026: solid UKI Complete - everything_11
+    2300028: solid UKI Complete - everything_12
+    2300030: solid UKI Complete - everything_13
+    2300032: solid UKI Complete - everything_14
+    2300034: solid UKI Complete - everything_15
+    2300036: solid UKI Complete - everything_16
+    2300038: solid UKI Complete - everything_17
+    2300040: solid UKI Complete - everything_3
+    2300042: solid UKI Complete - everything_4
+    2300044: solid UKI Complete - everything_5
+    2300046: solid UKI Complete - everything_6
+    2300048: solid UKI Complete - everything_7 1
+    2300050: solid UKI Complete - everything_8
+    2300052: solid UKI Complete - everything_9
+    3300000: Object_10
+    3300002: Object_11
+    3300004: Object_12
+    3300006: Object_2
+    3300008: Object_3
+    3300010: Object_4
+    3300012: Object_5
+    3300014: Object_6
+    3300016: Object_7
+    3300018: Object_8
+    3300020: Object_9
+    3300022: solid UKI Complete - everything
+    3300024: solid UKI Complete - everything_10
+    3300026: solid UKI Complete - everything_11
+    3300028: solid UKI Complete - everything_12
+    3300030: solid UKI Complete - everything_13
+    3300032: solid UKI Complete - everything_14
+    3300034: solid UKI Complete - everything_15
+    3300036: solid UKI Complete - everything_16
+    3300038: solid UKI Complete - everything_17
+    3300040: solid UKI Complete - everything_3
+    3300042: solid UKI Complete - everything_4
+    3300044: solid UKI Complete - everything_5
+    3300046: solid UKI Complete - everything_6
+    3300048: solid UKI Complete - everything_7 1
+    3300050: solid UKI Complete - everything_8
+    3300052: solid UKI Complete - everything_9
+    4300000: solid UKI Complete - everything_10
+    4300002: Object_5
+    4300004: solid UKI Complete - everything_7
+    4300006: Object_6
+    4300008: solid UKI Complete - everything
+    4300010: Object_10
+    4300012: Object_2
+    4300014: Object_3
+    4300016: Object_11
+    4300018: solid UKI Complete - everything_11
+    4300020: solid UKI Complete - everything_9
+    4300022: Object_12
+    4300024: solid UKI Complete - everything_12
+    4300026: solid UKI Complete - everything_8
+    4300028: Object_9
+    4300030: solid UKI Complete - everything_13
+    4300032: solid UKI Complete - everything_5
+    4300034: Object_8
+    4300036: solid UKI Complete - everything_14
+    4300038: solid UKI Complete - everything_6
+    4300040: Object_4
+    4300042: solid UKI Complete - everything_15
+    4300044: solid UKI Complete - everything_17
+    4300046: Object_7
+    4300048: solid UKI Complete - everything_16
+    4300050: solid UKI Complete - everything_3
+    4300052: solid UKI Complete - everything_4
+    7400000: Take 001
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
