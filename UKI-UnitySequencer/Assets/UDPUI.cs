@@ -8,7 +8,8 @@ using System.Net.Sockets;
 
 public class UDPUI : MonoBehaviour
 {
-    public UDPClient _UDPClient;
+    UDPClient _UDPClient;
+
     public Button _SendButton;
     public InputField _InputUDP;
 
