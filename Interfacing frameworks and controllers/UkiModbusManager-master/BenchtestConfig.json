@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "actuators": [
+    {
+      "name": "TestBox",
+      "address": 24,
+      "inwardCurrentLimit": 1000,
+      "outwardCurrentLimit": 1000,
+      "outwardExtensionLimit": 3000,
+      "acceleration": 91,
+      "enabled": true,
+      "port": "Left"
+    },
+    {
+      "name": "TestBox2",
+      "address": 31,
+      "inwardCurrentLimit": 1500,
+      "outwardCurrentLimit": 1000,
+      "acceleration": 100,
+      "enabled": false,
+      "port": "Right"
+    }
+  ]
+}
