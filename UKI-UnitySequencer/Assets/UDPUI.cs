@@ -1,16 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
+using System.Net;
+using System.Net.Sockets;
 
-public class UDPUI : MonoBehaviour {
+public class UDPUI : MonoBehaviour
+{
+    public UDPClient _UDPClient;
+    public Button _SendButton;
+    public InputField _InputUDP;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    private void Start()
+    {
+        _UDPClient = UDPClient._Instance;
+    }
+
+    void Update()
+    {
+        _UDPClient._Message = _InputUDP.text;    
+    }
+
 }
