@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RootMotion.FinalIK;
 
 [System.Serializable]
+[RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
     public int _ActuatorIndex = 0;
@@ -16,6 +18,8 @@ public class Actuator : MonoBehaviour
     float _RotationCurrentAngle = 0;
 
     public bool _ReverseGizmoDirection = false;
+
+    RotationLimitHinge _RotationLimitHinge;
     
 
     // Send message to calibrate actuator to zero
@@ -52,6 +56,7 @@ public class Actuator : MonoBehaviour
 
     }
 
+    /*
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
@@ -91,5 +96,5 @@ public class Actuator : MonoBehaviour
                 transform.TransformPoint(x2, 0, z2));
         }
     }
-
+    */
 }
