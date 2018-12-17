@@ -7,7 +7,7 @@ using RootMotion.FinalIK;
 [RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
-    public int _ActuatorIndex = 0;
+    public UkiActuatorAssignments _ActuatorIndex = 0;
 
     public float _MaxLinearTravel = 50;       // Maximum that that linear actuator can travel
     public float _CurrentLinearLength = 0;    // Current length that the linear actuator is at

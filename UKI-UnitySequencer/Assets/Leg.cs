@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using System;
 
 
 
 // Maps rotations to linear values and back again for leg articulations, so they can be animated or scripted
 public class Leg : MonoBehaviour
 {
+    public UkiLegs _LegAssignment;
+
     public Actuator _Hip;
     public Actuator _Knee;
     public Actuator _Ankle;
@@ -19,8 +19,35 @@ public class Leg : MonoBehaviour
 
     void Start ()
     {
-		
+        if (_LegAssignment != UkiLegs.Undefined)
+        {
+            InitActuatorAssignments();
+        }
 	}
+
+    void InitActuatorAssignments()
+    {
+        string hipEnumName = _LegAssignment.ToString() + "Hip";
+        string kneeEnumName = _LegAssignment.ToString() + "Knee";
+        string ankleEnumName = _LegAssignment.ToString() + "Ankle";
+
+        UkiActuatorAssignments[] assignments = (UkiActuatorAssignments[])System.Enum.GetValues(typeof(UkiActuatorAssignments));
+        foreach(UkiActuatorAssignments assignment in assignments)
+        {
+            if (assignment.ToString() == hipEnumName)
+            {
+                _Hip._ActuatorIndex = assignment;
+            }
+            else if (assignment.ToString() == kneeEnumName)
+            {
+                _Knee._ActuatorIndex = assignment;
+            }
+            else if (assignment.ToString() == ankleEnumName)
+            {
+                _Ankle._ActuatorIndex = assignment;
+            }
+        }
+    }
 
     private void Update()
     {
