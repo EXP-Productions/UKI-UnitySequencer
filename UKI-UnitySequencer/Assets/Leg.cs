@@ -27,6 +27,9 @@ public class Leg : MonoBehaviour
 
     void InitActuatorAssignments()
     {
+        //Bit haxy but we're using UkiActuatorAssignments enum to list all the actuator addresses we need to ping messages to,
+        //Because these seem to follow a naming convention we can add a bit of convenience code to determine the addresses
+        //for hip, knee, ankle addresses based on the particular leg we're looking at.
         string hipEnumName = _LegAssignment.ToString() + "Hip";
         string kneeEnumName = _LegAssignment.ToString() + "Knee";
         string ankleEnumName = _LegAssignment.ToString() + "Ankle";
