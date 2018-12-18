@@ -49,7 +49,7 @@ public class Actuator : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_LocalRotationAxis * _RotationCurrentAngle);
 
         // Send out UDP here
-        UkiCommunicationsMessage.Instance.SendActuatorMessage(this);
+        UkiCommunicationsManager.Instance.SendActuatorMessage(this);
     }
 
     public void OnCalibrationCompleteHandler()
