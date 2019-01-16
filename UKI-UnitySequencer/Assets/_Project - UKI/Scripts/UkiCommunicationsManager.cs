@@ -22,17 +22,27 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     }
     
 
-    public void SendActuatorMessage(Actuator actuator)
+    public void SendPositionMessage(Actuator actuator)
     {
         uint[] actuatorMessage = new uint[3];
         actuatorMessage[0] = (uint)actuator._ActuatorIndex;
         actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorMessage[2] = (uint)actuator._CurrentLinearLength;
-        SendInts(actuatorMessage);
+        SendInts(actuatorMessage, true);
+    }
+
+    public void SendActuatorMessage(int index, uint length, ModBusRegisters register)
+    {
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)index;
+        actuatorMessage[1] = (uint)register;
+        actuatorMessage[2] = length;
+        SendInts(actuatorMessage, true);
     }
 
     void SendHeartBeat()
     {
-        SendInts(_HeartBeatMessage);
+        print("Sending Heartbeat");
+        SendInts(_HeartBeatMessage, true);
     }
 }

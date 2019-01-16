@@ -10,9 +10,20 @@
 }
 
 
+public enum UkiTestActuatorAssignments
+{
+    Undefined = -1,
+    Global = 0,
+    RightWingRaise = 6,
+    TestBox = 24,
+    TestBox2 = 31
+}
+
+
 public enum UkiActuatorAssignments
 {
     Undefined = -1,
+    Global = 0,
     RightRearKnee = 5,
     RightMidHip = 7,
     RightMidKnee = 8,

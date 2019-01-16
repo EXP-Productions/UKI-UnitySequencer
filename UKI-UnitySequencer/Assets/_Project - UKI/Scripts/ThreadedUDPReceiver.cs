@@ -10,7 +10,7 @@ using UnityEngine;
 public class ThreadedUDPReceiver : MonoBehaviour
 {
     public Queue<string> _ReceivedPackets = new Queue<string>();
-    public Queue<byte[]> _SendPackets = new Queue<byte[]>();
+    public Stack<byte[]> _SendPackets = new Stack<byte[]>();
 
     public UdpClient _Client;
     Thread _ReceiveThread;
@@ -74,7 +74,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
             {
                 if (_SendPackets.Count > 0)
                 {
-                    payloadBytes = _SendPackets.Dequeue();
+                    payloadBytes = _SendPackets.Pop();
                 }
             }
             if (payloadBytes != null)
@@ -90,14 +90,37 @@ public class ThreadedUDPReceiver : MonoBehaviour
     #endregion
 
     #region "Send Data Methods"
-    public void SendInts(uint[] intVals)
+    public void SendInts(uint[] intVals, bool littleEndian)
     {
         List<byte> payloadBytesList = new List<byte>();
 
         for (int i = 0; i < intVals.Length; i++)
-            payloadBytesList.AddRange(System.BitConverter.GetBytes(intVals[i]));
+        {
+            if (littleEndian)
+            {
+                payloadBytesList.AddRange(IntToLittleEndian(intVals[i]));
+            }
+            else
+            {
+                payloadBytesList.AddRange(System.BitConverter.GetBytes(intVals[i]));
+            }
+        }
 
+        string debug = "";
+        foreach(byte by in payloadBytesList)
+        {
+            debug += by.ToString();
+        }
+        print("sending bytes array " + debug);
         Send(payloadBytesList.ToArray());
+    }
+
+    byte[] IntToLittleEndian(uint data)
+    {
+        byte[] b = new byte[2];
+        b[0] = (byte)data;
+        b[1] = (byte)((data >> 8) & 0xFF);
+        return b;
     }
 
     protected void SendString(string payload)
@@ -110,7 +133,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
     {
         lock (_SendPackets)
         {
-            _SendPackets.Enqueue(payloadBytes);
+            _SendPackets.Push(payloadBytes);
         }
     }
     #endregion
