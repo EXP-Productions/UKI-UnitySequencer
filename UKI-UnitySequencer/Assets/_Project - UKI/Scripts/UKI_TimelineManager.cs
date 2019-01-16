@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 
+
+/// <summary>
+/// TODO: Add in proxy legs for real world positions from actuators
+/// </summary>
 public class UKI_TimelineManager : MonoBehaviour
 {
     enum State
@@ -18,10 +22,11 @@ public class UKI_TimelineManager : MonoBehaviour
     public TimelineAsset[] _Timeline;
 
     [Header("Limbs")]
-    public Leg[] _Legs;
-    public Wing[] _Wing;
-    public Pincer[] _Pincers;
-    public Abdomen _Abdomen;
+    Leg[] _Legs;
+    Wing[] _Wing;
+    Pincer[] _Pincers;
+    Abdomen _Abdomen;
+    UKILimb[] _AllLimbs;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +36,8 @@ public class UKI_TimelineManager : MonoBehaviour
         _Wing = FindObjectsOfType<Wing>();
         _Pincers = FindObjectsOfType<Pincer>();
         _Abdomen = FindObjectOfType<Abdomen>();
+
+        _AllLimbs = FindObjectsOfType<UKILimb>();
     }
 
     private void Update()
@@ -38,21 +45,29 @@ public class UKI_TimelineManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) PlayTimeline(0);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) PlayTimeline(1);
         else if (Input.GetKeyDown(KeyCode.Alpha3)) PlayTimeline(2);
-        else if (Input.GetKeyDown(KeyCode.Z)) ReturnToZero();
+        else if (Input.GetKeyDown(KeyCode.Z)) CalibrateToZero();
     }
 
     void PlayTimeline(int index)
     {
+        _PlayableDirector.Stop();
         _PlayableDirector.Play(_Timeline[index]);
+
+        for (int i = 0; i < _AllLimbs.Length; i++)
+        {
+            _AllLimbs[i].SetState(UKILimb.State.Animating);
+        }
     }
 
-
-    void ReturnToZero()
+    void CalibrateToZero()
     {
         // Stop the director
-        _PlayableDirector.Pause();
+        _PlayableDirector.Stop();
 
-       
+        for (int i = 0; i < _AllLimbs.Length; i++)
+        {
+            _AllLimbs[i].CalibrateAllToZero();
+        }
     }
     
     void LerpTimelines(float lerp)

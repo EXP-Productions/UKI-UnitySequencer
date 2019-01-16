@@ -7,16 +7,18 @@ using System;
 // Renders a target location for the limbs as well as a real world location that is fed back in from the actuator encoders
 public class Leg : UKILimb
 {
-    public UkiLegs _LegAssignment;
+    public UkiLegs _LegAssignment; // TODO: change this enum to limb
 
     public Actuator _Hip;
     public Actuator _Knee;
     public Actuator _Ankle;
 
-    void Start ()
+    void Awake()
     {
+        // Make sure it has a leg assignment
         if (_LegAssignment != UkiLegs.Undefined)
         {
+            // Init actuator assignments
             InitActuatorAssignments();
 
             // Assign actuator aray
