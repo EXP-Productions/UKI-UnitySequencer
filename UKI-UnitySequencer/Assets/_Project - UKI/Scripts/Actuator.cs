@@ -84,7 +84,7 @@ public class Actuator : MonoBehaviour
         
 
         // Send out UDP here
-        UkiCommunicationsManager.Instance.SendActuatorMessage(this);
+        UkiCommunicationsManager.Instance.SendPositionMessage(this);
     }
 
     public void OnCalibrationCompleteHandler()
