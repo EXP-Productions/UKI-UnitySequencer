@@ -3,38 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using RootMotion.FinalIK;
 
+/// <summary>
+/// Actuators are driven by the animations on the timeline
+/// It sets the real world actuator length by interpretting the rotation into a linear value
+/// </summary>
 [System.Serializable]
 [RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
     public UkiActuatorAssignments _ActuatorIndex = 0;
 
+    bool _Calibrated = false;
+    public bool Calibrated { get { return _Calibrated; } }
+
     public float _MaxLinearTravel = 50;       // Maximum that that linear actuator can travel
     public float _CurrentLinearLength = 0;    // Current length that the linear actuator is at
+    public float _TargetLinearLength = 0;    // Target length that the linear actuator is aiming for
 
-    public Vector3 _LocalRotationAxis = Vector3.right;
+    Quaternion _TargetRotation;
+    
     public float _RotationBase = 0;         // Roation of the joint when it is zeroed/calibrated
     public float _RotationExtended = 30;    // Roation of the joint when it is full extended
-    float _RotationCurrentAngle = 0;
 
-    public bool _ReverseGizmoDirection = false;
-
-    RotationLimitHinge _RotationLimitHinge;
+    float _RotationTargetAngle = 0;     // Target angle for roation
+    float _RotationCurrentAngle = 0;    // Currecnt angle for rotation
     
+    RotationLimitHinge _RotationLimitHinge; // Limit hinge used in the IK. Used to set the min and max angles
+    public UKILimb _ParentLimb;
 
-    // Send message to calibrate actuator to zero
-    public void CalibrateToZero()
+    public Transform _RealWorldProxy;
+
+    public void Init(UKILimb parentLimb)
     {
-        // UDP out to calibrate
-        _RotationCurrentAngle = 0;
+        _ParentLimb = parentLimb;
+        _RotationLimitHinge = GetComponent<RotationLimitHinge>();
     }
 
-    public void SetFromNorm(float norm)
+    private void Update()
     {
-        //print("Setting from norm: " + norm);
+        if(_ParentLimb._State == UKILimb.State.Calibrating)
+        {
+            Quaternion targetRot = _RotationLimitHinge.defaultLocalRotation;
+            //transform.localRotation = targetRot;
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRot, Time.deltaTime * 4);
+            _RotationLimitHinge.Apply();
 
-        _RotationCurrentAngle = norm.ScaleFrom01(_RotationBase, _RotationExtended);
-        UpdateRotation();
+            float angle = Quaternion.Angle(transform.localRotation, targetRot);
+
+            print(name + " angle: " + angle);
+            
+            _Calibrated = angle < 1;
+        }
+
+        if (_RealWorldProxy != null)
+            _RealWorldProxy.transform.localRotation = Quaternion.Slerp(_RealWorldProxy.transform.localRotation, transform.localRotation, Time.deltaTime * 3);
+    }
+
+    /*
+    public void CalibrateToZero()
+    {
+        print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
+
+        transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
+        _RotationLimitHinge.Apply();
+    }
+    */
+
+    // read encoder linear value and convert to rotation
+    void ReadInEncoader()
+    {
+        
     }
 
     void UpdateRotation()
@@ -43,59 +81,14 @@ public class Actuator : MonoBehaviour
 
         // Limit roation to base and extended
         _RotationCurrentAngle = Mathf.Clamp(_RotationCurrentAngle, _RotationBase, _RotationExtended);
-
-        print(_LocalRotationAxis * _RotationCurrentAngle);
-
-        transform.localRotation = Quaternion.Euler(_LocalRotationAxis * _RotationCurrentAngle);
+        
 
         // Send out UDP here
-        UkiCommunicationsManager.Instance.SendPositionMessage(this);
+        UkiCommunicationsManager.Instance.SendActuatorMessage(this);
     }
 
     public void OnCalibrationCompleteHandler()
     {
 
     }
-
-    /*
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Vector3 direction = _ReverseGizmoDirection ? -_LocalRotationAxis : _LocalRotationAxis;
-
-        // Draw axis line
-        Gizmos.DrawLine(transform.position + (transform.TransformDirection(direction) *.1f),
-            transform.position + (transform.TransformDirection(direction) * .5f));
-
-        // Draw min angle Line
-        Gizmos.DrawLine(transform.position + (transform.TransformDirection(direction) * .1f),
-            transform.position + (transform.TransformDirection(direction) * .5f));
-
-        Gizmos.DrawWireSphere(transform.position, .15f);
-    }
-
-    void GizmoCircle(Vector3 pos, Vector3 normal, float radius)
-    {
-        int sides = 20;
-        for (int i = 0; i < sides; i++)
-        {
-            float angle = (float)i / (float)sides;
-            angle *= Mathf.PI * 2;
-
-            float x1 = Mathf.Sin(angle) * radius;
-            float z1 = Mathf.Cos(angle) * radius;
-
-
-            float angle2 = (float)i / (float)sides;
-            angle2 *= Mathf.PI * 2;
-
-            float x2 = Mathf.Sin(angle2) * radius;
-            float z2= Mathf.Cos(angle2) * radius;
-
-
-            Gizmos.DrawLine(transform.TransformPoint(x1, 0, z1),
-                transform.TransformPoint(x2, 0, z2));
-        }
-    }
-    */
 }
