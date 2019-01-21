@@ -22,7 +22,16 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine("EStop");
         InvokeRepeating("SendHeartBeat", 1f, 1f);   
+    }
+
+    IEnumerator EStop()
+    {
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+        yield return new WaitForSeconds(1.0f);
+
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
     }
 
     private void Update()
@@ -60,13 +69,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         SendInts(actuatorMessage, true);
     }
 
-    public void SendCalibrationMessage(Actuator actuator)
+    public void SendCalibrationMessage(Actuator actuator, Int16 motorSpeed)
     {
-        int val = -30;
         Int16[] actuatorMessage = new Int16[3];
         actuatorMessage[0] = (Int16)actuator._ActuatorIndex;
         actuatorMessage[1] = (Int16)ModBusRegisters.MB_MOTOR_SPEED;
-        actuatorMessage[2] = (Int16)val;
+        actuatorMessage[2] = (Int16)motorSpeed;
         SendInts(actuatorMessage, true);    
     }
 

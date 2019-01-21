@@ -9,26 +9,12 @@ public class TestActuatorTester : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("EStop");
 
         Invoke("SendTestMsg", 10f);
         Invoke("SendTestMsg2", 20f);
     }
 
-    IEnumerator EStop()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        yield return new WaitForSeconds(1.0f);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        yield return new WaitForSeconds(1.0f);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-
-    }
-
+ 
     void SendTestMsg()
     {
         print("Sending Message 1");

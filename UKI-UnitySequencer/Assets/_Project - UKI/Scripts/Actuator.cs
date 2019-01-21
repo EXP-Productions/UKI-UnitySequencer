@@ -94,9 +94,15 @@ public class Actuator : MonoBehaviour
 
     public void CalibrateToZero()
     {
-        UkiCommunicationsManager.Instance.SendCalibrationMessage(this);
+        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, -30);
         Invoke("SetCalibrated", UkiCommunicationsManager._CalibrateWaitTime);
     }
+
+    public void CalibrateToMax()
+    {
+        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, 30);
+    }
+
 
     void SetCalibrated()
     {

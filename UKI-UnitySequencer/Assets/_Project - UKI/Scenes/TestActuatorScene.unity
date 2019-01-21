@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _UDPReceiverActive: 1
-  _ReceivePort: 0
+  _ReceivePort: 10001
   _BroadcastIP: 127.0.0.1
   _BroadcastPort: 9000
 --- !u!4 &473480123
