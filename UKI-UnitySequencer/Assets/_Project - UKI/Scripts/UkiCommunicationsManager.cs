@@ -40,15 +40,27 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             byte[] packet = _ReceivedPackets.Dequeue();
 
-            int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
+            //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
+            int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
 
             for (int i = 2; i < packet.Length; i+=4)
             {
-                int registerIndex = System.BitConverter.ToInt16(packet, i);
-                int registerValue = System.BitConverter.ToInt16(packet,  i+2);
-                UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
+                int registerValue = GetLittleEndianIntegerFromByteArray(packet, i);
+                int registerIndex = GetLittleEndianIntegerFromByteArray(packet,  i+2);
+
+                print("Actuator: " + actuatorIndex + ", register: " + registerIndex + ", value: " + registerValue);
+                if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
+                {
+                    UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
+                }
             }
         }        
+    }
+
+    int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
+    {
+        return (data[startIndex + 1] << 8)
+             | data[startIndex];
     }
 
     public void SendPositionMessage(Actuator actuator)
