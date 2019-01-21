@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UkiCommunicationsManager : ThreadedUDPReceiver
 {
+    public static int _CalibrateWaitTime = 60;
+
     private static uint[] _HeartBeatMessage = new uint[] {240, 0, 0};
 
     public static UkiCommunicationsManager Instance {  get { return _Instance; } }
@@ -38,6 +40,16 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage[1] = (uint)register;
         actuatorMessage[2] = length;
         SendInts(actuatorMessage, true);
+    }
+
+    public void SendCalibrationMessage(Actuator actuator)
+    {
+        int val = -30;
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[2] = (uint)val;
+        SendInts(actuatorMessage, true);    
     }
 
     void SendHeartBeat()
