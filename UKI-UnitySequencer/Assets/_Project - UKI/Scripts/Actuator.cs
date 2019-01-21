@@ -39,6 +39,11 @@ public class Actuator : MonoBehaviour
         _RotationLimitHinge = GetComponent<RotationLimitHinge>();
     }
 
+    private void Awake()
+    {
+        UkiStateDB.RegisterActuator(this);
+    }
+
     private void Update()
     {
         if(_ParentLimb._State == UKILimb.State.Calibrating)
