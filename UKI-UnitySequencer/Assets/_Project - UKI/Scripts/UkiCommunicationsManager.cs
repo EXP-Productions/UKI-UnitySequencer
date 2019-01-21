@@ -31,12 +31,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             byte[] packet = _ReceivedPackets.Dequeue();
 
-            int actuatorIndex = System.BitConverter.ToUInt16(packet, 0);
+            int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
 
             for (int i = 2; i < packet.Length; i+=4)
             {
-                int registerIndex = System.BitConverter.ToUInt16(packet, i);
-                int registerValue = System.BitConverter.ToUInt16(packet,  i+2);
+                int registerIndex = System.BitConverter.ToInt16(packet, i);
+                int registerValue = System.BitConverter.ToInt16(packet,  i+2);
                 UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
             }
         }        
