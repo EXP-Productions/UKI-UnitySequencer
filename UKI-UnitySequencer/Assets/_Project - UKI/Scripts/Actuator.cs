@@ -41,7 +41,7 @@ public class Actuator : MonoBehaviour
 
     private void Update()
     {
-        if(_ParentLimb._State == UKILimb.State.Calibrating)
+        if(_ParentLimb._State == UKIEnums.State.Calibrating)
         {
             Quaternion targetRot = _RotationLimitHinge.defaultLocalRotation;
             //transform.localRotation = targetRot;
@@ -59,7 +59,6 @@ public class Actuator : MonoBehaviour
             _RealWorldProxy.transform.localRotation = Quaternion.Slerp(_RealWorldProxy.transform.localRotation, transform.localRotation, Time.deltaTime * 3);
     }
 
-    /*
     public void CalibrateToZero()
     {
         print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
@@ -67,7 +66,6 @@ public class Actuator : MonoBehaviour
         transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
         _RotationLimitHinge.Apply();
     }
-    */
 
     // read encoder linear value and convert to rotation
     void ReadInEncoader()

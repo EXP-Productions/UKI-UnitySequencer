@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 
 /// <summary>
@@ -12,7 +13,7 @@ public class UKI_TimelineManager : MonoBehaviour
 {
     enum State
     {
-        Idle,               // Not moving but in what ever position it is in.
+        Paused,             // Not moving but in what ever position it is in.
         Zeroed,             // All actuators zeroed out at base postion
         Zeroing,            // Transitioning to zeroed
         PlayingTimeline,    // Playing back timeline asset
@@ -28,6 +29,13 @@ public class UKI_TimelineManager : MonoBehaviour
     Abdomen _Abdomen;
     UKILimb[] _AllLimbs;
 
+    [Header("UI")]
+    public Button _Button_Play1;
+    public Button _Button_Play2;
+    public Button _Button_Play;
+    public Button _Button_Pause;
+    public Button _Button_Calibrate;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +46,16 @@ public class UKI_TimelineManager : MonoBehaviour
         _Abdomen = FindObjectOfType<Abdomen>();
 
         _AllLimbs = FindObjectsOfType<UKILimb>();
+
+
+
+        // UI
+        _Button_Play1.onClick.AddListener(() => PlayTimeline(0));
+        _Button_Play2.onClick.AddListener(() => PlayTimeline(1));
+
+        _Button_Play.onClick.AddListener(() => Play());
+        _Button_Pause.onClick.AddListener(() => Pause());
+        _Button_Calibrate.onClick.AddListener(() => CalibrateToZero());
     }
 
     private void Update()
@@ -48,6 +66,26 @@ public class UKI_TimelineManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Z)) CalibrateToZero();
     }
 
+    void Play()
+    {
+        _PlayableDirector.Play();
+
+        for (int i = 0; i < _AllLimbs.Length; i++)
+        {
+            _AllLimbs[i].SetState(UKIEnums.State.Animating);
+        }
+    }
+
+    void Pause()
+    {
+        _PlayableDirector.Pause();
+
+        for (int i = 0; i < _AllLimbs.Length; i++)
+        {
+            _AllLimbs[i].SetState(UKIEnums.State.Paused);
+        }
+    }
+
     void PlayTimeline(int index)
     {
         _PlayableDirector.Stop();
@@ -55,7 +93,7 @@ public class UKI_TimelineManager : MonoBehaviour
 
         for (int i = 0; i < _AllLimbs.Length; i++)
         {
-            _AllLimbs[i].SetState(UKILimb.State.Animating);
+            _AllLimbs[i].SetState(UKIEnums.State.Animating);
         }
     }
 

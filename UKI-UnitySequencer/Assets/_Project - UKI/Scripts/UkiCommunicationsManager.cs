@@ -42,7 +42,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     void SendHeartBeat()
     {
-        print("Sending Heartbeat");
+        //print("Sending Heartbeat");
         SendInts(_HeartBeatMessage, true);
     }
 }
