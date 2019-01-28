@@ -139,7 +139,7 @@ public class Actuator : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
         }
 
-        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)this._ActuatorIndex, -55);
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)this._ActuatorIndex, -30);
         yield return new WaitForSeconds(UkiCommunicationsManager._CalibrateWaitTime);
         print("done sending calibration messages");
         SetCalibrated();

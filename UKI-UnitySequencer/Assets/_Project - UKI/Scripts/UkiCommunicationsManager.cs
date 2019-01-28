@@ -52,6 +52,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                 int registerValue = GetLittleEndianIntegerFromByteArray(packet,  i+2);
                 if(registerIndex == 299)
                     print("Actuator: " + actuatorIndex + ", Extension :" + registerValue);
+                if (registerIndex == 303)
+                    print("Actuator: " + actuatorIndex + ", MB_INWARD_ENDSTOP_STATE :" + registerValue);
                 if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
                 {
                     UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
