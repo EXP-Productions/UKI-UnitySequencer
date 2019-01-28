@@ -11,6 +11,17 @@ using RootMotion.FinalIK;
 [RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
+
+    /// <summary>
+    /// UKI Angles
+    /// Front left ankle -length out 77     Out 140 In 100
+    /// Front left Knee - length out 84     Out 192 In 136 measured from top of hip
+    /// Front left Hip - length out 75      Out 100 In 50 measured on inside of hexagon from cross bar
+    /// </summary>
+
+        /// Speed is a percent of voltage
+        /// mm per second per volt    57mm over 15.5 seconds
+
     public UkiActuatorAssignments _ActuatorIndex = 0;
 
     bool _Calibrated = false;
