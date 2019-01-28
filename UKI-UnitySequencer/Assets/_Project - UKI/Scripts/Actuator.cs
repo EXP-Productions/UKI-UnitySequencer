@@ -11,14 +11,27 @@ using RootMotion.FinalIK;
 [RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
+
+    /// <summary>
+    /// UKI Angles
+    /// Front left ankle -length out 77     Out 140 In 100
+    /// Front left Knee - length out 84     Out 192 In 136 measured from top of hip
+    /// Front left Hip - length out 75      Out 100 In 50 measured on inside of hexagon from cross bar
+    /// </summary>
+
+        /// Speed is a percent of voltage
+        /// mm per second per volt    57mm over 15.5 seconds
+
     public UkiActuatorAssignments _ActuatorIndex = 0;
 
     bool _Calibrated = false;
     public bool Calibrated { get { return _Calibrated; } }
 
-    public float _MaxLinearTravel = 50;       // Maximum that that linear actuator can travel
+    public float _MaxLinearTravel = 50;       // Maximum that that linear actuator can travel, in mm
     public float _CurrentLinearLength = 0;    // Current length that the linear actuator is at
     public float _TargetLinearLength = 0;    // Target length that the linear actuator is aiming for
+    float _PrevLinearLength = 0;
+    float _LinearLengthMessageSendCutoff = 1;
 
     Quaternion _TargetRotation;
     
@@ -37,6 +50,7 @@ public class Actuator : MonoBehaviour
     {
         _ParentLimb = parentLimb;
         _RotationLimitHinge = GetComponent<RotationLimitHinge>();
+        _PrevLinearLength = _CurrentLinearLength;
     }
 
     private void Awake()
@@ -46,7 +60,7 @@ public class Actuator : MonoBehaviour
 
     private void Update()
     {
-        if(_ParentLimb._State == UKILimb.State.Calibrating)
+        if(_ParentLimb._State == UKIEnums.State.Calibrating)
         {
             Quaternion targetRot = _RotationLimitHinge.defaultLocalRotation;
             //transform.localRotation = targetRot;
@@ -64,7 +78,6 @@ public class Actuator : MonoBehaviour
             _RealWorldProxy.transform.localRotation = Quaternion.Slerp(_RealWorldProxy.transform.localRotation, transform.localRotation, Time.deltaTime * 3);
     }
 
-    /*
     public void CalibrateToZero()
     {
         print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
@@ -72,7 +85,6 @@ public class Actuator : MonoBehaviour
         transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
         _RotationLimitHinge.Apply();
     }
-    */
 
     // read encoder linear value and convert to rotation
     void ReadInEncoader()
@@ -86,10 +98,13 @@ public class Actuator : MonoBehaviour
 
         // Limit roation to base and extended
         _RotationCurrentAngle = Mathf.Clamp(_RotationCurrentAngle, _RotationBase, _RotationExtended);
-        
 
-        // Send out UDP here
-        UkiCommunicationsManager.Instance.SendPositionMessage(this);
+
+        if (Mathf.Abs(_CurrentLinearLength - _PrevLinearLength) > _LinearLengthMessageSendCutoff)
+        {
+            // Send out UDP here
+            UkiCommunicationsManager.Instance.SendPositionMessage(this);
+        }
     }
     
     public void CalibrateToZero()

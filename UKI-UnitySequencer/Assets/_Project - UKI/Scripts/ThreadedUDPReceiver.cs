@@ -111,7 +111,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
         {
             debug += by.ToString();
         }
-        print("sending bytes array " + debug);
+        //print("sending bytes array " + debug);
         Send(payloadBytesList.ToArray());
     }
 

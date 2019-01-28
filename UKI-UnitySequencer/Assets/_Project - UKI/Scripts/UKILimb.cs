@@ -7,16 +7,7 @@ using RootMotion.FinalIK;
 [RequireComponent(typeof(EditorIK))]
 public class UKILimb : MonoBehaviour
 {
-    public enum State
-    {
-        Idle,
-        Calibrating,
-        Animating,
-    }
-
-    public bool _CalibratedToZero;
-
-    public State _State = State.Idle;
+    public UKIEnums.State _State = UKIEnums.State.Paused;
     protected Actuator[] _ActuatorArray;
     protected CCDIK _IKSolver;
     protected EditorIK _EditorIK;
@@ -36,7 +27,7 @@ public class UKILimb : MonoBehaviour
 
     private void Update()
     {
-        if(_State == State.Calibrating)
+        if(_State == UKIEnums.State.Calibrating)
         {
             // Check to see if calibration has finished
             int calibratedCount = 0;
@@ -56,15 +47,15 @@ public class UKILimb : MonoBehaviour
         }
     }
 
-    public void SetState(State state)
+    public void SetState(UKIEnums.State state)
     {
         _State = state;
 
-        if (_State == State.Animating)
+        if (_State == UKIEnums.State.Animating)
         {
             _IKSolver.enabled = true;
         }
-        else if (_State == State.Calibrating)
+        else if (_State == UKIEnums.State.Calibrating)
         {
             // Disable the IK solver so we can set the rotation manually
             _IKSolver.enabled = false;
@@ -87,7 +78,7 @@ public class UKILimb : MonoBehaviour
 
     public void CalibrateAllToZero()
     {
-        SetState(State.Calibrating);        
+        SetState(UKIEnums.State.Calibrating);
     }
 
     protected void OnCalibrationCompleteHandler()
