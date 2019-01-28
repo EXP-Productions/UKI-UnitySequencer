@@ -95,7 +95,7 @@ public class UKI_TimelineManager : MonoBehaviour
 
             for (int i = 0; i < _AllLimbs.Length; i++)
             {
-                _AllLimbs[i].SetState(UKILimb.State.Animating);
+                _AllLimbs[i].SetState(UKIEnums.State.Animating);
             }
         }
         else
