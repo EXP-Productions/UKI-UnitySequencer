@@ -11,6 +11,14 @@ using RootMotion.FinalIK;
 [RequireComponent(typeof(RotationLimitHinge))]
 public class Actuator : MonoBehaviour
 {
+    public enum Axis
+    {
+        X,
+        Y,
+        Z,
+    }
+
+    public Axis _Axis = Axis.X;
 
     /// <summary>
     /// UKI Angles
@@ -60,6 +68,7 @@ public class Actuator : MonoBehaviour
 
     private void Update()
     {
+        
         if(_ParentLimb._State == UKIEnums.State.Calibrating)
         {
             Quaternion targetRot = _RotationLimitHinge.defaultLocalRotation;
@@ -72,6 +81,14 @@ public class Actuator : MonoBehaviour
             print(name + " angle: " + angle);
             
             _Calibrated = angle < 1;
+        }
+        else if(_ParentLimb._State == UKIEnums.State.Animating)
+        {
+            UpdateRotation();
+
+
+           
+
         }
 
         if (_RealWorldProxy != null)
@@ -87,10 +104,17 @@ public class Actuator : MonoBehaviour
     void UpdateRotation()
     {
         // Add any smoothing and accel stuff in here and limits
+        if (_Axis == Axis.X) _RotationCurrentAngle = transform.localRotation.eulerAngles.x;
+        else if (_Axis == Axis.Y) _RotationCurrentAngle = transform.localRotation.eulerAngles.y;
+        else if(_Axis == Axis.Z) _RotationCurrentAngle = transform.localRotation.eulerAngles.z;
+
 
         // Limit roation to base and extended
         _RotationCurrentAngle = Mathf.Clamp(_RotationCurrentAngle, _RotationBase, _RotationExtended);
 
+        float norm = _RotationCurrentAngle / _RotationExtended;
+        print(transform.localRotation.x + "  " + norm + "   " + _RotationExtended);
+        _CurrentLinearLength = norm.ScaleFrom01(0f, _MaxLinearTravel);
 
         if (Mathf.Abs(_CurrentLinearLength - _PrevLinearLength) > _LinearLengthMessageSendCutoff)
         {
