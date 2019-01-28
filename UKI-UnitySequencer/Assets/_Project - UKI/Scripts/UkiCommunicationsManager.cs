@@ -6,7 +6,7 @@ using System;
 
 public class UkiCommunicationsManager : ThreadedUDPReceiver
 {
-    public static int _CalibrateWaitTime = 60;
+    public static float _CalibrateWaitTime = 60f;
 
     private static uint[] _HeartBeatMessage = new uint[] {240, 0, 0};
 
