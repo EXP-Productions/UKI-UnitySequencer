@@ -81,7 +81,7 @@ public class UKILimb : MonoBehaviour
 
     public void CalibrateAllToZero()
     {
-        SetState(State.Calibrating);
+        SetState(State.Calibrating);        
     }
 
     protected void OnCalibrationCompleteHandler()

@@ -91,11 +91,23 @@ public class Actuator : MonoBehaviour
         // Send out UDP here
         UkiCommunicationsManager.Instance.SendPositionMessage(this);
     }
-
+    
     public void CalibrateToZero()
     {
-        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, -30);
-        Invoke("SetCalibrated", UkiCommunicationsManager._CalibrateWaitTime);
+        StartCoroutine(Calibrate());
+    }
+
+    IEnumerator Calibrate()
+    {
+        while (UkiCommunicationsManager.Instance._EStopping)
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)this._ActuatorIndex, -55);
+        yield return new WaitForSeconds(UkiCommunicationsManager._CalibrateWaitTime);
+        print("done sending calibration messages");
+        SetCalibrated();
     }
 
     public void CalibrateToMax()
