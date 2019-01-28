@@ -8,10 +8,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 {
     public static int _CalibrateWaitTime = 60;
 
-    private static Int16[] _HeartBeatMessage = new Int16[] {240, 0, 0};
+    private static uint[] _HeartBeatMessage = new uint[] {240, 0, 0};
 
     public static UkiCommunicationsManager Instance {  get { return _Instance; } }
     private static UkiCommunicationsManager _Instance;
+
+    public bool _EStopping = true;
 
     public override void Awake()
     {
@@ -23,7 +25,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     void Start()
     {
         StartCoroutine("EStop");
-        InvokeRepeating("SendHeartBeat", 1f, 1f);   
     }
 
     IEnumerator EStop()
@@ -32,6 +33,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         yield return new WaitForSeconds(1.0f);
 
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+        InvokeRepeating("SendHeartBeat", 1f, 1f);
+        _EStopping = false;
     }
 
     private void Update()
@@ -45,8 +48,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
             for (int i = 2; i < packet.Length; i+=4)
             {
-                int registerValue = GetLittleEndianIntegerFromByteArray(packet, i);
-                int registerIndex = GetLittleEndianIntegerFromByteArray(packet,  i+2);
+                int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
+                int registerValue = GetLittleEndianIntegerFromByteArray(packet,  i+2);
 
                 print("Actuator: " + actuatorIndex + ", register: " + registerIndex + ", value: " + registerValue);
                 if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
@@ -65,29 +68,45 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void SendPositionMessage(Actuator actuator)
     {
-        Int16[] actuatorMessage = new Int16[3];
-        actuatorMessage[0] = (Int16)actuator._ActuatorIndex;
-        actuatorMessage[1] = (Int16)ModBusRegisters.MB_GOTO_POSITION;
-        actuatorMessage[2] = (Int16)actuator._CurrentLinearLength;
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
+        actuatorMessage[2] = (uint)actuator._CurrentLinearLength;
         SendInts(actuatorMessage, true);
     }
 
-    public void SendActuatorMessage(int index, Int16 length, ModBusRegisters register)
+    public void SendActuatorMessage(int index, int length, ModBusRegisters register)
     {
-        Int16[] actuatorMessage = new Int16[3];
-        actuatorMessage[0] = (Int16)index;
-        actuatorMessage[1] = (Int16)register;
-        actuatorMessage[2] = length;
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)index;
+        actuatorMessage[1] = (uint)register;
+        actuatorMessage[2] = (uint)length;
         SendInts(actuatorMessage, true);
     }
 
-    public void SendCalibrationMessage(Actuator actuator, Int16 motorSpeed)
+    public void SendCalibrationMessage(Actuator actuator, int motorSpeed)
     {
-        Int16[] actuatorMessage = new Int16[3];
-        actuatorMessage[0] = (Int16)actuator._ActuatorIndex;
-        actuatorMessage[1] = (Int16)ModBusRegisters.MB_MOTOR_SPEED;
-        actuatorMessage[2] = (Int16)motorSpeed;
-        SendInts(actuatorMessage, true);    
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[2] = (uint)motorSpeed;
+        SendInts(actuatorMessage, true);
+    }
+
+    public void SendCalibrationMessage(int index, int motorSpeed)
+    {
+        uint[] actuatorMessage1 = new uint[3];
+        actuatorMessage1[0] = (uint)index;
+        actuatorMessage1[1] = (uint)ModBusRegisters.MB_MOTOR_ACCEL;
+        actuatorMessage1[2] = (uint)95;
+        SendInts(actuatorMessage1, true);
+
+        uint[] actuatorMessage2 = new uint[3];
+        actuatorMessage2[0] = (uint)index;
+        actuatorMessage2[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
+        actuatorMessage2[2] = (uint)motorSpeed;
+        SendInts(actuatorMessage2, true);
+
     }
 
     void SendHeartBeat()

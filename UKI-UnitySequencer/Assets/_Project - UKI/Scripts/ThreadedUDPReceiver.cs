@@ -90,11 +90,11 @@ public class ThreadedUDPReceiver : MonoBehaviour
     #endregion
 
     #region "Send Data Methods"
-    public void SendInts(Int16[] intVals, bool littleEndian)
+    public void SendInts(uint[] intVals, bool littleEndian)
     {
         List<byte> payloadBytesList = new List<byte>();
 
-        for (Int16 i = 0; i < intVals.Length; i++)
+        for (uint i = 0; i < intVals.Length; i++)
         {
             if (littleEndian)
             {
@@ -115,7 +115,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
         Send(payloadBytesList.ToArray());
     }
 
-    byte[] IntToLittleEndian(Int16 data)
+    byte[] IntToLittleEndian(uint data)
     {
         byte[] b = new byte[2];
         b[0] = (byte)data;
