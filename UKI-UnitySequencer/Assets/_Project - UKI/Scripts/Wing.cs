@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class Wing : UKILimb
 {
-    Actuator _Lift;
-    Actuator _Rotation;
+    public Actuator _Lift;
+    public Actuator _Rotation;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Assign actuator aray
+        _ActuatorArray = new Actuator[] { _Lift, _Rotation };        
     }
 }
