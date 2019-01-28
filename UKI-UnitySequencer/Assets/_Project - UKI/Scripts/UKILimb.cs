@@ -11,6 +11,7 @@ public class UKILimb : MonoBehaviour
     protected Actuator[] _ActuatorArray;
     protected CCDIK _IKSolver;
     protected EditorIK _EditorIK;
+    public bool _CalibratedToZero;
 
     private void Start()
     {
@@ -38,7 +39,12 @@ public class UKILimb : MonoBehaviour
             }
 
             if (calibratedCount == _ActuatorArray.Length)
-                SetState(UKIEnums.State.CalibratedToZero);
+            {
+                _CalibratedToZero = true;
+                SetState(UKIEnums.State.Paused);
+            }
+            else
+                _CalibratedToZero = false;
         }
     }
 

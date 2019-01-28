@@ -78,14 +78,6 @@ public class Actuator : MonoBehaviour
             _RealWorldProxy.transform.localRotation = Quaternion.Slerp(_RealWorldProxy.transform.localRotation, transform.localRotation, Time.deltaTime * 3);
     }
 
-    public void CalibrateToZero()
-    {
-        print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
-
-        transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
-        _RotationLimitHinge.Apply();
-    }
-
     // read encoder linear value and convert to rotation
     void ReadInEncoader()
     {
@@ -106,11 +98,27 @@ public class Actuator : MonoBehaviour
             UkiCommunicationsManager.Instance.SendPositionMessage(this);
         }
     }
-
+    
     public void CalibrateToZero()
     {
-        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, -30);
-        Invoke("SetCalibrated", UkiCommunicationsManager._CalibrateWaitTime);
+        print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
+
+        transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
+        _RotationLimitHinge.Apply();
+        StartCoroutine(Calibrate());
+    }
+
+    IEnumerator Calibrate()
+    {
+        while (UkiCommunicationsManager.Instance._EStopping)
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)this._ActuatorIndex, -55);
+        yield return new WaitForSeconds(UkiCommunicationsManager._CalibrateWaitTime);
+        print("done sending calibration messages");
+        SetCalibrated();
     }
 
     public void CalibrateToMax()

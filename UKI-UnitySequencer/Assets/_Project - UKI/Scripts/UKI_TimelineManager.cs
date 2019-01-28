@@ -88,12 +88,39 @@ public class UKI_TimelineManager : MonoBehaviour
 
     void PlayTimeline(int index)
     {
-        _PlayableDirector.Stop();
-        _PlayableDirector.Play(_Timeline[index]);
+        if (AllLimbsCalibrated())
+        {
+            _PlayableDirector.Stop();
+            _PlayableDirector.Play(_Timeline[index]);
 
+            for (int i = 0; i < _AllLimbs.Length; i++)
+            {
+                _AllLimbs[i].SetState(UKIEnums.State.Animating);
+            }
+        }
+        else
+        {
+            Debug.LogError("Wait for limbs to calibrate before running timeline");
+        }
+    }
+
+    bool AllLimbsCalibrated()
+    {
+        int calibratedCount = 0;
         for (int i = 0; i < _AllLimbs.Length; i++)
         {
-            _AllLimbs[i].SetState(UKIEnums.State.Animating);
+            if(_AllLimbs[i]._CalibratedToZero)
+            {
+                calibratedCount++;
+            }
+        }
+        if(calibratedCount >= _AllLimbs.Length)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
