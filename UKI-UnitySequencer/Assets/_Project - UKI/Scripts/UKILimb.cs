@@ -11,9 +11,10 @@ public class UKILimb : MonoBehaviour
     {
         Idle,
         Calibrating,
-        CalibratedToZero,
         Animating,
     }
+
+    public bool _CalibratedToZero;
 
     public State _State = State.Idle;
     protected Actuator[] _ActuatorArray;
@@ -46,7 +47,12 @@ public class UKILimb : MonoBehaviour
             }
 
             if (calibratedCount == _ActuatorArray.Length)
-                SetState(State.CalibratedToZero);
+            {
+                _CalibratedToZero = true;
+                SetState(State.Idle);
+            }
+            else
+                _CalibratedToZero = false;
         }
     }
 
