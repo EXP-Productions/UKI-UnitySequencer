@@ -3,13 +3,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
+using System;
 
 
 //This Class essentially wraps the native .Net UdpClient class and adds threads to handle the sending and receiving of packets 
 //so they don't mess the with main Unity rendering thread. 
 public class ThreadedUDPReceiver : MonoBehaviour
 {
-    public Queue<string> _ReceivedPackets = new Queue<string>();
+    public Queue<byte[]> _ReceivedPackets = new Queue<byte[]>();
     public Stack<byte[]> _SendPackets = new Stack<byte[]>();
 
     public UdpClient _Client;
@@ -54,10 +55,9 @@ public class ThreadedUDPReceiver : MonoBehaviour
             {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 11000);
                 byte[] data = _Client.Receive(ref anyIP);
-                text = System.Text.Encoding.UTF8.GetString(data);
 
                 lock (_ReceivedPackets)
-                    _ReceivedPackets.Enqueue(text);
+                    _ReceivedPackets.Enqueue(data);
             }
             catch (System.Exception ex)
             {
@@ -94,7 +94,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
     {
         List<byte> payloadBytesList = new List<byte>();
 
-        for (int i = 0; i < intVals.Length; i++)
+        for (uint i = 0; i < intVals.Length; i++)
         {
             if (littleEndian)
             {

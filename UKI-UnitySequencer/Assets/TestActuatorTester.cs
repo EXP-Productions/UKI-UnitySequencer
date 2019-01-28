@@ -9,24 +9,22 @@ public class TestActuatorTester : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("EStop");
+        StartCoroutine("Calibrate");
 
-        Invoke("SendTestMsg", 10f);
-        Invoke("SendTestMsg2", 20f);
+        //Invoke("SendTestMsg", 10f);
+        //Invoke("SendTestMsg2", 20f);
     }
 
-    IEnumerator EStop()
+    IEnumerator Calibrate()
     {
-        yield return new WaitForSeconds(1.0f);
+        while(UkiCommunicationsManager.Instance._EStopping)
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
 
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        yield return new WaitForSeconds(1.0f);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        yield return new WaitForSeconds(1.0f);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)UkiTestActuatorAssignments.RightWingRaise, -55);
+        yield return new WaitForSeconds(10f);
+        print("done sending calibration messages");
     }
 
     void SendTestMsg()

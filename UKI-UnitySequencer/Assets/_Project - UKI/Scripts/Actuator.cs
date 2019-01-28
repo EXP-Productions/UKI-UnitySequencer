@@ -53,6 +53,11 @@ public class Actuator : MonoBehaviour
         _PrevLinearLength = _CurrentLinearLength;
     }
 
+    private void Awake()
+    {
+        UkiStateDB.RegisterActuator(this);
+    }
+
     private void Update()
     {
         if(_ParentLimb._State == UKIEnums.State.Calibrating)
@@ -100,6 +105,23 @@ public class Actuator : MonoBehaviour
             // Send out UDP here
             UkiCommunicationsManager.Instance.SendPositionMessage(this);
         }
+    }
+
+    public void CalibrateToZero()
+    {
+        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, -30);
+        Invoke("SetCalibrated", UkiCommunicationsManager._CalibrateWaitTime);
+    }
+
+    public void CalibrateToMax()
+    {
+        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, 30);
+    }
+
+
+    void SetCalibrated()
+    {
+        _Calibrated = true;
     }
 
     public void OnCalibrationCompleteHandler()
