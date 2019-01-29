@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class TestActuatorTester : MonoBehaviour
 {
+    bool calibrated = false;
+    bool sendMsg1 = false;
+
+    private void Update()
+    {
+        if(calibrated)
+        {
+            if(!sendMsg1)
+            {
+                SendTestMsg2();
+                sendMsg1 = true;
+                Invoke("SendTestMsg", 10f);
+            }
+        }
+    }
 
 
     // Start is called before the first frame update
@@ -19,23 +34,24 @@ public class TestActuatorTester : MonoBehaviour
     {
         while(UkiCommunicationsManager.Instance._EStopping)
         {
+            print("waiting for estop");
             yield return new WaitForSeconds(1.0f);
         }
-
-        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)UkiTestActuatorAssignments.RightWingRaise, -55);
-        yield return new WaitForSeconds(10f);
+        print(" sending calibration messages");
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)UkiActuatorAssignments.LeftWingRaise, -30);
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)UkiActuatorAssignments.LeftMidAnkle, -30);
+        yield return new WaitForSeconds(20f);
         print("done sending calibration messages");
+        calibrated = true;
     }
 
     void SendTestMsg()
     {
         print("Sending Message 1");
+        
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftWingRaise, 30, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
 
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 100, ModBusRegisters.MB_MOTOR_ACCEL);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 55, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 1000, ModBusRegisters.MB_GOTO_POSITION);
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftWingRaise, 300, ModBusRegisters.MB_GOTO_POSITION);
     }
 
 
@@ -43,11 +59,9 @@ public class TestActuatorTester : MonoBehaviour
     {
         print("Sending Message 2");
 
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 100, ModBusRegisters.MB_MOTOR_ACCEL);
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftMidAnkle, 30, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
 
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 55, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
-
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.RightWingRaise, 500, ModBusRegisters.MB_GOTO_POSITION);
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftMidAnkle, 200, ModBusRegisters.MB_GOTO_POSITION);
     }
 
 }
