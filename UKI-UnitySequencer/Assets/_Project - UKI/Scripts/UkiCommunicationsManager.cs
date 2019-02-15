@@ -68,7 +68,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         
         if(_TestMode)
         {
-
             if (Input.GetKeyDown(KeyCode.O))
             {
                 StartCoroutine(SendSetSpeedThenStopAfterX(_TestActuator, _TestSpeed, _TestTime));
@@ -116,12 +115,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         yield return new WaitForSeconds(time);
         
         // Set speed to zero
-        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
+        actuatorMessage[0] = (uint)actuatorAssign;
         actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
         actuatorMessage[2] = (uint)0;
         SendInts(actuatorMessage, true);
 
-        print(actuator.name + "  Setting speed too: 0" );
+        print(actuatorAssign.ToString() + "  Setting speed too: 0" );
     }
 
     public void SendActuatorMessage(int index, int length, ModBusRegisters register)
