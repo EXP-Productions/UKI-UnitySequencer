@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1619,7 +1619,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 892348210}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1166547029}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &892348210
@@ -2387,10 +2398,10 @@ MonoBehaviour:
   _BroadcastIP: 127.0.0.1
   _BroadcastPort: 9000
   _EStopping: 1
-  _TestMode: 0
-  _TestActuator: 19
-  _TestSpeed: 1
-  _TestTime: 1
+  _TestMode: 1
+  _TestActuator: 170000001a000000140000000b0000000900000012000000150000000c000000
+  _TestSpeed: 20
+  _TestTime: 3
 --- !u!1001 &1174993730
 PrefabInstance:
   m_ObjectHideFlags: 0

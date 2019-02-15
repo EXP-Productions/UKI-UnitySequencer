@@ -16,7 +16,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public bool _EStopping = true;
 
     public bool _TestMode = false;
-    public UkiActuatorAssignments _TestActuator = UkiActuatorAssignments.LeftFrontHip;
+    public UkiActuatorAssignments[] _TestActuator;
     public float _TestSpeed = 1;
     public float _TestTime = 1;
 
@@ -32,6 +32,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         StartCoroutine("EStop");
     }
 
+    public void Calibrate()
+    { }
+
     IEnumerator EStop()
     {
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
@@ -44,37 +47,39 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     private void Update()
     {
-        while(_ReceivedPackets.Count > 0)
-        {
-            byte[] packet = _ReceivedPackets.Dequeue();
+        //while(_ReceivedPackets.Count > 0)
+        //{
+        //    byte[] packet = _ReceivedPackets.Dequeue();
 
-            //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
-            int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
+        //    //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
+        //    int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
 
-            for (int i = 2; i < packet.Length; i+=4)
-            {
-                int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
-                int registerValue = GetLittleEndianIntegerFromByteArray(packet,  i+2);
-                if(registerIndex == 299)
-                    //print("Actuator: " + actuatorIndex + ", Extension :" + registerValue);
-                if (registerIndex == 303)
-                    //print("Actuator: " + actuatorIndex + ", MB_INWARD_ENDSTOP_STATE :" + registerValue);
-                if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
-                {
-                    UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
-                }
-            }
-        }  
+        //    for (int i = 2; i < packet.Length; i+=4)
+        //    {
+        //        int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
+        //        int registerValue = GetLittleEndianIntegerFromByteArray(packet,  i+2);
+        //        if(registerIndex == 299)
+        //            //print("Actuator: " + actuatorIndex + ", Extension :" + registerValue);
+        //        if (registerIndex == 303)
+        //            //print("Actuator: " + actuatorIndex + ", MB_INWARD_ENDSTOP_STATE :" + registerValue);
+        //        if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
+        //        {
+        //            UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
+        //        }
+        //    }
+        //}  
         
         if(_TestMode)
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                StartCoroutine(SendSetSpeedThenStopAfterX(_TestActuator, _TestSpeed, _TestTime));
+                foreach(UkiActuatorAssignments assignment in _TestActuator)
+                    StartCoroutine(SendSetSpeedThenStopAfterX(assignment, _TestSpeed, _TestTime));
             }
             else if (Input.GetKeyDown(KeyCode.I))
             {
-                StartCoroutine(SendSetSpeedThenStopAfterX(_TestActuator, -_TestSpeed, _TestTime));
+                foreach (UkiActuatorAssignments assignment in _TestActuator)
+                    StartCoroutine(SendSetSpeedThenStopAfterX(assignment, -_TestSpeed, _TestTime));
             }
         }
     }
@@ -108,7 +113,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         // Set speed
         uint[] actuatorMessage = new uint[3];
         actuatorMessage[0] = (uint)actuatorAssign;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
         actuatorMessage[2] = (uint)speed;
         SendInts(actuatorMessage, true);
 
@@ -116,7 +121,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         
         // Set speed to zero
         actuatorMessage[0] = (uint)actuatorAssign;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
         actuatorMessage[2] = (uint)0;
         SendInts(actuatorMessage, true);
 
