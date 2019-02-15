@@ -15,6 +15,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public bool _EStopping = true;
 
+    public bool _TestMode = false;
+    public UkiActuatorAssignments _TestActuator = UkiActuatorAssignments.LeftFrontHip;
+    public float _TestSpeed = 1;
+    public float _TestTime = 1;
+
     public override void Awake()
     {
         base.Awake();
@@ -59,7 +64,20 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                     UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
                 }
             }
-        }        
+        }  
+        
+        if(_TestMode)
+        {
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                StartCoroutine(SendSetSpeedThenStopAfterX(_TestActuator, _TestSpeed, _TestTime));
+            }
+            else if (Input.GetKeyDown(KeyCode.I))
+            {
+                StartCoroutine(SendSetSpeedThenStopAfterX(_TestActuator, -_TestSpeed, _TestTime));
+            }
+        }
     }
 
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
@@ -68,6 +86,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
              | data[startIndex];
     }
 
+    // Need to set a send a set speed
     public void SendPositionMessage(Actuator actuator)
     {
         uint[] actuatorMessage = new uint[3];
@@ -75,6 +94,34 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorMessage[2] = (uint)actuator._CurrentLinearLength;
         SendInts(actuatorMessage, true);
+    }
+
+    // Set speed for x seconds, needs to be used of actuators without encoders
+    public void SendSetSpeedMessageForTime(Actuator actuator, float speed, float time)
+    {
+        StartCoroutine(SendSetSpeedThenStopAfterX(actuator._ActuatorIndex, speed, time));
+    }
+    
+    IEnumerator SendSetSpeedThenStopAfterX(UkiActuatorAssignments actuatorAssign, float speed, float time)
+    {
+        print(actuatorAssign.ToString() + "  Setting speed too: " + speed + "     for x seconds: " + time);
+
+        // Set speed
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)actuatorAssign;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[2] = (uint)speed;
+        SendInts(actuatorMessage, true);
+
+        yield return new WaitForSeconds(time);
+        
+        // Set speed to zero
+        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
+        actuatorMessage[2] = (uint)0;
+        SendInts(actuatorMessage, true);
+
+        print(actuator.name + "  Setting speed too: 0" );
     }
 
     public void SendActuatorMessage(int index, int length, ModBusRegisters register)
