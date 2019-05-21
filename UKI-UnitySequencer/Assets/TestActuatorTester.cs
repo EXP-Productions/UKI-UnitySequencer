@@ -6,6 +6,7 @@ public class TestActuatorTester : MonoBehaviour
 {
     bool calibrated = false;
     bool sendMsg1 = false;
+    public UkiActuatorAssignments _Actuator;
 
     private void Update()
     {
@@ -50,7 +51,6 @@ public class TestActuatorTester : MonoBehaviour
         print("Sending Message 1");
         
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftWingRaise, 30, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
-
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftWingRaise, 300, ModBusRegisters.MB_GOTO_POSITION);
     }
 

@@ -2399,9 +2399,10 @@ MonoBehaviour:
   _BroadcastPort: 9000
   _EStopping: 1
   _TestMode: 1
-  _TestActuator: 170000001a000000140000000b0000000900000012000000150000000c000000
+  _TestActuator: 17000000
   _TestSpeed: 20
   _TestTime: 3
+  _TestPos: 100
 --- !u!1001 &1174993730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3295,7 +3296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: c13fdf809bb1ec846bfa81e18e9adb2e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c13fdf809bb1ec846bfa81e18e9adb2e, type: 3}
       propertyPath: m_LocalPosition.x
