@@ -50,8 +50,8 @@ public class UKI_TimelineManager : MonoBehaviour
 
 
         // UI
-        _Button_Play1.onClick.AddListener(() => PlayTimeline(0));
-        _Button_Play2.onClick.AddListener(() => PlayTimeline(1));
+        _Button_Play1.onClick.AddListener(() => PlayTimeline(0, true));
+        _Button_Play2.onClick.AddListener(() => PlayTimeline(1, true));
 
         _Button_Play.onClick.AddListener(() => Play());
         _Button_Pause.onClick.AddListener(() => Pause());
@@ -60,7 +60,7 @@ public class UKI_TimelineManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) PlayTimeline(0);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) PlayTimeline(0, false);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) PlayTimeline(1);
         else if (Input.GetKeyDown(KeyCode.Alpha3)) PlayTimeline(2);
         else if (Input.GetKeyDown(KeyCode.Z)) CalibrateToZero();
@@ -86,9 +86,10 @@ public class UKI_TimelineManager : MonoBehaviour
         }
     }
 
-    void PlayTimeline(int index)
+    void PlayTimeline(int index, bool requireCalibration = true)
     {
-        if (AllLimbsCalibrated())
+        print("Attempting to play timeline " + index);
+        if (requireCalibration && AllLimbsCalibrated())
         {
             _PlayableDirector.Stop();
             _PlayableDirector.Play(_Timeline[index]);
@@ -97,6 +98,18 @@ public class UKI_TimelineManager : MonoBehaviour
             {
                 _AllLimbs[i].SetState(UKIEnums.State.Animating);
             }
+            print("Timeline playing " + index);
+        }
+        else if(!requireCalibration)
+        {
+            _PlayableDirector.Stop();
+            _PlayableDirector.Play(_Timeline[index]);
+
+            for (int i = 0; i < _AllLimbs.Length; i++)
+            {
+                _AllLimbs[i].SetState(UKIEnums.State.Animating);
+            }
+            print("Timeline playing " + index);           
         }
         else
         {
@@ -128,6 +141,8 @@ public class UKI_TimelineManager : MonoBehaviour
     {
         // Stop the director
         _PlayableDirector.Stop();
+
+        print("Calibrating");
 
         for (int i = 0; i < _AllLimbs.Length; i++)
         {

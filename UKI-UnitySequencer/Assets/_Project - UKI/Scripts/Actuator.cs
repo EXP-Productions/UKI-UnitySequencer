@@ -113,7 +113,7 @@ public class Actuator : MonoBehaviour
         _RotationCurrentAngle = Mathf.Clamp(_RotationCurrentAngle, _RotationBase, _RotationExtended);
 
         float norm = _RotationCurrentAngle / _RotationExtended;
-        print(transform.localRotation.x + "  " + norm + "   " + _RotationExtended);
+        print("Rotation X: " + transform.localRotation.x + "  Norm:" + norm + "   Rotation extended: " + _RotationExtended);
         _CurrentLinearLength = norm.ScaleFrom01(0f, _MaxLinearTravel);
 
         if (Mathf.Abs(_CurrentLinearLength - _PrevLinearLength) > _LinearLengthMessageSendCutoff)
@@ -125,7 +125,7 @@ public class Actuator : MonoBehaviour
     
     public void CalibrateToZero()
     {
-        print("Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
+        print(name + "   Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
 
         transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
         _RotationLimitHinge.Apply();

@@ -145,6 +145,12 @@ MonoBehaviour:
   _ReceivePort: 10001
   _BroadcastIP: 127.0.0.1
   _BroadcastPort: 9000
+  _EStopping: 1
+  _TestMode: 1
+  _TestActuator: 12000000
+  _TestSpeed: 30
+  _TestTime: 5
+  _TestPos: 100
 --- !u!4 &473480123
 Transform:
   m_ObjectHideFlags: 0
@@ -188,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c601daad014c07488d07ce1ede51212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Actuator: 0
 --- !u!4 &553579250
 Transform:
   m_ObjectHideFlags: 0

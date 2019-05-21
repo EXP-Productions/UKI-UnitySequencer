@@ -20,6 +20,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public float _TestSpeed = 1;
     public float _TestTime = 1;
 
+    public float _TestPos = 100;
+
     public override void Awake()
     {
         base.Awake();
@@ -81,6 +83,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                 foreach (UkiActuatorAssignments assignment in _TestActuator)
                     StartCoroutine(SendSetSpeedThenStopAfterX(assignment, -_TestSpeed, _TestTime));
             }
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                foreach (UkiActuatorAssignments assignment in _TestActuator)
+                    SendCalibrationMessage((int)assignment, -30);
+            }
         }
     }
 
@@ -113,7 +121,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         // Set speed
         uint[] actuatorMessage = new uint[3];
         actuatorMessage[0] = (uint)actuatorAssign;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT; // only use for calibrate
         actuatorMessage[2] = (uint)speed;
         SendInts(actuatorMessage, true);
 
@@ -151,7 +159,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         uint[] actuatorMessage1 = new uint[3];
         actuatorMessage1[0] = (uint)index;
         actuatorMessage1[1] = (uint)ModBusRegisters.MB_MOTOR_ACCEL;
-        actuatorMessage1[2] = (uint)95;
+        actuatorMessage1[2] = (uint)95; // accel
         SendInts(actuatorMessage1, true);
 
         uint[] actuatorMessage2 = new uint[3];
