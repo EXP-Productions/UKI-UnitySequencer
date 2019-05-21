@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
+/// Comms manager for UKI
+/// Sends out the commands that come in from the actuators
 public class UkiCommunicationsManager : ThreadedUDPReceiver
 {
-    public static float _CalibrateWaitTime = 60f;
-
-    private static uint[] _HeartBeatMessage = new uint[] {240, 0, 0};
-
-    public static UkiCommunicationsManager Instance {  get { return _Instance; } }
+    public static UkiCommunicationsManager Instance { get { return _Instance; } }
     private static UkiCommunicationsManager _Instance;
 
-    public bool _EStopping = true;
+    // Calibration wait time, this is how long we wait for all limbs to come in before we consider them calibrated
+    public static float _CalibrateWaitTime = 60f;
 
-    public bool _TestMode = false;
+    // Heart beat message that gets sent out to UKI
+    private static uint[] _HeartBeatMessage = new uint[] {240, 0, 0};
+    
+    // Is UKI estopping, preventing all the limbs from moving
+    public bool _EStopping = true;
+    
     public UkiActuatorAssignments[] _TestActuator;
     public float _TestSpeed = 1;
     public float _TestTime = 1;
@@ -33,14 +36,18 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     }
 
     public void Calibrate()
-    { }
+    {
+
+    }
 
     IEnumerator EStop()
     {
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+        print("Sending eStop");
+        _EStopping = true;
+        SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
         yield return new WaitForSeconds(1.0f);
 
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+       SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
     }
@@ -69,6 +76,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //    }
         //}  
         
+        /*
         if(_TestMode)
         {
             if (Input.GetKeyDown(KeyCode.O))
@@ -82,6 +90,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                     StartCoroutine(SendSetSpeedThenStopAfterX(assignment, -_TestSpeed, _TestTime));
             }
         }
+        */
     }
 
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
