@@ -35,6 +35,7 @@ public class TestActuator : MonoBehaviour
 
     private void Start()
     {
+        UkiStateDB.RegisterActuator(_Actuator);
         StartCoroutine(SendPosAtRate(15));
     }
 
@@ -47,7 +48,10 @@ public class TestActuator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
             Calibrate();
 
-        if(_SinTest)
+        if (UkiStateDB._StateDB.ContainsKey(_Actuator))
+            print(name + "  extension: " + UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_EXTENSION]);
+
+        if (_SinTest)
         {
             _NormExtension = Mathf.Sin(Time.time * Mathf.PI * 2 * _SinFreq).ScaleTo01(-1, 1);
             print(_NormExtension + "     " + _CurrentEncoderExtension);
