@@ -56,6 +56,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(EStop());
+        }
+
         //while(_ReceivedPackets.Count > 0)
         //{
         //    byte[] packet = _ReceivedPackets.Dequeue();

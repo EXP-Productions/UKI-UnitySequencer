@@ -42,9 +42,12 @@ public class TestActuator : MonoBehaviour
     [ContextMenu("Send message")]
     void SetEncoderExtension()
     {
+        float extension = _NormExtension.ScaleFrom01(0, _MaxEncoderExtension);
+        print("Setting encoder: " + _Actuator.ToString() + " too: " + extension);
+
         // Set target extension
         _CurrentEncoderExtension = _NormExtension.ScaleFrom01(0, _MaxEncoderExtension);
-        UkiCommunicationsManager.Instance.SendActuatorMessage((int)_Actuator, -30);
+        //UkiCommunicationsManager.Instance.SendActuatorMessage((int)_Actuator, -30);
     }
 
     [ContextMenu("Calibrate")]
