@@ -43,7 +43,7 @@ public class TestActuator : MonoBehaviour
     void SetEncoderExtension()
     {
         _CurrentEncoderExtension = _NormExtension.ScaleFrom01(0, _MaxEncoderExtension);
-        print("Setting encoder: " + _Actuator.ToString() + " too: " + _CurrentEncoderExtension);
+     
 
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_Actuator, 10, (int)_CurrentEncoderExtension);
     }

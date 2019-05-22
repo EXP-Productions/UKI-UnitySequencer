@@ -110,44 +110,25 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
     // Max rated speed 30
     // Accel 0 - 100
-    public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int speed, int position, bool useBuiltInAccelRamp = true, int accel = 50)
+    public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
         print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
 
-        if (useBuiltInAccelRamp)
-        {
-            // Set actuator length
-            // Uses accel/speed ramp. Not sure why speed setpoint goto pos both need sending or if they do
-            uint[] actuatorMessage2 = new uint[3];
-            actuatorMessage2[0] = (uint)actuator;
-            actuatorMessage2[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
-            actuatorMessage2[2] = (uint)position;
-            SendInts(actuatorMessage2, true);
 
-            // Set speed with a ramp up. Try using without this to begin with if chris doesn't get back
-            uint[] actuatorMessage = new uint[3];
-            actuatorMessage[0] = (uint)actuator;
-            actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
-            actuatorMessage[2] = (uint)speed;
-            SendInts(actuatorMessage, true);           
-        }
-        else
-        {
-            // Set actuator length
-            // Uses instant accel, what ever the accel is last set too
-            uint[] actuatorMessage = new uint[3];
-            actuatorMessage[0] = (uint)actuator;
-            actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT; // whats the difference between this and MB_MOTOR_SPEED
-            actuatorMessage[2] = (uint)position;
-            SendInts(actuatorMessage, true);
+        // Set speed
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)actuator;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
+        actuatorMessage[2] = (uint)speed;
+        SendInts(actuatorMessage, true);
 
-            // Set acceleration
-            uint[] actuatorMessage2 = new uint[3];
-            actuatorMessage2[0] = (uint)actuator;
-            actuatorMessage2[1] = (uint)ModBusRegisters.MB_MOTOR_ACCEL;
-            actuatorMessage2[2] = (uint)accel;
-            SendInts(actuatorMessage2, true);
-        }
+        // Set actuator position
+        uint[] actuatorMessage2 = new uint[3];
+        actuatorMessage2[0] = (uint)actuator;
+        actuatorMessage2[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
+        actuatorMessage2[2] = (uint)position;
+        SendInts(actuatorMessage2, true);
+
     }
 
 

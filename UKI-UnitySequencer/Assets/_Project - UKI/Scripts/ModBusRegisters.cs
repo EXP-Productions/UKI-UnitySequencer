@@ -30,8 +30,8 @@
     MB_POSITION_ENCODER_COUNTS,
 
     MB_MOTOR_SETPOINT = 200, // only use for calibration, sets speed instantly
-    MB_MOTOR_SPEED, 
-    MB_MOTOR_ACCEL,
+    MB_MOTOR_SPEED, // Read only
+    MB_MOTOR_ACCEL, // Write 0 - 100
     MB_CURRENT_LIMIT_INWARD,
     MB_CURRENT_LIMIT_OUTWARD,
     MB_EXTENSION_LIMIT_INWARD,  // formerly MB_CURRENT_TRIPS_INWARD_DEPRECATED,
@@ -47,7 +47,7 @@
     MB_OUTWARD_ENDSTOP_COUNT_DEPRECATED,
     MB_HEARTBEAT_EXPIRIES_DEPRECATED,
 
-    MB_GOTO_POSITION = 218,
+    MB_GOTO_POSITION = 218, // 
     MB_GOTO_SPEED_SETPOINT, // sets the position seeking speed use for setting position and not calibrating
 
     MB_EXTENSION = 299,
