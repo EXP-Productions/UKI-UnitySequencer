@@ -106,20 +106,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         */
     }
   
-    public void SendActuatorMessage(int index, int length, ModBusRegisters register)
-    {
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)index;
-        actuatorMessage[1] = (uint)register;
-        actuatorMessage[2] = (uint)length;
-        SendInts(actuatorMessage, true);
-    }
 
     // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
     // Max rated speed 30
     // Accel 0 - 100
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int speed, int position, bool useBuiltInAccelRamp = true, int accel = 50)
     {
+        print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
+
         if (useBuiltInAccelRamp)
         {
             // Set actuator length
@@ -143,7 +137,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             // Uses instant accel, what ever the accel is last set too
             uint[] actuatorMessage = new uint[3];
             actuatorMessage[0] = (uint)actuator;
-            actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
+            actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT; // whats the difference between this and MB_MOTOR_SPEED
             actuatorMessage[2] = (uint)position;
             SendInts(actuatorMessage, true);
 
@@ -231,6 +225,15 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     }
 
 
+    public void SendActuatorMessage(int index, int length, ModBusRegisters register)
+    {
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)index;
+        actuatorMessage[1] = (uint)register;
+        actuatorMessage[2] = (uint)length;
+        SendInts(actuatorMessage, true);
+    }
+    
     void SendHeartBeat()
     {
         //print("Sending Heartbeat");
