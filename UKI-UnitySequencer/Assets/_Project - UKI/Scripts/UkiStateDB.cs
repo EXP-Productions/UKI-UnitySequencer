@@ -10,7 +10,12 @@ public static class UkiStateDB
 
     public static void RegisterActuator(Actuator actuator)
     {
-        if (!_StateDB.ContainsKey(actuator._ActuatorIndex))
+        RegisterActuator(actuator._ActuatorIndex);
+    }
+
+    public static void RegisterActuator(UkiActuatorAssignments actuator)
+    {
+        if (!_StateDB.ContainsKey(actuator))
         {
             Dictionary<ModBusRegisters, int> registerDict = new Dictionary<ModBusRegisters, int>();
 
@@ -18,7 +23,7 @@ public static class UkiStateDB
             {
                 registerDict.Add(register, 0);
             }
-            _StateDB.Add(actuator._ActuatorIndex, registerDict);
+            _StateDB.Add(actuator, registerDict);
         }
         else
         {
