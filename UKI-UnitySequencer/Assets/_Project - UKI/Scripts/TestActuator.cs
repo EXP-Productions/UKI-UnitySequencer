@@ -14,33 +14,37 @@ public class TestActuator : MonoBehaviour
     public UkiActuatorAssignments _Actuator;
     public State _State = State.Idle;
 
+    // Min and max rotation range
+    public float _MinRotationInDegrees = 0;
     public float _MaxRotationInDegrees = 20;
-    public float _MaxEncoderExtension = 40;
 
+    // Encoder extensions. Linear travel that gets converted into rotational movement
     float _CurrentEncoderExtension = 0;
-    float _TargetEncoderExtension = 0;
+    public float _MaxEncoderExtension = 40;
+    
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    [Range(0,1)]
+    public float _NormExtension;
+ 
     // Update is called once per frame
     void Update()
     {
-        if(_State == State.Moving)
-        {
-            transform.SetLocalRotX();
-        }
+        if (Input.GetKeyDown(KeyCode.S))
+            SetEncoderExtension();
+
+        if (Input.GetKeyDown(KeyCode.C))
+            Calibrate();
+
+        // Set the rotation from normalized extension
+        transform.SetLocalRotX(_NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees));
     }
 
-    void SetEncoderExtension(float extensionInMM)
+    [ContextMenu("Send message")]
+    void SetEncoderExtension()
     {
-        _State = State.Moving;
-
         // Set target extension
-        _TargetEncoderExtension = Mathf.Clamp(extensionInMM, 0, _MaxEncoderExtension);        
+        _CurrentEncoderExtension = _NormExtension.ScaleFrom01(0, _MaxEncoderExtension);
+        UkiCommunicationsManager.Instance.SendActuatorMessage((int)_Actuator, -30);
     }
 
     [ContextMenu("Calibrate")]

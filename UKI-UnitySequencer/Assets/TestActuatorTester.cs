@@ -60,7 +60,6 @@ public class TestActuatorTester : MonoBehaviour
         print("Sending Message 2");
 
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftMidAnkle, 30, ModBusRegisters.MB_GOTO_SPEED_SETPOINT);
-
         UkiCommunicationsManager.Instance.SendActuatorMessage((int)UkiActuatorAssignments.LeftMidAnkle, 200, ModBusRegisters.MB_GOTO_POSITION);
     }
 
