@@ -85,10 +85,6 @@ public class Actuator : MonoBehaviour
         else if(_ParentLimb._State == UKIEnums.State.Animating)
         {
             UpdateRotation();
-
-
-           
-
         }
 
         if (_RealWorldProxy != null)

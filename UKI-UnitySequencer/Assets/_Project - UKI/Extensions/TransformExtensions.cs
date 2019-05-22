@@ -68,8 +68,6 @@ public static class TransformExtensions
 		
 		Quaternion rotation = Quaternion.Slerp( t.localRotation, Quaternion.Euler( rot ), 1 );
 		
-		
-		
 		t.localRotation = rotation;
 	}
 	

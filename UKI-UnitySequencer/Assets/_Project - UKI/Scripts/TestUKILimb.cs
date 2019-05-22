@@ -3,50 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using RootMotion.FinalIK;
 
-[RequireComponent(typeof(CCDIK))]
-[RequireComponent(typeof(EditorIK))]
-public class UKILimb : MonoBehaviour
+public class TestUKILimb : MonoBehaviour
 {
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;
     // Array of actuators in the limb
-    protected Actuator[] _ActuatorArray;
-    protected CCDIK _IKSolver;
-    protected EditorIK _EditorIK;
-    public bool _CalibratedToZero;
-
-    private void Start()
-    {
-        _IKSolver = GetComponent<CCDIK>();
-        _EditorIK = GetComponent<EditorIK>();
-        _EditorIK.enabled = false;
-
-        // Init the actuator array, setting the parent limb
-        for (int i = 0; i < _ActuatorArray.Length; i++)
-        {
-            _ActuatorArray[i].Init(this);
-        }
-    }
-
+    protected TestActuator[] _ActuatorArray;
+    
     private void Update()
     {
-        if(_State == UKIEnums.State.Calibrating)
+        // Handle inputs
+        // Send extensions manually
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            // Check to see if calibration has finished
+            SetState(UKIEnums.State.Calibrating);
+        }
+
+        // If claibrating check all the actuator joints to see if they are calibrated
+        if (_State == UKIEnums.State.Calibrating)
+        {
             int calibratedCount = 0;
-
             for (int i = 0; i < _ActuatorArray.Length; i++)
-            {
                 if (_ActuatorArray[i].Calibrated) calibratedCount++;
-            }
 
+            // If they are all calibrated then set the state too Calibrated to zero
             if (calibratedCount == _ActuatorArray.Length)
-            {
-                _CalibratedToZero = true;
-                SetState(UKIEnums.State.Paused);
-            }
-            else
-                _CalibratedToZero = false;
+                SetState(UKIEnums.State.CalibratedToZero);
         }
     }
 
@@ -56,19 +38,17 @@ public class UKILimb : MonoBehaviour
 
         if (_State == UKIEnums.State.Animating)
         {
-            _IKSolver.enabled = true;
+           // _IKSolver.enabled = true;
         }
         else if (_State == UKIEnums.State.Calibrating)
         {
             // Disable the IK solver so we can set the rotation manually
-            _IKSolver.enabled = false;
-            
+            // _IKSolver.enabled = false;
             
             for (int i = 0; i < _ActuatorArray.Length; i++)
             {
-                _ActuatorArray[i].CalibrateToZero();
+                _ActuatorArray[i].SetState(UKIEnums.State.Calibrating);
             }
-            
         }
 
         print(name + " State set too: " + _State.ToString());
@@ -82,13 +62,5 @@ public class UKILimb : MonoBehaviour
     public void CalibrateAllToZero()
     {
         SetState(UKIEnums.State.Calibrating);
-    }
-
-    protected void OnCalibrationCompleteHandler()
-    {
-        for (int i = 0; i < _ActuatorArray.Length; i++)
-        {
-            _ActuatorArray[i].OnCalibrationCompleteHandler();
-        }
     }
 }
