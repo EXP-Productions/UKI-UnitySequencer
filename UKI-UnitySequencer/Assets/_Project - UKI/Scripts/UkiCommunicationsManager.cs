@@ -50,6 +50,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         yield return new WaitForSeconds(1.0f);
 
        SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+       
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
     }
@@ -82,31 +83,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //        }
         //    }
         //}  
-        
-        /*
-        if(_TestMode)
-        {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                foreach(UkiActuatorAssignments assignment in _TestActuator)
-                    StartCoroutine(SendSetSpeedThenStopAfterX(assignment, _TestSpeed, _TestTime));
-            }
-            else if (Input.GetKeyDown(KeyCode.I))
-            {
-                foreach (UkiActuatorAssignments assignment in _TestActuator)
-                    StartCoroutine(SendSetSpeedThenStopAfterX(assignment, -_TestSpeed, _TestTime));
-            }
-
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                foreach (UkiActuatorAssignments assignment in _TestActuator)
-                    SendCalibrationMessage((int)assignment, -30);
-            }
-        }
-        */
     }
   
-
+    // 20 0 65
+    // -30 -10 85
+    // 55 20 77
     // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
     // Max rated speed 30
     // Accel 0 - 100
@@ -114,6 +95,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
 
+        speed = Mathf.Clamp(speed, 0, 30);
+        //position = Mathf.Clamp(speed, 0, 100);
 
         // Set speed
         uint[] actuatorMessage = new uint[3];
@@ -128,19 +111,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage2[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorMessage2[2] = (uint)position;
         SendInts(actuatorMessage2, true);
-
     }
-
-
-    public void SendCalibrationMessage(Actuator actuator, int motorSpeed)
-    {
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SPEED;
-        actuatorMessage[2] = (uint)motorSpeed;
-        SendInts(actuatorMessage, true);
-    }
-
+    
+    // Only used on joints without actuators
     public void SendCalibrationMessage(int index, int motorSpeed)
     {
         uint[] actuatorMessage1 = new uint[3];
@@ -154,57 +127,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage2[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
         actuatorMessage2[2] = (uint)motorSpeed;
         SendInts(actuatorMessage2, true);
-
     }
-
-
-    // Need to set a send a set speed
-    public void SendPositionMessage(Actuator actuator)
-    {
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)actuator._ActuatorIndex;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
-        actuatorMessage[2] = (uint)actuator._CurrentLinearLength;
-        SendInts(actuatorMessage, true);
-    }
-
-    public void SendPositionMessage(UkiActuatorAssignments actuatorAssignment, uint actuatorLength, uint speed)
-    {
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)actuatorAssignment;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
-        actuatorMessage[2] = (uint)actuatorLength;
-        SendInts(actuatorMessage, true);
-    }
-
-    // Set speed for x seconds, needs to be used of actuators without encoders
-    public void SendSetSpeedMessageForTime(Actuator actuator, float speed, float time)
-    {
-        StartCoroutine(SendSetSpeedThenStopAfterX(actuator._ActuatorIndex, speed, time));
-    }
-
-    IEnumerator SendSetSpeedThenStopAfterX(UkiActuatorAssignments actuatorAssign, float speed, float time)
-    {
-        print(actuatorAssign.ToString() + "  Setting speed too: " + speed + "     for x seconds: " + time);
-
-        // Set speed
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)actuatorAssign;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT; // only use for calibrate
-        actuatorMessage[2] = (uint)speed;
-        SendInts(actuatorMessage, true);
-
-        yield return new WaitForSeconds(time);
-
-        // Set speed to zero
-        actuatorMessage[0] = (uint)actuatorAssign;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
-        actuatorMessage[2] = (uint)0;
-        SendInts(actuatorMessage, true);
-
-        print(actuatorAssign.ToString() + "  Setting speed too: 0");
-    }
-
 
     public void SendActuatorMessage(int index, int length, ModBusRegisters register)
     {

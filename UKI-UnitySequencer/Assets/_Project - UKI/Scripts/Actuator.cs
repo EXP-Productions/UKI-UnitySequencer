@@ -119,7 +119,7 @@ public class Actuator : MonoBehaviour
         if (Mathf.Abs(_CurrentLinearLength - _PrevLinearLength) > _LinearLengthMessageSendCutoff)
         {
             // Send out UDP here
-            UkiCommunicationsManager.Instance.SendPositionMessage(this);
+            //UkiCommunicationsManager.Instance.SendPositionMessage(this);
         }
     }
     
@@ -147,7 +147,7 @@ public class Actuator : MonoBehaviour
 
     public void CalibrateToMax()
     {
-        UkiCommunicationsManager.Instance.SendCalibrationMessage(this, 30);
+        //UkiCommunicationsManager.Instance.SendCalibrationMessage(this, 30);
     }
 
 

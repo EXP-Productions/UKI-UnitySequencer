@@ -14,18 +14,30 @@ public class TestActuator : MonoBehaviour
     public UkiActuatorAssignments _Actuator;
     public State _State = State.Idle;
 
+    [Range(0,30)]
+    public float _Speed = 15;
+
     // Min and max rotation range
     public float _MinRotationInDegrees = 0;
     public float _MaxRotationInDegrees = 20;
 
     // Encoder extensions. Linear travel that gets converted into rotational movement
-    float _CurrentEncoderExtension = 0;
+    float _CurrentEncoderExtension { get { return Mathf.Clamp(_NormExtension * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
     public float _MaxEncoderExtension = 40;
-    
+
+    public bool _SendPosAtUpdateRate = false;
+
+    public bool _SinTest = false;
+    public float _SinFreq = 1;
 
     [Range(0,1)]
     public float _NormExtension;
- 
+
+    private void Start()
+    {
+        StartCoroutine(SendPosAtRate(15));
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -35,17 +47,34 @@ public class TestActuator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
             Calibrate();
 
+        if(_SinTest)
+        {
+            _NormExtension = Mathf.Sin(Time.time * Mathf.PI * 2 * _SinFreq).ScaleTo01(-1, 1);
+            print(_NormExtension + "     " + _CurrentEncoderExtension);
+        }
+
         // Set the rotation from normalized extension
         transform.SetLocalRotX(_NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees));
+    }
+
+    IEnumerator SendPosAtRate(float ratePerSecond)
+    {
+        float wait = 1f / ratePerSecond;
+        while (true)
+        {           
+            if (_SendPosAtUpdateRate)
+            {               
+                SetEncoderExtension();
+            }
+
+            yield return new WaitForSeconds(wait);
+        }
     }
 
     [ContextMenu("Send message")]
     void SetEncoderExtension()
     {
-        _CurrentEncoderExtension = _NormExtension.ScaleFrom01(0, _MaxEncoderExtension);
-     
-
-        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_Actuator, 10, (int)_CurrentEncoderExtension);
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_Actuator, (int)_CurrentEncoderExtension, (int)_Speed);
     }
 
     [ContextMenu("Calibrate")]
