@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 public static class UkiStateDB
 {
-    public static Dictionary<int, Dictionary<int, int>> _StateDB = new Dictionary<int, Dictionary<int, int>>();
+    public static Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>> _StateDB = new Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>>();
 
     public static void RegisterActuator(Actuator actuator)
     {
-        if (!_StateDB.ContainsKey((int)actuator._ActuatorIndex))
+        if (!_StateDB.ContainsKey(actuator._ActuatorIndex))
         {
-            Dictionary<int, int> registerDict = new Dictionary<int, int>();
+            Dictionary<ModBusRegisters, int> registerDict = new Dictionary<ModBusRegisters, int>();
 
             foreach (ModBusRegisters register in (ModBusRegisters[])Enum.GetValues(typeof(ModBusRegisters)))
             {
-                registerDict.Add((int)register, 0);
+                registerDict.Add(register, 0);
             }
-            _StateDB.Add((int)actuator._ActuatorIndex, registerDict);
+            _StateDB.Add(actuator._ActuatorIndex, registerDict);
         }
         else
         {
