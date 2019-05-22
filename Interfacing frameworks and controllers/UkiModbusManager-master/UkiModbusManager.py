@@ -300,14 +300,14 @@ class UkiModbusManager:
             try:
                 (incoming_packet, input_address) = self.input_socket.recvfrom(65535)
 
-                self.logger.debug("Received" + str(len(incoming_packet)) + "bytes via UDP")
+                self.logger.info("Received" + str(len(incoming_packet)) + "bytes via UDP")
 
                 if self.udp_input_enabled:
                     if (len(incoming_packet) % 2) != 0:
                         self.logger.error("Received incorrectly formatted UDP packet", str(incoming_packet))
                         # No UDP response for malformed packets
                     else:
-                        self.logger.debug(incoming_packet)
+                        self.logger.info(incoming_packet)
 
                         # Extract write address (first two bytes)
                         write_address = int.from_bytes(incoming_packet[0:2], byteorder='little', signed=False)
@@ -343,7 +343,7 @@ class UkiModbusManager:
                                     self.get_port_for_address(write_address).write_queue[write_address].append((write_offset, write_value))
                                     valid_msg_received = True
                 else:
-                    self.logger.debug("Dropped packet (UDP disabled)")
+                    self.logger.info("Dropped packet (UDP disabled)")
 
             except BlockingIOError:
                 # This exception means no packets are ready, we can exit the loop
