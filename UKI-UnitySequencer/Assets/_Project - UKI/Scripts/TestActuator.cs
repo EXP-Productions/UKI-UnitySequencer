@@ -32,13 +32,14 @@ public class TestActuator : MonoBehaviour
 
     public int _ReportedExtension;
     public int _ReportedSpeed;
-
+    public int _ReportedAcceleration;
 
     [Range(0,1)]
     public float _NormExtension;
 
     private void Start()
     {
+        UkiStateDB.RegisterActuator(_Actuator);
         StartCoroutine(SendPosAtRate(15));
     }
 
@@ -58,7 +59,8 @@ public class TestActuator : MonoBehaviour
         }
 
         _ReportedExtension = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_EXTENSION];
-        _ReportedSpeed = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_MOTOR_SPEED];
+        _ReportedSpeed = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
+        _ReportedAcceleration = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_MOTOR_ACCEL];
 
         // Set the rotation from normalized extension
         transform.SetLocalRotX(_NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees));
