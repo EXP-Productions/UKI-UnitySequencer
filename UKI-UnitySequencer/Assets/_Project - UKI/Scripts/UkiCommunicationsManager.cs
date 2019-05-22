@@ -62,6 +62,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             StartCoroutine(EStop());
         }
 
+        ReceiveStateData();
         //while(_ReceivedPackets.Count > 0)
         //{
         //    byte[] packet = _ReceivedPackets.Dequeue();
@@ -84,7 +85,33 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //    }
         //}  
     }
-  
+
+    public void ReceiveStateData()
+    {
+        while (_ReceivedPackets.Count > 0)
+        {
+            byte[] packet = _ReceivedPackets.Dequeue();
+
+            //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
+            int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
+
+            for (int i = 2; i < packet.Length; i += 4)
+            {
+                int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
+                int registerValue = GetLittleEndianIntegerFromByteArray(packet, i + 2);
+                if (registerIndex == 299)
+                    print("Actuator: " + actuatorIndex + ", Extension :" + registerValue);
+
+                if (registerIndex == 303)
+                    //print("Actuator: " + actuatorIndex + ", MB_INWARD_ENDSTOP_STATE :" + registerValue);
+                    if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
+                    {
+                        UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
+                    }
+            }
+        }
+    }
+
     // 20 0 65
     // -30 -10 85
     // 55 20 77
