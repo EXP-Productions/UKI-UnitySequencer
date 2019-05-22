@@ -30,6 +30,10 @@ public class TestActuator : MonoBehaviour
     public bool _SinTest = false;
     public float _SinFreq = 1;
 
+    public int _ReportedExtension;
+    public int _ReportedSpeed;
+
+
     [Range(0,1)]
     public float _NormExtension;
 
@@ -47,11 +51,14 @@ public class TestActuator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
             Calibrate();
 
-        if(_SinTest)
+        if (_SinTest)
         {
             _NormExtension = Mathf.Sin(Time.time * Mathf.PI * 2 * _SinFreq).ScaleTo01(-1, 1);
             print(_NormExtension + "     " + _CurrentEncoderExtension);
         }
+
+        _ReportedExtension = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_EXTENSION];
+        _ReportedSpeed = UkiStateDB._StateDB[_Actuator][ModBusRegisters.MB_MOTOR_SPEED];
 
         // Set the rotation from normalized extension
         transform.SetLocalRotX(_NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees));
