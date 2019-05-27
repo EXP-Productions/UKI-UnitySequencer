@@ -36,6 +36,10 @@ public class TestActuator : MonoBehaviour
     public Vector3  _ForwardAxis = Vector3.up;
     public float    _MinRotationInDegrees = 0;
     public float    _MaxRotationInDegrees = 20;
+    float RotationRange { get { return _MaxRotationInDegrees - _MinRotationInDegrees; } }
+
+    Quaternion _InitialRotation;
+
     #endregion
 
 
@@ -64,6 +68,15 @@ public class TestActuator : MonoBehaviour
         // Set names of the actuators and the reported actuator transforms
         name = "Actuator - " + _ActuatorIndex.ToString(); 
         _ReportedActuatorTransform.name = "REPORTED - " + name;
+
+        _InitialRotation = transform.localRotation;
+    }
+
+    [ContextMenu("Set rotation axis")]
+    public void SetRotationAxis()
+    {
+        // Set rotation axis from local right axis
+        _RotationAxis = transform.TransformDirection(_RotationAxis);
     }
 
     // Update is called once per frame
@@ -87,15 +100,16 @@ public class TestActuator : MonoBehaviour
             if (_ReportedExtension == 0)
                 SetState(UKIEnums.State.CalibratedToZero);
         }
-        
+
         // Set the rotation from normalized extension
-        float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees);
-        transform.localRotation = Quaternion.AngleAxis(rot, _RotationAxis);
+        //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
+        float rot = _NormExtension.ScaleFrom01(0, RotationRange);
+        transform.localRotation = _InitialRotation * Quaternion.AngleAxis(rot, _RotationAxis);
 
         // Update the readin actuator transform
         float normReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-        float reportedRotation = normReportedExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees);
-        _ReportedActuatorTransform.localRotation = Quaternion.AngleAxis(reportedRotation, _RotationAxis);
+        float reportedRotation = normReportedExtension.ScaleFrom01(0, RotationRange);
+        _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
     }
     public bool _DEBUG = false;
     public void SetState(UKIEnums.State state)
