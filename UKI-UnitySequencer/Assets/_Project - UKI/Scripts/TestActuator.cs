@@ -33,6 +33,7 @@ public class TestActuator : MonoBehaviour
     [Header("ROTATION MAPPING")]
     // Min and max rotation range
     public Vector3  _RotationAxis = Vector3.right;
+    public Vector3  _ForwardAxis = Vector3.up;
     public float    _MinRotationInDegrees = 0;
     public float    _MaxRotationInDegrees = 20;
     #endregion
@@ -145,7 +146,14 @@ public class TestActuator : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.TransformPoint(-_RotationAxis * .3f), transform.TransformPoint(_RotationAxis * .3f));
+       
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
     }
 }
