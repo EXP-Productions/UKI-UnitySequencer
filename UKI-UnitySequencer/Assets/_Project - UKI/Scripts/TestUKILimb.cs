@@ -30,7 +30,8 @@ public class TestUKILimb : MonoBehaviour
         {
             int calibratedCount = 0;
             for (int i = 0; i < _ActuatorArray.Length; i++)
-                if (_ActuatorArray[i].Calibrated) calibratedCount++;
+                if (_ActuatorArray[i].IsCalibrated())
+                    calibratedCount++;
 
             // If they are all calibrated then set the state too Calibrated to zero
             if (calibratedCount == _ActuatorArray.Length)
