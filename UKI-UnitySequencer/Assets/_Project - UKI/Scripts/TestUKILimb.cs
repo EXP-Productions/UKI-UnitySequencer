@@ -9,7 +9,13 @@ public class TestUKILimb : MonoBehaviour
     public UKIEnums.State _State = UKIEnums.State.Paused;
     // Array of actuators in the limb
     protected TestActuator[] _ActuatorArray;
-    
+
+    // Controls all linear norms in chain
+    public bool _ControlAllLinear = false;
+    [Range(0, 1)]
+    public float _NormExtension = 0;
+
+
     private void Update()
     {
         // Handle inputs
@@ -29,6 +35,16 @@ public class TestUKILimb : MonoBehaviour
             // If they are all calibrated then set the state too Calibrated to zero
             if (calibratedCount == _ActuatorArray.Length)
                 SetState(UKIEnums.State.CalibratedToZero);
+        }
+
+        // Control all linear movements at once
+        if(_ControlAllLinear)
+        {
+            for (int i = 0; i < _ActuatorArray.Length; i++)
+            {
+                _ActuatorArray[i]._NormExtension = _NormExtension;
+                _ActuatorArray[i]._SendOutPositionMessages = true;
+            }
         }
     }
 
