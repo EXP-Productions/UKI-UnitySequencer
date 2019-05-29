@@ -16,16 +16,15 @@ public class TestActuator : MonoBehaviour
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
-    [Range(0, 1)]
     // Normalized extension value
-    public float    _NormExtension;
+    [Range(0, 1)]  public float    _NormExtension;
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
-    [Range(0, 30)]
+
     // Speed to send commands at
-    public int _ExtensionSpeed = 30;
+    [Range(0, 30)]  public int _ExtensionSpeed = 30;
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
-    float           CurrentEncoderExtension { get { return Mathf.Clamp(_NormExtension * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }   
+    float CurrentEncoderExtension { get { return Mathf.Clamp(_NormExtension * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }   
     #endregion
 
 
