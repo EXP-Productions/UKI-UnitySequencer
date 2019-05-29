@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class PositioningTool : MonoBehaviour
 {
     public Transform _TformToPosition;
     public float _GizmoSize = .01f;
+
+    private void Update()
+    {
+        print(Vector3.Distance(transform.GetChild(0).position, transform.GetChild(1).position));
+    }
 
     [ContextMenu("Position")]
     // Update is called once per frame

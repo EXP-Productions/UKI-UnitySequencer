@@ -34,9 +34,8 @@ public class TestActuator : MonoBehaviour
     // Min and max rotation range
     public Vector3  _RotationAxis = Vector3.right;
     public Vector3  _ForwardAxis = Vector3.up;
-    public float    _MinRotationInDegrees = 0;
-    public float    _MaxRotationInDegrees = 20;
-    float RotationRange { get { return _MaxRotationInDegrees - _MinRotationInDegrees; } }
+    public float _RotationRange = 30;
+    float RotationRange { get { return _RotationRange; } }
 
     Quaternion _InitialRotation;
 
@@ -147,10 +146,12 @@ public class TestActuator : MonoBehaviour
     IEnumerator SendPosAtRate(float ratePerSecond)
     {
         float wait = 1f / ratePerSecond;
+        float prevPos = 0;
         while (true)
         {
-            if (_SendToModbus)
+            if (_SendToModbus && prevPos != CurrentEncoderExtension)
             {
+                prevPos = CurrentEncoderExtension;
                 SendEncoderExtensionLength();
             }
 
@@ -162,12 +163,12 @@ public class TestActuator : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.TransformPoint(-_RotationAxis * .3f), transform.TransformPoint(_RotationAxis * .3f));
-       
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
+       
     }
 }

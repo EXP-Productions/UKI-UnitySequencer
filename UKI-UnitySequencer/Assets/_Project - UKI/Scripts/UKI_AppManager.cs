@@ -16,11 +16,15 @@ public class UKI_AppManager : MonoBehaviour
     public Slider _Slider_CamRot;
     public Slider _Slider_CamZ;
 
+    public Button _EStopButton;
+
     // Start is called before the first frame update
     void Start()
     {
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
+
+        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop());
     }
 
     // Update is called once per frame

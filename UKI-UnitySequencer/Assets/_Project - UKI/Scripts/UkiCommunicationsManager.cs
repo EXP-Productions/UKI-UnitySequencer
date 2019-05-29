@@ -34,7 +34,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("EStop");
+        StartCoroutine("EStopRoutine");
     }
 
     public void Calibrate()
@@ -42,7 +42,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     }
 
-    IEnumerator EStop()
+    public void EStop()
+    {
+        StartCoroutine("EStopRoutine");
+    }
+
+    IEnumerator EStopRoutine()
     {
         print("Sending eStop");
         _EStopping = true;
@@ -59,7 +64,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(EStop());
+            StartCoroutine(EStopRoutine());
         }
 
         ReceiveStateData();
