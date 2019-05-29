@@ -15,9 +15,11 @@ public class UKI_UIManager : MonoBehaviour
 
     public Slider _Slider_CamRot;
     public Slider _Slider_CamZ;
+    [HideInInspector]
     public ActuatorSlider[] _ActuatorSliders;
 
     public Button _EStopButton;
+    public Button _CalibrateButton;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,14 @@ public class UKI_UIManager : MonoBehaviour
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop());
+        _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
+
+        foreach (ActuatorSlider actuatorSlider in _ActuatorSliders)
+        {
+            actuatorSlider._Slider.onValueChanged.AddListener(delegate { SetActuatorExtension(actuatorSlider); });
+        }
+
+        _CalibrateButton.onClick.AddListener(CalibrateActuators);
     }
 
     // Update is called once per frame
@@ -32,11 +42,6 @@ public class UKI_UIManager : MonoBehaviour
     {
         _CamParent.SetLocalRotY(_CamYRotNorm * -360);
         _Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
-
-        foreach (ActuatorSlider actuatorSlider in _ActuatorSliders)
-        {
-            actuatorSlider._Actuator._NormExtension = actuatorSlider._Slider.value;
-        }
     }
 
     void SetCamYRot()
@@ -47,6 +52,19 @@ public class UKI_UIManager : MonoBehaviour
     void SetCamZDist()
     {
         _CamZNorm = _Slider_CamZ.value;
+    }
+
+    void SetActuatorExtension(ActuatorSlider actuatorSlider)
+    {
+        actuatorSlider._Actuator._NormExtension = actuatorSlider._Slider.value;
+    }
+
+    void CalibrateActuators()
+    {
+        foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
+        {
+            actuator.Calibrate();
+        }
     }
 
 }

@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 // Associates a UI slider with an actuator
 public class ActuatorSlider : MonoBehaviour
 {
     public TestActuator _Actuator;
 
-    [HideInInspector]
     public Slider _Slider;
 
-    void Start()
+    public Toggle _SendToModbus;
+
+    private void Update()
     {
-        _Slider = gameObject.GetComponent<Slider>();
+        _Actuator._SendToModbus = _SendToModbus.isOn;
+        print(_SendToModbus.isOn);
     }
 
 }

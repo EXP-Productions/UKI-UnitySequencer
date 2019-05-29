@@ -82,6 +82,12 @@ public class TestActuator : MonoBehaviour
         _RotationAxis = transform.TransformDirection(_RotationAxis);
     }
 
+    public void Calibrate()
+    {
+        _NormExtension = 0f;
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
+    }
+
     // Update is called once per frame
     void Update()
     {
