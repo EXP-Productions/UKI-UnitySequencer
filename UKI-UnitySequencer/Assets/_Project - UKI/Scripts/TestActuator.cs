@@ -167,7 +167,7 @@ public class TestActuator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
     }
 }

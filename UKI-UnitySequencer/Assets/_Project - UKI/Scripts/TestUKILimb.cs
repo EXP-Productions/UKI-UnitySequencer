@@ -44,7 +44,7 @@ public class TestUKILimb : MonoBehaviour
             for (int i = 0; i < _ActuatorArray.Length; i++)
             {
                 _ActuatorArray[i]._NormExtension = _NormExtension;
-                _ActuatorArray[i]._SendOutPositionMessages = true;
+                _ActuatorArray[i]._SendToModbus = true;
             }
         }
     }
