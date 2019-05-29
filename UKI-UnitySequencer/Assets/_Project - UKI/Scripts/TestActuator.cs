@@ -65,8 +65,12 @@ public class TestActuator : MonoBehaviour
         StartCoroutine(SendPosAtRate(15));
 
         // Set names of the actuators and the reported actuator transforms
-        name = "Actuator - " + _ActuatorIndex.ToString(); 
-        _ReportedActuatorTransform.name = "REPORTED - " + name;
+        name = "Actuator - " + _ActuatorIndex.ToString();
+
+        if (_ReportedActuatorTransform)
+        {
+            _ReportedActuatorTransform.name = "REPORTED - " + name;
+        }
 
         _InitialRotation = transform.localRotation;
     }
@@ -81,13 +85,18 @@ public class TestActuator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_ReportedActuatorTransform == null)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.S))
         {
             SendEncoderExtensionLength();
         }
 
         // READ IN
-        // Get the reported values from mod bus      
+        // Get the reported values from mod bus
         _ReportedExtension = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
         ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
         ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];

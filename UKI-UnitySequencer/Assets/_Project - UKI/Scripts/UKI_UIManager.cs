@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UKI_AppManager : MonoBehaviour
+public class UKI_UIManager : MonoBehaviour
 {
     // CAMERA
     public Transform _CamParent;
@@ -15,6 +15,7 @@ public class UKI_AppManager : MonoBehaviour
 
     public Slider _Slider_CamRot;
     public Slider _Slider_CamZ;
+    public ActuatorSlider[] _ActuatorSliders;
 
     public Button _EStopButton;
 
@@ -23,7 +24,6 @@ public class UKI_AppManager : MonoBehaviour
     {
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
-
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop());
     }
 
@@ -32,6 +32,11 @@ public class UKI_AppManager : MonoBehaviour
     {
         _CamParent.SetLocalRotY(_CamYRotNorm * -360);
         _Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
+
+        foreach (ActuatorSlider actuatorSlider in _ActuatorSliders)
+        {
+            actuatorSlider._Actuator._NormExtension = actuatorSlider._Slider.value;
+        }
     }
 
     void SetCamYRot()
@@ -43,4 +48,5 @@ public class UKI_AppManager : MonoBehaviour
     {
         _CamZNorm = _Slider_CamZ.value;
     }
+
 }

@@ -925,6 +925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399999643}
   - component: {fileID: 399999644}
+  - component: {fileID: 399999645}
   m_Layer: 5
   m_Name: Slider - Left Front Ankle
   m_TagString: Untagged
@@ -1006,6 +1007,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &399999645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399999642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31bd22997eb4d4647a160fa1f63db395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Actuator: {fileID: 4871486935636038340}
+  _Slider: {fileID: 0}
 --- !u!1 &412696850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,6 +1127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445056096}
   - component: {fileID: 445056097}
+  - component: {fileID: 445056098}
   m_Layer: 5
   m_Name: Slider - Left Front Knee
   m_TagString: Untagged
@@ -1193,6 +1209,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &445056098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445056095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31bd22997eb4d4647a160fa1f63db395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Actuator: {fileID: 4871486935435784020}
+  _Slider: {fileID: 0}
 --- !u!1 &458227626
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 604334483}
   - component: {fileID: 604334484}
+  - component: {fileID: 604334485}
   m_Layer: 5
   m_Name: Slider - Left Front Hip
   m_TagString: Untagged
@@ -1831,6 +1862,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &604334485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604334482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31bd22997eb4d4647a160fa1f63db395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Actuator: {fileID: 4871486935136126211}
+  _Slider: {fileID: 0}
 --- !u!1 &644750760
 GameObject:
   m_ObjectHideFlags: 0
@@ -5277,6 +5322,10 @@ MonoBehaviour:
   _Camera: {fileID: 807333896}
   _Slider_CamRot: {fileID: 574782238}
   _Slider_CamZ: {fileID: 1156199824}
+  _ActuatorSliders:
+  - {fileID: 604334485}
+  - {fileID: 445056098}
+  - {fileID: 399999645}
   _EStopButton: {fileID: 1042693841}
 --- !u!1 &1751236044
 GameObject:
@@ -6896,7 +6945,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4871486935435783978}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94db5d0f62661f9498c422e401b5270a, type: 3}
   m_Name: 
