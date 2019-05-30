@@ -16,7 +16,6 @@ public class ActuatorSlider : MonoBehaviour
     private void Update()
     {
         _Actuator._SendToModbus = _SendToModbus.isOn;
-        print(_SendToModbus.isOn);
     }
 
 }
