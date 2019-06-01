@@ -33,10 +33,12 @@ public class TestLeg : TestUKILimb
         legCopy.name = "Reported " + _Hip.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] actuators = legCopy.GetComponentsInChildren<TestActuator>();
-        print(actuators.Length);
+        TestActuator[] actuators = legCopy.GetComponentsInChildren<TestActuator>();       
         for (int i = 0; i < actuators.Length; i++)
         {
+            if(actuators[i]._CollisionReporter!=null)
+                Destroy(actuators[i]._CollisionReporter.gameObject);
+
             Destroy(actuators[i]);
             _ActuatorArray[i].Init(actuators[i].transform);
         }

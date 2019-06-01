@@ -7,10 +7,14 @@ public class CollisionReporter : MonoBehaviour
 {
     public delegate void CollisionReport(Collision collision);
     public event CollisionReport OnCollisionReportEvent;
-    
+
+    public bool _Debug = false;
+
     void OnCollisionEnter(Collision collision)
     {
-        if(OnCollisionReportEvent != null)
-            OnCollisionReportEvent(collision);
+        if (_Debug)
+            print(name + " Collided with: " + collision.gameObject.name);
+
+        OnCollisionReportEvent?.Invoke(collision);
     }
 }
