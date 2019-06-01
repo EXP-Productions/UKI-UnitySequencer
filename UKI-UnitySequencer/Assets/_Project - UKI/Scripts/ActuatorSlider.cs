@@ -15,11 +15,26 @@ public class ActuatorSlider : MonoBehaviour
 
     public Toggle _SendToModbus;
 
-    private void Update()
+    private void Start()
     {
-        _Actuator._SendToModbus = _SendToModbus.isOn;
-    }
+        TestActuator[] actuators = FindObjectsOfType<TestActuator>();
+        for (int i = 0; i < actuators.Length; i++)
+        {
+            if (actuators[i]._ActuatorIndex == _ActuatorAssignment)
+                _Actuator = actuators[i];
+        }
 
+        if (_Actuator == null)
+        {
+            print(name + " no actuator found");
+        }
+        else
+        {
+            _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
+            _SendToModbus.onValueChanged.AddListener((bool b) => _Actuator._SendToModbus = b);
+        }      
+    }
+    
     [ContextMenu("Name")]
     public void Name()
     {

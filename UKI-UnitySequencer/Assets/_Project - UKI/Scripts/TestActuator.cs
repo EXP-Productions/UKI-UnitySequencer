@@ -55,8 +55,10 @@ public class TestActuator : MonoBehaviour
     #endregion
     
 
-    private void Start()
+    public void Init(Transform reportedActuatorTransform)
     {
+        _ReportedActuatorTransform = reportedActuatorTransform;
+
         // Register the actuator
         UkiStateDB.RegisterActuator(_ActuatorIndex);
 

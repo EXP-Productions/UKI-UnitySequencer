@@ -26,6 +26,21 @@ public class TestLeg : TestUKILimb
         }
 	}
 
+    private void Start()
+    {
+        // Copy leg and assign reported transforms
+        GameObject legCopy = Instantiate(_Hip.gameObject, transform);
+        legCopy.name = "Reported " + _Hip.name;
+
+        TestActuator[] actuators = legCopy.GetComponentsInChildren<TestActuator>();
+        print(actuators.Length);
+        for (int i = 0; i < actuators.Length; i++)
+        {
+            Destroy(actuators[i]);
+            _ActuatorArray[i].Init(actuators[i].transform);
+        }
+    }
+
     protected override void InitActuatorAssignments()
     {
         //Bit haxy but we're using UkiActuatorAssignments enum to list all the actuator addresses we need to ping messages to,
