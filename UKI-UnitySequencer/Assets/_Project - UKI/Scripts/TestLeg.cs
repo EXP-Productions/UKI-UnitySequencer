@@ -39,6 +39,12 @@ public class TestLeg : TestUKILimb
             Destroy(actuators[i]);
             _ActuatorArray[i].Init(actuators[i].transform);
         }
+
+        MeshRenderer[] renderers = legCopy.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material = SRResources.ReportedLimbMat;
+        }
     }
 
     protected override void InitActuatorAssignments()
