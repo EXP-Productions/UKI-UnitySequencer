@@ -10,11 +10,10 @@ public class TestActuator : MonoBehaviour
     // The index of the actuator
     public UkiActuatorAssignments _ActuatorIndex;
     // A copy of the transform that is driven from the read in value
-    public Transform _ReportedActuatorTransform;
+    Transform _ReportedActuatorTransform;
 
     public CollisionReporter _CollisionReporter;
-
-
+    
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
@@ -37,11 +36,10 @@ public class TestActuator : MonoBehaviour
     public Vector3  _ForwardAxis = Vector3.up;
     public float _RotationRange = 30;
     float RotationRange { get { return _RotationRange; } }
-
     Quaternion _InitialRotation;
     #endregion
 
-    List<CollisionReporter> _CollidersToIgnore = new List<CollisionReporter>();
+    public List<CollisionReporter> _CollidersToIgnore = new List<CollisionReporter>();
 
 
     #region MODBUS
@@ -77,8 +75,8 @@ public class TestActuator : MonoBehaviour
 
         _InitialRotation = transform.localRotation;
 
-        _CollisionReporter.OnCollisionReportEvent += OnCollisionReportHandler;
-
+        if(_CollisionReporter!=null)
+            _CollisionReporter.OnCollisionReportEvent += OnCollisionReportHandler;
     }
     
     [ContextMenu("Set rotation axis")]
@@ -170,7 +168,7 @@ public class TestActuator : MonoBehaviour
 
     public void CollidedWithObject(GameObject go)
     {
-        print("Collided with : " + go.name);
+        UkiCommunicationsManager.Instance.EStop("Collision between: " + name + "  " + go.name);
     }
 
     void SendEncoderExtensionLength()

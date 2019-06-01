@@ -317,6 +317,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 884057436}
   - {fileID: 703384420}
   m_Father: {fileID: 1882113435}
   m_RootOrder: 0
@@ -336,6 +337,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 0}
+  _CollisionReporter: {fileID: 884057438}
   _NormExtension: 0
   _MaxEncoderExtension: 130
   _ExtensionSpeed: 30
@@ -852,7 +854,7 @@ Transform:
   m_Children:
   - {fileID: 951702585}
   m_Father: {fileID: 271423312}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -14.438001, y: 0, z: 0}
 --- !u!1 &732009423
 GameObject:
@@ -1076,7 +1078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &859301171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1109,6 +1111,64 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &884057435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 884057436}
+  - component: {fileID: 884057437}
+  - component: {fileID: 884057438}
+  m_Layer: 0
+  m_Name: Collision Reporter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &884057436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884057435}
+  m_LocalRotation: {x: 0.57276994, y: -0.000000059604623, z: -0.00000009685751, w: 0.81971616}
+  m_LocalPosition: {x: 0, y: 0.26, z: 0.662}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 271423312}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 69.887, y: 0, z: 0}
+--- !u!136 &884057437
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884057435}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 1.43
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &884057438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884057435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9213afe648d2640bf38212881994cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &933195041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4778,7 +4838,7 @@ Transform:
   m_Children:
   - {fileID: 1368743835}
   m_Father: {fileID: 1815898816}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -120, y: -180, z: -0.000015258789}
 --- !u!1001 &1573248472
 PrefabInstance:
@@ -5028,6 +5088,7 @@ Transform:
   m_LocalPosition: {x: 0.000012089498, y: -0.07895367, z: 0.029987976}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1955468402}
   - {fileID: 1545042035}
   - {fileID: 1882113435}
   m_Father: {fileID: 2115600533}
@@ -5048,6 +5109,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 0}
+  _CollisionReporter: {fileID: 1955468404}
   _NormExtension: 0
   _MaxEncoderExtension: 125
   _ExtensionSpeed: 30
@@ -5118,7 +5180,7 @@ Transform:
   m_Children:
   - {fileID: 271423312}
   m_Father: {fileID: 1815898816}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1923977036 stripped
 MonoBehaviour:
@@ -5130,6 +5192,65 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1955468401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1955468402}
+  - component: {fileID: 1955468403}
+  - component: {fileID: 1955468404}
+  m_Layer: 0
+  m_Name: Collision Reporter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1955468402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955468401}
+  m_LocalRotation: {x: -0.032679755, y: -0.00000004458148, z: -0.000000078918546,
+    w: 0.9994659}
+  m_LocalPosition: {x: 0, y: 0.433, z: -0.016}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1815898816}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -3.7450001, y: 0, z: 0}
+--- !u!136 &1955468403
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955468401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 0.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1955468404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955468401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9213afe648d2640bf38212881994cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1991974549
@@ -5433,6 +5554,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 0}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 75
   _ExtensionSpeed: 30
@@ -5670,6 +5792,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 1733407916}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 125
   _ExtensionSpeed: 30
@@ -5812,6 +5935,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 16
   _ReportedActuatorTransform: {fileID: 5951394172855818018}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 65
   _ExtensionSpeed: 30
@@ -5854,6 +5978,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 17
   _ReportedActuatorTransform: {fileID: 0}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 120
   _ExtensionSpeed: 30
@@ -5895,6 +6020,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 18
   _ReportedActuatorTransform: {fileID: 5951394172855818018}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 110
   _ExtensionSpeed: 30
@@ -6037,6 +6163,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 1132647072}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 75
   _ExtensionSpeed: 30
@@ -6062,6 +6189,7 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 0
   _ReportedActuatorTransform: {fileID: 1145434780}
+  _CollisionReporter: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 110
   _ExtensionSpeed: 30

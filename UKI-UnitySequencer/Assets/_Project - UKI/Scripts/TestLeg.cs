@@ -32,6 +32,7 @@ public class TestLeg : TestUKILimb
         GameObject legCopy = Instantiate(_Hip.gameObject, transform);
         legCopy.name = "Reported " + _Hip.name;
 
+        // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
         TestActuator[] actuators = legCopy.GetComponentsInChildren<TestActuator>();
         print(actuators.Length);
         for (int i = 0; i < actuators.Length; i++)
@@ -40,14 +41,21 @@ public class TestLeg : TestUKILimb
             _ActuatorArray[i].Init(actuators[i].transform);
         }
 
+        // SET MATERIALS ON REPORTED LIMBS
         MeshRenderer[] renderers = legCopy.GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < renderers.Length; i++)        
+        for (int i = 0; i < renderers.Length; i++)
             renderers[i].material = SRResources.ReportedLimbMat;
-        
 
+        // SET MATERIALS ON TARGET LIMBS
         renderers = _Hip.GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < renderers.Length; i++)        
+        for (int i = 0; i < renderers.Length; i++)
             renderers[i].material = SRResources.Target_Limb_Mat;
+
+        // SETUP COLLISION IGNORE
+        _Knee._CollidersToIgnore.Add(_Ankle._CollisionReporter);
+        _Ankle._CollidersToIgnore.Add(_Knee._CollisionReporter);
+
+       
     }
 
     protected override void InitActuatorAssignments()

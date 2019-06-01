@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// Collider that tells an actuator to stop if it is going to collide with an object 
+[RequireComponent(typeof(Rigidbody))]
 public class CollisionReporter : MonoBehaviour
 {
     public delegate void CollisionReport(Collision collision);

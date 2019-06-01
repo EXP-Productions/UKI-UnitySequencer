@@ -42,8 +42,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     }
 
-    public void EStop()
+    public void EStop(string reason)
     {
+        print("E Stop activated: " + reason);
         StartCoroutine("EStopRoutine");
     }
 
