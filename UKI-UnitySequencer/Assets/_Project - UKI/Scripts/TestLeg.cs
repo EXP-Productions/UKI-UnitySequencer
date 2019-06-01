@@ -41,10 +41,13 @@ public class TestLeg : TestUKILimb
         }
 
         MeshRenderer[] renderers = legCopy.GetComponentsInChildren<MeshRenderer>();
-        for (int i = 0; i < renderers.Length; i++)
-        {
+        for (int i = 0; i < renderers.Length; i++)        
             renderers[i].material = SRResources.ReportedLimbMat;
-        }
+        
+
+        renderers = _Hip.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < renderers.Length; i++)        
+            renderers[i].material = SRResources.Target_Limb_Mat;
     }
 
     protected override void InitActuatorAssignments()

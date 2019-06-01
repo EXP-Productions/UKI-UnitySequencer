@@ -69,27 +69,33 @@ public sealed class SRResources {
         }
     }
     
+    public static global::TypeSafe.Resource<global::UnityEngine.Material> Target_Limb_Mat {
+        get {
+            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[8]));
+        }
+    }
+    
     public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> LineBreaking_Following_Characters {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[8]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[9]));
         }
     }
     
     public static global::TypeSafe.PrefabResource GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[9]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[10]));
         }
     }
     
     public static global::TypeSafe.PrefabResource NoAuthObjPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[10]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[11]));
         }
     }
     
     public static global::TypeSafe.PrefabResource CleanPlayerPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[11]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[12]));
         }
     }
     
@@ -102,6 +108,7 @@ public sealed class SRResources {
                 new global::TypeSafe.PrefabResource("PlayerGameObject", "PlayerGameObject"),
                 new global::TypeSafe.PrefabResource("SpawningBase_SpawnableObjectPrefab", "SpawningBase_SpawnableObjectPrefab"),
                 new global::TypeSafe.PrefabResource("AuthObjPrefab", "AuthObjPrefab"),
+                new global::TypeSafe.Resource<global::UnityEngine.Material>("Target Limb Mat", "Target Limb Mat"),
                 new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("LineBreaking Following Characters", "LineBreaking Following Characters"),
                 new global::TypeSafe.PrefabResource("GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab", "GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab"),
                 new global::TypeSafe.PrefabResource("NoAuthObjPrefab", "NoAuthObjPrefab"),
