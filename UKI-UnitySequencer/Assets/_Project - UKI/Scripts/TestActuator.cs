@@ -12,6 +12,8 @@ public class TestActuator : MonoBehaviour
     // A copy of the transform that is driven from the read in value
     public Transform _ReportedActuatorTransform;
 
+    public CollisionReporter _CollisionReporter;
+
 
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
@@ -37,8 +39,9 @@ public class TestActuator : MonoBehaviour
     float RotationRange { get { return _RotationRange; } }
 
     Quaternion _InitialRotation;
-
     #endregion
+
+    List<CollisionReporter> _CollidersToIgnore = new List<CollisionReporter>();
 
 
     #region MODBUS
@@ -52,8 +55,7 @@ public class TestActuator : MonoBehaviour
     // Reporeted speed and accel read in from modbus
     public int ReportedSpeed { private set; get; }
     public int ReportedAcceleration { private set; get; }
-    #endregion
-    
+    #endregion    
 
     public void Init(Transform reportedActuatorTransform)
     {
@@ -74,8 +76,11 @@ public class TestActuator : MonoBehaviour
         }
 
         _InitialRotation = transform.localRotation;
-    }
 
+        _CollisionReporter.OnCollisionReportEvent += OnCollisionReportHandler;
+
+    }
+    
     [ContextMenu("Set rotation axis")]
     public void SetRotationAxis()
     {
@@ -148,6 +153,25 @@ public class TestActuator : MonoBehaviour
         return _State == UKIEnums.State.CalibratedToZero;
     }
 
+    private void OnCollisionReportHandler(Collision collision)
+    {
+        // See if it has collided with another actuated limb
+        CollisionReporter actuatorCollider = collision.gameObject.GetComponent<CollisionReporter>();
+        if(actuatorCollider != null)
+        {
+            if(!_CollidersToIgnore.Contains(actuatorCollider))
+                CollidedWithObject(collision.gameObject);
+        }
+        else
+        {
+            CollidedWithObject(collision.gameObject);
+        }
+    }
+
+    public void CollidedWithObject(GameObject go)
+    {
+        print("Collided with : " + go.name);
+    }
 
     void SendEncoderExtensionLength()
     {
