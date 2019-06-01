@@ -39,7 +39,7 @@ public class TestActuator : MonoBehaviour
     Quaternion _InitialRotation;
     #endregion
 
-    public List<CollisionReporter> _CollidersToIgnore = new List<CollisionReporter>();
+    public CollisionReporter _CollidersToIgnore;
 
 
     #region MODBUS
@@ -75,8 +75,11 @@ public class TestActuator : MonoBehaviour
 
         _InitialRotation = transform.localRotation;
 
-        if(_CollisionReporter!=null)
-            _CollisionReporter.OnCollisionReportEvent += OnCollisionReportHandler;
+        if (_CollisionReporter != null)
+        {
+            _CollisionReporter.OnTriggerReport += OnCollisionReportHandler;
+            _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
+        }
     }
     
     [ContextMenu("Set rotation axis")]
@@ -151,24 +154,24 @@ public class TestActuator : MonoBehaviour
         return _State == UKIEnums.State.CalibratedToZero;
     }
 
-    private void OnCollisionReportHandler(Collision collision)
+    private void OnCollisionReportHandler(Collider collider)
     {
         // See if it has collided with another actuated limb
-        CollisionReporter actuatorCollider = collision.gameObject.GetComponent<CollisionReporter>();
+        CollisionReporter actuatorCollider = collider.gameObject.GetComponent<CollisionReporter>();
         if(actuatorCollider != null)
         {
-            if(!_CollidersToIgnore.Contains(actuatorCollider))
-                CollidedWithObject(collision.gameObject);
+            if(_CollidersToIgnore != actuatorCollider)
+                CollidedWithObject(collider.gameObject);
         }
         else
         {
-            CollidedWithObject(collision.gameObject);
+            CollidedWithObject(collider.gameObject);
         }
     }
 
     public void CollidedWithObject(GameObject go)
     {
-        UkiCommunicationsManager.Instance.EStop("Collision between: " + name + "  " + go.name);
+        UkiCommunicationsManager.Instance.EStop("Collision between: " + _CollisionReporter.name + "  " + go.name);
     }
 
     void SendEncoderExtensionLength()

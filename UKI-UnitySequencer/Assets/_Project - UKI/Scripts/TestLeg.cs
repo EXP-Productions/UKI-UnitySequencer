@@ -54,10 +54,8 @@ public class TestLeg : TestUKILimb
             renderers[i].material = SRResources.Target_Limb_Mat;
 
         // SETUP COLLISION IGNORE
-        _Knee._CollidersToIgnore.Add(_Ankle._CollisionReporter);
-        _Ankle._CollidersToIgnore.Add(_Knee._CollisionReporter);
-
-       
+        _Knee._CollidersToIgnore = _Ankle._CollisionReporter;
+        _Ankle._CollidersToIgnore = _Knee._CollisionReporter;       
     }
 
     protected override void InitActuatorAssignments()

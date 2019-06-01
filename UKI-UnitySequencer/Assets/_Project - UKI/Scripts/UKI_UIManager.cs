@@ -26,7 +26,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
-        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop());
+        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop("Button press"));
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
     }
 
