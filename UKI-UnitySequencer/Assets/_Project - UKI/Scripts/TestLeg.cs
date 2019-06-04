@@ -58,6 +58,7 @@ public class TestLeg : TestUKILimb
         _Ankle._CollidersToIgnore = _Knee._CollisionReporter;       
     }
 
+    [ContextMenu("Assign and rename")]
     protected override void InitActuatorAssignments()
     {
         //Bit haxy but we're using UkiActuatorAssignments enum to list all the actuator addresses we need to ping messages to,
@@ -73,14 +74,17 @@ public class TestLeg : TestUKILimb
             if (assignment.ToString() == hipEnumName)
             {
                 _Hip._ActuatorIndex = assignment;
+                _Hip.name = "Actuator - " + assignment.ToString();
             }
             else if (assignment.ToString() == kneeEnumName)
             {
                 _Knee._ActuatorIndex = assignment;
+                _Knee.name = "Actuator - " + assignment.ToString();
             }
             else if (assignment.ToString() == ankleEnumName)
             {
                 _Ankle._ActuatorIndex = assignment;
+                _Ankle.name = "Actuator - " + assignment.ToString();
             }
         }
     }
