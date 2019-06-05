@@ -33,10 +33,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _Instance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         EStop("Start E Stop");
+        StartCoroutine(SetReportedExtensions());
     }
 
     public void Calibrate()
@@ -68,6 +68,15 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
         FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
+    }
+
+    IEnumerator SetReportedExtensions()
+    {
+        yield return new WaitForSeconds(1f);
+        foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
+        {
+            actuator.SetToReportedExtension();
+        }
     }
 
     private void Update()
