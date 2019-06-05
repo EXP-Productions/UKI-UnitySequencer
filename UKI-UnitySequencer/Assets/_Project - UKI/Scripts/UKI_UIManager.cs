@@ -22,6 +22,7 @@ public class UKI_UIManager : MonoBehaviour
     public Button _CalibrateButton;
     public Toggle _SendToModBusToggle;
     public GameObject _EstopWarning;
+    public Image _HeartBeatDisplay;
 
     // Start is called before the first frame update
     void Start()

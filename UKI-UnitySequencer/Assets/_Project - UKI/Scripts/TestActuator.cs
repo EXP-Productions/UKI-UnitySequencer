@@ -4,7 +4,7 @@ using UnityEngine;
 
 // TODO - Initialize actuator norms to the reported norms - Done
 // TODO - place a big red debug sphere at collisions, play collision sound - Both done
-// TODO - make it super obvious when estop is triggered
+// TODO - make it super obvious when estop is triggered - Done
 // TODO - display heartbeat in UI
 // TODO - Remove send to modbus from UI, make global - done
 // TODO - UI should reflect reported positions
@@ -58,7 +58,6 @@ public class TestActuator : MonoBehaviour
     
     #region MODBUS
     [Header("MODBUS")]
-    public bool _SendToModbus = false;
     [Range(0, 1)] public float _NormReportedExtension;
     // Extension value read in from modbus - Doesn't line up exactly with the set point value we send
     public float _ReportedExtension;

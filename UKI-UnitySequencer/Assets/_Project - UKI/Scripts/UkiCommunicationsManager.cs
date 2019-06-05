@@ -217,13 +217,17 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     
     void SendHeartBeat()
     {
-        if (!_SendToModbus)
-            return;
+        //if (!_SendToModbus)
+        //    return;
 
-        //print("Sending Heartbeat");
+        print("Sending heartbeat");
+
+        FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.red;
         SendInts(_HeartBeatMessage, true);
+        FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.white;
+
     }
-    
+
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
     {
         return (data[startIndex + 1] << 8)
