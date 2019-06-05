@@ -72,11 +72,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     IEnumerator SetReportedExtensions()
     {
+        // TODO don't base this on time alone
         yield return new WaitForSeconds(1f);
         foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
         {
             actuator.SetToReportedExtension();
         }
+        yield return new WaitForSeconds(1f);
+        ResetEStop();
     }
 
     private void Update()
