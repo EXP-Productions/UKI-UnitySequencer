@@ -19,14 +19,23 @@ public class TestActuator : MonoBehaviour
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
-    [Range(0, 1)]  public float    _NormExtension;
+    [Range(0, 1)]  public float _NormExtension;
+    [Range(0, 1)] public float _NormReportedExtension;
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
 
     // Speed to send commands at
     [Range(0, 30)]  public int _ExtensionSpeed = 30;
+    [Range(30, 60)] public int _BoostExtensionSpeed = 45;
+    public bool _BoostSpeedToggled = false;
+    float _MaxBoostDuration = 5;
+    float _BoostTimer = 0;
+
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
-    float CurrentEncoderExtension { get { return Mathf.Clamp(_NormExtension * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }   
+    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(_NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
+
+    // The time taken to extend from 0 - 1
+    public float _FullExtensionDuration = 10;
     #endregion
     
     #region ROTATION
@@ -85,6 +94,8 @@ public class TestActuator : MonoBehaviour
             _CollisionReporter.OnTriggerReport += OnCollisionReportHandler;
             _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
         }
+
+        print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
     }
     
     [ContextMenu("Set rotation axis")]
@@ -113,6 +124,17 @@ public class TestActuator : MonoBehaviour
             SendEncoderExtensionLength();
         }
 
+        // CHECK BOOST
+        if(_BoostSpeedToggled)
+        {
+            _BoostTimer += Time.deltaTime;
+            if (_BoostTimer > _MaxBoostDuration)
+            {
+                _BoostSpeedToggled = false;
+                _BoostTimer = 0;
+            }
+        }
+
         // READ IN
         // Get the reported values from mod bus
         _ReportedExtension = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
@@ -133,8 +155,8 @@ public class TestActuator : MonoBehaviour
         transform.localRotation = _InitialRotation * Quaternion.AngleAxis(rot, _RotationAxis);
 
         // Update the readin actuator transform
-        float normReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-        float reportedRotation = normReportedExtension.ScaleFrom01(0, RotationRange);
+        _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
     }
 
@@ -157,6 +179,27 @@ public class TestActuator : MonoBehaviour
     public bool IsCalibrated()
     {
         return _State == UKIEnums.State.CalibratedToZero;
+    }
+
+    [ContextMenu("Calibrate Speed")]
+    void CalibrateRealWorldSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine());
+    }
+
+    IEnumerator CalibrateRealWorldSpeedRoutine()
+    {
+        print("SPEED TEST STARTED: " + name);
+        float startTime = Time.time;
+        // From 0 set to full normalized extension
+        _NormExtension = 1;       
+        while (_NormReportedExtension != _NormExtension)
+        {
+            yield return new WaitForEndOfFrame();
+            _FullExtensionDuration = Time.time - startTime;
+        }
+
+        print("SPEED TEST COMPLETED: " + name + " Duration: " + _FullExtensionDuration);
     }
 
     private void OnCollisionReportHandler(Collider collider)
@@ -184,7 +227,7 @@ public class TestActuator : MonoBehaviour
 
     void SendEncoderExtensionLength()
     {
-        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, (int)_ExtensionSpeed);
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);
     }
     
     void SendCalibrateMessage()
