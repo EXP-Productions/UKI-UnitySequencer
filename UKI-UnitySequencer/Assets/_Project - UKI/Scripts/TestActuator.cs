@@ -108,6 +108,7 @@ public class TestActuator : MonoBehaviour
         }
 
         _InitialRotation = transform.localRotation;
+        print(_InitialRotation);
 
         if (_CollisionReporter != null)
         {
@@ -298,6 +299,9 @@ public class TestActuator : MonoBehaviour
 
     public void CollidedWithObject(GameObject go)
     {
+        if (UkiCommunicationsManager.Instance._EStopping)
+            return;
+
         UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
 
         // Provide visual feedback for collision

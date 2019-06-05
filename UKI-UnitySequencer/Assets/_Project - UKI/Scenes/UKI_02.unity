@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 473480122}
   - component: {fileID: 473480125}
   - component: {fileID: 473480124}
+  - component: {fileID: 473480126}
   m_Layer: 0
   m_Name: _Managers
   m_TagString: Untagged
@@ -358,6 +359,18 @@ MonoBehaviour:
   _ActuatorSliders: []
   _EStopButton: {fileID: 1382368547}
   _CalibrateButton: {fileID: 1923977036}
+--- !u!114 &473480126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473480121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc49bf3a7a8e0640a5a0fc275e73dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &569468550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3806,15 +3819,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Actuator - RightFrontHip
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459025955289303, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorIndex
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026254861054, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: m_Name
       value: Actuator - RightFrontKnee
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorIndex
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459027394719502, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: m_Name
       value: Actuator - RightFrontAnkle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorIndex
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 408755144225989180, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -3870,6 +3898,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wing - Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorIndex
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorIndex
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 152fe134b9c70734e94f533441f0e9d4, type: 3}
