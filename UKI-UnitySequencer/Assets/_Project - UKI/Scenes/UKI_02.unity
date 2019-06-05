@@ -3865,6 +3865,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Actuator - RightRearAnkle
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459027226119588, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: m_Name
+      value: Wing - Right
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 152fe134b9c70734e94f533441f0e9d4, type: 3}
 --- !u!4 &1281889741 stripped
