@@ -81,57 +81,63 @@ public sealed class SRResources {
         }
     }
     
-    public static global::TypeSafe.PrefabResource SpawningBase_SpawnableObjectPrefab {
+    public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> collision {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[10]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(@__ts_internal_resources[10]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource AuthObjPrefab {
+    public static global::TypeSafe.PrefabResource SpawningBase_SpawnableObjectPrefab {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[11]));
         }
     }
     
+    public static global::TypeSafe.PrefabResource AuthObjPrefab {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[12]));
+        }
+    }
+    
     public static global::TypeSafe.Resource<global::UnityEngine.Material> Target_Limb_Mat {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[12]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[13]));
         }
     }
     
     public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> LineBreaking_Following_Characters {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[13]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[14]));
         }
     }
     
     public static global::TypeSafe.PrefabResource Leg_Front_left_Test {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[14]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[15]));
         }
     }
     
     public static global::TypeSafe.PrefabResource GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[15]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[16]));
         }
     }
     
     public static global::TypeSafe.PrefabResource NoAuthObjPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[16]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[17]));
         }
     }
     
     public static global::TypeSafe.PrefabResource CleanPlayerPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[17]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[18]));
         }
     }
     
     public static global::TypeSafe.PrefabResource Canvas_UKI_UI {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[18]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[19]));
         }
     }
     
@@ -146,6 +152,7 @@ public sealed class SRResources {
                 new global::TypeSafe.PrefabResource("PlayerCallbacksOrderOnTheHost_PlayerPrefab", "PlayerCallbacksOrderOnTheHost_PlayerPrefab"),
                 new global::TypeSafe.PrefabResource("ActuatorControl", "ActuatorControl"),
                 new global::TypeSafe.PrefabResource("PlayerGameObject", "PlayerGameObject"),
+                new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("collision", "collision"),
                 new global::TypeSafe.PrefabResource("SpawningBase_SpawnableObjectPrefab", "SpawningBase_SpawnableObjectPrefab"),
                 new global::TypeSafe.PrefabResource("AuthObjPrefab", "AuthObjPrefab"),
                 new global::TypeSafe.Resource<global::UnityEngine.Material>("Target Limb Mat", "Target Limb Mat"),
