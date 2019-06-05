@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
+
 
 /// Comms manager for UKI
 /// Sends out the commands that come in from the actuators
@@ -25,6 +27,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public float _TestPos = 100;
 
+    // Send the messages out to modbus to set the real world limbs positions
+    public bool _SendToModbus;
+
     public bool _Debug = false;
 
     public override void Awake()
@@ -39,9 +44,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         StartCoroutine(SetReportedExtensions());
     }
 
-    public void Calibrate()
+    public void SendToModbusToggle(Toggle toggle)
     {
-
+        _SendToModbus = toggle.isOn;
     }
 
     public void EStopButtonToggle()
@@ -54,6 +59,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void EStop(string reason)
     {
+        FindObjectOfType<UKI_UIManager>()._EstopWarning.SetActive(true);
         print("E Stop activated: " + reason);
         _EStopping = true;
         FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
@@ -72,6 +78,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             Destroy(collisionMarker);
         }
+        FindObjectOfType<UKI_UIManager>()._EstopWarning.SetActive(false);
     }
 
     IEnumerator SetReportedExtensions()
@@ -153,6 +160,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Accel 0 - 100
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
+        if (!_SendToModbus)
+            return;
+
         if(_Debug)
             print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
 
@@ -177,6 +187,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Only used on joints without actuators
     public void SendCalibrationMessage(int index, int motorSpeed)
     {
+        if (!_SendToModbus)
+            return;
+
         uint[] actuatorMessage1 = new uint[3];
         actuatorMessage1[0] = (uint)index;
         actuatorMessage1[1] = (uint)ModBusRegisters.MB_MOTOR_ACCEL;
@@ -192,6 +205,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void SendActuatorMessage(int index, int length, ModBusRegisters register)
     {
+        if (!_SendToModbus)
+            return;
+
         uint[] actuatorMessage = new uint[3];
         actuatorMessage[0] = (uint)index;
         actuatorMessage[1] = (uint)register;
@@ -201,6 +217,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     
     void SendHeartBeat()
     {
+        if (!_SendToModbus)
+            return;
+
         //print("Sending Heartbeat");
         SendInts(_HeartBeatMessage, true);
     }

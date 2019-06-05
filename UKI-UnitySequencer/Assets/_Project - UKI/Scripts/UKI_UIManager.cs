@@ -20,13 +20,19 @@ public class UKI_UIManager : MonoBehaviour
 
     public Button _EStopButton;
     public Button _CalibrateButton;
+    public Toggle _SendToModBusToggle;
+    public GameObject _EstopWarning;
 
     // Start is called before the first frame update
     void Start()
     {
+        _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;
+
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
+        _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
+
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
     }
 

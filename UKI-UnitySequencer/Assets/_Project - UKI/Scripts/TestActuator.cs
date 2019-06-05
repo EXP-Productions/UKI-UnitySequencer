@@ -6,7 +6,7 @@ using UnityEngine;
 // TODO - place a big red debug sphere at collisions, play collision sound - Both done
 // TODO - make it super obvious when estop is triggered
 // TODO - display heartbeat in UI
-// TODO - Remove send to modbus from UI, make global
+// TODO - Remove send to modbus from UI, make global - done
 // TODO - UI should reflect reported positions
 
 /// Basic actuator test that sets the position to move too
@@ -58,7 +58,6 @@ public class TestActuator : MonoBehaviour
     
     #region MODBUS
     [Header("MODBUS")]
-    // Send the messages out to modbus to set the real world limbs positions
     public bool _SendToModbus = false;
     [Range(0, 1)] public float _NormReportedExtension;
     // Extension value read in from modbus - Doesn't line up exactly with the set point value we send
@@ -324,7 +323,7 @@ public class TestActuator : MonoBehaviour
         float prevPos = 0;
         while (true)
         {
-            if (_SendToModbus && prevPos != CurrentEncoderExtension)
+            if (prevPos != CurrentEncoderExtension)
             {
                 prevPos = CurrentEncoderExtension;
                 SendEncoderExtensionLength();
