@@ -44,35 +44,39 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     }
 
+    public void EStopButtonToggle()
+    {
+        if (_EStopping)
+            ResetEStop();
+        else
+            EStop("Button press");
+    }
+
     public void EStop(string reason)
     {
         print("E Stop activated: " + reason);
-        StartCoroutine("EStopRoutine");
-    }
-
-    IEnumerator EStopRoutine()
-    {
         _EStopping = true;
+        FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
-        yield return new WaitForSeconds(1.0f);
-
+        CancelInvoke("SendHeartBeat");
+    }
+    
+    void ResetEStop()
+    {
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-
         CancelInvoke("SendHeartBeat");
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
+        FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(EStopRoutine());
+            EStop("Button press");
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
-            CancelInvoke("SendHeartBeat");
-
+        
         ReceiveStateData();
         //while(_ReceivedPackets.Count > 0)
         //{
@@ -97,6 +101,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //}  
     }
 
+    public bool _DBInitialized = false;
     public void ReceiveStateData()
     {
         while (_ReceivedPackets.Count > 0)
@@ -119,6 +124,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                     UkiStateDB._StateDB[actuatorEnum][registerEnum] = registerValue;
                 }
             }
+
+            _DBInitialized = true;
         }
     }
 

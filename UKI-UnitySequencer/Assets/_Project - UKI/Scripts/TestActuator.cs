@@ -101,7 +101,7 @@ public class TestActuator : MonoBehaviour
 
         print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
     }
-    
+
     [ContextMenu("Set rotation axis")]
     public void SetRotationAxis()
     {
@@ -123,8 +123,11 @@ public class TestActuator : MonoBehaviour
             return;
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+            SetToReportedExtension();
+
         // CHECK BOOST
-        if(_BoostSpeedToggled)
+        if (_BoostSpeedToggled)
         {
             _BoostTimer += Time.deltaTime;
             if (_BoostTimer > _MaxBoostDuration)
@@ -167,6 +170,7 @@ public class TestActuator : MonoBehaviour
 
             // Update the readin actuator transform
             _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+            
         }
 
         // UPDATE REPORTED ACTUATOR
@@ -181,6 +185,13 @@ public class TestActuator : MonoBehaviour
                 SetState(UKIEnums.State.CalibratedToZero);
         }
     }
+
+
+    void SetToReportedExtension()
+    {
+        _NormExtension = _NormReportedExtension;
+    }
+
 
     public void SetState(UKIEnums.State state)
     {

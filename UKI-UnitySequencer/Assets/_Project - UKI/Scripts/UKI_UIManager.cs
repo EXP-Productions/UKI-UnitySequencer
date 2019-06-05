@@ -26,7 +26,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
-        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop("Button press"));
+        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
     }
 
@@ -35,6 +35,18 @@ public class UKI_UIManager : MonoBehaviour
     {
         _CamParent.SetLocalRotY(_CamYRotNorm * -360);
         _Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
+    }
+
+    public void UpdateEstopButton()
+    {
+        if(UkiCommunicationsManager.Instance._EStopping)
+        {
+            _EStopButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Reset EStop";
+        }
+        else
+        {
+            _EStopButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "EStop";
+        }
     }
 
     void SetCamYRot()

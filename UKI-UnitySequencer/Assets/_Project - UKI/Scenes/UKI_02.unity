@@ -1417,6 +1417,7 @@ MonoBehaviour:
   _TestTime: 1
   _TestPos: 100
   _Debug: 0
+  _DBInitialized: 0
 --- !u!4 &473480123
 Transform:
   m_ObjectHideFlags: 0
@@ -5871,6 +5872,16 @@ PrefabInstance:
       propertyPath: _Actuator
       value: 
       objectReference: {fileID: 1223251905}
+    - target: {fileID: 7615556869972941349, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 262.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7615556869972941349, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -152.9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
 --- !u!1 &942853406
@@ -9260,21 +9271,21 @@ MonoBehaviour:
   _State: 0
   _ActuatorIndex: 15
   _CollisionReporter: {fileID: 890502034}
-  _CollidersToIgnore: {fileID: 0}
+  _CollidersToIgnore: {fileID: 223047115}
   _NormExtension: 0
-  _MaxEncoderExtension: 125
+  _MaxEncoderExtension: 115
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 33.810303
+  _FullRetractionDuration: 33.770874
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -70
-  _SendToModbus: 0
+  _SendToModbus: 1
   _NormReportedExtension: 0
-  _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _ReportedExtension: 1152
+  _MaxReportedExtension: 1136
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!4 &4871486934524418085
@@ -9464,8 +9475,8 @@ MonoBehaviour:
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 28
+  _FullRetractionDuration: 28
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: 65
@@ -9657,20 +9668,20 @@ MonoBehaviour:
   _ActuatorIndex: 13
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
-  _NormExtension: 0
+  _NormExtension: 1
   _MaxEncoderExtension: 68
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 22.423553
+  _FullRetractionDuration: 21.662003
   _RotationAxis: {x: 0, y: 0, z: 1}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -32
-  _SendToModbus: 0
-  _NormReportedExtension: 0
-  _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _SendToModbus: 1
+  _NormReportedExtension: 1
+  _ReportedExtension: 688
+  _MaxReportedExtension: 688
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!114 &4871486936471643572
