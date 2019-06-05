@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO - Initialize actuator norms to the reported norms
+// TODO - place a big red debug sphere at collisions, play collision sound, 
+// TODO make it super obvious when estop is triggered
+// TODO - display heartbeat in UI
 /// Basic actuator test that sets the position to move too
 public class TestActuator : MonoBehaviour
 {
