@@ -13,8 +13,6 @@ public class ActuatorSlider : MonoBehaviour
 
     public Slider _Slider;
 
-    public Toggle _SendToModbus;
-
     private void Start()
     {
         TestActuator[] actuators = FindObjectsOfType<TestActuator>();
@@ -31,7 +29,6 @@ public class ActuatorSlider : MonoBehaviour
         else
         {
             _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
-            _SendToModbus.onValueChanged.AddListener((bool b) => _Actuator._SendToModbus = b);
         }      
     }
     
