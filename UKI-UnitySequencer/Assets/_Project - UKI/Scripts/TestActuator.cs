@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO - Initialize actuator norms to the reported norms - Done
-// TODO - place a big red debug sphere at collisions, play collision sound - Both done
-// TODO - make it super obvious when estop is triggered - Done
-// TODO - display heartbeat in UI
-// TODO - Remove send to modbus from UI, make global - done
 // TODO - UI should reflect reported positions
 
 /// Basic actuator test that sets the position to move too

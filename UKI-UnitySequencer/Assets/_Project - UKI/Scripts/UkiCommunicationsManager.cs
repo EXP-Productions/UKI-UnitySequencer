@@ -64,14 +64,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _EStopping = true;
         FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
-        CancelInvoke("SendHeartBeat");
+        StopCoroutine(SendHeartBeat());
     }
     
     void ResetEStop()
     {
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        CancelInvoke("SendHeartBeat");
-        InvokeRepeating("SendHeartBeat", 1f, 1f);
+        StopCoroutine(SendHeartBeat());
+        StartCoroutine(SendHeartBeat());
         _EStopping = false;
         FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
         foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
@@ -214,19 +214,27 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage[2] = (uint)length;
         SendInts(actuatorMessage, true);
     }
-    
-    void SendHeartBeat()
+
+    IEnumerator SendHeartBeat()
     {
-        //if (!_SendToModbus)
-        //    return;
+        while (true)
+        {
+            if (_SendToModbus)
+            {
+                yield return new WaitForSeconds(0.5f);
+                FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.red;
+                SendInts(_HeartBeatMessage, true);
+                yield return new WaitForSeconds(0.5f);
+                FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.white;
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+            }
 
-        print("Sending heartbeat");
-
-        FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.red;
-        SendInts(_HeartBeatMessage, true);
-        FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.white;
-
+        }
     }
+
 
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
     {
