@@ -531,8 +531,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1004794304}
   - {fileID: 1404685350}
+  - {fileID: 1004794304}
   m_Father: {fileID: 850137556}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -40}
@@ -557,15 +557,15 @@ MonoBehaviour:
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 26
+  _FullRetractionDuration: 25.5
   _RotationAxis: {x: 0, y: 0, z: 1}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: 40
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 752
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!1 &271423311
@@ -956,7 +956,7 @@ Transform:
   m_Children:
   - {fileID: 1543727398}
   m_Father: {fileID: 1404685350}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -120, y: -180, z: -0.000015258789}
 --- !u!1001 &411120059
 PrefabInstance:
@@ -1198,7 +1198,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.15
+  m_Radius: 0.05
   m_Height: 0.9
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -2209,7 +2209,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.15
+  m_Radius: 0.1
   m_Height: 1.4
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -3064,7 +3064,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1404685350}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -3.7450001, y: 0, z: 0}
 --- !u!54 &912047532
 Rigidbody:
@@ -6014,8 +6014,8 @@ Transform:
   m_LocalPosition: {x: -0, y: -0.0785, z: 0.0589}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1889356991}
   - {fileID: 1205178097}
+  - {fileID: 1889356991}
   - {fileID: 971779880}
   m_Father: {fileID: 373940091}
   m_RootOrder: 0
@@ -6143,7 +6143,7 @@ Transform:
   m_Children:
   - {fileID: 2056124680}
   m_Father: {fileID: 261341636}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: -90.00001}
 --- !u!1 &1021832085
 GameObject:
@@ -6192,22 +6192,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _State: 0
   _ActuatorIndex: 12
-  _CollisionReporter: {fileID: 1481635335}
+  _CollisionReporter: {fileID: 884057438}
   _CollidersToIgnore: {fileID: 0}
   _NormExtension: 0
   _MaxEncoderExtension: 130
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 40.4
+  _FullRetractionDuration: 38.5
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 0, z: 1}
   _RotationRange: -55
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 55
+  _MaxReportedExtension: 1312
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!1001 &1081383242
@@ -6588,7 +6588,7 @@ Transform:
   m_Children:
   - {fileID: 1864764649}
   m_Father: {fileID: 968502709}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -24.707, y: -0.407, z: -4.557}
 --- !u!1 &1223251903
 GameObject:
@@ -6878,7 +6878,7 @@ Transform:
   m_Children:
   - {fileID: 1021832086}
   m_Father: {fileID: 1404685350}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1368743834
 PrefabInstance:
@@ -7169,11 +7169,11 @@ Transform:
   m_LocalPosition: {x: 0.000012089498, y: -0.07895367, z: 0.029987976}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1329068442}
   - {fileID: 912047531}
   - {fileID: 402703807}
-  - {fileID: 1329068442}
   m_Father: {fileID: 261341636}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
 --- !u!114 &1404685351
 MonoBehaviour:
@@ -7189,23 +7189,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _State: 0
   _ActuatorIndex: 11
-  _CollisionReporter: {fileID: 912047533}
-  _CollidersToIgnore: {fileID: 0}
+  _CollisionReporter: {fileID: 1955468404}
+  _CollidersToIgnore: {fileID: 884057438}
   _NormExtension: 0
   _MaxEncoderExtension: 125
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 49.13318
+  _FullRetractionDuration: 45.769524
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: 45
   _SendToModbus: 1
   _NormReportedExtension: 0
-  _ReportedExtension: 0
-  _MaxReportedExtension: 40
-  _DEBUG: 1
+  _ReportedExtension: 1264
+  _MaxReportedExtension: 1264
+  _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!1 &1410548113
 GameObject:
@@ -7587,7 +7587,7 @@ Transform:
   m_Children:
   - {fileID: 1368743835}
   m_Father: {fileID: 1815898816}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -120, y: -180, z: -0.000015258789}
 --- !u!1001 &1551711044
 PrefabInstance:
@@ -8274,9 +8274,9 @@ Transform:
   m_LocalPosition: {x: 0.000012089498, y: -0.07895367, z: 0.029987976}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1882113435}
   - {fileID: 1955468402}
   - {fileID: 1545042035}
-  - {fileID: 1882113435}
   m_Father: {fileID: 2115600533}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
@@ -8566,7 +8566,7 @@ Transform:
   m_Children:
   - {fileID: 271423312}
   m_Father: {fileID: 1815898816}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1889356990
 GameObject:
@@ -8599,7 +8599,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 968502709}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 73.884, y: 0, z: 0}
 --- !u!54 &1889356992
 Rigidbody:
@@ -8640,7 +8640,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.15
+  m_Radius: 0.05
   m_Height: 0.9
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -8688,7 +8688,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1815898816}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -3.7450001, y: 0, z: 0}
 --- !u!136 &1955468403
 CapsuleCollider:
