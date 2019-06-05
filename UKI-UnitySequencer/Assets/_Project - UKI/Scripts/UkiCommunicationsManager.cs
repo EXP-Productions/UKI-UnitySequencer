@@ -68,6 +68,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
         FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
+        foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
+        {
+            Destroy(collisionMarker);
+        }
     }
 
     IEnumerator SetReportedExtensions()
