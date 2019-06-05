@@ -20,7 +20,6 @@ public class TestActuator : MonoBehaviour
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
     [Range(0, 1)]  public float _NormExtension;
-    [Range(0, 1)] public float _NormReportedExtension;
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
 
@@ -36,8 +35,10 @@ public class TestActuator : MonoBehaviour
 
     // The time taken to extend from 0 - 1
     public float _FullExtensionDuration = 10;
+    // The time taken to extend from 1 - 0
+    public float _FullRetractionDuration = 10;
     #endregion
-    
+
     #region ROTATION
     [Header("ROTATION MAPPING")]
     // Min and max rotation range
@@ -51,9 +52,10 @@ public class TestActuator : MonoBehaviour
     #region MODBUS
     [Header("MODBUS")]
     // Send the messages out to modbus to set the real world limbs positions
-    public bool _SendToModbus = false;    
+    public bool _SendToModbus = false;
+    [Range(0, 1)] public float _NormReportedExtension;
     // Extension value read in from modbus - Doesn't line up exactly with the set point value we send
-    public int _ReportedExtension;
+    public float _ReportedExtension;
     // The maximum extension reported when extended to the full length of _MaxEncoderExtension
     public float _MaxReportedExtension = 40;    
     // Reporeted speed and accel read in from modbus
@@ -62,6 +64,7 @@ public class TestActuator : MonoBehaviour
     #endregion
 
     public bool _DEBUG = false;
+    public bool _DEBUG_NoModBusSimulationMode = false;
 
     private void Awake()
     {
@@ -119,11 +122,6 @@ public class TestActuator : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SendEncoderExtensionLength();
-        }
-
         // CHECK BOOST
         if(_BoostSpeedToggled)
         {
@@ -134,30 +132,53 @@ public class TestActuator : MonoBehaviour
                 _BoostTimer = 0;
             }
         }
-
-        // READ IN
-        // Get the reported values from mod bus
-        _ReportedExtension = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
-        ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
-        ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
-
-        // UPDATE STATES
-        if(_State == UKIEnums.State.Calibrating)
-        {
-            print(name + "    " + _ReportedExtension);
-            if (_ReportedExtension == 0)
-                SetState(UKIEnums.State.CalibratedToZero);
-        }
+        
 
         // Set the rotation from normalized extension
         //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
         float rot = _NormExtension.ScaleFrom01(0, RotationRange);
         transform.localRotation = _InitialRotation * Quaternion.AngleAxis(rot, _RotationAxis);
 
-        // Update the readin actuator transform
-        _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        // Run sim without modbus
+        if (_DEBUG_NoModBusSimulationMode)
+        {
+            if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) > 2)
+            {
+                if (_ReportedExtension < CurrentEncoderExtension)
+                {
+                    _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime;
+                }
+                else
+                {
+                    _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime;
+                }
+            }
+
+            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        }
+        else
+        {
+            // READ IN
+            // Get the reported values from mod bus
+            _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+            ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
+            ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
+
+            // Update the readin actuator transform
+            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        }
+
+        // UPDATE REPORTED ACTUATOR
         float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
+
+        // UPDATE STATES
+        if (_State == UKIEnums.State.Calibrating)
+        {
+            print(name + "    " + _ReportedExtension);
+            if (_ReportedExtension == 0)
+                SetState(UKIEnums.State.CalibratedToZero);
+        }
     }
 
     public void SetState(UKIEnums.State state)
@@ -181,22 +202,49 @@ public class TestActuator : MonoBehaviour
         return _State == UKIEnums.State.CalibratedToZero;
     }
 
-    [ContextMenu("Calibrate Speed")]
-    void CalibrateRealWorldSpeed()
+
+    [ContextMenu("Set max reported extension")]
+    void SetMaxReportedExtension()
     {
-        StartCoroutine(CalibrateRealWorldSpeedRoutine());
+        _MaxReportedExtension = _ReportedExtension;
     }
 
-    IEnumerator CalibrateRealWorldSpeedRoutine()
+
+    [ContextMenu("Calibrate Extension Speed")]
+    void CalibrateRealWorldExtensionSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(true));
+    }
+
+    [ContextMenu("Calibrate Retraction Speed")]
+    void CalibrateRealWorldRetractionsSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(false));
+    }
+
+    IEnumerator CalibrateRealWorldSpeedRoutine(bool extension)
     {
         print("SPEED TEST STARTED: " + name);
         float startTime = Time.time;
-        // From 0 set to full normalized extension
-        _NormExtension = 1;       
+        if (extension)
+        {
+            // From 0 set to full normalized extension
+            _NormExtension = 1;
+        }
+        else
+        {
+            // From 1 set to 0 normalized extension
+            _NormExtension = 0;
+        }
+
         while (_NormReportedExtension != _NormExtension)
         {
             yield return new WaitForEndOfFrame();
-            _FullExtensionDuration = Time.time - startTime;
+
+            if (extension)
+                _FullExtensionDuration = Time.time - startTime;
+            else
+                _FullRetractionDuration = Time.time - startTime;
         }
 
         print("SPEED TEST COMPLETED: " + name + " Duration: " + _FullExtensionDuration);
