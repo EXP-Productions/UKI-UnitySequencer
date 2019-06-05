@@ -13,7 +13,8 @@ public class TestActuator : MonoBehaviour
     Transform _ReportedActuatorTransform;
 
     public CollisionReporter _CollisionReporter;
-    
+    [HideInInspector] public CollisionReporter _CollidersToIgnore;
+
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
@@ -27,8 +28,7 @@ public class TestActuator : MonoBehaviour
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
     float CurrentEncoderExtension { get { return Mathf.Clamp(_NormExtension * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }   
     #endregion
-
-
+    
     #region ROTATION
     [Header("ROTATION MAPPING")]
     // Min and max rotation range
@@ -38,10 +38,7 @@ public class TestActuator : MonoBehaviour
     float RotationRange { get { return _RotationRange; } }
     Quaternion _InitialRotation;
     #endregion
-
-    public CollisionReporter _CollidersToIgnore;
-
-
+    
     #region MODBUS
     [Header("MODBUS")]
     // Send the messages out to modbus to set the real world limbs positions
@@ -53,7 +50,15 @@ public class TestActuator : MonoBehaviour
     // Reporeted speed and accel read in from modbus
     public int ReportedSpeed { private set; get; }
     public int ReportedAcceleration { private set; get; }
-    #endregion    
+    #endregion
+
+    public bool _DEBUG = false;
+
+    private void Awake()
+    {
+        if(_CollisionReporter != null)
+            _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
+    }
 
     public void Init(Transform reportedActuatorTransform)
     {
@@ -132,7 +137,7 @@ public class TestActuator : MonoBehaviour
         float reportedRotation = normReportedExtension.ScaleFrom01(0, RotationRange);
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
     }
-    public bool _DEBUG = false;
+
     public void SetState(UKIEnums.State state)
     {
         _State = state;
@@ -156,6 +161,9 @@ public class TestActuator : MonoBehaviour
 
     private void OnCollisionReportHandler(Collider collider)
     {
+        if (Time.time < 1)
+            return;
+
         // See if it has collided with another actuated limb
         CollisionReporter actuatorCollider = collider.gameObject.GetComponent<CollisionReporter>();
         if(actuatorCollider != null)
@@ -171,7 +179,7 @@ public class TestActuator : MonoBehaviour
 
     public void CollidedWithObject(GameObject go)
     {
-        UkiCommunicationsManager.Instance.EStop("Collision between: " + _CollisionReporter.name + "  " + go.name);
+        UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
     }
 
     void SendEncoderExtensionLength()

@@ -26,7 +26,7 @@ public class ActuatorSlider : MonoBehaviour
 
         if (_Actuator == null)
         {
-            print(name + " no actuator found");
+            print("UI INIT: " + name + " no actuator found");
         }
         else
         {
