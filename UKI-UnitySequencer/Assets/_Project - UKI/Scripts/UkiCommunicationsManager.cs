@@ -28,7 +28,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public float _TestPos = 100;
 
     // Send the messages out to modbus to set the real world limbs positions
-    public bool _SendToModbus;
+    public bool _SendToModbus = true;
 
     public bool _Debug = false;
 

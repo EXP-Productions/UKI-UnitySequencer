@@ -63,7 +63,7 @@ MonoBehaviour:
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 1100
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
   _DEBUG_SelfInit: 0

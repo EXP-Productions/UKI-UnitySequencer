@@ -38,7 +38,7 @@ public class UKI_PoseManager : MonoBehaviour
                 SavePose(4);
             }
         }
-        else if (Input.GetKey(KeyCode.LeftControl))
+        else if (Input.GetKey(KeyCode.RightShift))
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {

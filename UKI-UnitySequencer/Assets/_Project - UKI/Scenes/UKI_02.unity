@@ -311,7 +311,7 @@ MonoBehaviour:
   _TestSpeed: 1
   _TestTime: 1
   _TestPos: 100
-  _SendToModbus: 0
+  _SendToModbus: 1
   _Debug: 0
   _DBInitialized: 0
 --- !u!4 &473480123
@@ -4989,6 +4989,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leg - Left - Front
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459025955289303, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 408755144225989180, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
