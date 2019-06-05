@@ -182,21 +182,22 @@ MonoBehaviour:
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
   _NormExtension: 0
-  _MaxEncoderExtension: 40
+  _MaxEncoderExtension: 110
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 31.948044
+  _FullRetractionDuration: 37.137512
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -15
   _SendToModbus: 1
   _NormReportedExtension: 0
-  _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _ReportedExtension: 1104
+  _MaxReportedExtension: 1104
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 1
 --- !u!1 &384009493
 GameObject:
   m_ObjectHideFlags: 0

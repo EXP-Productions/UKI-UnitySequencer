@@ -66,6 +66,7 @@ MonoBehaviour:
   _MaxReportedExtension: 40
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &408755143114631388
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +183,7 @@ MonoBehaviour:
   _MaxReportedExtension: 688
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &408755143713368731
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +249,7 @@ MonoBehaviour:
   _MaxReportedExtension: 1152
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &408755144050071403
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +316,7 @@ MonoBehaviour:
   _MaxReportedExtension: 1200
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &408755144225989180
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +433,7 @@ MonoBehaviour:
   _MaxReportedExtension: 656
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &408755144833114235
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,6 +499,7 @@ MonoBehaviour:
   _MaxReportedExtension: 1136
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459025784159707
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +724,7 @@ MonoBehaviour:
   _MaxReportedExtension: 752
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459026050615864
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,6 +960,7 @@ MonoBehaviour:
   _MaxReportedExtension: 1264
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459026339264157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,21 +1117,22 @@ MonoBehaviour:
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
   _NormExtension: 0
-  _MaxEncoderExtension: 40
+  _MaxEncoderExtension: 90
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 37.810608
+  _FullRetractionDuration: 35.49585
   _RotationAxis: {x: 0, y: 0, z: 1}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -45
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 912
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459026478816481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,21 +1245,22 @@ MonoBehaviour:
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
   _NormExtension: 0
-  _MaxEncoderExtension: 40
+  _MaxEncoderExtension: 130
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 41.897842
+  _FullRetractionDuration: 41.863693
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -30
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 1312
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459026787400811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,6 +1714,7 @@ MonoBehaviour:
   _MaxReportedExtension: 1312
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
+  _DEBUG_SelfInit: 0
 --- !u!1 &5059459027523975507
 GameObject:
   m_ObjectHideFlags: 0
