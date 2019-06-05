@@ -6,6 +6,7 @@ using UnityEngine;
 // TODO - place a big red debug sphere at collisions, play collision sound, 
 // TODO - make it super obvious when estop is triggered
 // TODO - display heartbeat in UI
+// TODO - UI should reflect reported positions
 /// Basic actuator test that sets the position to move too
 public class TestActuator : MonoBehaviour
 {
@@ -272,10 +273,14 @@ public class TestActuator : MonoBehaviour
 
         // See if it has collided with another actuated limb
         CollisionReporter actuatorCollider = collider.gameObject.GetComponent<CollisionReporter>();
-        if(actuatorCollider != null)
+
+        // Check if collision is with another collision reporter or other collider like ground plane etc
+        if (actuatorCollider != null)
         {
             if(_CollidersToIgnore != actuatorCollider)
+            {
                 CollidedWithObject(collider.gameObject);
+            }
         }
         else
         {
@@ -286,6 +291,11 @@ public class TestActuator : MonoBehaviour
     public void CollidedWithObject(GameObject go)
     {
         UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
+
+        // Provide visual feedback for collision
+        GameObject collisionMarker = Instantiate(SRResources.CollisionMarker.Load());
+        collisionMarker.transform.position = go.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+
     }
 
     void SendEncoderExtensionLength()

@@ -21,98 +21,140 @@ public sealed class SRResources {
     
     private const string _tsInternal = "1.3.2-Unity5";
     
+    public static global::TypeSafe.PrefabResource Leg_Real_world {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[0]));
+        }
+    }
+    
     public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> LineBreaking_Leading_Characters {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[0]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[1]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource PlayerWithAuthPrefab {
-        get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[1]));
-        }
-    }
-    
-    public static global::TypeSafe.PrefabResource SpawningBase_PlayerPrefab {
+    public static global::TypeSafe.PrefabResource _LEG_Front_Left {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[2]));
         }
     }
     
-    public static global::TypeSafe.Resource<global::UnityEngine.Material> ReportedLimbMat {
+    public static global::TypeSafe.PrefabResource PlayerWithAuthPrefab {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[3]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[3]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource PlayerCallbacksOrderOnTheHost_PlayerPrefab {
+    public static global::TypeSafe.PrefabResource SpawningBase_PlayerPrefab {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[4]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource PlayerGameObject {
+    public static global::TypeSafe.Resource<global::UnityEngine.Material> ReportedLimbMat {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[5]));
+            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[5]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource SpawningBase_SpawnableObjectPrefab {
+    public static global::TypeSafe.PrefabResource CollisionMarker {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[6]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource AuthObjPrefab {
+    public static global::TypeSafe.PrefabResource PlayerCallbacksOrderOnTheHost_PlayerPrefab {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[7]));
         }
     }
     
-    public static global::TypeSafe.Resource<global::UnityEngine.Material> Target_Limb_Mat {
+    public static global::TypeSafe.PrefabResource ActuatorControl {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[8]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[8]));
         }
     }
     
-    public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> LineBreaking_Following_Characters {
+    public static global::TypeSafe.PrefabResource PlayerGameObject {
         get {
-            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[9]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[9]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab {
+    public static global::TypeSafe.PrefabResource SpawningBase_SpawnableObjectPrefab {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[10]));
         }
     }
     
-    public static global::TypeSafe.PrefabResource NoAuthObjPrefab {
+    public static global::TypeSafe.PrefabResource AuthObjPrefab {
         get {
             return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[11]));
         }
     }
     
+    public static global::TypeSafe.Resource<global::UnityEngine.Material> Target_Limb_Mat {
+        get {
+            return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[12]));
+        }
+    }
+    
+    public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> LineBreaking_Following_Characters {
+        get {
+            return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(@__ts_internal_resources[13]));
+        }
+    }
+    
+    public static global::TypeSafe.PrefabResource Leg_Front_left_Test {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[14]));
+        }
+    }
+    
+    public static global::TypeSafe.PrefabResource GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[15]));
+        }
+    }
+    
+    public static global::TypeSafe.PrefabResource NoAuthObjPrefab {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[16]));
+        }
+    }
+    
     public static global::TypeSafe.PrefabResource CleanPlayerPrefab {
         get {
-            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[12]));
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[17]));
+        }
+    }
+    
+    public static global::TypeSafe.PrefabResource Canvas_UKI_UI {
+        get {
+            return ((global::TypeSafe.PrefabResource)(@__ts_internal_resources[18]));
         }
     }
     
     private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> @__ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                new global::TypeSafe.PrefabResource("Leg - Real world", "Leg - Real world"),
                 new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("LineBreaking Leading Characters", "LineBreaking Leading Characters"),
+                new global::TypeSafe.PrefabResource("_LEG - Front Left", "_LEG - Front Left"),
                 new global::TypeSafe.PrefabResource("PlayerWithAuthPrefab", "PlayerWithAuthPrefab"),
                 new global::TypeSafe.PrefabResource("SpawningBase_PlayerPrefab", "SpawningBase_PlayerPrefab"),
                 new global::TypeSafe.Resource<global::UnityEngine.Material>("ReportedLimbMat", "ReportedLimbMat"),
+                new global::TypeSafe.PrefabResource("CollisionMarker", "CollisionMarker"),
                 new global::TypeSafe.PrefabResource("PlayerCallbacksOrderOnTheHost_PlayerPrefab", "PlayerCallbacksOrderOnTheHost_PlayerPrefab"),
+                new global::TypeSafe.PrefabResource("ActuatorControl", "ActuatorControl"),
                 new global::TypeSafe.PrefabResource("PlayerGameObject", "PlayerGameObject"),
                 new global::TypeSafe.PrefabResource("SpawningBase_SpawnableObjectPrefab", "SpawningBase_SpawnableObjectPrefab"),
                 new global::TypeSafe.PrefabResource("AuthObjPrefab", "AuthObjPrefab"),
                 new global::TypeSafe.Resource<global::UnityEngine.Material>("Target Limb Mat", "Target Limb Mat"),
                 new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("LineBreaking Following Characters", "LineBreaking Following Characters"),
+                new global::TypeSafe.PrefabResource("Leg - Front left Test", "Leg - Front left Test"),
                 new global::TypeSafe.PrefabResource("GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab", "GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab"),
                 new global::TypeSafe.PrefabResource("NoAuthObjPrefab", "NoAuthObjPrefab"),
-                new global::TypeSafe.PrefabResource("CleanPlayerPrefab", "CleanPlayerPrefab")});
+                new global::TypeSafe.PrefabResource("CleanPlayerPrefab", "CleanPlayerPrefab"),
+                new global::TypeSafe.PrefabResource("Canvas - UKI UI", "Canvas - UKI UI")});
     
     public sealed class Shaders {
         
