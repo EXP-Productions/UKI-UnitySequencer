@@ -56,8 +56,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
         yield return new WaitForSeconds(1.0f);
 
-       SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-       
+        SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
+
+        CancelInvoke("SendHeartBeat");
         InvokeRepeating("SendHeartBeat", 1f, 1f);
         _EStopping = false;
     }
@@ -68,6 +69,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             StartCoroutine(EStopRoutine());
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+            CancelInvoke("SendHeartBeat");
 
         ReceiveStateData();
         //while(_ReceivedPackets.Count > 0)

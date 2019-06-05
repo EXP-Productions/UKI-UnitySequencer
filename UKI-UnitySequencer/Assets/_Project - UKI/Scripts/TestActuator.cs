@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO - Initialize actuator norms to the reported norms
 /// Basic actuator test that sets the position to move too
 public class TestActuator : MonoBehaviour
 {

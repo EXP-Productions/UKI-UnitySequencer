@@ -9415,15 +9415,15 @@ MonoBehaviour:
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 24.199081
+  _FullRetractionDuration: 22.691154
   _RotationAxis: {x: 0, y: 0, z: 1}
   _ForwardAxis: {x: 0, y: 1, z: 0}
-  _RotationRange: -40
-  _SendToModbus: 0
+  _RotationRange: -44
+  _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 656
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!1 &4871486935435783978
@@ -9469,10 +9469,10 @@ MonoBehaviour:
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: 65
-  _SendToModbus: 0
+  _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 1200
   _DEBUG: 1
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!4 &4871486935435784021
@@ -9513,15 +9513,15 @@ MonoBehaviour:
   _ExtensionSpeed: 30
   _BoostExtensionSpeed: 45
   _BoostSpeedToggled: 0
-  _FullExtensionDuration: 10
-  _FullRetractionDuration: 10
+  _FullExtensionDuration: 31.45
+  _FullRetractionDuration: 33.2
   _RotationAxis: {x: 1, y: 0, z: 0}
   _ForwardAxis: {x: 0, y: 1, z: 0}
   _RotationRange: -75
   _SendToModbus: 1
   _NormReportedExtension: 0
   _ReportedExtension: 0
-  _MaxReportedExtension: 40
+  _MaxReportedExtension: 1152
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
 --- !u!4 &4871486935636038341
