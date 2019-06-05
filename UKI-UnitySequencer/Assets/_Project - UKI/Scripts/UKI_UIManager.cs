@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UKI_AppManager : MonoBehaviour
+public class UKI_UIManager : MonoBehaviour
 {
     // CAMERA
     public Transform _CamParent;
@@ -15,16 +15,19 @@ public class UKI_AppManager : MonoBehaviour
 
     public Slider _Slider_CamRot;
     public Slider _Slider_CamZ;
+    [HideInInspector]
+    public ActuatorSlider[] _ActuatorSliders;
 
     public Button _EStopButton;
+    public Button _CalibrateButton;
 
     // Start is called before the first frame update
     void Start()
     {
         _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
-
-        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop());
+        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStop("Button press"));
+        _CalibrateButton.onClick.AddListener(CalibrateActuators);
     }
 
     // Update is called once per frame
@@ -43,4 +46,18 @@ public class UKI_AppManager : MonoBehaviour
     {
         _CamZNorm = _Slider_CamZ.value;
     }
+
+    void SetActuatorExtension(ActuatorSlider actuatorSlider)
+    {
+        actuatorSlider._Actuator._NormExtension = actuatorSlider._Slider.value;
+    }
+
+    void CalibrateActuators()
+    {
+        foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
+        {
+            actuator.Calibrate();
+        }
+    }
+
 }

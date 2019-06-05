@@ -25,6 +25,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public float _TestPos = 100;
 
+    public bool _Debug = false;
+
     public override void Awake()
     {
         base.Awake();
@@ -34,7 +36,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("EStopRoutine");
+        EStop("Start E Stop");
     }
 
     public void Calibrate()
@@ -42,14 +44,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     }
 
-    public void EStop()
+    public void EStop(string reason)
     {
+        print("E Stop activated: " + reason);
         StartCoroutine("EStopRoutine");
     }
 
     IEnumerator EStopRoutine()
     {
-        print("Sending eStop");
         _EStopping = true;
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
         yield return new WaitForSeconds(1.0f);
@@ -124,7 +126,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Accel 0 - 100
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
-        print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
+        if(_Debug)
+            print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
 
         speed = Mathf.Clamp(speed, 0, 30);
         //position = Mathf.Clamp(speed, 0, 100);

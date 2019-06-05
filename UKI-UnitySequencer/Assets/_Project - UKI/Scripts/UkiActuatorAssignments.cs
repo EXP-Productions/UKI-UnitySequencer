@@ -9,6 +9,12 @@
     LeftFront
 }
 
+public enum UkiWings
+{
+    LeftWing,
+    RightWing,
+}
+
 
 public enum UkiTestActuatorAssignments
 {
