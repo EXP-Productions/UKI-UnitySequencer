@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UKI_UIManager : MonoBehaviour
 {
+    TestActuator[] _AllActuators;
+
     // CAMERA
     public Transform _CamParent;
     [Range(0, 1)] float _CamZNorm = 0;
@@ -28,6 +30,8 @@ public class UKI_UIManager : MonoBehaviour
     public GameObject _EstopWarning;
     public Image _HeartBeatDisplay;
 
+    public Toggle _OfflineSimModeToggle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +41,11 @@ public class UKI_UIManager : MonoBehaviour
         _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
+        _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
+
+        _AllActuators = FindObjectsOfType<TestActuator>();
     }
 
     // Update is called once per frame
@@ -46,6 +53,14 @@ public class UKI_UIManager : MonoBehaviour
     {
         _CamParent.SetLocalRotY(_CamYRotNorm * -360);
         _Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
+    }
+
+    void ToggleOfflineSimMode(bool b)
+    {
+        for (int i = 0; i < _AllActuators.Length; i++)
+        {
+            _AllActuators[i]._DEBUG_NoModBusSimulationMode = b;
+        }
     }
 
     public void UpdateEstopButton()

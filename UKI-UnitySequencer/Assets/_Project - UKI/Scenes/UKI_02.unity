@@ -363,6 +363,7 @@ MonoBehaviour:
   _SendToModBusToggle: {fileID: 850149441}
   _EstopWarning: {fileID: 1591963677}
   _HeartBeatDisplay: {fileID: 2110746235}
+  _OfflineSimModeToggle: {fileID: 1938866946}
 --- !u!114 &473480126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3018,6 +3019,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1938866945, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938866945, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938866945, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938866945, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
 --- !u!114 &1107625532 stripped
@@ -4126,6 +4143,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1938866946 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1938866946, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2030462560
