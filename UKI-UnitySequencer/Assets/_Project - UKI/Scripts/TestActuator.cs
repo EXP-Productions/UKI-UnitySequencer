@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO - UI should reflect reported positions
+// TODO Pose manager serialize out to json
+// TODO resurrect timeline manager and see how that works
+// TODO hook up IK
+// TODO Pose player. Once reaching one pose move to the next pose
+// TODO Test out speed boost on actuators
+// TODO Handle collision detection a bit better, potentially move the collision detection to the reported limbs.
+// Detect a collision on the reported limbs for estop but on the main limbs just warn of upcoming collision
+// TODO Draw limb paths 
+// TODO UKI limb for rear and pincers
+
 
 /// Basic actuator test that sets the position to move too
 public class TestActuator : MonoBehaviour
