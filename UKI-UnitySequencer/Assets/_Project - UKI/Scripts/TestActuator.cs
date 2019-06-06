@@ -179,7 +179,7 @@ public class TestActuator : MonoBehaviour
                 _BoostTimer = 0;
             }
         }
-        
+
 
         // Set the rotation from normalized extension
         //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
@@ -213,7 +213,7 @@ public class TestActuator : MonoBehaviour
 
             // Update the readin actuator transform
             _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-            
+
         }
 
         // UPDATE REPORTED ACTUATOR
@@ -227,6 +227,19 @@ public class TestActuator : MonoBehaviour
             if (_ReportedExtension == 0)
                 SetState(UKIEnums.State.CalibratedToZero);
         }
+        else if (_State == UKIEnums.State.Paused)
+        {
+            // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
+            if (_ReportedExtension != _NormExtension * _MaxReportedExtension)
+                SetState(UKIEnums.State.Animating);
+        }
+        else if (_State == UKIEnums.State.Animating)
+        {
+            // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
+            if (_ReportedExtension == _NormExtension * _MaxReportedExtension)
+                SetState(UKIEnums.State.Paused);
+        }
+
     }
 
 

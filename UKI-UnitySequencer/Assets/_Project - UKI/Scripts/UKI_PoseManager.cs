@@ -29,6 +29,8 @@ public class UKI_PoseManager : MonoBehaviour
     List<PoseData> _AllPoses = new List<PoseData>();
     int _SelectedPose = 0;
 
+    bool _LoopPoses = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +41,11 @@ public class UKI_PoseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(_LoopPoses)
+        {
+            // CHECK IF ALL ACTUATORS ARE STOPPED
+        }
+
         if(Input.GetKey(KeyCode.LeftShift))
         {
             if(Input.GetKeyDown(KeyCode.Alpha1))
