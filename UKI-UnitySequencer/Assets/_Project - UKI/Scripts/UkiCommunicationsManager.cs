@@ -12,6 +12,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public static UkiCommunicationsManager Instance { get { return _Instance; } }
     private static UkiCommunicationsManager _Instance;
 
+    [HideInInspector]
+    public UKI_UIManager _UIManager;
+
     // Calibration wait time, this is how long we wait for all limbs to come in before we consider them calibrated
     public static float _CalibrateWaitTime = 60f;
 
@@ -36,6 +39,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         base.Awake();
         _Instance = this;
+        _UIManager = GetComponent<UKI_UIManager>();
     }
 
     void Start()
@@ -59,10 +63,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void EStop(string reason)
     {
-        FindObjectOfType<UKI_UIManager>()._EstopWarning.SetActive(true);
+        _UIManager._EstopWarning.SetActive(true);
         print("E Stop activated: " + reason);
         _EStopping = true;
-        FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
+        _UIManager.UpdateEstopButton();
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
         StopCoroutine(SendHeartBeat());
     }
@@ -73,12 +77,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         StopCoroutine(SendHeartBeat());
         StartCoroutine(SendHeartBeat());
         _EStopping = false;
-        FindObjectOfType<UKI_UIManager>().UpdateEstopButton();
+        _UIManager.UpdateEstopButton();
         foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
         {
             Destroy(collisionMarker);
         }
-        FindObjectOfType<UKI_UIManager>()._EstopWarning.SetActive(false);
+        _UIManager._EstopWarning.SetActive(false);
     }
 
     IEnumerator SetReportedExtensions()
@@ -222,10 +226,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             if (_SendToModbus)
             {
                 yield return new WaitForSeconds(0.5f);
-                FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.red;
+                _UIManager._HeartBeatDisplay.color = Color.red;
+                print("Sending heartbeat");
                 SendInts(_HeartBeatMessage, true);
                 yield return new WaitForSeconds(0.5f);
-                FindObjectOfType<UKI_UIManager>()._HeartBeatDisplay.color = Color.white;
+                _UIManager._HeartBeatDisplay.color = Color.white;
             }
             else
             {
