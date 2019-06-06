@@ -29,12 +29,23 @@ public class ActuatorSlider : MonoBehaviour
         else
         {
             _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
-        }      
+        }
+
+        if (_Slider == null)
+            print(name);
     }
     
     [ContextMenu("Name")]
     public void Name()
     {
         name = "Actuator Control - " + _ActuatorAssignment.ToString();
+    }
+
+    public void SetToActuatorNorm()
+    {
+        if (_Actuator == null)
+            print(name);
+
+        _Slider.normalizedValue = _Actuator._NormExtension;
     }
 }

@@ -5,15 +5,23 @@ using UnityEngine.UI;
 
 public class UKI_UIManager : MonoBehaviour
 {
-    TestActuator[] _AllActuators;
+    public static UKI_UIManager Instance;
 
+    [Header("Camera")]
     // CAMERA
     public Transform _CamParent;
     [Range(0, 1)] float _CamZNorm = 0;
     public Vector2 _CamZRange;
     public Transform _Camera;
     float _CamZPos;
-    [Range(0,1)] float _CamYRotNorm = 0;
+    [Range(0, 1)] float _CamYRotNorm = 0;
+
+
+    [Header("Actuators")]    
+    public List<TestActuator> _LeftActuators = new List<TestActuator>();
+    public List<TestActuator> _RightActuators = new List<TestActuator>();
+    public List<TestActuator> _AllActuators = new List<TestActuator>();
+
 
     [Header("UI")]
     // UI - CAMERA
@@ -32,6 +40,11 @@ public class UKI_UIManager : MonoBehaviour
 
     public Toggle _OfflineSimModeToggle;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +58,18 @@ public class UKI_UIManager : MonoBehaviour
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
 
-        _AllActuators = FindObjectsOfType<TestActuator>();
+        _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
+    }
+
+    public void AddActuator(TestActuator actuator)
+    {
+        if (actuator._ActuatorIndex.ToString().Contains("Left") && actuator != null)
+            _LeftActuators.Add(actuator);
+        else if (actuator._ActuatorIndex.ToString().Contains("Right") && actuator != null)
+            _RightActuators.Add(actuator);
+
+        if (actuator != null)
+            _AllActuators.Add(actuator);
     }
 
     // Update is called once per frame
@@ -57,7 +81,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void ToggleOfflineSimMode(bool b)
     {
-        for (int i = 0; i < _AllActuators.Length; i++)
+        for (int i = 0; i < _AllActuators.Count; i++)
         {
             _AllActuators[i]._DEBUG_NoModBusSimulationMode = b;
         }
@@ -72,6 +96,30 @@ public class UKI_UIManager : MonoBehaviour
         else
         {
             _EStopButton.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "EStop";
+        }
+    }
+
+    public void MirrorLeft()
+    {
+        for (int i = 0; i < _LeftActuators.Count; i++)
+        {
+            _RightActuators[i]._NormExtension = _LeftActuators[i]._NormExtension;
+        }
+    }
+
+    public void SetActuatorSliders()
+    {
+        for (int i = 0; i < _ActuatorSliders.Length; i++)
+        {
+            _ActuatorSliders[i].SetToActuatorNorm();
+        }
+    }
+
+    public void MirrorRight()
+    {
+        for (int i = 0; i < _RightActuators.Count; i++)
+        {
+            _LeftActuators[i]._NormExtension = _RightActuators[i]._NormExtension;
         }
     }
 
@@ -97,5 +145,4 @@ public class UKI_UIManager : MonoBehaviour
             actuator.Calibrate();
         }
     }
-
 }

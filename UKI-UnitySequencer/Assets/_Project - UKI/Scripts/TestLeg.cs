@@ -46,12 +46,12 @@ public class TestLeg : TestUKILimb
         // SET MATERIALS ON REPORTED LIMBS
         MeshRenderer[] renderers = legCopy.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material = SRResources.ReportedLimbMat;
+            renderers[i].material = SRResources.Limb_Reported;
 
         // SET MATERIALS ON TARGET LIMBS
         renderers = _Hip.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material = SRResources.Target_Limb_Mat;
+            renderers[i].material = SRResources.Limb_Target;
 
         // SETUP COLLISION IGNORE
         _Knee._CollidersToIgnore = _Ankle._CollisionReporter;

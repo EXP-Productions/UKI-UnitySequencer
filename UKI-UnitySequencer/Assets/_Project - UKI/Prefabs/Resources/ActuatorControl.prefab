@@ -488,7 +488,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3295621192534789299
 MonoBehaviour:
@@ -505,7 +505,6 @@ MonoBehaviour:
   _ActuatorAssignment: 0
   _Actuator: {fileID: 0}
   _Slider: {fileID: 4497005733500909171}
-  _SendToModbus: {fileID: 0}
 --- !u!114 &7709871835372293188
 MonoBehaviour:
   m_ObjectHideFlags: 0

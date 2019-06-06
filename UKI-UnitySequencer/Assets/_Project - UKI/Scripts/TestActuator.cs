@@ -16,9 +16,28 @@ using UnityEngine;
 // TODO Simulation mode
 
 
+[System.Serializable]
+public class ActuatorData
+{
+    public float _NormalizedValue;
+    public UkiActuatorAssignments _ActuatorIndex;
+
+    public ActuatorData()
+    {
+    }
+
+    public ActuatorData(TestActuator actuator)
+    {
+        _NormalizedValue = actuator._NormExtension;
+        _ActuatorIndex = actuator._ActuatorIndex;
+    }
+}
+
 /// Basic actuator test that sets the position to move too
 public class TestActuator : MonoBehaviour
 {
+    UKI_UIManager _UKIManager;
+
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;
     // The index of the actuator
@@ -97,10 +116,12 @@ public class TestActuator : MonoBehaviour
 
     public void Init(Transform reportedActuatorTransform)
     {
+        _UKIManager = FindObjectOfType<UKI_UIManager>();
         _ReportedActuatorTransform = reportedActuatorTransform;
 
         // Register the actuator
         UkiStateDB.RegisterActuator(_ActuatorIndex);
+        _UKIManager.AddActuator(this);
 
         // Start the send position coroutine
         StartCoroutine(SendPosAtRate(15));

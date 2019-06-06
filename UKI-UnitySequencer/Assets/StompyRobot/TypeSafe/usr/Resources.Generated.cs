@@ -51,7 +51,7 @@ public sealed class SRResources {
         }
     }
     
-    public static global::TypeSafe.Resource<global::UnityEngine.Material> ReportedLimbMat {
+    public static global::TypeSafe.Resource<global::UnityEngine.Material> Limb_Reported {
         get {
             return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[5]));
         }
@@ -99,7 +99,7 @@ public sealed class SRResources {
         }
     }
     
-    public static global::TypeSafe.Resource<global::UnityEngine.Material> Target_Limb_Mat {
+    public static global::TypeSafe.Resource<global::UnityEngine.Material> Limb_Target {
         get {
             return ((global::TypeSafe.Resource<global::UnityEngine.Material>)(@__ts_internal_resources[13]));
         }
@@ -147,7 +147,7 @@ public sealed class SRResources {
                 new global::TypeSafe.PrefabResource("_LEG - Front Left", "_LEG - Front Left"),
                 new global::TypeSafe.PrefabResource("PlayerWithAuthPrefab", "PlayerWithAuthPrefab"),
                 new global::TypeSafe.PrefabResource("SpawningBase_PlayerPrefab", "SpawningBase_PlayerPrefab"),
-                new global::TypeSafe.Resource<global::UnityEngine.Material>("ReportedLimbMat", "ReportedLimbMat"),
+                new global::TypeSafe.Resource<global::UnityEngine.Material>("Limb - Reported", "Limb - Reported"),
                 new global::TypeSafe.PrefabResource("CollisionMarker", "CollisionMarker"),
                 new global::TypeSafe.PrefabResource("PlayerCallbacksOrderOnTheHost_PlayerPrefab", "PlayerCallbacksOrderOnTheHost_PlayerPrefab"),
                 new global::TypeSafe.PrefabResource("ActuatorControl", "ActuatorControl"),
@@ -155,7 +155,7 @@ public sealed class SRResources {
                 new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("collision", "collision"),
                 new global::TypeSafe.PrefabResource("SpawningBase_SpawnableObjectPrefab", "SpawningBase_SpawnableObjectPrefab"),
                 new global::TypeSafe.PrefabResource("AuthObjPrefab", "AuthObjPrefab"),
-                new global::TypeSafe.Resource<global::UnityEngine.Material>("Target Limb Mat", "Target Limb Mat"),
+                new global::TypeSafe.Resource<global::UnityEngine.Material>("Limb - Target", "Limb - Target"),
                 new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("LineBreaking Following Characters", "LineBreaking Following Characters"),
                 new global::TypeSafe.PrefabResource("Leg - Front left Test", "Leg - Front left Test"),
                 new global::TypeSafe.PrefabResource("GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab", "GetCurrentRTTCallDoesntCrashWhenUseWebSockets_PlayerPrefab"),

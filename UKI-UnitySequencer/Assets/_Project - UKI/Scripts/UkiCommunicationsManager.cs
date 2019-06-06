@@ -227,7 +227,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             {
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.red;
-                print("Sending heartbeat");
+                
                 SendInts(_HeartBeatMessage, true);
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.white;
