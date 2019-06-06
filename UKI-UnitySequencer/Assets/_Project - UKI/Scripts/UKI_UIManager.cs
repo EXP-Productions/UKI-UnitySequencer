@@ -13,8 +13,12 @@ public class UKI_UIManager : MonoBehaviour
     float _CamZPos;
     [Range(0,1)] float _CamYRotNorm = 0;
 
+    [Header("UI")]
+    // UI - CAMERA
     public Slider _Slider_CamRot;
     public Slider _Slider_CamZ;
+
+    // UI
     [HideInInspector]
     public ActuatorSlider[] _ActuatorSliders;
 

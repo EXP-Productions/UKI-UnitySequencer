@@ -112,7 +112,6 @@ public class TestActuator : MonoBehaviour
         }
 
         _InitialRotation = transform.localRotation;
-        print(_InitialRotation);
 
         if (_CollisionReporter != null)
         {

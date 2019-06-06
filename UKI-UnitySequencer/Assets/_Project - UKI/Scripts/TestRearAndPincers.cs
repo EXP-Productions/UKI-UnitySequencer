@@ -24,11 +24,11 @@ public class TestRearAndPincers : TestUKILimb
     private void Start()
     {
         // Copy leg and assign reported transforms
-        GameObject wingCopy = Instantiate(_Raise.gameObject, transform);
-        wingCopy.name = "Reported " + _Raise.name;
+        GameObject limbCopy = Instantiate(_Rear.gameObject, transform);
+        limbCopy.name = "Reported " + _Rear.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] actuators = wingCopy.GetComponentsInChildren<TestActuator>();       
+        TestActuator[] actuators = limbCopy.GetComponentsInChildren<TestActuator>();       
         for (int i = 0; i < actuators.Length; i++)
         {
             if(actuators[i]._CollisionReporter!=null)
@@ -39,12 +39,12 @@ public class TestRearAndPincers : TestUKILimb
         }
 
         // SET MATERIALS ON REPORTED LIMBS
-        MeshRenderer[] renderers = wingCopy.GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] renderers = limbCopy.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material = SRResources.ReportedLimbMat;
 
         // SET MATERIALS ON TARGET LIMBS
-        renderers = _Raise.GetComponentsInChildren<MeshRenderer>();
+        renderers = _Rear.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material = SRResources.Target_Limb_Mat;
     }
@@ -52,25 +52,7 @@ public class TestRearAndPincers : TestUKILimb
     [ContextMenu("Assign and rename")]
     protected override void InitActuatorAssignments()
     {
-        //Bit haxy but we're using UkiActuatorAssignments enum to list all the actuator addresses we need to ping messages to,
-        //Because these seem to follow a naming convention we can add a bit of convenience code to determine the addresses
-        //for hip, knee, ankle addresses based on the particular leg we're looking at.
-        string raiseEnum = _Raise.ToString() + "Raise";
-        string rotateEnum = _Rotate.ToString() + "Rotate";
-
-        UkiActuatorAssignments[] assignments = (UkiActuatorAssignments[])System.Enum.GetValues(typeof(UkiActuatorAssignments));
-        foreach(UkiActuatorAssignments assignment in assignments)
-        {
-            if (assignment.ToString() == raiseEnum)
-            {
-                _Raise._ActuatorIndex = assignment;
-                _Raise.name = "Actuator - " + assignment.ToString();
-            }
-            else if (assignment.ToString() == rotateEnum)
-            {
-                _Rotate._ActuatorIndex = assignment;
-                _Rotate.name = "Actuator - " + assignment.ToString();
-            }
-        }
+        _Rear._ActuatorIndex = UkiActuatorAssignments.Arse;
+        _Rear.name = "Actuator - " + _Rear._ActuatorIndex.ToString();
     }
 }

@@ -27,7 +27,7 @@ public static class UkiStateDB
         }
         else
         {
-            UnityEngine.Debug.LogError("Registering the same actuator twice, are you sure you've assigned scene actuators correctly");
+            UnityEngine.Debug.LogError(actuator.ToString() +   "   ERROR: Registering the same actuator twice, are you sure you've assigned scene actuators correctly");
         }
     }
 
