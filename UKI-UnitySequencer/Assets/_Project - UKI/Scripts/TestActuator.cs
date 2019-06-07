@@ -161,9 +161,6 @@ public class TestActuator : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-            SetToReportedExtension();
-
         // CHECK BOOST
         if (_BoostSpeedToggled)
         {

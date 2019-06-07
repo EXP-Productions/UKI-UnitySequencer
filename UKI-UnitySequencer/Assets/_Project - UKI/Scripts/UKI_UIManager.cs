@@ -6,17 +6,7 @@ using UnityEngine.UI;
 public class UKI_UIManager : MonoBehaviour
 {
     public static UKI_UIManager Instance;
-
-    [Header("Camera")]
-    // CAMERA
-    public Transform _CamParent;
-    [Range(0, 1)] float _CamZNorm = 0;
-    public Vector2 _CamZRange;
-    public Transform _Camera;
-    float _CamZPos;
-    [Range(0, 1)] float _CamYRotNorm = 0;
-
-
+    
     [Header("Actuators")]    
     public List<TestActuator> _LeftActuators = new List<TestActuator>();
     public List<TestActuator> _RightActuators = new List<TestActuator>();
@@ -56,8 +46,6 @@ public class UKI_UIManager : MonoBehaviour
     {
         _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;
 
-        _Slider_CamRot.onValueChanged.AddListener(delegate { SetCamYRot(); });
-        _Slider_CamZ.onValueChanged.AddListener(delegate { SetCamZDist(); });
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
         _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
@@ -138,16 +126,6 @@ public class UKI_UIManager : MonoBehaviour
         }
 
         SetActuatorSliders();
-    }
-
-    void SetCamYRot()
-    {
-        _CamYRotNorm = _Slider_CamRot.value;
-    }
-
-    void SetCamZDist()
-    {
-        _CamZNorm = _Slider_CamZ.value;
     }
 
     void SetActuatorExtension(ActuatorSlider actuatorSlider)
