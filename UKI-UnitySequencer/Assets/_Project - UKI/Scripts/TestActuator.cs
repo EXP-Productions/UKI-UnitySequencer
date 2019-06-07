@@ -9,6 +9,8 @@ using UnityEngine;
 // TODO Test out speed boost on actuators
 // TODO Draw limb paths 
 
+// TODO Add save name for poses
+
 
 [System.Serializable]
 public class ActuatorData
@@ -188,8 +190,6 @@ public class TestActuator : MonoBehaviour
                     // CALCULATE BOOST
                     float boost = 1;
                     if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
-
-                    print(boost);
 
                     if (_ReportedExtension < CurrentEncoderExtension)
                         _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;

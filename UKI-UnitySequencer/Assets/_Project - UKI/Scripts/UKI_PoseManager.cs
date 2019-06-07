@@ -49,34 +49,7 @@ public class UKI_PoseManager : MonoBehaviour
             // CHECK IF ALL ACTUATORS ARE STOPPED
         }
 
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            if(Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                SavePose(0);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                SavePose(1);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                SavePose(2);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                SavePose(3);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                SavePose(4);
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                DeletePose();
-            }
-        }
-        else if (Input.GetKey(KeyCode.RightShift))
+        if (Input.GetKey(KeyCode.RightShift))
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -125,18 +98,24 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 
-    void SavePose(int index)
+    public void SavePose()
     {
         PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators);
         _AllPoses.Add(newPoseData);
+        UKI_UIManager.Instance.AddPoseButton(_AllPoses.Count-1);
+
         JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
         print("Poses saved: " + _AllPoses.Count);
     }
 
-    void DeletePose()
+    public void DeletePose()
     {
         if(_AllPoses[_SelectedPose] != null)
             _AllPoses.Remove(_AllPoses[_SelectedPose]);
+
+        UKI_UIManager.Instance.RemovePoseButton();
+
+        JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
 
         print("Poses deleted: " + _AllPoses.Count);
     }

@@ -31,6 +31,11 @@ public class UKI_UIManager : MonoBehaviour
     public Button _MirrorLeftButton;
     public Button _MirrorRightButton;
 
+    public Button _SaveCurrentPose;
+    public Button _DeleteSelectedPose;
+    List<Button> _PoseButtons = new List<Button>();
+
+
     public RectTransform _PoseButtonParent;
     public Button _SelectPoseButtonPrefab;
 
@@ -54,6 +59,9 @@ public class UKI_UIManager : MonoBehaviour
         _MirrorRightButton.onClick.AddListener(() => MirrorRight());
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
+
+        _SaveCurrentPose.onClick.AddListener(() => UKI_PoseManager.Instance.SavePose());
+        _DeleteSelectedPose.onClick.AddListener(() => UKI_PoseManager.Instance.DeletePose());
 
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
     }
@@ -99,7 +107,24 @@ public class UKI_UIManager : MonoBehaviour
     public void AddPoseButton(int index)
     {
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
+        newBtn.GetComponentInChildren<Text>().text = "Pose " + index;
         newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.LoadPose(index));
+
+        _PoseButtons.Add(newBtn);
+    }
+
+    public void RemovePoseButton()
+    {
+        Button btn = _PoseButtons[0];
+        _PoseButtons.Remove(btn);
+        Destroy(btn.gameObject);
+
+        for (int i = 0; i < _PoseButtons.Count; i++)
+        {
+            _PoseButtons[i].onClick.RemoveAllListeners();
+            int index = i;
+            _PoseButtons[i].onClick.AddListener(() => UKI_PoseManager.Instance.LoadPose(index));
+        }
     }
 
     public void SetActuatorSliders()
