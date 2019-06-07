@@ -186,19 +186,22 @@ public class TestActuator : MonoBehaviour
         // Run sim without modbus
         if (_DEBUG_NoModBusSimulationMode)
         {
-            if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) > 2)
+            if (!UkiCommunicationsManager.Instance._EStopping)
             {
-                if (_ReportedExtension < CurrentEncoderExtension)
+                if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) > 2)
                 {
-                    _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime;
+                    if (_ReportedExtension < CurrentEncoderExtension)
+                    {
+                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime;
+                    }
+                    else
+                    {
+                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime;
+                    }
                 }
-                else
-                {
-                    _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime;
-                }
-            }
 
-            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+                _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+            }
         }
         else
         {
@@ -210,7 +213,6 @@ public class TestActuator : MonoBehaviour
 
             // Update the readin actuator transform
             _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-
         }
 
         // UPDATE REPORTED ACTUATOR
