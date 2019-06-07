@@ -36,4 +36,6 @@ public sealed class SRLayerMask {
     public const int UI = 32;
     
     public const int PostProcessing = 256;
+    
+    public const int MainCamOnly = 512;
 }

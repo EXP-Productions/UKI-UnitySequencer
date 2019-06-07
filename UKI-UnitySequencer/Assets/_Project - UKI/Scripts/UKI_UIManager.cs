@@ -38,6 +38,9 @@ public class UKI_UIManager : MonoBehaviour
     public GameObject _EstopWarning;
     public Image _HeartBeatDisplay;
 
+    public Button _MirrorLeftButton;
+    public Button _MirrorRightButton;
+
     public Toggle _OfflineSimModeToggle;
 
     private void Awake()
@@ -55,6 +58,9 @@ public class UKI_UIManager : MonoBehaviour
         _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
         _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
+
+        _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
+        _MirrorRightButton.onClick.AddListener(() => MirrorRight());
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
 
@@ -99,24 +105,11 @@ public class UKI_UIManager : MonoBehaviour
         }
     }
 
-    public void MirrorLeft()
-    {
-        for (int i = 0; i < _LeftActuators.Count; i++)
-        {
-            _RightActuators[i]._NormExtension = _LeftActuators[i]._NormExtension;
-        }
-
-        SetActuatorSliders();
-    }
 
     public void SetActuatorSliders()
     {
         for (int i = 0; i < _ActuatorSliders.Length; i++)
-        {
             _ActuatorSliders[i].SetToActuatorNorm();
-        }
-
-        SetActuatorSliders();
     }
 
     public void MirrorRight()
@@ -125,6 +118,16 @@ public class UKI_UIManager : MonoBehaviour
         {
             _LeftActuators[i]._NormExtension = _RightActuators[i]._NormExtension;
         }
+    }
+
+    public void MirrorLeft()
+    {
+        for (int i = 0; i < _LeftActuators.Count; i++)
+        {
+            _RightActuators[i]._NormExtension = _LeftActuators[i]._NormExtension;
+        }
+
+        SetActuatorSliders();
     }
 
     void SetCamYRot()

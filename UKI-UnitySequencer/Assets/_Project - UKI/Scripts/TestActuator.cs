@@ -11,9 +11,6 @@ using UnityEngine;
 // TODO Handle collision detection a bit better, potentially move the collision detection to the reported limbs.
 // Detect a collision on the reported limbs for estop but on the main limbs just warn of upcoming collision
 // TODO Draw limb paths 
-// TODO UKI limb for rear and pincers
-// TODO Mirror limbs mode
-// TODO Simulation mode
 
 
 [System.Serializable]

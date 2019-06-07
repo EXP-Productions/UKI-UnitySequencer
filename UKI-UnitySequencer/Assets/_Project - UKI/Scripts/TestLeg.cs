@@ -33,14 +33,27 @@ public class TestLeg : TestUKILimb
         legCopy.name = "Reported " + _Hip.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] actuators = legCopy.GetComponentsInChildren<TestActuator>();       
-        for (int i = 0; i < actuators.Length; i++)
+        TestActuator[] newActuators = legCopy.GetComponentsInChildren<TestActuator>();       
+        for (int i = 0; i < newActuators.Length; i++)
         {
-            if(actuators[i]._CollisionReporter!=null)
-                Destroy(actuators[i]._CollisionReporter.gameObject);
 
-            Destroy(actuators[i]);
-            _ActuatorArray[i].Init(actuators[i].transform);
+            //// Reassign collision reporters to the copied leg
+            //// this way the collision is reported when it is actually about to collide not before
+            //if (newActuators[i]._CollisionReporter != null)
+            //{
+            //    CollisionReporter original = _ActuatorArray[i]._CollisionReporter;
+            //    _ActuatorArray[i]._CollisionReporter = newActuators[i]._CollisionReporter;
+            //    Destroy(original.gameObject);
+            //}
+
+            // ORIGINAL METHOD
+            // Destroy collision reporters
+            if (newActuators[i]._CollisionReporter!=null)
+                Destroy(newActuators[i]._CollisionReporter.gameObject);
+
+            Destroy(newActuators[i]);
+            _ActuatorArray[i].Init(newActuators[i].transform);
+           
         }
 
         // SET MATERIALS ON REPORTED LIMBS
