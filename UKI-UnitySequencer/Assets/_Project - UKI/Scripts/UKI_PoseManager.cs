@@ -24,6 +24,8 @@ public class PoseData
 
 public class UKI_PoseManager : MonoBehaviour
 {
+    public static UKI_PoseManager Instance;
+
     TestActuator[] _AllTestActuators;
 
     List<PoseData> _AllPoses = new List<PoseData>();
@@ -34,6 +36,7 @@ public class UKI_PoseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         _AllTestActuators = FindObjectsOfType<TestActuator>();
         LoadAllPoses();
     }
@@ -101,10 +104,14 @@ public class UKI_PoseManager : MonoBehaviour
     void LoadAllPoses()
     {
         _AllPoses = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
+
+        for (int i = 0; i < _AllPoses.Count; i++)        
+            UKI_UIManager.Instance.AddPoseButton(i);
+
         print("Poses loaded: " + _AllPoses.Count);
     }
 
-    void LoadPose(int index)
+    public void LoadPose(int index)
     {
         _SelectedPose = index;
         print("Loading pose " + index);

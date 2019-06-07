@@ -41,6 +41,9 @@ public class UKI_UIManager : MonoBehaviour
     public Button _MirrorLeftButton;
     public Button _MirrorRightButton;
 
+    public RectTransform _PoseButtonParent;
+    public Button _SelectPoseButtonPrefab;
+
     public Toggle _OfflineSimModeToggle;
 
     private void Awake()
@@ -81,8 +84,8 @@ public class UKI_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _CamParent.SetLocalRotY(_CamYRotNorm * -360);
-        _Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
+        //_CamParent.SetLocalRotY(_CamYRotNorm * -360);
+        //_Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
     }
 
     void ToggleOfflineSimMode(bool b)
@@ -105,6 +108,11 @@ public class UKI_UIManager : MonoBehaviour
         }
     }
 
+    public void AddPoseButton(int index)
+    {
+        Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
+        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.LoadPose(index));
+    }
 
     public void SetActuatorSliders()
     {

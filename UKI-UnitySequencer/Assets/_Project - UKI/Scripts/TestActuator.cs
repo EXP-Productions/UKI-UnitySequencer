@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO - UI should reflect reported positions
-// TODO Pose manager serialize out to json
 // TODO resurrect timeline manager and see how that works
 // TODO hook up IK
 // TODO Pose player. Once reaching one pose move to the next pose
 // TODO Test out speed boost on actuators
-// TODO Handle collision detection a bit better, potentially move the collision detection to the reported limbs.
-// Detect a collision on the reported limbs for estop but on the main limbs just warn of upcoming collision
 // TODO Draw limb paths 
 
 
@@ -59,6 +56,7 @@ public class TestActuator : MonoBehaviour
     public bool _BoostSpeedToggled = false;
     float _MaxBoostDuration = 5;
     float _BoostTimer = 0;
+
 
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
     float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(_NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
@@ -190,14 +188,16 @@ public class TestActuator : MonoBehaviour
             {
                 if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) > 2)
                 {
+                    // CALCULATE BOOST
+                    float boost = 1;
+                    if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
+
+                    print(boost);
+
                     if (_ReportedExtension < CurrentEncoderExtension)
-                    {
-                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime;
-                    }
+                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
                     else
-                    {
                         _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime;
-                    }
                 }
 
                 _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
