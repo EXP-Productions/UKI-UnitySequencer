@@ -155,6 +155,7 @@ public class TestActuator : MonoBehaviour
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
     }
 
+    float _ReportedTollerance = 3;
     // Update is called once per frame
     void Update()
     {
@@ -185,8 +186,10 @@ public class TestActuator : MonoBehaviour
         {
             if (!UkiCommunicationsManager.Instance._EStopping)
             {
-                if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) > 2)
-                {
+                if(_State == UKIEnums.State.Animating)
+                { 
+                //if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) >= _ReportedTollerance)
+                //{
                     // CALCULATE BOOST
                     float boost = 1;
                     if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
@@ -225,14 +228,17 @@ public class TestActuator : MonoBehaviour
         }
         else if (_State == UKIEnums.State.Paused)
         {
+            float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
             // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
-            if (_ReportedExtension != _NormExtension * _MaxReportedExtension)
+            if (reportedDiff >= _ReportedTollerance * 1.25f)
                 SetState(UKIEnums.State.Animating);
         }
         else if (_State == UKIEnums.State.Animating)
         {
+            float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
+            print(reportedDiff);
             // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
-            if (_ReportedExtension == _NormExtension * _MaxReportedExtension)
+            if (reportedDiff < _ReportedTollerance)
                 SetState(UKIEnums.State.Paused);
         }
 

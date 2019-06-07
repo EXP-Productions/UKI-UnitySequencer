@@ -47,6 +47,12 @@ public class UKI_PoseManager : MonoBehaviour
         if(_LoopPoses)
         {
             // CHECK IF ALL ACTUATORS ARE STOPPED
+            //int pausedCount = 0;
+            for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
+            {
+               // if(UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused)
+
+            }
         }
 
         if (Input.GetKey(KeyCode.RightShift))
