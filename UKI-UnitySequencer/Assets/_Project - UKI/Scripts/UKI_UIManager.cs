@@ -118,6 +118,8 @@ public class UKI_UIManager : MonoBehaviour
         {
             _LeftActuators[i]._NormExtension = _RightActuators[i]._NormExtension;
         }
+
+        SetActuatorSliders();
     }
 
     public void MirrorLeft()

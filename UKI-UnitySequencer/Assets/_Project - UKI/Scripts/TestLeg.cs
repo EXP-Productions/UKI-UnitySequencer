@@ -37,23 +37,22 @@ public class TestLeg : TestUKILimb
         for (int i = 0; i < newActuators.Length; i++)
         {
 
-            //// Reassign collision reporters to the copied leg
-            //// this way the collision is reported when it is actually about to collide not before
-            //if (newActuators[i]._CollisionReporter != null)
-            //{
-            //    CollisionReporter original = _ActuatorArray[i]._CollisionReporter;
-            //    _ActuatorArray[i]._CollisionReporter = newActuators[i]._CollisionReporter;
-            //    Destroy(original.gameObject);
-            //}
+            // Reassign collision reporters to the copied leg
+            // this way the collision is reported when it is actually about to collide not before
+            if (newActuators[i]._CollisionReporter != null)
+            {
+                CollisionReporter original = _ActuatorArray[i]._CollisionReporter;
+                _ActuatorArray[i]._CollisionReporter = newActuators[i]._CollisionReporter;
+                Destroy(original.gameObject);
+            }
 
-            // ORIGINAL METHOD
-            // Destroy collision reporters
-            if (newActuators[i]._CollisionReporter!=null)
-                Destroy(newActuators[i]._CollisionReporter.gameObject);
+            //// ORIGINAL METHOD
+            //// Destroy collision reporters
+            //if (newActuators[i]._CollisionReporter!=null)
+            //    Destroy(newActuators[i]._CollisionReporter.gameObject);
 
             Destroy(newActuators[i]);
-            _ActuatorArray[i].Init(newActuators[i].transform);
-           
+            _ActuatorArray[i].Init(newActuators[i].transform);           
         }
 
         // SET MATERIALS ON REPORTED LIMBS
