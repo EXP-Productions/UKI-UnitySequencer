@@ -32,8 +32,11 @@ public class UKI_UIManager : MonoBehaviour
     public Button _SaveCurrentPose;
     public Button _DeleteSelectedPose;
     List<Button> _PoseButtons = new List<Button>();
+    public Toggle _LoopPosesToggle;
+    public Toggle _MaskWingsToggle;
 
     public Slider _OfflineSpeedScalerSlider;
+
 
 
     public RectTransform _PoseButtonParent;
@@ -64,6 +67,9 @@ public class UKI_UIManager : MonoBehaviour
         _DeleteSelectedPose.onClick.AddListener(() => UKI_PoseManager.Instance.DeletePose());
 
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
+
+        _LoopPosesToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._LoopPoses = b);
+        _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
     }
@@ -96,6 +102,8 @@ public class UKI_UIManager : MonoBehaviour
 
     public void SetOfflineSpeedScaler(float f)
     {
+        print("Offline speed scaler: " + f);
+
         foreach (TestActuator act in _AllActuators)
             act._OfflineSpeedScaler = f;
     }
@@ -116,7 +124,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
         newBtn.GetComponentInChildren<Text>().text = "Pose " + index;
-        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index));
+        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index, UKI_PoseManager.Instance._MaskWings));
 
         _PoseButtons.Add(newBtn);
     }

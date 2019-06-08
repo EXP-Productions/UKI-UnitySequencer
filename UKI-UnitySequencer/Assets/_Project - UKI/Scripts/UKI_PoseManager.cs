@@ -32,6 +32,7 @@ public class UKI_PoseManager : MonoBehaviour
     int _SelectedPose = 0;
 
     public bool _LoopPoses = false;
+    public bool _MaskWings = true;
 
     // Start is called before the first frame update
     public void Start()
@@ -61,7 +62,7 @@ public class UKI_PoseManager : MonoBehaviour
                 if (_SelectedPose >= _AllPoses.Count)
                     _SelectedPose = 0;
 
-                SetPose(_SelectedPose);
+                SetPose(_SelectedPose, _MaskWings);
             }
         }
 
@@ -100,15 +101,22 @@ public class UKI_PoseManager : MonoBehaviour
         print("Poses loaded: " + _AllPoses.Count);
     }
 
-    public void SetPose(int index)
+    public void SetPose(int index, bool maskWings = false)
     {
         _SelectedPose = index;
         print("Setting pose: " + index);
         for (int i = 0; i < _AllTestActuators.Count; i++)
         {
             foreach (ActuatorData data in _AllPoses[index]._ActuatorData)
+            {
                 if (_AllTestActuators[i]._ActuatorIndex == data._ActuatorIndex)
-                    _AllTestActuators[i]._NormExtension = data._NormalizedValue;
+                {
+                    if (maskWings && _AllTestActuators[i]._ActuatorIndex.ToString().Contains("Wing"))
+                        continue;
+                    else
+                        _AllTestActuators[i]._NormExtension = data._NormalizedValue;
+                }
+            }
         }
 
         UKI_UIManager.Instance.SetActuatorSliders();
