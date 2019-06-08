@@ -95,6 +95,7 @@ public class TestActuator : MonoBehaviour
     public bool _DEBUG = false;
     public bool _DEBUG_NoModBusSimulationMode = false;
     public bool _DEBUG_SelfInit = false;
+    public bool _Donotsend = false;
 
     private void Awake()
     {
@@ -382,8 +383,12 @@ public class TestActuator : MonoBehaviour
         {
             if (prevPos != CurrentEncoderExtension)
             {
-                prevPos = CurrentEncoderExtension;
-                SendEncoderExtensionLength();
+                if (!_Donotsend)
+                {
+
+                    prevPos = CurrentEncoderExtension;
+                    SendEncoderExtensionLength();
+                }
             }
 
             yield return new WaitForSeconds(wait);

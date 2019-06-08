@@ -260,6 +260,7 @@ MonoBehaviour:
   _DEBUG: 0
   _DEBUG_NoModBusSimulationMode: 0
   _DEBUG_SelfInit: 0
+  _Donotsend: 0
 --- !u!114 &337787871 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 731629085998246071, guid: fd4804dfa1f362a4c9448293f2b0407e,
@@ -2973,7 +2974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00006580655
+      value: 0.000028381532
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4807,6 +4808,11 @@ PrefabInstance:
     - target: {fileID: 5059459025955289303, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _DEBUG
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _Donotsend
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
