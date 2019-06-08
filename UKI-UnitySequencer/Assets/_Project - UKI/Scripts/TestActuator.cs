@@ -58,6 +58,7 @@ public class TestActuator : MonoBehaviour
     public bool _BoostSpeedToggled = false;
     float _MaxBoostDuration = 5;
     float _BoostTimer = 0;
+    public float _OfflineSpeedScaler = 1;
 
 
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
@@ -155,7 +156,7 @@ public class TestActuator : MonoBehaviour
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
     }
 
-    float _ReportedTollerance = 3;
+    float _ReportedTollerance = 10;
     // Update is called once per frame
     void Update()
     {
@@ -194,10 +195,12 @@ public class TestActuator : MonoBehaviour
                     float boost = 1;
                     if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
 
+                    boost *= _OfflineSpeedScaler;
+
                     if (_ReportedExtension < CurrentEncoderExtension)
                         _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
                     else
-                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime;
+                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime * boost;
                 }
 
                 _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
@@ -219,6 +222,9 @@ public class TestActuator : MonoBehaviour
         float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
 
+        // difference between reported and the set length
+        float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
+
         // UPDATE STATES
         if (_State == UKIEnums.State.Calibrating)
         {
@@ -228,20 +234,16 @@ public class TestActuator : MonoBehaviour
         }
         else if (_State == UKIEnums.State.Paused)
         {
-            float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
             // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
-            if (reportedDiff >= _ReportedTollerance * 1.25f)
+            if (reportedDiff >= _ReportedTollerance * 3)
                 SetState(UKIEnums.State.Animating);
         }
         else if (_State == UKIEnums.State.Animating)
         {
-            float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
-            print(reportedDiff);
             // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
             if (reportedDiff < _ReportedTollerance)
                 SetState(UKIEnums.State.Paused);
         }
-
     }
 
 

@@ -26,18 +26,17 @@ public class UKI_PoseManager : MonoBehaviour
 {
     public static UKI_PoseManager Instance;
 
-    TestActuator[] _AllTestActuators;
+    List<TestActuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
 
     List<PoseData> _AllPoses = new List<PoseData>();
     int _SelectedPose = 0;
 
-    bool _LoopPoses = false;
+    public bool _LoopPoses = false;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         Instance = this;
-        _AllTestActuators = FindObjectsOfType<TestActuator>();
         LoadAllPoses();
     }
 
@@ -47,11 +46,22 @@ public class UKI_PoseManager : MonoBehaviour
         if(_LoopPoses)
         {
             // CHECK IF ALL ACTUATORS ARE STOPPED
-            //int pausedCount = 0;
+            int pausedCount = 0;
             for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
             {
-               // if(UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused)
+                if (UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused)
+                    pausedCount++;
+            }
 
+            print("Actuators Paused count: " + pausedCount + "/" + _AllTestActuators.Count);
+
+            if(pausedCount == UKI_UIManager.Instance._AllActuators.Count)
+            {
+                _SelectedPose++;
+                if (_SelectedPose >= _AllPoses.Count)
+                    _SelectedPose = 0;
+
+                SetPose(_SelectedPose);
             }
         }
 
@@ -59,23 +69,23 @@ public class UKI_PoseManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                LoadPose(0);
+                SetPose(0);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                LoadPose(1);
+                SetPose(1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                LoadPose(2);
+                SetPose(2);
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                LoadPose(3);
+                SetPose(3);
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                LoadPose(4);
+                SetPose(4);
             }
         }
     }
@@ -90,11 +100,11 @@ public class UKI_PoseManager : MonoBehaviour
         print("Poses loaded: " + _AllPoses.Count);
     }
 
-    public void LoadPose(int index)
+    public void SetPose(int index)
     {
         _SelectedPose = index;
-        print("Loading pose " + index);
-        for (int i = 0; i < _AllTestActuators.Length; i++)
+        print("Setting pose: " + index);
+        for (int i = 0; i < _AllTestActuators.Count; i++)
         {
             foreach (ActuatorData data in _AllPoses[index]._ActuatorData)
                 if (_AllTestActuators[i]._ActuatorIndex == data._ActuatorIndex)

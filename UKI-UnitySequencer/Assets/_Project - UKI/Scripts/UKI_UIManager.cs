@@ -13,15 +13,13 @@ public class UKI_UIManager : MonoBehaviour
     public List<TestActuator> _AllActuators = new List<TestActuator>();
 
 
-    [Header("UI")]
-    // UI - CAMERA
-    public Slider _Slider_CamRot;
-    public Slider _Slider_CamZ;
-
+   
+  
     // UI
     [HideInInspector]
     public ActuatorSlider[] _ActuatorSliders;
 
+    [Header("UI")]
     public Button _EStopButton;
     public Button _CalibrateButton;
     public Toggle _SendToModBusToggle;
@@ -34,6 +32,8 @@ public class UKI_UIManager : MonoBehaviour
     public Button _SaveCurrentPose;
     public Button _DeleteSelectedPose;
     List<Button> _PoseButtons = new List<Button>();
+
+    public Slider _OfflineSpeedScalerSlider;
 
 
     public RectTransform _PoseButtonParent;
@@ -64,6 +64,8 @@ public class UKI_UIManager : MonoBehaviour
         _DeleteSelectedPose.onClick.AddListener(() => UKI_PoseManager.Instance.DeletePose());
 
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
+
+        _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
     }
 
     public void AddActuator(TestActuator actuator)
@@ -92,6 +94,12 @@ public class UKI_UIManager : MonoBehaviour
         }
     }
 
+    public void SetOfflineSpeedScaler(float f)
+    {
+        foreach (TestActuator act in _AllActuators)
+            act._OfflineSpeedScaler = f;
+    }
+
     public void UpdateEstopButton()
     {
         if(UkiCommunicationsManager.Instance._EStopping)
@@ -108,7 +116,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
         newBtn.GetComponentInChildren<Text>().text = "Pose " + index;
-        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.LoadPose(index));
+        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index));
 
         _PoseButtons.Add(newBtn);
     }
@@ -123,7 +131,7 @@ public class UKI_UIManager : MonoBehaviour
         {
             _PoseButtons[i].onClick.RemoveAllListeners();
             int index = i;
-            _PoseButtons[i].onClick.AddListener(() => UKI_PoseManager.Instance.LoadPose(index));
+            _PoseButtons[i].onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index));
         }
     }
 
