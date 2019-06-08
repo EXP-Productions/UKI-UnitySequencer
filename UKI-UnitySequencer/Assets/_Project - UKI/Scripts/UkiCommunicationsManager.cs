@@ -96,6 +96,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         }
         yield return new WaitForSeconds(1f);
         ResetEStop();
+        UKI_UIManager.Instance.SetActuatorSliders();
     }
 
     private void Update()
