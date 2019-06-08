@@ -44,6 +44,10 @@ public class UKI_UIManager : MonoBehaviour
 
     public Toggle _OfflineSimModeToggle;
 
+    public GameObject _SavePoseDialog;
+    public Button _SavePoseNameButton;
+    public InputField _SavePoseNameInput;
+
     private void Awake()
     {
         Instance = this;
@@ -72,6 +76,9 @@ public class UKI_UIManager : MonoBehaviour
         _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
+
+        _SavePoseNameButton.onClick.AddListener(() => SavePose());
+
     }
 
     public void AddActuator(TestActuator actuator)
@@ -181,4 +188,15 @@ public class UKI_UIManager : MonoBehaviour
             actuator.Calibrate();
         }
     }
+
+    void SavePose()
+    {
+        PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators, _SavePoseNameInput.text);
+        UKI_PoseManager.Instance._AllPoses.Add(newPoseData);
+        UKI_UIManager.Instance.AddPoseButton(UKI_PoseManager.Instance._AllPoses.Count - 1);
+        JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), UKI_PoseManager.Instance._AllPoses);
+        print("Poses saved: " + UKI_PoseManager.Instance._AllPoses.Count);
+        _SavePoseDialog.SetActive(false);
+    }
+
 }

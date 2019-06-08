@@ -7,14 +7,18 @@ using Newtonsoft.Json;
 [System.Serializable]
 public class PoseData
 {
+    public string _Name;
+
     public List<ActuatorData> _ActuatorData = new List<ActuatorData>();
 
     public PoseData()
     {
     }
 
-    public PoseData(List<TestActuator> actuators)
+    public PoseData(List<TestActuator> actuators, string name)
     {
+        _Name = name;
+
         for (int i = 0; i < actuators.Count; i++)
         {
             _ActuatorData.Add(new ActuatorData(actuators[i]));
@@ -28,7 +32,8 @@ public class UKI_PoseManager : MonoBehaviour
 
     List<TestActuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
 
-    List<PoseData> _AllPoses = new List<PoseData>();
+    [HideInInspector]
+    public List<PoseData> _AllPoses = new List<PoseData>();
     int _SelectedPose = 0;
 
     public bool _LoopPoses = false;
@@ -124,12 +129,7 @@ public class UKI_PoseManager : MonoBehaviour
 
     public void SavePose()
     {
-        PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators);
-        _AllPoses.Add(newPoseData);
-        UKI_UIManager.Instance.AddPoseButton(_AllPoses.Count-1);
-
-        JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
-        print("Poses saved: " + _AllPoses.Count);
+        UKI_UIManager.Instance._SavePoseDialog.SetActive(true);
     }
 
     public void DeletePose()

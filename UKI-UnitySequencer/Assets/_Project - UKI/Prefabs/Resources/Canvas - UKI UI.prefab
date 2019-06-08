@@ -1262,7 +1262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00007247925, y: 0.00053116126}
+  m_AnchoredPosition: {x: -0.00007247925, y: -0.00006853465}
   m_SizeDelta: {x: 0, y: 110}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1129367973
@@ -2660,6 +2660,150 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &1397667919597147295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2850654487991639068}
+  - component: {fileID: 8780653979719105805}
+  - component: {fileID: 1687623927267522120}
+  - component: {fileID: 2013978080877915778}
+  m_Layer: 5
+  m_Name: InputField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2850654487991639068
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397667919597147295}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4974271068401290675}
+  - {fileID: 6232089780725634198}
+  m_Father: {fileID: 8483515560819645143}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 260, y: 60}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8780653979719105805
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397667919597147295}
+  m_CullTransparentMesh: 0
+--- !u!114 &1687623927267522120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397667919597147295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!114 &2013978080877915778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397667919597147295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1687623927267522120}
+  m_TextComponent: {fileID: 7475481378077940785}
+  m_Placeholder: {fileID: 6466622129670632001}
+  m_ContentType: 0
+  m_InputType: 0
+  m_AsteriskChar: 42
+  m_KeyboardType: 0
+  m_LineType: 0
+  m_HideMobileInput: 0
+  m_CharacterValidation: 0
+  m_CharacterLimit: 0
+  m_OnEndEdit:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.InputField+SubmitEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.InputField+OnChangeEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_CustomCaretColor: 0
+  m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
+  m_Text: 
+  m_CaretBlinkRate: 0.85
+  m_CaretWidth: 1
+  m_ReadOnly: 0
 --- !u!1 &1593818892333210984
 GameObject:
   m_ObjectHideFlags: 0
@@ -3114,6 +3258,285 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &3075813473423935397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4974271068401290675}
+  - component: {fileID: 4724729696673799512}
+  - component: {fileID: 6466622129670632001}
+  m_Layer: 5
+  m_Name: Placeholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4974271068401290675
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075813473423935397}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2850654487991639068}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.5}
+  m_SizeDelta: {x: -20, y: -13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4724729696673799512
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075813473423935397}
+  m_CullTransparentMesh: 0
+--- !u!114 &6466622129670632001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075813473423935397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 2
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 109
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Enter name...
+--- !u!1 &3276209642084274659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6664861592447773699}
+  - component: {fileID: 8711504865024300786}
+  - component: {fileID: 4922117524411985201}
+  - component: {fileID: 731629085998246071}
+  m_Layer: 5
+  m_Name: Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6664861592447773699
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276209642084274659}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3486636835441427025}
+  m_Father: {fileID: 8483515560819645143}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -64}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8711504865024300786
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276209642084274659}
+  m_CullTransparentMesh: 0
+--- !u!114 &4922117524411985201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276209642084274659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!114 &731629085998246071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276209642084274659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 4922117524411985201}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!1 &3478748788348315659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3486636835441427025}
+  - component: {fileID: 1331567031471541597}
+  - component: {fileID: 2998577240815934645}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3486636835441427025
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3478748788348315659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6664861592447773699}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1331567031471541597
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3478748788348315659}
+  m_CullTransparentMesh: 0
+--- !u!114 &2998577240815934645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3478748788348315659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Save
 --- !u!1 &3496848563038637484
 GameObject:
   m_ObjectHideFlags: 0
@@ -3181,6 +3604,82 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &3612096153678029067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8483515560819645143}
+  - component: {fileID: 5675302566236375479}
+  - component: {fileID: 4931543088620525556}
+  m_Layer: 5
+  m_Name: PoseSaveDialog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &8483515560819645143
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612096153678029067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2850654487991639068}
+  - {fileID: 6664861592447773699}
+  m_Father: {fileID: 7615556869612387181}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5675302566236375479
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612096153678029067}
+  m_CullTransparentMesh: 0
+--- !u!114 &4931543088620525556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612096153678029067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5094,6 +5593,7 @@ RectTransform:
   - {fileID: 7615556869972941349}
   - {fileID: 7615556868809982754}
   - {fileID: 645222878}
+  - {fileID: 8483515560819645143}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6240,6 +6740,85 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &8830235656406933343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6232089780725634198}
+  - component: {fileID: 6066825365741320504}
+  - component: {fileID: 7475481378077940785}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6232089780725634198
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830235656406933343}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2850654487991639068}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.5}
+  m_SizeDelta: {x: -20, y: -13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6066825365741320504
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830235656406933343}
+  m_CullTransparentMesh: 0
+--- !u!114 &7475481378077940785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8830235656406933343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 236
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!1 &8865486152918152312
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,11 +6917,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightWingRotate
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6448,6 +7022,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightWingRotate
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -6538,16 +7117,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - Pincer2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6653,6 +7222,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - Pincer2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -6743,11 +7322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftRearAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6853,6 +7427,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftRearAnkle
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -6943,11 +7522,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftFrontHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7052,6 +7626,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftFrontHip
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -7143,11 +7722,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightMidHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7252,6 +7826,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightMidHip
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -7343,11 +7922,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftRearHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7453,6 +8027,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftRearHip
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -7543,11 +8122,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightMidKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7653,6 +8227,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightMidKnee
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -7743,11 +8322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftMidHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7853,6 +8427,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftMidHip
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -7943,11 +8522,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightRearKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8052,6 +8626,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightRearKnee
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -8143,11 +8722,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftMidKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8253,6 +8827,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftMidKnee
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -8343,11 +8922,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightFrontAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8453,6 +9027,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightFrontAnkle
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -8543,11 +9122,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftRearKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8653,6 +9227,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftRearKnee
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -8743,16 +9322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - Pincer1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8858,6 +9427,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - Pincer1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -8948,11 +9527,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftWingRaise
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9057,6 +9631,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftWingRaise
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -9148,11 +9727,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - Arse
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9258,6 +9832,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - Arse
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -9338,11 +9917,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftMidAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9447,6 +10021,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftMidAnkle
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -9538,11 +10117,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightMidAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9648,6 +10222,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightMidAnkle
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -9738,11 +10317,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightFrontKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9848,6 +10422,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightFrontKnee
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -9938,11 +10517,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightRearHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10048,6 +10622,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightRearHip
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -10138,11 +10717,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftFrontAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10247,6 +10821,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftFrontAnkle
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -10338,11 +10917,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightRearAnkle
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10447,6 +11021,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightRearAnkle
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -10538,11 +11117,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870052587684}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightFrontHip
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10647,6 +11221,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightFrontHip
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -10738,11 +11317,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - RightWingRaise
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10847,6 +11421,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - RightWingRaise
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
@@ -10938,11 +11517,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556870706896196}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftFrontKnee
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11048,6 +11622,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftFrontKnee
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -11138,11 +11717,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7615556868793806260}
     m_Modifications:
-    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
-        type: 3}
-      propertyPath: m_Name
-      value: Actuator Control - LeftWingRotate
-      objectReference: {fileID: 0}
     - target: {fileID: 4497005733474217302, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11247,6 +11821,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733474217303, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Name
+      value: Actuator Control - LeftWingRotate
       objectReference: {fileID: 0}
     - target: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
