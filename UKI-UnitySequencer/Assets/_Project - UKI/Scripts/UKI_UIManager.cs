@@ -12,9 +12,6 @@ public class UKI_UIManager : MonoBehaviour
     public List<TestActuator> _RightActuators = new List<TestActuator>();
     public List<TestActuator> _AllActuators = new List<TestActuator>();
 
-
-   
-  
     // UI
     [HideInInspector]
     public ActuatorSlider[] _ActuatorSliders;
@@ -53,6 +50,118 @@ public class UKI_UIManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            // Send EStop
+            if (Input.GetKey(KeyCode.E))
+            {
+                UkiCommunicationsManager.Instance.EStop("ESTOP sent from C2");
+            }
+
+            // Raise wings
+            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                HackWings(true);
+            }
+
+            // Lower wings
+            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                HackWings(false);
+            }
+
+            // Toggle loop poses
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                UKI_PoseManager.Instance._LoopPoses = !UKI_PoseManager.Instance._LoopPoses;
+            }
+
+            // Raise ankles
+            if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                HackAnkles(true);
+            }
+
+            // Lower ankles
+            if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                HackAnkles(false);
+            }
+
+            // Raise butt
+            if (Input.GetKey(KeyCode.B) && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                ButtHack(true);
+            }
+
+            // Lower butt
+            if (Input.GetKey(KeyCode.B) && Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                ButtHack(false);
+            }
+
+        }
+    }
+
+    void HackWings(bool raise)
+    {
+        UKI_PoseManager.Instance._MaskWings = true;
+
+        foreach (TestActuator actuator in _AllActuators)
+        {
+            if (actuator._ActuatorIndex == UkiActuatorAssignments.RightWingRaise || actuator._ActuatorIndex == UkiActuatorAssignments.LeftWingRaise)
+            {
+                if (raise)
+                {
+                    actuator._NormExtension += 0.1f;
+                }
+                else
+                {
+                    actuator._NormExtension -= 0.1f;
+                }
+            }
+        }
+    }
+
+    void HackAnkles(bool raise)
+    {
+        foreach (TestActuator actuator in _AllActuators)
+        {
+            if (actuator._ActuatorIndex == UkiActuatorAssignments.LeftFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftRearAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightRearAnkle)
+            {
+                if (raise)
+                {
+                    actuator._NormExtension = 1.0f;
+                }
+                else
+                {
+                    actuator._NormExtension = 0.0f;
+                }
+            }
+        }
+    }
+
+    void ButtHack(bool raise)
+    {
+        foreach (TestActuator actuator in _AllActuators)
+        {
+            if (actuator._ActuatorIndex == UkiActuatorAssignments.Arse)
+            {
+                if (raise)
+                {
+                    actuator._NormExtension = 1.0f;
+                }
+                else
+                {
+                    actuator._NormExtension = 0.0f;
+                }
+            }
+        }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,13 +199,6 @@ public class UKI_UIManager : MonoBehaviour
 
         if (actuator != null)
             _AllActuators.Add(actuator);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //_CamParent.SetLocalRotY(_CamYRotNorm * -360);
-        //_Camera.SetLocalZ(_CamZNorm.ScaleFrom01(_CamZRange.x, _CamZRange.y));
     }
 
     void ToggleOfflineSimMode(bool b)
