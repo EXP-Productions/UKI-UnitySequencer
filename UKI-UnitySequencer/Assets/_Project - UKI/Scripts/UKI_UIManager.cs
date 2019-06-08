@@ -130,7 +130,7 @@ public class UKI_UIManager : MonoBehaviour
     public void AddPoseButton(int index)
     {
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
-        newBtn.GetComponentInChildren<Text>().text = "Pose " + index;
+        newBtn.GetComponentInChildren<Text>().text = UKI_PoseManager.Instance._AllPoses[index]._Name;
         newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index, UKI_PoseManager.Instance._MaskWings));
 
         _PoseButtons.Add(newBtn);
