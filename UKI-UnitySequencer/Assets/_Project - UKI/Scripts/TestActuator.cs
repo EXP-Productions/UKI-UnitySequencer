@@ -374,18 +374,18 @@ public class TestActuator : MonoBehaviour
     {
         UkiCommunicationsManager.Instance.SendCalibrationMessage((int)_ActuatorIndex, -(int)_ExtensionSpeed);      
     }
-    
+
+    public float prevPos = 0;
     IEnumerator SendPosAtRate(float ratePerSecond)
     {
         float wait = 1f / ratePerSecond;
-        float prevPos = 0;
+        prevPos = 0;
         while (true)
         {
             if (prevPos != CurrentEncoderExtension)
             {
                 if (!_Donotsend)
                 {
-
                     prevPos = CurrentEncoderExtension;
                     SendEncoderExtensionLength();
                 }

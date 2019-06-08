@@ -83,6 +83,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             Destroy(collisionMarker);
         }
+
+        foreach (TestActuator act in UKI_UIManager.Instance._AllActuators)
+            act.prevPos = 0;
+
         _UIManager._EstopWarning.SetActive(false);
     }
 

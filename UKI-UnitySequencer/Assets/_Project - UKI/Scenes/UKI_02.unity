@@ -2974,7 +2974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000028381532
+      value: -0.00005090705
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3569,6 +3569,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ActuatorIndex
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _Donotsend
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 152fe134b9c70734e94f533441f0e9d4, type: 3}
@@ -4813,7 +4818,7 @@ PrefabInstance:
     - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _Donotsend
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 152fe134b9c70734e94f533441f0e9d4, type: 3}
