@@ -46,6 +46,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         EStop("Start E Stop");
         StartCoroutine(SetReportedExtensions());
+        StartCoroutine(SendHeartBeat());
     }
 
     public void SendToModbusToggle(Toggle toggle)
@@ -69,14 +70,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _EStopping = true;
         _UIManager.UpdateEstopButton();
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
-        StopCoroutine(SendHeartBeat());
+      
     }
     
     void ResetEStop()
     {
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-        StopCoroutine(SendHeartBeat());
-        StartCoroutine(SendHeartBeat());
+      
+       
         _EStopping = false;
         _UIManager.UpdateEstopButton();
         foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
@@ -229,7 +230,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         while (true)
         {
-            if (_SendToModbus)
+            if (_SendToModbus && !_EStopping)
             {
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.red;

@@ -42,7 +42,9 @@ from ModbusMap import MB_MAP
 ##### Defines #####
 LOG_LEVEL = logging.INFO
 
-IP_ADDRESS = "127.0.0.1"
+# // IP_ADDRESS = "127.0.0.1"
+IP_ADDRESS = "192.168.43.107" # // UKI IP  "192.168.20.101"    ZENBOOk IP 
+OUT_IP_ADDRESS = "192.168.43.42" # // Aero IP
 INPUT_UDP_PORT = 9000
 OUTPUT_UDP_PORT = 10001
 
@@ -259,7 +261,7 @@ class UkiModbusManager:
         byte_packet = [entry.to_bytes(2, byteorder='little') for entry in packet]
         #self.logger.info(len(packet))
         # Flatten to byte string, ship out
-        self.output_socket.sendto(b"".join(byte_packet), (IP_ADDRESS, OUTPUT_UDP_PORT))
+        self.output_socket.sendto(b"".join(byte_packet), (OUT_IP_ADDRESS, OUTPUT_UDP_PORT))
 
         # Send to output queue if it exists
         if self.outgoing_queue is not None:
@@ -410,7 +412,7 @@ class UkiModbusManager:
                         output_packet = [entry.to_bytes(2, byteorder='little') for entry in output_packet]
 
                         # Flatten to byte string, ship out
-                        self.output_socket.sendto(b"".join(output_packet), (IP_ADDRESS, OUTPUT_UDP_PORT))
+                        self.output_socket.sendto(b"".join(output_packet), (OUT_IP_ADDRESS, OUTPUT_UDP_PORT))
 
         self.uki_ports['left'].clear_write_queue()
         self.uki_ports['right'].clear_write_queue()
