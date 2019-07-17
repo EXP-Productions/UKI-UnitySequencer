@@ -45,7 +45,8 @@ public static class JsonSerialisationHelper
     }
 
     public static object LoadFromFile<T>(string path)
-    {       
+    {
+        Debug.Log("JSON Loading from path: " + path);
         string payload = System.IO.File.ReadAllText(path);
         return LoadFromString<T>(payload);
     }
