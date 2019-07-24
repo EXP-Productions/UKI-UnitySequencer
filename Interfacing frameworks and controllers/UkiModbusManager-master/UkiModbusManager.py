@@ -43,10 +43,12 @@ from ModbusMap import MB_MAP
 LOG_LEVEL = logging.INFO
 
 # // IP_ADDRESS = "127.0.0.1"
-IP_ADDRESS = "192.168.43.107" # // UKI IP  "192.168.20.101"    ZENBOOk IP 
-OUT_IP_ADDRESS = "192.168.43.42" # // Aero IP
-INPUT_UDP_PORT = 9000
-OUTPUT_UDP_PORT = 10001
+LOCAL_MODE = True
+
+IP_ADDRESS_LOCAL = "192.168.43.107" # // UKI IP  "192.168.20.101"    ZENBOOk IP 
+IP_ADDRESS_OUTPUT = "192.168.43.42" # // Aero IP
+UDP_PORT_LOCAL = 9000
+UDP_PORT_OUTPUT = 10001
 
 BAUD_RATE = 19200
 TIMEOUT = 0.100  # seconds (typical response from Scarab 3ms)
@@ -88,6 +90,7 @@ class UkiModbus:
         self.retries = max_retries
         self.interframe_delay = interframe_delay
         self.enabled_boards = enabled_boards
+
 
         # Shadow modbus map, store values when read, use this to check if a write needs to be made
         self.shadow_map = dict([(address, collections.defaultdict(list)) for address in self.enabled_boards])
@@ -159,10 +162,22 @@ class UkiModbusManager:
     def __init__(self, left_serial_port, right_serial_port, config_filename, logger=None,
                  incoming_queue=None, outgoing_queue=None):
 
-        self.output_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Internet, UDP
+        # Check if local mode
+        if LOCAL_MODE == True:
+            # Set local ip to input and output IPs
+            self.IP_ADDRESS_LOCAL = "127.0.0.1"
+            self.IP_ADDRESS_OUTPUT = "127.0.0.1"
+            self.UDP_PORT_LOCAL = 9000
 
+        self.output_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Internet, UDP
         self.input_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Internet, UDP
-        self.input_socket.bind((IP_ADDRESS, INPUT_UDP_PORT))
+       
+        # Binds the incoming IP Address
+        #self.input_socket.bind((IP_ADDRESS_LOCAL, UDP_PORT_LOCAL))
+        print('Incoming IP: ' +   self.IP_ADDRESS_LOCAL)
+        print('Outgoing IP: ' +   self.IP_ADDRESS_OUTPUT)
+      
+        self.input_socket.bind((self.IP_ADDRESS_LOCAL, self.UDP_PORT_LOCAL))
         self.input_socket.setblocking(False)
 
         self.incoming_queue = incoming_queue  # Optional queue to directly send commands to wrapper (rather than UDP)
@@ -261,7 +276,11 @@ class UkiModbusManager:
         byte_packet = [entry.to_bytes(2, byteorder='little') for entry in packet]
         #self.logger.info(len(packet))
         # Flatten to byte string, ship out
-        self.output_socket.sendto(b"".join(byte_packet), (OUT_IP_ADDRESS, OUTPUT_UDP_PORT))
+        if LOCAL_MODE == True: 
+            self.output_socket.sendto(b"".join(byte_packet), ('127.0.0.1', 10001))
+        else:
+            self.output_socket.sendto(b"".join(byte_packet), (IP_ADDRESS_OUTPUT, UDP_PORT_OUTPUT))
+            
 
         # Send to output queue if it exists
         if self.outgoing_queue is not None:
@@ -412,7 +431,11 @@ class UkiModbusManager:
                         output_packet = [entry.to_bytes(2, byteorder='little') for entry in output_packet]
 
                         # Flatten to byte string, ship out
-                        self.output_socket.sendto(b"".join(output_packet), (OUT_IP_ADDRESS, OUTPUT_UDP_PORT))
+                        if LOCAL_MODE == True:
+                            self.output_socket.sendto(b"".join(output_packet), ('127.0.0.1', 10001))
+                        else:
+                            self.output_socket.sendto(b"".join(output_packet), (IP_ADDRESS_OUTPUT, UDP_PORT_OUTPUT))
+                        #print('output port ' + str(UDP_PORT_OUTPUT) )
 
         self.uki_ports['left'].clear_write_queue()
         self.uki_ports['right'].clear_write_queue()
