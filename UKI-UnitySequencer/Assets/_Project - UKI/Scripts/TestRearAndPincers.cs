@@ -7,9 +7,9 @@ using System;
 // Renders a target location for the limbs as well as a real world location that is fed back in from the actuator encoders
 public class TestRearAndPincers : TestUKILimb
 {
-    public TestActuator _Rear;
-    public TestActuator _PincerLeft;
-    public TestActuator _PincerRight;
+    public Actuator _Rear;
+    public Actuator _PincerLeft;
+    public Actuator _PincerRight;
 
     void Awake()
     {
@@ -18,7 +18,7 @@ public class TestRearAndPincers : TestUKILimb
         InitActuatorAssignments();
 
         // Assign actuator aray
-        _ActuatorArray = new TestActuator[] { _Rear }; //, _PincerLeft, _PincerRight };
+        _ActuatorArray = new Actuator[] { _Rear }; //, _PincerLeft, _PincerRight };
 	}
 
     private void Start()
@@ -28,7 +28,7 @@ public class TestRearAndPincers : TestUKILimb
         limbCopy.name = "Reported " + _Rear.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] actuators = limbCopy.GetComponentsInChildren<TestActuator>();       
+        Actuator[] actuators = limbCopy.GetComponentsInChildren<Actuator>();       
         for (int i = 0; i < actuators.Length; i++)
         {
             if(actuators[i]._CollisionReporter!=null)

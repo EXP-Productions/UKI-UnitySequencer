@@ -9,13 +9,13 @@ public class ActuatorSlider : MonoBehaviour
 {
     public UkiActuatorAssignments _ActuatorAssignment;
 
-    public TestActuator _Actuator;
+    public Actuator _Actuator;
 
     public Slider _Slider;
 
     private void Start()
     {
-        TestActuator[] actuators = FindObjectsOfType<TestActuator>();
+        Actuator[] actuators = FindObjectsOfType<Actuator>();
         for (int i = 0; i < actuators.Length; i++)
         {
             if (actuators[i]._ActuatorIndex == _ActuatorAssignment)

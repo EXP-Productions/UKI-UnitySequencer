@@ -9,9 +9,9 @@ public class Leg : UKILimb
 {
     public UkiLegs _LegAssignment; // TODO: change this enum to limb
 
-    public Actuator _Hip;
-    public Actuator _Knee;
-    public Actuator _Ankle;
+    public Actuator_Old _Hip;
+    public Actuator_Old _Knee;
+    public Actuator_Old _Ankle;
 
     void Awake()
     {
@@ -22,7 +22,7 @@ public class Leg : UKILimb
             InitActuatorAssignments();
 
             // Assign actuator aray
-            _ActuatorArray = new Actuator[] { _Hip, _Knee, _Ankle };
+            _ActuatorArray = new Actuator_Old[] { _Hip, _Knee, _Ankle };
         }
 	}
 

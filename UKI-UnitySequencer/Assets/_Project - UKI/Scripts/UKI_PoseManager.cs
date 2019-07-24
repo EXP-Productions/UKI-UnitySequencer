@@ -15,7 +15,7 @@ public class PoseData
     {
     }
 
-    public PoseData(List<TestActuator> actuators, string name)
+    public PoseData(List<Actuator> actuators, string name)
     {
         _Name = name;
 
@@ -30,7 +30,7 @@ public class UKI_PoseManager : MonoBehaviour
 {
     public static UKI_PoseManager Instance;
 
-    List<TestActuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
+    List<Actuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
 
     [HideInInspector]
     public List<PoseData> _AllPoses = new List<PoseData>();

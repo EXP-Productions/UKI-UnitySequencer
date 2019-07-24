@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pincer : MonoBehaviour
 {
-    Actuator _InOut;
+    Actuator_Old _InOut;
 
     // Start is called before the first frame update
     void Start()

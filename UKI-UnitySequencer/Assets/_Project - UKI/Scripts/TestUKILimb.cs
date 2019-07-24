@@ -8,7 +8,7 @@ public class TestUKILimb : MonoBehaviour
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;
     // Array of actuators in the limb
-    protected TestActuator[] _ActuatorArray;
+    protected Actuator[] _ActuatorArray;
 
     // Controls all linear norms in chain
     public bool _ControlAllLinear = false;

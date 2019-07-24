@@ -8,7 +8,7 @@ public static class UkiStateDB
 {
     public static Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>> _StateDB = new Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>>();
 
-    public static void RegisterActuator(Actuator actuator)
+    public static void RegisterActuator(Actuator_Old actuator)
     {
         RegisterActuator(actuator._ActuatorIndex);
     }

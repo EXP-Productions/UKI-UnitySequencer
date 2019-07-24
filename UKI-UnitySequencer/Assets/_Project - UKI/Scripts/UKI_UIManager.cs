@@ -8,9 +8,9 @@ public class UKI_UIManager : MonoBehaviour
     public static UKI_UIManager Instance;
     
     [Header("Actuators")]    
-    public List<TestActuator> _LeftActuators = new List<TestActuator>();
-    public List<TestActuator> _RightActuators = new List<TestActuator>();
-    public List<TestActuator> _AllActuators = new List<TestActuator>();
+    public List<Actuator> _LeftActuators = new List<Actuator>();
+    public List<Actuator> _RightActuators = new List<Actuator>();
+    public List<Actuator> _AllActuators = new List<Actuator>();
 
     // UI
     [HideInInspector]
@@ -109,7 +109,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         UKI_PoseManager.Instance._MaskWings = true;
 
-        foreach (TestActuator actuator in _AllActuators)
+        foreach (Actuator actuator in _AllActuators)
         {
             if (actuator._ActuatorIndex == UkiActuatorAssignments.RightWingRaise || actuator._ActuatorIndex == UkiActuatorAssignments.LeftWingRaise)
             {
@@ -127,7 +127,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void HackAnkles(bool raise)
     {
-        foreach (TestActuator actuator in _AllActuators)
+        foreach (Actuator actuator in _AllActuators)
         {
             if (actuator._ActuatorIndex == UkiActuatorAssignments.LeftFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftRearAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightRearAnkle)
             {
@@ -145,7 +145,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void ButtHack(bool raise)
     {
-        foreach (TestActuator actuator in _AllActuators)
+        foreach (Actuator actuator in _AllActuators)
         {
             if (actuator._ActuatorIndex == UkiActuatorAssignments.Arse)
             {
@@ -190,7 +190,7 @@ public class UKI_UIManager : MonoBehaviour
 
     }
 
-    public void AddActuator(TestActuator actuator)
+    public void AddActuator(Actuator actuator)
     {
         if (actuator._ActuatorIndex.ToString().Contains("Left") && actuator != null)
             _LeftActuators.Add(actuator);
@@ -213,7 +213,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         print("Offline speed scaler: " + f);
 
-        foreach (TestActuator act in _AllActuators)
+        foreach (Actuator act in _AllActuators)
             act._OfflineSpeedScaler = f;
     }
 
@@ -285,7 +285,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void CalibrateActuators()
     {
-        foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
+        foreach (Actuator actuator in FindObjectsOfType<Actuator>())
         {
             actuator.Calibrate();
         }

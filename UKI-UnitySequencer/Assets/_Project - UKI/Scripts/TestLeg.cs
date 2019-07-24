@@ -9,9 +9,9 @@ public class TestLeg : TestUKILimb
 {
     public UkiLegs _LegAssignment; // TODO: change this enum to limb
 
-    public TestActuator _Hip;
-    public TestActuator _Knee;
-    public TestActuator _Ankle;
+    public Actuator _Hip;
+    public Actuator _Knee;
+    public Actuator _Ankle;
 
     void Awake()
     {
@@ -22,7 +22,7 @@ public class TestLeg : TestUKILimb
             InitActuatorAssignments();
 
             // Assign actuator aray
-            _ActuatorArray = new TestActuator[] { _Hip, _Knee, _Ankle };
+            _ActuatorArray = new Actuator[] { _Hip, _Knee, _Ankle };
         }
 	}
 
@@ -33,7 +33,7 @@ public class TestLeg : TestUKILimb
         legCopy.name = "Reported " + _Hip.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] newActuators = legCopy.GetComponentsInChildren<TestActuator>();       
+        Actuator[] newActuators = legCopy.GetComponentsInChildren<Actuator>();       
         for (int i = 0; i < newActuators.Length; i++)
         {
 

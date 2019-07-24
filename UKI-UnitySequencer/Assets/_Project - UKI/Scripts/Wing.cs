@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Wing : UKILimb
 {
-    public Actuator _Lift;
-    public Actuator _Rotation;
+    public Actuator_Old _Lift;
+    public Actuator_Old _Rotation;
 
     void Awake()
     {
         // Assign actuator aray
-        _ActuatorArray = new Actuator[] { _Lift, _Rotation };        
+        _ActuatorArray = new Actuator_Old[] { _Lift, _Rotation };        
     }
 }

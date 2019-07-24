@@ -9,8 +9,8 @@ public class TestWing : TestUKILimb
 {
     public UkiWings _WingAssignment; // TODO: change this enum to limb
 
-    public TestActuator _Raise;
-    public TestActuator _Rotate;
+    public Actuator _Raise;
+    public Actuator _Rotate;
 
     void Awake()
     {
@@ -19,7 +19,7 @@ public class TestWing : TestUKILimb
         InitActuatorAssignments();
 
         // Assign actuator aray
-        _ActuatorArray = new TestActuator[] { _Raise, _Rotate };
+        _ActuatorArray = new Actuator[] { _Raise, _Rotate };
 	}
 
     private void Start()
@@ -29,7 +29,7 @@ public class TestWing : TestUKILimb
         wingCopy.name = "Reported " + _Raise.name;
 
         // COPY LIMBS SO WE HAVE A PROXY FOR REPORTED REAL WORLD ACTUATOR LENGTHS
-        TestActuator[] actuators = wingCopy.GetComponentsInChildren<TestActuator>();       
+        Actuator[] actuators = wingCopy.GetComponentsInChildren<Actuator>();       
         for (int i = 0; i < actuators.Length; i++)
         {
             if(actuators[i]._CollisionReporter!=null)

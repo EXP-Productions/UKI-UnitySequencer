@@ -1,159 +1,410 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RootMotion.FinalIK;
 
-/// <summary>
-/// Actuators are driven by the animations on the timeline
-/// It sets the real world actuator length by interpretting the rotation into a linear value
-/// </summary>
+// TODO - UI should reflect reported positions
+// TODO resurrect timeline manager and see how that works
+// TODO hook up IK
+// TODO Pose player. Once reaching one pose move to the next pose
+// TODO Test out speed boost on actuators
+// TODO Draw limb paths 
+
+// TODO Add save name for poses
+
+
 [System.Serializable]
-[RequireComponent(typeof(RotationLimitHinge))]
+public class ActuatorData
+{
+    public float _NormalizedValue;
+    public UkiActuatorAssignments _ActuatorIndex;
+
+    public ActuatorData()
+    {
+    }
+
+    public ActuatorData(Actuator actuator)
+    {
+        _NormalizedValue = actuator._NormExtension;
+        _ActuatorIndex = actuator._ActuatorIndex;
+    }
+}
+
+/// Basic actuator test that sets the position to move too
 public class Actuator : MonoBehaviour
 {
-    public enum Axis
-    {
-        X,
-        Y,
-        Z,
-    }
+    UKI_UIManager _UKIManager;
 
-    public Axis _Axis = Axis.X;
+    // State of the limb. Paused, Calibrating, Calibrated or Animating
+    public UKIEnums.State _State = UKIEnums.State.Paused;
+    // The index of the actuator
+    public UkiActuatorAssignments _ActuatorIndex;
+    // A copy of the transform that is driven from the read in value
+    Transform _ReportedActuatorTransform;
 
-    /// <summary>
-    /// UKI Angles
-    /// Front left ankle -length out 77     Out 140 In 100
-    /// Front left Knee - length out 84     Out 192 In 136 measured from top of hip
-    /// Front left Hip - length out 75      Out 100 In 50 measured on inside of hexagon from cross bar
-    /// </summary>
+    public CollisionReporter _CollisionReporter;
+    [HideInInspector] public CollisionReporter _CollidersToIgnore;
 
-        /// Speed is a percent of voltage
-        /// mm per second per volt    57mm over 15.5 seconds
+    #region LINEAR EXTENSION
+    [Header("LINEAR EXTENSION")]
+    // Actuator extension. Linear travel that gets converted into rotational movement   
+    // Normalized extension value
+    [Range(0, 1)]  public float _NormExtension;
+    // Maximum value the encoder can be extended too  
+    public float    _MaxEncoderExtension = 40;
 
-    public UkiActuatorAssignments _ActuatorIndex = 0;
+    // Speed to send commands at
+    [Range(0, 30)]  public int _ExtensionSpeed = 30;
+    [Range(30, 60)] public int _BoostExtensionSpeed = 45;
+    public bool _BoostSpeedToggled = false;
+    float _MaxBoostDuration = 5;
+    float _BoostTimer = 0;
+    public float _OfflineSpeedScaler = 1;
 
-    bool _Calibrated = false;
-    public bool Calibrated { get { return _Calibrated; } }
 
-    public float _MaxLinearTravel = 50;       // Maximum that that linear actuator can travel, in mm
-    public float _CurrentLinearLength = 0;    // Current length that the linear actuator is at
-    public float _TargetLinearLength = 0;    // Target length that the linear actuator is aiming for
-    float _PrevLinearLength = 0;
-    float _LinearLengthMessageSendCutoff = 1;
+    // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
+    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(_NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
 
-    Quaternion _TargetRotation;
+    // The time taken to extend from 0 - 1
+    public float _FullExtensionDuration = 10;
+    // The time taken to extend from 1 - 0
+    public float _FullRetractionDuration = 10;
+    #endregion
+
+    #region ROTATION
+    [Header("ROTATION MAPPING")]
+    // Min and max rotation range
+    public Vector3  _RotationAxis = Vector3.right;
+    public Vector3  _ForwardAxis = Vector3.up;
+    public float _RotationRange = 30;
+    float RotationRange { get { return _RotationRange; } }
+    Quaternion _InitialRotation;
+    #endregion
     
-    public float _RotationBase = 0;         // Roation of the joint when it is zeroed/calibrated
-    public float _RotationExtended = 30;    // Roation of the joint when it is full extended
+    #region MODBUS
+    [Header("MODBUS")]
+    [Range(0, 1)] public float _NormReportedExtension;
+    // Extension value read in from modbus - Doesn't line up exactly with the set point value we send
+    public float _ReportedExtension;
+    // The maximum extension reported when extended to the full length of _MaxEncoderExtension
+    public float _MaxReportedExtension = 40;    
+    // Reporeted speed and accel read in from modbus
+    public int ReportedSpeed { private set; get; }
+    public int ReportedAcceleration { private set; get; }
+    #endregion
 
-    float _RotationTargetAngle = 0;     // Target angle for roation
-    float _RotationCurrentAngle = 0;    // Currecnt angle for rotation
-    
-    RotationLimitHinge _RotationLimitHinge; // Limit hinge used in the IK. Used to set the min and max angles
-    public UKILimb _ParentLimb;
-
-    public Transform _RealWorldProxy;
-
-    public void Init(UKILimb parentLimb)
-    {
-        _ParentLimb = parentLimb;
-        _RotationLimitHinge = GetComponent<RotationLimitHinge>();
-        _PrevLinearLength = _CurrentLinearLength;
-    }
+    public bool _DEBUG = false;
+    public bool _DEBUG_NoModBusSimulationMode = false;
+    public bool _DEBUG_SelfInit = false;
+    public bool _Donotsend = false;
 
     private void Awake()
     {
-        UkiStateDB.RegisterActuator(this);
+        if(_CollisionReporter != null)
+            _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
     }
 
-    private void Update()
+    private void Start()
     {
-        
-        if(_ParentLimb._State == UKIEnums.State.Calibrating)
+        if(_DEBUG_SelfInit)
         {
-            Quaternion targetRot = _RotationLimitHinge.defaultLocalRotation;
-            //transform.localRotation = targetRot;
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRot, Time.deltaTime * 4);
-            _RotationLimitHinge.Apply();
-
-            float angle = Quaternion.Angle(transform.localRotation, targetRot);
-
-            print(name + " angle: " + angle);
-            
-            _Calibrated = angle < 1;
+            Transform t = GameObject.CreatePrimitive(PrimitiveType.Capsule).transform;
+            t.transform.position = Vector3.one * 999;
+            Init(t);
         }
-        else if(_ParentLimb._State == UKIEnums.State.Animating)
-        {
-            UpdateRotation();
-        }
-
-        if (_RealWorldProxy != null)
-            _RealWorldProxy.transform.localRotation = Quaternion.Slerp(_RealWorldProxy.transform.localRotation, transform.localRotation, Time.deltaTime * 3);
     }
 
-    // read encoder linear value and convert to rotation
-    void ReadInEncoader()
+    public void Init(Transform reportedActuatorTransform)
     {
-        
+        _UKIManager = FindObjectOfType<UKI_UIManager>();
+        _ReportedActuatorTransform = reportedActuatorTransform;
+
+        // Register the actuator
+        UkiStateDB.RegisterActuator(_ActuatorIndex);
+        _UKIManager.AddActuator(this);
+
+        // Start the send position coroutine
+        StartCoroutine(SendPosAtRate(15));
+
+        // Set names of the actuators and the reported actuator transforms
+        name = "Actuator - " + _ActuatorIndex.ToString();
+
+        if (_ReportedActuatorTransform)
+        {
+            _ReportedActuatorTransform.name = "REPORTED - " + name;
+        }
+
+        _InitialRotation = transform.localRotation;
+
+        if (_CollisionReporter != null)
+        {
+            _CollisionReporter.OnTriggerReport += OnCollisionReportHandler;
+            _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
+        }
+
+        print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
     }
 
-    void UpdateRotation()
+    [ContextMenu("Set rotation axis")]
+    public void SetRotationAxis()
     {
-        // Add any smoothing and accel stuff in here and limits
-        if (_Axis == Axis.X) _RotationCurrentAngle = transform.localRotation.eulerAngles.x;
-        else if (_Axis == Axis.Y) _RotationCurrentAngle = transform.localRotation.eulerAngles.y;
-        else if(_Axis == Axis.Z) _RotationCurrentAngle = transform.localRotation.eulerAngles.z;
+        // Set rotation axis from local right axis
+        _RotationAxis = transform.TransformDirection(_RotationAxis);
+    }
 
+    public void Calibrate()
+    {
+        _NormExtension = 0f;
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
+    }
 
-        // Limit roation to base and extended
-        _RotationCurrentAngle = Mathf.Clamp(_RotationCurrentAngle, _RotationBase, _RotationExtended);
-
-        float norm = _RotationCurrentAngle / _RotationExtended;
-        print("Rotation X: " + transform.localRotation.x + "  Norm:" + norm + "   Rotation extended: " + _RotationExtended);
-        _CurrentLinearLength = norm.ScaleFrom01(0f, _MaxLinearTravel);
-
-        if (Mathf.Abs(_CurrentLinearLength - _PrevLinearLength) > _LinearLengthMessageSendCutoff)
+    float _ReportedTollerance = 10;
+    // Update is called once per frame
+    void Update()
+    {
+        if (_ReportedActuatorTransform == null)
         {
-            // Send out UDP here
-            //UkiCommunicationsManager.Instance.SendPositionMessage(this);
+            return;
         }
+
+        // CHECK BOOST
+        if (_BoostSpeedToggled)
+        {
+            _BoostTimer += Time.deltaTime;
+            if (_BoostTimer > _MaxBoostDuration)
+            {
+                _BoostSpeedToggled = false;
+                _BoostTimer = 0;
+            }
+        }
+
+
+        // Set the rotation from normalized extension
+        //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
+        float rot = _NormExtension.ScaleFrom01(0, RotationRange);
+        transform.localRotation = _InitialRotation * Quaternion.AngleAxis(rot, _RotationAxis);
+
+        // Run sim without modbus
+        if (_DEBUG_NoModBusSimulationMode)
+        {
+            if (!UkiCommunicationsManager.Instance._EStopping)
+            {
+                if(_State == UKIEnums.State.Animating)
+                { 
+                //if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) >= _ReportedTollerance)
+                //{
+                    // CALCULATE BOOST
+                    float boost = 1;
+                    if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
+
+                    boost *= _OfflineSpeedScaler;
+
+                    if (_ReportedExtension < CurrentEncoderExtension)
+                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
+                    else
+                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime * boost;
+                }
+
+                _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+            }
+        }
+        else
+        {
+            // READ IN
+            // Get the reported values from mod bus
+            _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+            ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
+            ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
+
+            // Update the readin actuator transform
+            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        }
+
+        // UPDATE REPORTED ACTUATOR
+        float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
+        _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
+
+        // difference between reported and the set length
+        float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
+
+        // UPDATE STATES
+        if (_State == UKIEnums.State.Calibrating)
+        {
+            print(name + "    " + _ReportedExtension);
+            if (_ReportedExtension == 0)
+                SetState(UKIEnums.State.CalibratedToZero);
+        }
+        else if (_State == UKIEnums.State.Paused)
+        {
+            // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
+            if (reportedDiff >= _ReportedTollerance * 3)
+                SetState(UKIEnums.State.Animating);
+        }
+        else if (_State == UKIEnums.State.Animating)
+        {
+            // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
+            if (reportedDiff < _ReportedTollerance)
+                SetState(UKIEnums.State.Paused);
+        }
+    }
+
+
+    public void SetToReportedExtension()
+    {
+        _NormExtension = _NormReportedExtension;
+    }
+
+
+    public void SetState(UKIEnums.State state)
+    {
+        _State = state;
+
+        if (_State == UKIEnums.State.Animating)
+        {
+        }
+        else if (_State == UKIEnums.State.Calibrating)
+        {
+            SendCalibrateMessage();
+        }
+
+        print(name + " State set too: " + _State.ToString());
+    }
+
+    // Is the actuator calibrated back to 0
+    public bool IsCalibrated()
+    {
+        return _State == UKIEnums.State.CalibratedToZero;
+    }
+
+
+    [ContextMenu("Set max reported extension")]
+    void SetMaxReportedExtension()
+    {
+        _MaxReportedExtension = _ReportedExtension;
+    }
+
+
+    [ContextMenu("Calibrate Extension Speed")]
+    void CalibrateRealWorldExtensionSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(true));
+    }
+
+    [ContextMenu("Calibrate Retraction Speed")]
+    void CalibrateRealWorldRetractionsSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(false));
+    }
+
+    IEnumerator CalibrateRealWorldSpeedRoutine(bool extension)
+    {
+        print("SPEED TEST STARTED: " + name);
+        float startTime = Time.time;
+        if (extension)
+        {
+            // From 0 set to full normalized extension
+            _NormExtension = 1;
+        }
+        else
+        {
+            // From 1 set to 0 normalized extension
+            _NormExtension = 0;
+        }
+
+        while (_NormReportedExtension != _NormExtension)
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (extension)
+                _FullExtensionDuration = Time.time - startTime;
+            else
+                _FullRetractionDuration = Time.time - startTime;
+        }
+
+        print("SPEED TEST COMPLETED: " + name + " Duration: " + _FullExtensionDuration);
+    }
+
+    private void OnCollisionReportHandler(Collider collider)
+    {
+        if (Time.time < 1)
+            return;
+
+        // See if it has collided with another actuated limb
+        CollisionReporter actuatorCollider = collider.gameObject.GetComponent<CollisionReporter>();
+        if(actuatorCollider != null)
+        {
+            if(_CollidersToIgnore != actuatorCollider)
+                CollidedWithObject(collider.gameObject);
+        }
+        else
+        {
+            CollidedWithObject(collider.gameObject);
+        }
+    }
+
+    public void CollidedWithObject(GameObject go)
+    {
+        if (UkiCommunicationsManager.Instance._EStopping)
+            return;
+
+        UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
+
+        // Provide visual feedback for collision
+        GameObject collisionMarker = Instantiate(SRResources.CollisionMarker.Load());
+        collisionMarker.transform.position = go.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+
+        // Provide audio feedback for collision
+        AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = Camera.main.gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.PlayOneShot(SRResources.collision);
+
+    }
+
+    void SendEncoderExtensionLength()
+    {
+        if (_DEBUG)
+            print(CurrentEncoderExtension);
+
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);
     }
     
-    public void CalibrateToZero()
+    void SendCalibrateMessage()
     {
-        print(name + "   Setting too: " + _RotationLimitHinge.defaultLocalRotation.eulerAngles.ToString());
-
-        transform.localRotation = _RotationLimitHinge.defaultLocalRotation;
-        _RotationLimitHinge.Apply();
-        StartCoroutine(Calibrate());
+        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)_ActuatorIndex, -(int)_ExtensionSpeed);      
     }
 
-    IEnumerator Calibrate()
+    public float prevPos = 0;
+    IEnumerator SendPosAtRate(float ratePerSecond)
     {
-        while (UkiCommunicationsManager.Instance._EStopping)
+        float wait = 1f / ratePerSecond;
+        prevPos = 0;
+        while (true)
         {
-            yield return new WaitForSeconds(1.0f);
+            if (prevPos != CurrentEncoderExtension)
+            {
+                if (!_Donotsend)
+                {
+                    prevPos = CurrentEncoderExtension;
+                    SendEncoderExtensionLength();
+                }
+            }
+
+            yield return new WaitForSeconds(wait);
         }
-
-        UkiCommunicationsManager.Instance.SendCalibrationMessage((int)this._ActuatorIndex, -30);
-        yield return new WaitForSeconds(UkiCommunicationsManager._CalibrateWaitTime);
-        print("done sending calibration messages");
-        SetCalibrated();
     }
 
-    public void CalibrateToMax()
+    private void OnDrawGizmos()
     {
-        //UkiCommunicationsManager.Instance.SendCalibrationMessage(this, 30);
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.TransformPoint(-_RotationAxis * .3f), transform.TransformPoint(_RotationAxis * .3f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
     }
 
-
-    void SetCalibrated()
+    private void OnDrawGizmosSelected()
     {
-        _Calibrated = true;
-    }
-
-    public void OnCalibrationCompleteHandler()
-    {
-
+       
     }
 }

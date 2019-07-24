@@ -10,7 +10,7 @@ public class UKILimb : MonoBehaviour
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;
     // Array of actuators in the limb
-    protected Actuator[] _ActuatorArray;
+    protected Actuator_Old[] _ActuatorArray;
     protected CCDIK _IKSolver;
     protected EditorIK _EditorIK;
     public bool _CalibratedToZero;

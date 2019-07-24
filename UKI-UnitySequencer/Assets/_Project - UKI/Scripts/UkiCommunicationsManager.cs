@@ -85,7 +85,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             Destroy(collisionMarker);
         }
 
-        foreach (TestActuator act in UKI_UIManager.Instance._AllActuators)
+        foreach (Actuator act in UKI_UIManager.Instance._AllActuators)
             act.prevPos = 0;
 
         _UIManager._EstopWarning.SetActive(false);
@@ -95,7 +95,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         // TODO don't base this on time alone
         yield return new WaitForSeconds(1f);
-        foreach (TestActuator actuator in FindObjectsOfType<TestActuator>())
+        foreach (Actuator actuator in FindObjectsOfType<Actuator>())
         {
             actuator.SetToReportedExtension();
         }
