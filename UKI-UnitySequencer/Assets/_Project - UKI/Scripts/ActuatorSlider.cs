@@ -11,7 +11,14 @@ public class ActuatorSlider : MonoBehaviour
 
     public Actuator _Actuator;
 
+    public TextMeshProUGUI _TextName;
+
+    public Toggle _CollidedToggle;
+
     public Slider _Slider;
+
+    public Color _NormalCol;
+    public Color _CollidedCol;
 
     private void Start()
     {
@@ -29,12 +36,23 @@ public class ActuatorSlider : MonoBehaviour
         else
         {
             _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
+            _TextName.text = _ActuatorAssignment.ToString();
         }
 
         if (_Slider == null)
             print(name);
     }
-    
+
+    private void Update()
+    {
+        if (_Actuator != null)
+        {
+            _CollidedToggle.isOn = _Actuator._Collided;
+        }
+        else
+            print(name);
+    }
+
     [ContextMenu("Name")]
     public void Name()
     {

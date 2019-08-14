@@ -52,6 +52,7 @@ public class Actuator : MonoBehaviour
 
     public CollisionReporter _CollisionReporter;
     [HideInInspector] public CollisionReporter _CollidersToIgnore;
+    public bool _Collided = false;
 
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
@@ -100,6 +101,9 @@ public class Actuator : MonoBehaviour
     public int ReportedSpeed { private set; get; }
     public int ReportedAcceleration { private set; get; }
     #endregion
+
+    // Keeps the previous position so that the actuator only sends a position out if the new position is different
+    public float prevPos = 0;
 
     public bool _DEBUG = false;
     public bool _DEBUG_NoModBusSimulationMode = false;
@@ -358,8 +362,10 @@ public class Actuator : MonoBehaviour
 
     public void CollidedWithObject(GameObject go)
     {
-        if (UkiCommunicationsManager.Instance._EStopping)
+        if (UkiCommunicationsManager.Instance._EStopping || _DEBUG_IgnoreCollisions)
             return;
+
+        _Collided = true;
 
         UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
 
@@ -374,7 +380,26 @@ public class Actuator : MonoBehaviour
             audioSource = Camera.main.gameObject.AddComponent<AudioSource>();
         }
         audioSource.PlayOneShot(SRResources.collision);
+    }
 
+    bool _DEBUG_IgnoreCollisions = false;
+    public void ResetEStop()
+    {
+        // Resets prev pos to set the pos to dirty so it resends
+        prevPos = 0;
+
+        if(_Collided)
+        {           
+            _DEBUG_IgnoreCollisions = true;
+            Invoke("ResetIgnoreCollisions", 2);
+        }
+
+        _Collided = false;
+    }
+
+    void ResetIgnoreCollisions()
+    {
+        _DEBUG_IgnoreCollisions = false;
     }
 
     void SendEncoderExtensionLength()
@@ -395,7 +420,7 @@ public class Actuator : MonoBehaviour
         UkiCommunicationsManager.Instance.SendCalibrationMessage((int)_ActuatorIndex, -(int)_ExtensionSpeed);      
     }
 
-    public float prevPos = 0;
+   
     IEnumerator SendPosAtRate(float ratePerSecond)
     {
         float wait = 1f / ratePerSecond;

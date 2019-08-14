@@ -70,14 +70,12 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _EStopping = true;
         _UIManager.UpdateEstopButton();
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
-      
     }
     
     void ResetEStop()
     {
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
       
-       
         _EStopping = false;
         _UIManager.UpdateEstopButton();
         foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
@@ -86,7 +84,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         }
 
         foreach (Actuator act in UKI_UIManager.Instance._AllActuators)
-            act.prevPos = 0;
+            act.ResetEStop();
 
         _UIManager._EstopWarning.SetActive(false);
     }
