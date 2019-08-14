@@ -16,30 +16,29 @@ public class UKI_UIManager : MonoBehaviour
     [HideInInspector]
     public ActuatorSlider[] _ActuatorSliders;
 
-    [Header("UI")]
+    [Header("UI - MAIN")]
     public Button _EStopButton;
     public Button _CalibrateButton;
     public Toggle _SendToModBusToggle;
     public GameObject _EstopWarning;
     public Image _HeartBeatDisplay;
+    public Slider _OfflineSpeedScalerSlider;
+    public Toggle _OfflineSimModeToggle;
 
-    public Button _MirrorLeftButton;
-    public Button _MirrorRightButton;
+    //public Button _MirrorLeftButton;
+    //public Button _MirrorRightButton;
 
+    [Header("UI - POSE MANAGER")]
     public Button _SaveCurrentPose;
     public Button _DeleteSelectedPose;
     List<Button> _PoseButtons = new List<Button>();
     public Toggle _LoopPosesToggle;
     public Toggle _MaskWingsToggle;
 
-    public Slider _OfflineSpeedScalerSlider;
-
-
-
     public RectTransform _PoseButtonParent;
     public Button _SelectPoseButtonPrefab;
 
-    public Toggle _OfflineSimModeToggle;
+   
 
     public GameObject _SavePoseDialog;
     public Button _SavePoseNameButton;
@@ -171,8 +170,8 @@ public class UKI_UIManager : MonoBehaviour
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
         _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
 
-        _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
-        _MirrorRightButton.onClick.AddListener(() => MirrorRight());
+       // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
+       // _MirrorRightButton.onClick.AddListener(() => MirrorRight());
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
 

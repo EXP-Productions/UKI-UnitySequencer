@@ -434,21 +434,19 @@ MonoBehaviour:
   _AllActuators: []
   _ActuatorSliders: []
   _EStopButton: {fileID: 1382368547}
-  _CalibrateButton: {fileID: 0}
-  _SendToModBusToggle: {fileID: 0}
+  _CalibrateButton: {fileID: 933195042}
+  _SendToModBusToggle: {fileID: 933195045}
   _EstopWarning: {fileID: 6489022240934856724}
-  _HeartBeatDisplay: {fileID: 0}
-  _MirrorLeftButton: {fileID: 0}
-  _MirrorRightButton: {fileID: 0}
+  _HeartBeatDisplay: {fileID: 933195044}
+  _OfflineSpeedScalerSlider: {fileID: 933195043}
+  _OfflineSimModeToggle: {fileID: 933195049}
   _SaveCurrentPose: {fileID: 1051827329}
-  _DeleteSelectedPose: {fileID: 0}
-  _LoopPosesToggle: {fileID: 0}
-  _MaskWingsToggle: {fileID: 0}
-  _OfflineSpeedScalerSlider: {fileID: 0}
+  _DeleteSelectedPose: {fileID: 933195048}
+  _LoopPosesToggle: {fileID: 933195046}
+  _MaskWingsToggle: {fileID: 933195047}
   _PoseButtonParent: {fileID: 1129367972}
   _SelectPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
     type: 3}
-  _OfflineSimModeToggle: {fileID: 0}
   _SavePoseDialog: {fileID: 1893686360}
   _SavePoseNameButton: {fileID: 337787871}
   _SavePoseNameInput: {fileID: 1020584850}
@@ -466,7 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _AllPoses: []
   _LoopPoses: 0
-  _MaskWings: 1
+  _MaskWings: 0
 --- !u!1 &549576059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,7 +1914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.9404399
+      value: 0.00010418241
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2441,8 +2439,109 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 27590938048957652, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_Name
+      value: Slider - Offline speed
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
+--- !u!114 &933195042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3092695602997621377, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195043 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 27590938048957650, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195044 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2961449812213360954, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195045 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 552292167019338401, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195046 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7697765269312631464, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195047 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2448894151439145913, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1640354522345820005, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &933195049 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2979510521151792211, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1020584850 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2013978080877915778, guid: fd4804dfa1f362a4c9448293f2b0407e,
