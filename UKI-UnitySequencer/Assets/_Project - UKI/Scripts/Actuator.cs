@@ -54,6 +54,8 @@ public class Actuator : MonoBehaviour
     [HideInInspector] public CollisionReporter _CollidersToIgnore;
     public bool _Collided = false;
 
+    public bool _DEBUG_Waver = false;
+
     #region LINEAR EXTENSION
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
@@ -356,13 +358,14 @@ public class Actuator : MonoBehaviour
         }
         else
         {
-            CollidedWithObject(collider.gameObject);
+            if(!_UKIManager._IgnoreCollisions)
+                CollidedWithObject(collider.gameObject);
         }
     }
 
     public void CollidedWithObject(GameObject go)
     {
-        if (UkiCommunicationsManager.Instance._EStopping || _DEBUG_IgnoreCollisions)
+        if (UkiCommunicationsManager.Instance._EStopping)
             return;
 
         _Collided = true;
@@ -381,25 +384,12 @@ public class Actuator : MonoBehaviour
         }
         audioSource.PlayOneShot(SRResources.collision);
     }
-
-    bool _DEBUG_IgnoreCollisions = false;
+    
     public void ResetEStop()
     {
         // Resets prev pos to set the pos to dirty so it resends
-        prevPos = 0;
-
-        if(_Collided)
-        {           
-            _DEBUG_IgnoreCollisions = true;
-            Invoke("ResetIgnoreCollisions", 2);
-        }
-
+        prevPos = 0;        
         _Collided = false;
-    }
-
-    void ResetIgnoreCollisions()
-    {
-        _DEBUG_IgnoreCollisions = false;
     }
 
     void SendEncoderExtensionLength()

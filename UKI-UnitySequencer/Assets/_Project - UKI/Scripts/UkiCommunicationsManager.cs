@@ -74,6 +74,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     
     void ResetEStop()
     {
+        print("Resetting estop");
         SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
       
         _EStopping = false;
