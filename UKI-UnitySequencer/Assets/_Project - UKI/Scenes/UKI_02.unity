@@ -437,7 +437,7 @@ MonoBehaviour:
   _CalibrateButton: {fileID: 933195042}
   _SendToModBusToggle: {fileID: 933195045}
   _EstopWarning: {fileID: 6489022240934856724}
-  _HeartBeatDisplay: {fileID: 933195044}
+  _HeartBeatDisplay: {fileID: 530556449}
   _OfflineSpeedScalerSlider: {fileID: 933195043}
   _OfflineSimModeToggle: {fileID: 933195049}
   _SaveCurrentPose: {fileID: 1051827329}
@@ -465,6 +465,18 @@ MonoBehaviour:
   _AllPoses: []
   _LoopPoses: 0
   _MaskWings: 0
+--- !u!114 &530556449 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4734368105406321619, guid: fd4804dfa1f362a4c9448293f2b0407e,
+    type: 3}
+  m_PrefabInstance: {fileID: 933195041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &549576059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,7 +1926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00010418241
+      value: 0.004713608
       objectReference: {fileID: 0}
     - target: {fileID: 1129367972, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2444,6 +2456,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slider - Offline speed
       objectReference: {fileID: 0}
+    - target: {fileID: 1862652832486245427, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4734368105406321619, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5748674271613759535, guid: fd4804dfa1f362a4c9448293f2b0407e,
+        type: 3}
+      propertyPath: m_Name
+      value: Checkmark - heartbeat
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd4804dfa1f362a4c9448293f2b0407e, type: 3}
 --- !u!114 &933195042 stripped
@@ -2468,18 +2495,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &933195044 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2961449812213360954, guid: fd4804dfa1f362a4c9448293f2b0407e,
-    type: 3}
-  m_PrefabInstance: {fileID: 933195041}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &933195045 stripped
@@ -2847,6 +2862,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Actuators - Right Side
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459027523975507, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5059459027523975506, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
