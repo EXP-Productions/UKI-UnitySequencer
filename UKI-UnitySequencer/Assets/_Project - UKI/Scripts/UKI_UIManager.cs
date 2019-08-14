@@ -38,8 +38,10 @@ public class UKI_UIManager : MonoBehaviour
     public RectTransform _PoseButtonParent;
     public Button _SelectPoseButtonPrefab;
 
-   
-
+    [Header("UI - ACTUATORS")]
+    public Toggle _LeftEnabledToggle;
+    public Toggle _RightEnabledToggle;
+    
     public GameObject _SavePoseDialog;
     public Button _SavePoseNameButton;
     public InputField _SavePoseNameInput;
@@ -159,8 +161,7 @@ public class UKI_UIManager : MonoBehaviour
             }
         }
     }
-
-
+    
     // Start is called before the first frame update
     void Start()
     {

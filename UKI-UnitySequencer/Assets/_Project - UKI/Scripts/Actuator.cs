@@ -29,6 +29,13 @@ public class ActuatorData
     }
 }
 
+public enum ActuatorSide
+{
+    Left,
+    Right,
+    Middle,
+}
+
 /// Basic actuator test that sets the position to move too
 public class Actuator : MonoBehaviour
 {
@@ -40,6 +47,8 @@ public class Actuator : MonoBehaviour
     public UkiActuatorAssignments _ActuatorIndex;
     // A copy of the transform that is driven from the read in value
     Transform _ReportedActuatorTransform;
+
+    public ActuatorSide _Side = ActuatorSide.Left;
 
     public CollisionReporter _CollisionReporter;
     [HideInInspector] public CollisionReporter _CollidersToIgnore;
@@ -128,6 +137,13 @@ public class Actuator : MonoBehaviour
         // Set names of the actuators and the reported actuator transforms
         name = "Actuator - " + _ActuatorIndex.ToString();
 
+        if (_ActuatorIndex.ToString().Contains("Left"))
+            _Side = ActuatorSide.Left;
+        else if (_ActuatorIndex.ToString().Contains("Right"))
+            _Side = ActuatorSide.Right;
+        else
+            _Side = ActuatorSide.Middle;
+
         if (_ReportedActuatorTransform)
         {
             _ReportedActuatorTransform.name = "REPORTED - " + name;
@@ -176,7 +192,6 @@ public class Actuator : MonoBehaviour
                 _BoostTimer = 0;
             }
         }
-
 
         // Set the rotation from normalized extension
         //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
@@ -366,6 +381,11 @@ public class Actuator : MonoBehaviour
     {
         if (_DEBUG)
             print(CurrentEncoderExtension);
+
+        if (_Side == ActuatorSide.Left && !_UKIManager._LeftEnabledToggle.isOn)
+            return;
+        else if (_Side == ActuatorSide.Right && !_UKIManager._RightEnabledToggle.isOn)
+            return;
 
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);
     }
