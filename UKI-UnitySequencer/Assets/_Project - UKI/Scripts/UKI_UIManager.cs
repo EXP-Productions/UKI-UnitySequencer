@@ -18,6 +18,7 @@ public class UKI_UIManager : MonoBehaviour
 
     [Header("UI - MAIN")]
     public Button _EStopButton;
+    public UI_ButtonHold _IgnoreCollisionHoldButton;
     public Button _CalibrateButton;
     public Toggle _SendToModBusToggle;
     public GameObject _EstopWarning;
@@ -45,6 +46,8 @@ public class UKI_UIManager : MonoBehaviour
     public GameObject _SavePoseDialog;
     public Button _SavePoseNameButton;
     public InputField _SavePoseNameInput;
+
+    
 
     private void Awake()
     {
@@ -161,13 +164,18 @@ public class UKI_UIManager : MonoBehaviour
             }
         }
     }
-    
+
+    public bool _IgnoreCollisions = false;
     // Start is called before the first frame update
     void Start()
     {
         _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;
 
-        _EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
+        //_EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
+
+        _IgnoreCollisionHoldButton._OnDown.AddListener(() => { UkiCommunicationsManager.Instance.EStopButtonToggle(); _IgnoreCollisions = true; });
+        _IgnoreCollisionHoldButton._OnUp.AddListener(() => _IgnoreCollisions = false);
+
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
         _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
 
