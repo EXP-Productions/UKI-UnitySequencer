@@ -34,3 +34,23 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+/Unity.Artnet/packages/MSTest.TestFramework.1.3.2*
+/Unity.Artnet/Unity.BlinkyLights.Tests*
+/Unity.Artnet/Unity.BlinkyNetwork.Tests*
+/build/
+*.suo
+*.user
+_ReSharper.*/
+*.sdf
+bin/
+obj/
+Debug/
+Release/
+*.opensdf
+*.tlog
+*.log
+TestResult.xml
+*.VisualState.xml
+Version.cs
+Version.h
+Version.cpp
