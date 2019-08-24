@@ -25,10 +25,10 @@ namespace Uki.Example
         private static void LoadFixturesOnPixliteController(Model model)
         {
             //Setup Fixtures on the PixliteController
-            var STARTING_UNIVERSE = 1;
+            var WING_STARTING_UNIVERSE = 1;
 
             var leftWing = new Fixture("LeftWing", pixliteController);                      //create a new fixture, and tell it what controller it is attached to.
-            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", STARTING_UNIVERSE);             //load the indexfiles
+            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", WING_STARTING_UNIVERSE);             //load the indexfiles
             leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", leftWing.GetNextUniverse());   //load the indexfiles
             model.Fixtures.Add(leftWing);      
 
@@ -36,6 +36,8 @@ namespace Uki.Example
             rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingUpper.csv", leftWing.GetNextUniverse());//last string was on the left wing
             rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingLower.csv", rightWing.GetNextUniverse());//now the last string is on the right wing
             model.Fixtures.Add(rightWing);
+
+            
         }
 
         private static void InitializeNetwork()

@@ -67,7 +67,7 @@ namespace Unity.BlinkyLights
         
         public int GetNextUniverse()
         {
-            if (LedChains.Any()) return 0;
+            if (!LedChains.Any()) return 0;
             return LedChains.Last().DMXStartingUniverse + LedChains.Last().DmxUniversesRequired;
         }
 
