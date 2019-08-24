@@ -29,6 +29,16 @@ namespace Unity.BlinkyLights
             origin = location = v;
         }
 
+        public Pixel(float x, float y)
+        {
+            origin = location = new Vector3(x, y);
+        }
+
+        public Pixel(Vector3 v)
+        {
+            origin = location = v;
+        }
+
         public void Relocate(Vector3 relocationPoint)
         {
             location = relocationPoint;

@@ -10,12 +10,12 @@ namespace Unity.BlinkyNetwork.Artnet
         private ArtNetSocket artnetSocket;
         private const int artnetPort = 6454;
 
-        public ArtnetNetwork(string networkName, IPAddress ipAddress) : base(networkName, ipAddress, DMXProtocol.Artnet)
+        public ArtnetNetwork(DMXDeviceDetail device) : base(device)
         {
             //initialize Artnet Device
             artnetSocket = new ArtNetSocket();
             artnetSocket.EnableBroadcast = false;
-            artnetSocket.Connect(ipAddress, artnetPort);
+            artnetSocket.Connect(device.IPAddress, artnetPort);
         }
 
         public override void Send(DMXDatagram datagram)

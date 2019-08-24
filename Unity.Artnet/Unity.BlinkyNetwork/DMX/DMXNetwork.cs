@@ -8,9 +8,9 @@ namespace Unity.BlinkyNetwork.DMX
     {
         public DMXDeviceDetail DeviceDetail { get; private set; }
 
-        public DMXNetwork(string name, IPAddress ip, DMXProtocol protocol)
+        public DMXNetwork(DMXDeviceDetail device)
         {
-            DeviceDetail = new DMXDeviceDetail(name, ip, protocol);
+            DeviceDetail = device;
         }
 
         public abstract void Send(DMXDatagram datagram);

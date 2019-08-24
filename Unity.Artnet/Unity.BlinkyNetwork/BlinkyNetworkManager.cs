@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace Unity.BlinkyNetwork
 {
-    public class NetworkManager
+    public class BlinkyNetworkManager
     {
-        private DmxNetworkManager networkManager;
+        public DmxNetworkManager DMXNetworkManager;
 
-        public NetworkManager()
+        public BlinkyNetworkManager()
         {
-            networkManager = new DmxNetworkManager();
+            DMXNetworkManager = new DmxNetworkManager();
         }
 
-        public void AddNetworkDevice( string name, string ipAddress, DMXProtocol networkType)
+        public void AddNetworkDevice( DMXDeviceDetail detail)
         {
-             networkManager.AddNetworkDevice(name, ipAddress, networkType);
+            DMXNetworkManager.AddNetworkDevice(detail);
         }
 
         public IEnumerable<DMXDeviceDetail> GetRegisteredNetworkDevices()
         {
-            return networkManager.ListRegisteredDevices();
+            return DMXNetworkManager.ListRegisteredDevices();
         }
     }
 

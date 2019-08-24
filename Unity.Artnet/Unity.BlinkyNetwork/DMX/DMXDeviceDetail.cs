@@ -8,11 +8,22 @@ namespace Unity.BlinkyNetwork.DMX
         public string NetworkName { get; private set; }
         public DMXProtocol Protocol { get; private set; }
 
-        public DMXDeviceDetail(string networkName, IPAddress ipaddress, DMXProtocol protocol)
+        public DMXDeviceDetail(string networkName, string ipaddress, DMXProtocol protocol)
         {
-            NetworkName = networkName;
-            IPAddress = ipaddress;
-            Protocol = protocol;
+            IPAddress ip;
+            try
+            {
+                ip = IPAddress.Parse(ipaddress);
+                NetworkName = networkName;
+                IPAddress = ip;
+                Protocol = protocol;
+            }
+            catch
+            {
+                throw new System.Exception("IP address malformed: " + ipaddress + " + , networkName: " + networkName);
+            }
+
+
         }
     }
 }

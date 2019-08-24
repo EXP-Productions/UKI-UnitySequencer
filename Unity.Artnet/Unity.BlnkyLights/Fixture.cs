@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Unity.BlinkyNetwork.DMX;
 using UnityEngine;
 
 namespace Unity.BlinkyLights
@@ -6,14 +10,16 @@ namespace Unity.BlinkyLights
     public class Fixture 
     {
         public string Name;
-        public static List<LedChain> LedChains;
+        public List<LedChain> LedChains;
         public Vector3 Origin { get; private set; }
+        public readonly DMXDeviceDetail DMXDevice;
 
         public string GetInfo = "If setting more than one chain, set all the chains xyz pixels relative to each other.";
 
-        public Fixture(string name)
+        public Fixture(string name, DMXDeviceDetail device)
         {
             Name = name;
+            DMXDevice = device;
             LedChains = new List<LedChain>();
         }
 
@@ -26,6 +32,43 @@ namespace Unity.BlinkyLights
         public void AddLedChain(LedChain chain)
         {
             LedChains.Add(chain);
+        }
+
+        public void TryLoadLedChainFromFile(string filePath, int universe)
+        {
+         
+            try {
+
+                //Name the chain based on the source index file
+                var chain = new LedChain(Path.GetFileNameWithoutExtension(filePath), universe);
+               
+
+                //read Data Out of the file
+                var csv = from line in File.ReadAllLines(filePath)
+                          select line.Split(',');
+
+                foreach (var led in csv)
+                {
+                    var x = float.Parse(led[0]);
+                    var y = float.Parse(led[1]);
+
+                    chain.AddPixel(new Pixel(x,y));
+                }
+
+                AddLedChain(chain);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Loading an led mapping file fialed. " + e.ToString());
+            }
+          
+        }
+        
+        public int GetNextUniverse()
+        {
+            if (LedChains.Any()) return 0;
+            return LedChains.Last().DMXStartingUniverse + LedChains.Last().DmxUniversesRequired;
         }
 
         private void MovePixelsToFixtureOrigin()

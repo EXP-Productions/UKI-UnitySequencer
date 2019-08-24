@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Unity.BlinkyNetwork.DMX;
 using kadmium_sacn;
 
@@ -9,10 +8,10 @@ namespace Unity.BlinkyNetwork.sACN
     {
         private SACNSender Sender;
 
-        public SACNNetwork(string name, IPAddress ipaddress) : base(name, ipaddress, DMXProtocol.sACN)
+        public SACNNetwork(DMXDeviceDetail device) : base(device)
         {
-            Sender = new SACNSender(new Guid(), name);
-            Sender.UnicastAddress = ipaddress;
+            Sender = new SACNSender(new Guid(), device.NetworkName);
+            Sender.UnicastAddress = device.IPAddress;
         }
 
         public override void Send(DMXDatagram data)

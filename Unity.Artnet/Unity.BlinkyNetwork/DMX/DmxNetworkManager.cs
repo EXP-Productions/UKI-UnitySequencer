@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Unity.BlinkyNetwork.sACN;
 using Unity.BlinkyNetwork.Artnet;
 using System.Linq;
@@ -9,25 +8,23 @@ namespace Unity.BlinkyNetwork.DMX
 {
     public class DmxNetworkManager
     {
-        public IList<DMXNetwork> networks;
+        public IList<DMXNetwork> Networks;
 
         public DmxNetworkManager()
         {
-            networks = new List<DMXNetwork>();
+            Networks = new List<DMXNetwork>();
         }
 
-        public void AddNetworkDevice(string name, string ipAddress, DMXProtocol protocol )
+        public void AddNetworkDevice(DMXDeviceDetail device )
         {
-            if (!IPAddress.TryParse(ipAddress, out IPAddress ip))
-                throw new Exception("The IP adress passed in is not valid: " + ipAddress);
 
-            switch (protocol)
+            switch (device.Protocol)
             {
                 case DMXProtocol.Artnet:
-                    networks.Add(new ArtnetNetwork(name, ip));
+                    Networks.Add(new ArtnetNetwork(device));
                     break;
                 case DMXProtocol.sACN:
-                    networks.Add(new SACNNetwork(name, ip));
+                    Networks.Add(new SACNNetwork(device));
                     break;
             }
         }
@@ -35,18 +32,23 @@ namespace Unity.BlinkyNetwork.DMX
         public IEnumerable<DMXDeviceDetail> ListRegisteredDevices()
         {
             var result = new List<DMXDeviceDetail>();
-            foreach (var net in networks)
+            foreach (var net in Networks)
             {
                 result.Add(net.DeviceDetail) ;
             }
             return result;
         }
 
-        public void Send(DMXDatagram datagram)
+        public void UpdateAllLights()
+        {
+
+        }
+
+        private void Send(DMXDatagram datagram)
         {
             try
             {
-                if(networks.Count > 0) networks.First(x => x.DeviceDetail.NetworkName == datagram.NetworkName).Send(datagram);
+                if(Networks.Count > 0) Networks.First(x => x.DeviceDetail.NetworkName == datagram.NetworkName).Send(datagram);
             }
             catch { Console.WriteLine("Error sending DMXDatagram: Network Not Initialized: " + datagram.NetworkName); }
         }
