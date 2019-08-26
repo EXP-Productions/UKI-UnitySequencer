@@ -1,7 +1,7 @@
-﻿using System.Net;
-using ArtNet.Sockets;
+﻿using ArtNet.Sockets;
 using ArtNet.Packets;
 using Unity.BlinkyNetwork.DMX;
+using System;
 
 namespace Unity.BlinkyNetwork.Artnet
 {
@@ -15,7 +15,15 @@ namespace Unity.BlinkyNetwork.Artnet
             //initialize Artnet Device
             artnetSocket = new ArtNetSocket();
             artnetSocket.EnableBroadcast = false;
-            artnetSocket.Connect(device.IPAddress, artnetPort);
+            try
+            {
+                artnetSocket.Connect(device.IPAddress, artnetPort);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Trouble Connecting to the artnet controller. IP:" + device.IPAddress + " | " + e.ToString());
+        
+            }
         }
 
         public override void Send(DMXDatagram datagram)

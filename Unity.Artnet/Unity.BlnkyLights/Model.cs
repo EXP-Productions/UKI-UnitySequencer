@@ -2,13 +2,23 @@
 
 namespace Unity.BlinkyLights
 {
-    public class Model
+    public class BlinkyModel
     {
         public List<Fixture> Fixtures;
 
-        public Model()
+        public BlinkyModel()
         {
             Fixtures = new List<Fixture>();
+        }
+
+        public void AddFixture(Fixture fixture)
+        {
+            Fixtures.Add(fixture);
+        }
+
+        public void SendAll() 
+        {
+           
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Unity.BlinkyLights
             LedChains = new List<LedChain>();
         }
 
-        public void SetFixtureLocation(Vector3 origin)
+        public void SetFixtureOrigin(Vector3 origin)
         {
             Origin = origin;
             MovePixelsToFixtureOrigin();
@@ -34,6 +34,11 @@ namespace Unity.BlinkyLights
             LedChains.Add(chain);
         }
 
+        /// <summary>
+        /// Attempt to load all the pixels based on an x,y index file. 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="universe"></param>
         public void TryLoadLedChainFromFile(string filePath, int universe)
         {
          
@@ -60,11 +65,13 @@ namespace Unity.BlinkyLights
             }
             catch (Exception e)
             {
-                throw new Exception("Loading an led mapping file fialed. " + e.ToString());
+               Console.WriteLine("Loading an led mapping file fialed. " + e.ToString());
             }
           
         }
-        
+
+        /// <summary>If using consecutive strings for a fixture, this helper will tell you what the next universe for the next string is.
+        /// </summary>
         public int GetNextUniverse()
         {
             if (!LedChains.Any()) return 0;
@@ -82,8 +89,28 @@ namespace Unity.BlinkyLights
             }
         }
 
+        /// <summary>
+        /// Scaling will stretch the pixels by the factor passed in, in a positive direction away from the fixtures origin.
+        /// </summary>
+        /// <param name="scaleFactor"></param>
+        public void ScaleFixture(float scaleFactor)
+        {
+            foreach (var ledChain in LedChains)
+            {
+                foreach (var pixel in ledChain.Pixels)
+                {
+                    pixel.location.Scale(new Vector3(scaleFactor, scaleFactor, scaleFactor));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pass in a vector that will be used to rotate all Pixels around the fixtures origin point.
+        /// </summary>
+        /// <param name="rotateBy"></param>
         public void RotateFixture( Vector3 rotateBy)
         {
+
             foreach (var ledChain in LedChains)
             {
                 foreach (var pixel in ledChain.Pixels)
