@@ -1,7 +1,7 @@
 ﻿
 using Unity.BlinkyLights;
 using Unity.BlinkyNetwork;
-using Unity.BlinkyNetwork.DMX;
+using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyLightsCoordinator
 {
@@ -23,7 +23,7 @@ namespace Unity.BlinkyLightsCoordinator
 
         public void UpdateLights()
         {
-
+           
         }
 
     }

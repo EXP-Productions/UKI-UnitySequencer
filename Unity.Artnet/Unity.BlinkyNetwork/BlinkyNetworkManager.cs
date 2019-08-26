@@ -1,5 +1,7 @@
 ﻿using Unity.BlinkyNetwork.DMX;
 using System.Collections.Generic;
+using System;
+using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyNetwork
 {
@@ -21,6 +23,7 @@ namespace Unity.BlinkyNetwork
         {
             return DMXNetworkManager.ListRegisteredDevices();
         }
+
     }
 
 }

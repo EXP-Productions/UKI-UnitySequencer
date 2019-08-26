@@ -2,6 +2,7 @@
 using ArtNet.Packets;
 using Unity.BlinkyNetwork.DMX;
 using System;
+using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyNetwork.Artnet
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity.BlinkyNetwork.DMX;
 using kadmium_sacn;
+using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyNetwork.sACN
 {

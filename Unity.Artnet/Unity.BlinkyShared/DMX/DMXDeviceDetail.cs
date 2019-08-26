@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Unity.BlinkyNetwork.DMX
+namespace Unity.BlinkyShared.DMX
 {
     public class DMXDeviceDetail
     {
@@ -22,8 +22,6 @@ namespace Unity.BlinkyNetwork.DMX
             {
                 throw new System.Exception("IP address malformed: " + ipaddress + " + , networkName: " + networkName);
             }
-
-
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using Unity.BlinkyNetwork;
-using Unity.BlinkyNetwork.DMX;
-using Unity.BlinkyLights;
+﻿using Unity.BlinkyLights;
 using UnityEngine;
 using Unity.BlinkyLightsCoordinator;
+using Unity.BlinkyShared.DMX;
 
 namespace Uki.Example
 {
@@ -33,10 +32,10 @@ namespace Uki.Example
 
             InitializeNetworkAndControllerss();        
             LoadFixturesOnPixliteController(blinkyCoordinator.BlinkyModel);
-            LoadFixturesOnPixliteController(blinkyCoordinator.BlinkyModel);
-            
-            //do amazing stuff with the model. 
-            //update lights
+            LoadFixturesOnArtnetController(blinkyCoordinator.BlinkyModel);
+
+            blinkyCoordinator.UpdateLights();
+
         }
 
         private static void InitializeNetworkAndControllerss()

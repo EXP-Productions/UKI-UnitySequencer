@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyNetwork.DMX
 {

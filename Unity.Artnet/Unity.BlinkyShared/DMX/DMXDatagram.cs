@@ -1,4 +1,4 @@
-﻿namespace Unity.BlinkyNetwork
+﻿namespace Unity.BlinkyShared.DMX
 {
     public class DMXDatagram
     {

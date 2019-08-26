@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.BlinkyNetwork.sACN;
 using Unity.BlinkyNetwork.Artnet;
 using System.Linq;
+using Unity.BlinkyShared.DMX;
 
 namespace Unity.BlinkyNetwork.DMX
 {

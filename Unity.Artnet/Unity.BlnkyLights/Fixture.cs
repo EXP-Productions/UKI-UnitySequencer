@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.BlinkyNetwork.DMX;
+using Unity.BlinkyShared.DMX;
 using UnityEngine;
 
 namespace Unity.BlinkyLights
@@ -13,8 +13,6 @@ namespace Unity.BlinkyLights
         public List<LedChain> LedChains;
         public Vector3 Origin { get; private set; }
         public readonly DMXDeviceDetail DMXDevice;
-
-        public string GetInfo = "If setting more than one chain, set all the chains xyz pixels relative to each other.";
 
         public Fixture(string name, DMXDeviceDetail device)
         {
