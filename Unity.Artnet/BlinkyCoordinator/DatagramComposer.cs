@@ -16,7 +16,7 @@ namespace Unity.BlinkyLightsCoordinator
                 int remainingPixelsToProcess = chain.Pixels.Count % 170;
 
                 //PROCESS FULL UNIVERSES (more than 170 pixels) 
-                while (universesProcessed < chain.DmxUniversesRequired)
+                while (universesProcessed < chain.DmxUniversesRequired-1)
                 {
                     var buffer = new byte[510];
                     var pixelIndex = 0;
@@ -43,11 +43,12 @@ namespace Unity.BlinkyLightsCoordinator
 
                 while (pixelIndexLast < remainingPixelsToProcess)
                 {
+                    var pixelIndexFinal = pixelIndexLast + ( 170 * universesProcessed);
                     var idx = pixelIndexLast * 3;
 
-                    remainingBuffer[idx] = (byte)chain.Pixels[pixelIndexLast].r;
-                    remainingBuffer[idx + 1] = (byte)chain.Pixels[pixelIndexLast].g;
-                    remainingBuffer[idx + 2] = (byte)chain.Pixels[pixelIndexLast].b;
+                    remainingBuffer[idx] = (byte)chain.Pixels[pixelIndexFinal].r;
+                    remainingBuffer[idx + 1] = (byte)chain.Pixels[pixelIndexFinal].g;
+                    remainingBuffer[idx + 2] = (byte)chain.Pixels[pixelIndexFinal].b;
 
                     pixelIndexLast++;
                 }
@@ -57,8 +58,8 @@ namespace Unity.BlinkyLightsCoordinator
             }
 
             return datagrams;
-        }
 
+        }
     }
 }
 

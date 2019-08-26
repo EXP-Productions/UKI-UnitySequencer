@@ -15,7 +15,7 @@ namespace Uki.Example
 
         //Setup Fixtures on the PixliteController
         private static short LEFT_WING_STARTING_UNIVERSE = 1;
-        private static short RIGHT_WING_STARTING_UNIVERSE = 6;
+        private static short RIGHT_WING_STARTING_UNIVERSE = 8;
         private static short EYES_STARTING_UNIVERSE = 13;
    
         private static short LEGS_STARTING_UNIVERSE = 12;
