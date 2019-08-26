@@ -1,29 +1,32 @@
-﻿
-using Unity.BlinkyLights;
-using Unity.BlinkyNetwork;
+﻿using Unity.BlinkyLights;
 using Unity.BlinkyShared.DMX;
+using Unity.BlinkyNetworking;
+using System.Linq;
 
 namespace Unity.BlinkyLightsCoordinator
 {
     public class BlinkyCoordinator
     {
-        public BlinkyNetworkManager BlinkyNetwork;
-        public BlinkyModel BlinkyModel;
+        public BlinkyNetwork Network;
+        public BlinkyModel Model;
 
         public BlinkyCoordinator()
         {
-            BlinkyNetwork = new BlinkyNetworkManager();
-            BlinkyModel = new BlinkyModel();
+            Network = new BlinkyNetwork();
+            Model = new BlinkyModel();
         }
 
         public void AddNetworkDevice(DMXDeviceDetail device)
         {
-            BlinkyNetwork.AddNetworkDevice(device);
+            Network.AddNetworkDevice(device);
         }
 
         public void UpdateLights()
         {
-           
+            Model.Fixtures.ForEach(fixture =>
+            Network.Networks.First(network => network.NetworkName == fixture.NetworkName)
+                            .Send(DatagramComposer.GetDMXDatagrams(fixture)
+                            ));
         }
 
     }

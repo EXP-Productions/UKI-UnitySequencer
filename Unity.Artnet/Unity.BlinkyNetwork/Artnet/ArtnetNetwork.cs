@@ -1,10 +1,11 @@
 ﻿using ArtNet.Sockets;
 using ArtNet.Packets;
-using Unity.BlinkyNetwork.DMX;
+using Unity.BlinkyNetworking.DMX;
 using System;
 using Unity.BlinkyShared.DMX;
+using System.Collections.Generic;
 
-namespace Unity.BlinkyNetwork.Artnet
+namespace Unity.BlinkyNetworking.Artnet
 {
     class ArtnetNetwork : DMXNetwork
     {
@@ -38,6 +39,11 @@ namespace Unity.BlinkyNetwork.Artnet
         public override string ToString()
         {
             return artnetSocket.ToString();
+        }
+
+        public override void Send(List<DMXDatagram> datagrams)
+        {
+            datagrams.ForEach(datagram => Send(datagram));
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Unity.BlinkyLights
     {
         public string Name { get; private set; }
         public List<Pixel> Pixels { get; set; }
-        public int DMXStartingUniverse;
+        public short DMXStartingUniverse;
 
         public string GetInfo => "This class represents a string of " +
             "LEDs that are connected to one driver output of a controller.";
 
-        public LedChain(string name, int dmxStartingUniverse)
+        public LedChain(string name, short dmxStartingUniverse)
         {
             Name = name;
             DMXStartingUniverse = dmxStartingUniverse;

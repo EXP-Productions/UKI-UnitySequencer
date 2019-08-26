@@ -14,25 +14,25 @@ namespace Uki.Example
         public static BlinkyCoordinator blinkyCoordinator;
 
         //Setup Fixtures on the PixliteController
-        private static int LEFT_WING_STARTING_UNIVERSE = 1;
-        private static int RIGHT_WING_STARTING_UNIVERSE = 6;
-        private static int EYES_STARTING_UNIVERSE = 13;
+        private static short LEFT_WING_STARTING_UNIVERSE = 1;
+        private static short RIGHT_WING_STARTING_UNIVERSE = 6;
+        private static short EYES_STARTING_UNIVERSE = 13;
    
-        private static int LEGS_STARTING_UNIVERSE = 12;
-        private static int FLOODS_STARTING_UNIVERSE_A = 0; //artnet
-        private static int FLOODS_STARTING_UNIVERSE_B = 11; //sacn
+        private static short LEGS_STARTING_UNIVERSE = 12;
+        private static short FLOODS_STARTING_UNIVERSE_A = 0; //artnet
+        private static short FLOODS_STARTING_UNIVERSE_B = 11; //sacn
 
-        private static int ARMOUR_A_STARTING_UNIVERSE = 1;
-        private static int ARMOUR_B_STARTING_UNIVERSE = 2;
-        private static int ARMOUR_C_STARTING_UNIVERSE = 3;
+        private static short ARMOUR_A_STARTING_UNIVERSE = 1;
+        private static short ARMOUR_B_STARTING_UNIVERSE = 2;
+        private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
         static void Main(string[] args)
         {
             blinkyCoordinator = new BlinkyCoordinator();
 
             InitializeNetworkAndControllerss();        
-            LoadFixturesOnPixliteController(blinkyCoordinator.BlinkyModel);
-            LoadFixturesOnArtnetController(blinkyCoordinator.BlinkyModel);
+            LoadFixturesOnPixliteController(blinkyCoordinator.Model);
+            LoadFixturesOnArtnetController(blinkyCoordinator.Model);
 
             blinkyCoordinator.UpdateLights();
 

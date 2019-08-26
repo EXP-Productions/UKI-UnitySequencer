@@ -1,9 +1,10 @@
 ﻿using System;
-using Unity.BlinkyNetwork.DMX;
+using Unity.BlinkyNetworking.DMX;
 using kadmium_sacn;
 using Unity.BlinkyShared.DMX;
+using System.Collections.Generic;
 
-namespace Unity.BlinkyNetwork.sACN
+namespace Unity.BlinkyNetworking.sACN
 {
     public class SACNNetwork : DMXNetwork
     {
@@ -18,6 +19,11 @@ namespace Unity.BlinkyNetwork.sACN
         public override void Send(DMXDatagram data)
         {
             Sender.Send(data.UniverseNo, data.Buffer);
+        }
+
+        public override void Send(List<DMXDatagram> datagrams)
+        {
+            datagrams.ForEach(x => Send(x));
         }
 
         public override string ToString()

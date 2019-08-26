@@ -15,10 +15,5 @@ namespace Unity.BlinkyLights
         {
             Fixtures.Add(fixture);
         }
-
-        public void SendAll() 
-        {
-           
-        }
     }
 }

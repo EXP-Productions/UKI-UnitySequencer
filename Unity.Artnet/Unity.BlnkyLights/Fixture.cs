@@ -12,14 +12,16 @@ namespace Unity.BlinkyLights
         public string Name;
         public List<LedChain> LedChains;
         public Vector3 Origin { get; private set; }
-        public readonly DMXDeviceDetail DMXDevice;
+        public readonly DMXDeviceDetail DmxDevice;
 
         public Fixture(string name, DMXDeviceDetail device)
         {
             Name = name;
-            DMXDevice = device;
+            DmxDevice = device;
             LedChains = new List<LedChain>();
         }
+
+        public string NetworkName => DmxDevice.NetworkName;
 
         public void SetFixtureOrigin(Vector3 origin)
         {
@@ -37,7 +39,7 @@ namespace Unity.BlinkyLights
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="universe"></param>
-        public void TryLoadLedChainFromFile(string filePath, int universe)
+        public void TryLoadLedChainFromFile(string filePath, short universe)
         {
          
             try {
@@ -70,10 +72,10 @@ namespace Unity.BlinkyLights
 
         /// <summary>If using consecutive strings for a fixture, this helper will tell you what the next universe for the next string is.
         /// </summary>
-        public int GetNextUniverse()
+        public short GetNextUniverse()
         {
             if (!LedChains.Any()) return 0;
-            return LedChains.Last().DMXStartingUniverse + LedChains.Last().DmxUniversesRequired;
+            return (short)(LedChains.Last().DMXStartingUniverse + LedChains.Last().DmxUniversesRequired);
         }
 
         private void MovePixelsToFixtureOrigin()

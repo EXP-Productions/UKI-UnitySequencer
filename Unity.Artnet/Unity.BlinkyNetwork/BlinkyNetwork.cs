@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Unity.BlinkyNetworking.DMX;
 using System.Collections.Generic;
-using Unity.BlinkyNetwork.sACN;
-using Unity.BlinkyNetwork.Artnet;
-using System.Linq;
+using System;
 using Unity.BlinkyShared.DMX;
+using Unity.BlinkyNetworking.Artnet;
+using Unity.BlinkyNetworking.sACN;
+using System.Linq;
 
-namespace Unity.BlinkyNetwork.DMX
+namespace Unity.BlinkyNetworking
 {
-    public class DmxNetworkManager
+    public class BlinkyNetwork
     {
         public IList<DMXNetwork> Networks;
 
-        public DmxNetworkManager()
+        public BlinkyNetwork()
         {
             Networks = new List<DMXNetwork>();
         }
 
-        public void AddNetworkDevice(DMXDeviceDetail device )
+        public void AddNetworkDevice(DMXDeviceDetail device)
         {
 
             switch (device.Protocol)
@@ -35,7 +36,7 @@ namespace Unity.BlinkyNetwork.DMX
             var result = new List<DMXDeviceDetail>();
             foreach (var net in Networks)
             {
-                result.Add(net.DeviceDetail) ;
+                result.Add(net.DeviceDetail);
             }
             return result;
         }
@@ -49,9 +50,11 @@ namespace Unity.BlinkyNetwork.DMX
         {
             try
             {
-                if(Networks.Count > 0) Networks.First(x => x.DeviceDetail.NetworkName == datagram.NetworkName).Send(datagram);
+                if (Networks.Count > 0) Networks.First(x => x.DeviceDetail.NetworkName == datagram.NetworkName).Send(datagram);
             }
             catch { Console.WriteLine("Error sending DMXDatagram: Network Not Initialized: " + datagram.NetworkName); }
         }
+
     }
+
 }

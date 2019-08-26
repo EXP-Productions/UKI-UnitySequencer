@@ -1,6 +1,7 @@
-﻿using Unity.BlinkyShared.DMX;
+﻿using System.Collections.Generic;
+using Unity.BlinkyShared.DMX;
 
-namespace Unity.BlinkyNetwork.DMX
+namespace Unity.BlinkyNetworking.DMX
 {
     public interface IDMXNetwork { }
 
@@ -13,7 +14,11 @@ namespace Unity.BlinkyNetwork.DMX
             DeviceDetail = device;
         }
 
+        public string NetworkName => DeviceDetail.NetworkName;
+
         public abstract void Send(DMXDatagram datagram);
-        
+
+        public abstract void Send(List<DMXDatagram> datagrams);
+
     }
 }
