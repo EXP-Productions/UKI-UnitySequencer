@@ -2,7 +2,6 @@
 using Unity.BlinkyShared.DMX;
 using Unity.BlinkyNetworking;
 using System.Linq;
-using System;
 using System.Collections.Generic;
 
 namespace Unity.BlinkyLightsCoordinator
@@ -10,7 +9,7 @@ namespace Unity.BlinkyLightsCoordinator
     public static unsafe class BlinkyCoordinator
     {
         public static BlinkyNetwork Network = new BlinkyNetwork();
-        private static BlinkyModel Model = new BlinkyModel();
+        public static BlinkyModel Model = new BlinkyModel();
 
         //accessors
         public static List<Pixel> pixels = new List<Pixel>();

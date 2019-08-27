@@ -34,6 +34,8 @@ namespace Uki.Example
             InitializeNetworkAndControllers();
             LoadFixturesFromCSVs();
 
+            BlinkyCoordinator.pixels[0].G = 100;
+
             TestAnimation();
         }
 

@@ -25,9 +25,9 @@ namespace Unity.BlinkyLightsCoordinator
                     {
                         var idx = pixelIndex * 3;
 
-                        buffer[idx] = (byte)chain.Pixels[pixelIndex].r;
-                        buffer[idx + 1] = (byte)chain.Pixels[pixelIndex].g;
-                        buffer[idx + 2] = (byte)chain.Pixels[pixelIndex].b;
+                        buffer[idx] = (byte)chain.Pixels[pixelIndex].R;
+                        buffer[idx + 1] = (byte)chain.Pixels[pixelIndex].G;
+                        buffer[idx + 2] = (byte)chain.Pixels[pixelIndex].B;
 
                         pixelIndex++;
                     }
@@ -46,9 +46,9 @@ namespace Unity.BlinkyLightsCoordinator
                     var pixelIndexFinal = pixelIndexLast + ( 170 * universesProcessed);
                     var idx = pixelIndexLast * 3;
 
-                    remainingBuffer[idx] = (byte)chain.Pixels[pixelIndexFinal].r;
-                    remainingBuffer[idx + 1] = (byte)chain.Pixels[pixelIndexFinal].g;
-                    remainingBuffer[idx + 2] = (byte)chain.Pixels[pixelIndexFinal].b;
+                    remainingBuffer[idx] = (byte)chain.Pixels[pixelIndexFinal].R;
+                    remainingBuffer[idx + 1] = (byte)chain.Pixels[pixelIndexFinal].G;
+                    remainingBuffer[idx + 2] = (byte)chain.Pixels[pixelIndexFinal].B;
 
                     pixelIndexLast++;
                 }

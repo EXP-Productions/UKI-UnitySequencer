@@ -1,21 +1,20 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Unity.BlinkyLights
 {
-    public class Pixel
+    public class Pixel 
     {
-        public Color color;
+        public Color color; 
         public Vector3 origin { get; private set; }
-        public Vector3 location { get; private set; }
+        public Vector3 location;
 
-        public float r => color.r;
-        public float g => color.g;
-        public float b => color.b;
+        public float R { get { return color.r; } set { color.r = value; } }
+        public float G { get { return color.g; } set { color.g = value; } }
+        public float B { get { return color.b; } set { color.b = value; } }
 
-        public float x => location.x;
-        public float y => location.y;
-        public float z => location.z;
+        public float X { get { return location.x; } set { location.x = value; } }
+        public float Y { get { return location.y; } set { location.y = value; } }
+        public float Z { get { return location.z; } set { location.x = value; } }
 
         public Pixel() { }
 
@@ -24,10 +23,10 @@ namespace Unity.BlinkyLights
             color = c;
         }
 
-        public Pixel(Color c, Vector3 v)
+        public Pixel(Color c, Vector3 nativeLocation)
         {
-            color = c;
-            origin = location = v;
+            color = c ;
+            origin = location = nativeLocation;
         }
 
         public Pixel(float x, float y)
