@@ -4,6 +4,8 @@ using Unity.BlinkyBlinky;
 using Unity.BlinkyShared.DMX;   
 using System;
 using Uki.Example.Animations;
+using Unity.BlinkyBlinky.Animations;
+using System.Threading;
 
 namespace Uki.Example
 {
@@ -34,7 +36,27 @@ namespace Uki.Example
             InitializeNetworkAndControllers();
             LoadFixturesFromCSVs();
 
-            TestAnimation();
+            //TestAnimation();
+            Plasma();
+        }
+
+        private static void Plasma()
+        {
+            var plasma = new Plasma();
+
+            var size = 300;
+            var speed = 10;
+            var bright = 33;
+
+            plasma.Initialize(bright, size, speed, true, true, true, false, false, true);
+
+            while (CallanIsAwesome) //infinate loop
+            {
+                plasma.Run();
+
+                BlinkyBlinky.UpdateLights();
+                Thread.Sleep(33); //WONT WORK IN UNITY
+            }
         }
 
         private static void TestAnimation()
@@ -44,7 +66,7 @@ namespace Uki.Example
             int count = 1;
             long avg = 0;
             
-            while (CallanIsAwesome)
+            while (CallanIsAwesome) //infinate loop
             {
                 animation.Run();
 

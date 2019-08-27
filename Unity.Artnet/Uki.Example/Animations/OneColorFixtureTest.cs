@@ -1,7 +1,6 @@
 ﻿
 using System.Threading;
 using Unity.BlinkyBlinky;
-using UnityEngine;
 
 namespace Uki.Example.Animations
 {
