@@ -2,16 +2,16 @@
 using UnityEngine;
 using Unity.BlinkyLightsCoordinator;
 using Unity.BlinkyShared.DMX;
+using System;
+using Uki.Example.Animations;
 
 namespace Uki.Example
 {
     public class Program
     {
         //describe the physical controllers we have.
-        private static DMXDeviceDetail pixliteController = new DMXDeviceDetail("Pixlite16", "192.168.2.50", DMXProtocol.sACN);
-        private static DMXDeviceDetail artnetController = new DMXDeviceDetail("ArtNetController", "192.168.2.100", DMXProtocol.Artnet);
-
-        public static BlinkyCoordinator blinkyCoordinator;
+        private static DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.2.50", DMXProtocol.sACN);
+        private static DMXDeviceDetail ARTNET_CONTROLLER = new DMXDeviceDetail("ArtNetController", "192.168.2.100", DMXProtocol.Artnet);
 
         //Setup Fixtures on the PixliteController
         private static short LEFT_WING_STARTING_UNIVERSE = 1;
@@ -26,78 +26,123 @@ namespace Uki.Example
         private static short ARMOUR_B_STARTING_UNIVERSE = 2;
         private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
+        //loop condition
+        public static bool CallanIsAwesome = true;
+
         static void Main(string[] args)
         {
-            blinkyCoordinator = new BlinkyCoordinator();
+            InitializeNetworkAndControllers();
+            LoadFixturesFromCSVs();
 
-            InitializeNetworkAndControllerss();        
-            LoadFixturesOnPixliteController(blinkyCoordinator.Model);
-            LoadFixturesOnArtnetController(blinkyCoordinator.Model);
-
-            blinkyCoordinator.UpdateLights();
-
+            TestAnimation();
         }
 
-        private static void InitializeNetworkAndControllerss()
-        {
-            blinkyCoordinator.AddNetworkDevice(pixliteController);
-            blinkyCoordinator.AddNetworkDevice(artnetController);
+        private static void TestAnimation()
+        { 
+            //repalce with managed system. Lots of work...better to accept a feed?
+            var animation = new OneColorFixtureTest();
+
+            while (CallanIsAwesome)
+            {
+                animation.Run();
+                BlinkyCoordinator.UpdateLights();
+            }
         }
 
-        private static void LoadFixturesOnPixliteController(BlinkyModel model)
+        private static void InitializeNetworkAndControllers()
         {
 
-            var leftWing = new Fixture("LeftWing", pixliteController);                     
-            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", LEFT_WING_STARTING_UNIVERSE);  
-            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", leftWing.GetNextUniverse());   
-            
-            //scale, locate and rotate fixture
+            BlinkyCoordinator.AddNetworkDevice(PIXLITE_CONTROLLER);
+            BlinkyCoordinator.AddNetworkDevice(ARTNET_CONTROLLER);
+        }
+
+        private static void LoadFixturesFromCSVs()
+        {
+            BlinkyCoordinator.AddFixture(LeftWing());
+            BlinkyCoordinator.AddFixture(RightWing());
+            BlinkyCoordinator.AddFixture(Eyes());
+
+            BlinkyCoordinator.AddFixture(ArmourA());
+            BlinkyCoordinator.AddFixture(ArmourB());
+            BlinkyCoordinator.AddFixture(ArmourC());
+            BlinkyCoordinator.AddFixture(Flood());
+            BlinkyCoordinator.AddFixture(Legs());
+        }
+
+        #region Fixtures
+
+        private static Fixture LeftWing()
+        {
+            var leftWing = new Fixture("LeftWing", PIXLITE_CONTROLLER);
+            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", LEFT_WING_STARTING_UNIVERSE);
+            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", leftWing.GetNextUniverse());
+
             leftWing.ScaleFixture(1.3f);
             leftWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
             //leftWing.RotateFixture(new Vector3(45, 0, 0));   //cant rotate outside unity
 
-            //add to the model.
-            model.AddFixture(leftWing);      
+            return leftWing;
+        }
 
-
-            var rightWing = new Fixture("RightWing", pixliteController);
+        private static Fixture RightWing()
+        {
+            var rightWing = new Fixture("RightWing", PIXLITE_CONTROLLER);
             rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingUpper.csv", RIGHT_WING_STARTING_UNIVERSE);
             rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingLower.csv", rightWing.GetNextUniverse());
             rightWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
-           // rightWing.RotateFixture(new Vector3(45, 0, 0));
-            model.AddFixture(rightWing);
+            // rightWing.RotateFixture(new Vector3(45, 0, 0));
+            return rightWing;
+        }
 
-            var eyes = new Fixture("Eyes", pixliteController);
+        private static Fixture Eyes()
+        {
+            var eyes = new Fixture("Eyes", PIXLITE_CONTROLLER);
             eyes.TryLoadLedChainFromFile(@".\Indexes\Eyes.csv", EYES_STARTING_UNIVERSE);//last string was on the left wing
             eyes.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
-           // eyes.RotateFixture(new Vector3(0, 0, 0));
-            model.AddFixture(eyes);
+            // eyes.RotateFixture(new Vector3(0, 0, 0));
 
+            return eyes;
         }
 
-        private static void LoadFixturesOnArtnetController(BlinkyModel model)
+        private static Fixture ArmourA()
         {
             //repeat Armour on 3 universes for 3 suits.
-            var armourA = new Fixture("Armour", artnetController);
+            var armourA = new Fixture("Armour", ARTNET_CONTROLLER);
             armourA.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_A_STARTING_UNIVERSE);//last string was on the left wing
-            model.AddFixture(armourA);
-
-            var armourB = new Fixture("Armour", artnetController);
-            armourB.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_B_STARTING_UNIVERSE);//last string was on the left wing
-            model.AddFixture(armourB);
-
-            var armourC = new Fixture("Armour", artnetController);
-            armourC.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_C_STARTING_UNIVERSE);//last string was on the left wing
-            model.AddFixture(armourC);
-            
-            //to make the floods less blinky on video feeds (from sampling one led), import the legs index, then average all the pixels.
-            var flood = new Fixture("Flood", artnetController);
-            flood.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", FLOODS_STARTING_UNIVERSE_A);//last string was on the left wing
-            model.AddFixture(flood);
-            
-            var legs = new Fixture("Legs", artnetController);
-            legs.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", LEGS_STARTING_UNIVERSE);//last string was on the left wing
-            model.AddFixture(legs);
+            return armourA;
         }
+
+        private static Fixture ArmourB()
+        {
+            var armourB = new Fixture("Armour", ARTNET_CONTROLLER);
+            armourB.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_B_STARTING_UNIVERSE);//last string was on the left wing
+            return armourB;
+        }
+
+        private static Fixture ArmourC()
+        {
+            var armourC = new Fixture("Armour", ARTNET_CONTROLLER);
+            armourC.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_C_STARTING_UNIVERSE);//last string was on the left wing
+            return armourC;
+        }
+
+        private static Fixture Flood()
+        {
+            //to make the floods less blinky on video feeds (from sampling one led), import the legs index, then average all the pixels.
+            var flood = new Fixture("Flood", ARTNET_CONTROLLER);
+            flood.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", FLOODS_STARTING_UNIVERSE_A);//last string was on the left wing
+             return flood;
+        }
+
+        private static Fixture Legs()
+        {
+            var legs = new Fixture("Legs", ARTNET_CONTROLLER);
+            legs.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", LEGS_STARTING_UNIVERSE);//last string was on the left wing
+            return legs;
+        }
+
+        private enum Is { Awesome}
+
+        #endregion
     }
 }

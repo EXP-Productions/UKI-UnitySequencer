@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Unity.BlinkyLights
 {
@@ -44,5 +45,9 @@ namespace Unity.BlinkyLights
             location = relocationPoint;
         }
 
+        public void Black()
+        {
+            color.r = color.g = color.b = 0;
+        }
     }
 }
