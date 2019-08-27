@@ -71,7 +71,6 @@ namespace ArtNet.Sockets
 
 
 
-
         public void Open(IPAddress localIp, IPAddress localSubnetMask)
         {
             LocalIP = localIp;
@@ -138,14 +137,13 @@ namespace ArtNet.Sockets
         {
             if (packet != null)
             {
-                if (NewPacket != null)
-                    NewPacket(this, new NewPacketEventArgs<ArtNetPacket>(source, packet));
+                NewPacket?.Invoke(this, new NewPacketEventArgs<ArtNetPacket>(source, packet));
             }
         }
 
         protected void OnUnhandledException(Exception ex)
         {
-            if (UnhandledException != null) UnhandledException(this, new UnhandledExceptionEventArgs((object)ex, false));
+            UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs((object)ex, false));
         }
 
         #region Sending

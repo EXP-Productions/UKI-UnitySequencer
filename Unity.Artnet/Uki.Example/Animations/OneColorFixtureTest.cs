@@ -1,4 +1,8 @@
 ﻿
+using System.Threading;
+using Unity.BlinkyBlinky;
+using UnityEngine;
+
 namespace Uki.Example.Animations
 {
     public class OneColorFixtureTest : IBlinkyAnimation
@@ -7,7 +11,15 @@ namespace Uki.Example.Animations
 
         public void Run()
         {
-            //sick animations happen here. 
+
+            BlinkyBlinky.fixtures[0].pixels.ForEach(f => f.R = 255);
+            BlinkyBlinky.fixtures[1].pixels.ForEach(f => f.G = 255);
+            BlinkyBlinky.UpdateLights();
+            Thread.Sleep(500);
+
+            BlinkyBlinky.AllBlack();
+            BlinkyBlinky.UpdateLights();
+            Thread.Sleep(500);
         }
     }
 }

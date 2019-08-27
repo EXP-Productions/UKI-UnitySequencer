@@ -4,9 +4,9 @@ using Unity.BlinkyNetworking;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Unity.BlinkyLightsCoordinator
+namespace Unity.BlinkyBlinky
 {
-    public static unsafe class BlinkyCoordinator
+    public static unsafe class BlinkyBlinky
     {
         private static BlinkyNetwork Network = new BlinkyNetwork();
         private static BlinkyModel Model = new BlinkyModel();
@@ -15,6 +15,9 @@ namespace Unity.BlinkyLightsCoordinator
         public static List<Pixel> pixels = new List<Pixel>();
         public static List<BlinkyFixture> fixtures = new List<BlinkyFixture>();
 
+        //workers
+        public static void AllBlack() => Model.AllBlack();
+
         public static void AddNetworkDevice(DMXDeviceDetail device)
         {
             Network.AddNetworkDevice(device);
@@ -22,9 +25,9 @@ namespace Unity.BlinkyLightsCoordinator
 
         public static void AddFixture(Fixture fixture)
         {
-            var result =  Model.AddFixture(fixture);
+            var result =  Model.AddFixture(fixture); //the result is a copy of the new fixture
 
-            //the result is a copy of the new fixture
+            //copy the result to the two main arrays above for easy access.
             var newFixture = new BlinkyFixture(result);
             fixtures.Add(newFixture);
             pixels.AddRange(newFixture.pixels);

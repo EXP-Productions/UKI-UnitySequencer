@@ -1,7 +1,7 @@
 ﻿using Unity.BlinkyLights;
 using UnityEngine;
-using Unity.BlinkyLightsCoordinator;
-using Unity.BlinkyShared.DMX;
+using Unity.BlinkyBlinky;
+using Unity.BlinkyShared.DMX;   
 using System;
 using Uki.Example.Animations;
 
@@ -34,8 +34,6 @@ namespace Uki.Example
             InitializeNetworkAndControllers();
             LoadFixturesFromCSVs();
 
-            BlinkyCoordinator.pixels[0].G = 100;
-
             TestAnimation();
         }
 
@@ -43,32 +41,37 @@ namespace Uki.Example
         { 
             //repalce with managed system. Lots of work...better to accept a feed?
             var animation = new OneColorFixtureTest();
-
+            int count = 1;
+            long avg = 0;
+            
             while (CallanIsAwesome)
             {
                 animation.Run();
-                BlinkyCoordinator.UpdateLights();
+
+                BlinkyBlinky.UpdateLights();
             }
         }
 
         private static void InitializeNetworkAndControllers()
         {
 
-            BlinkyCoordinator.AddNetworkDevice(PIXLITE_CONTROLLER);
-            BlinkyCoordinator.AddNetworkDevice(ARTNET_CONTROLLER);
+            BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
+           // BlinkyCoordinator.AddNetworkDevice(ARTNET_CONTROLLER);
         }
 
         private static void LoadFixturesFromCSVs()
         {
-            BlinkyCoordinator.AddFixture(LeftWing());
-            BlinkyCoordinator.AddFixture(RightWing());
-            BlinkyCoordinator.AddFixture(Eyes());
+            //pixliteFixtures
+            BlinkyBlinky.AddFixture(LeftWing());
+            BlinkyBlinky.AddFixture(RightWing());
+            BlinkyBlinky.AddFixture(Eyes());
 
-            BlinkyCoordinator.AddFixture(ArmourA());
-            BlinkyCoordinator.AddFixture(ArmourB());
-            BlinkyCoordinator.AddFixture(ArmourC());
-            BlinkyCoordinator.AddFixture(Flood());
-            BlinkyCoordinator.AddFixture(Legs());
+            //artnet fixtures
+            //  BlinkyBlinky.AddFixture(ArmourA());
+            //  BlinkyBlinky.AddFixture(ArmourB());
+            //  BlinkyBlinky.AddFixture(ArmourC());
+            //  BlinkyBlinky.AddFixture(Flood());
+            //  BlinkyBlinky.AddFixture(Legs());
         }
 
         #region Fixtures

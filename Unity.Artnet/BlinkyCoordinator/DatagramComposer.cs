@@ -2,7 +2,7 @@
 using Unity.BlinkyLights;
 using Unity.BlinkyShared.DMX;
 
-namespace Unity.BlinkyLightsCoordinator
+namespace Unity.BlinkyBlinky
 {
     public static class DatagramComposer
     {

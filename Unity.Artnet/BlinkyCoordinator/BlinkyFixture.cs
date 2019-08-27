@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Unity.BlinkyLights;
 
-namespace Unity.BlinkyLights
+namespace Unity.BlinkyBlinky
 {
     public class BlinkyFixture
     {

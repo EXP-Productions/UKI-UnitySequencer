@@ -16,7 +16,7 @@ namespace Unity.BlinkyNetworking.Artnet
         {
             //initialize Artnet Device
             artnetSocket = new ArtNetSocket();
-            artnetSocket.EnableBroadcast = false;
+            artnetSocket.EnableBroadcast = true;
             try
             {
                 artnetSocket.Connect(device.IPAddress, artnetPort);
