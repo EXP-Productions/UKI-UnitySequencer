@@ -8,8 +8,8 @@ namespace Unity.BlinkyLightsCoordinator
 {
     public static unsafe class BlinkyCoordinator
     {
-        public static BlinkyNetwork Network = new BlinkyNetwork();
-        public static BlinkyModel Model = new BlinkyModel();
+        private static BlinkyNetwork Network = new BlinkyNetwork();
+        private static BlinkyModel Model = new BlinkyModel();
 
         //accessors
         public static List<Pixel> pixels = new List<Pixel>();
@@ -36,11 +36,6 @@ namespace Unity.BlinkyLightsCoordinator
             Network.Networks.First(network => network.NetworkName == fixture.NetworkName)
                             .Send(DatagramComposer.GetDMXDatagrams(fixture)
                             ));
-        }
-
-        public static void BuildIndexes()
-        {
-           
         }
     }
 }
