@@ -35,7 +35,7 @@ public class ActuatorSlider : MonoBehaviour
         }
         else
         {
-            _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
+            _Slider.onValueChanged.AddListener((float f) => _Actuator.NormExtension = f);
             _TextName.text = _ActuatorAssignment.ToString();
         }
 
@@ -64,6 +64,6 @@ public class ActuatorSlider : MonoBehaviour
         if (_Actuator == null)
             print(name);
 
-        _Slider.normalizedValue = _Actuator._NormExtension;
+        _Slider.normalizedValue = _Actuator.NormExtension;
     }
 }

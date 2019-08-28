@@ -24,7 +24,7 @@ public class ActuatorData
 
     public ActuatorData(Actuator actuator)
     {
-        _NormalizedValue = actuator._NormExtension;
+        _NormalizedValue = actuator.NormExtension;
         _ActuatorIndex = actuator._ActuatorIndex;
     }
 }
@@ -64,10 +64,14 @@ public class Actuator : MonoBehaviour
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
     [Range(0, 1)]  public float _NormExtension;
-    float RotationAngle { get { return Mathf.Lerp(0, RotationRange, _NormExtension); } }
+    public float NormExtension { get { return _NormExtension; } set { _NormExtension = Mathf.Clamp01(value); } }
 
+    float RotationAngle { get { return Mathf.Lerp(0, RotationRange, NormExtension); } }
+    bool AtTargetExtension { get { return _ReportedExtensionDiff < _ReportedTollerance; } }
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
+
+    public float _MovementAnimationDirection = 0;
 
     // Speed to send commands at
     [Range(0, 30)]  public int _ExtensionSpeed = 30;
@@ -77,9 +81,10 @@ public class Actuator : MonoBehaviour
     float _BoostTimer = 0;
     public float _OfflineSpeedScaler = 1;
 
+    float _ReportedExtensionDiff;
 
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
-    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(_NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
+    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
 
     // The time taken to extend from 0 - 1
     public float _FullExtensionDuration = 10;
@@ -119,6 +124,7 @@ public class Actuator : MonoBehaviour
     public bool _DEBUG_NoModBusSimulationMode = false;
     public bool _DEBUG_SelfInit = false;
     public bool _Donotsend = false;
+    public bool _DEBUG_NoiseMovement = false;
 
     #endregion
 
@@ -173,7 +179,7 @@ public class Actuator : MonoBehaviour
         {
             if (!UkiCommunicationsManager.Instance._EStopping)
             {
-                if (_State == UKIEnums.State.Animating)
+                if (_State == UKIEnums.State.Animating || _State == UKIEnums.State.NoiseMovement)
                 {
                     //if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) >= _ReportedTollerance)
                     //{
@@ -213,7 +219,7 @@ public class Actuator : MonoBehaviour
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
 
         // difference between reported and the set length
-        float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
+        _ReportedExtensionDiff = Mathf.Abs(_ReportedExtension - (NormExtension * _MaxReportedExtension));
 
         #endregion
 
@@ -228,14 +234,41 @@ public class Actuator : MonoBehaviour
         else if (_State == UKIEnums.State.Paused)
         {
             // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
-            if (reportedDiff >= _ReportedTollerance * 3)
+            if (_ReportedExtensionDiff >= _ReportedTollerance * 3)
                 SetState(UKIEnums.State.Animating);
         }
         else if (_State == UKIEnums.State.Animating)
         {
+            // Set movement direction
+            if (NormExtension > _NormReportedExtension)
+                _MovementAnimationDirection = 1;
+            else
+                _MovementAnimationDirection = -1;
+
             // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
-            if (reportedDiff < _ReportedTollerance)
-                SetState(UKIEnums.State.Paused);
+            if (AtTargetExtension)
+            {
+                if(_DEBUG_NoiseMovement)
+                    SetState(UKIEnums.State.NoiseMovement);
+                else
+                    SetState(UKIEnums.State.Paused);
+            }           
+        }
+        else if(_State == UKIEnums.State.NoiseMovement)
+        {
+            if (AtTargetExtension)
+            {
+                if (_MovementAnimationDirection > 0)
+                {
+                    NormExtension = NormExtension - .15f;
+                    _MovementAnimationDirection = -1;
+                }
+                else
+                {
+                    NormExtension = NormExtension + .15f;
+                    _MovementAnimationDirection = 1;
+                }
+            }
         }
 
         #endregion
@@ -291,7 +324,7 @@ public class Actuator : MonoBehaviour
 
     public void Calibrate()
     {
-        _NormExtension = 0f;
+        NormExtension = 0f;
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
     }
 
@@ -299,7 +332,7 @@ public class Actuator : MonoBehaviour
    
     public void SetToReportedExtension()
     {
-        _NormExtension = _NormReportedExtension;
+        NormExtension = _NormReportedExtension;
     }
 
     public void SetState(UKIEnums.State state)
@@ -330,15 +363,15 @@ public class Actuator : MonoBehaviour
         if (extension)
         {
             // From 0 set to full normalized extension
-            _NormExtension = 1;
+            NormExtension = 1;
         }
         else
         {
             // From 1 set to 0 normalized extension
-            _NormExtension = 0;
+            NormExtension = 0;
         }
 
-        while (_NormReportedExtension != _NormExtension)
+        while (_NormReportedExtension != NormExtension)
         {
             yield return new WaitForEndOfFrame();
 

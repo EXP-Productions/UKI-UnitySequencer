@@ -118,7 +118,7 @@ public class UKI_PoseManager : MonoBehaviour
                     if (maskWings && _AllTestActuators[i]._ActuatorIndex.ToString().Contains("Wing"))
                         continue;
                     else
-                        _AllTestActuators[i]._NormExtension = data._NormalizedValue;
+                        _AllTestActuators[i].NormExtension = data._NormalizedValue;
                 }
             }
         }

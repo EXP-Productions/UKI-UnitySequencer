@@ -119,11 +119,11 @@ public class UKI_UIManager : MonoBehaviour
             {
                 if (raise)
                 {
-                    actuator._NormExtension += 0.1f;
+                    actuator.NormExtension += 0.1f;
                 }
                 else
                 {
-                    actuator._NormExtension -= 0.1f;
+                    actuator.NormExtension -= 0.1f;
                 }
             }
         }
@@ -137,11 +137,11 @@ public class UKI_UIManager : MonoBehaviour
             {
                 if (raise)
                 {
-                    actuator._NormExtension = 1.0f;
+                    actuator.NormExtension = 1.0f;
                 }
                 else
                 {
-                    actuator._NormExtension = 0.0f;
+                    actuator.NormExtension = 0.0f;
                 }
             }
         }
@@ -155,11 +155,11 @@ public class UKI_UIManager : MonoBehaviour
             {
                 if (raise)
                 {
-                    actuator._NormExtension = 1.0f;
+                    actuator.NormExtension = 1.0f;
                 }
                 else
                 {
-                    actuator._NormExtension = 0.0f;
+                    actuator.NormExtension = 0.0f;
                 }
             }
         }
@@ -270,7 +270,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _RightActuators.Count; i++)
         {
-            _LeftActuators[i]._NormExtension = _RightActuators[i]._NormExtension;
+            _LeftActuators[i].NormExtension = _RightActuators[i].NormExtension;
         }
 
         SetActuatorSliders();
@@ -280,7 +280,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _LeftActuators.Count; i++)
         {
-            _RightActuators[i]._NormExtension = _LeftActuators[i]._NormExtension;
+            _RightActuators[i].NormExtension = _LeftActuators[i].NormExtension;
         }
 
         SetActuatorSliders();
@@ -288,7 +288,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void SetActuatorExtension(ActuatorSlider actuatorSlider)
     {
-        actuatorSlider._Actuator._NormExtension = actuatorSlider._Slider.value;
+        actuatorSlider._Actuator.NormExtension = actuatorSlider._Slider.value;
     }
 
     void CalibrateActuators()

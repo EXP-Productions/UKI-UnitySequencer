@@ -37,7 +37,7 @@ public class PoseDataGO : MonoBehaviour
             {
                 print(_PoseData._ActuatorData[i]._ActuatorIndex.ToString());
                 print(_ActuatorDict[_PoseData._ActuatorData[i]._ActuatorIndex].name);
-                _ActuatorDict[_PoseData._ActuatorData[i]._ActuatorIndex]._NormExtension = _PoseData._ActuatorData[i]._NormalizedValue;
+                _ActuatorDict[_PoseData._ActuatorData[i]._ActuatorIndex].NormExtension = _PoseData._ActuatorData[i]._NormalizedValue;
             }
         }
     }

@@ -43,6 +43,6 @@ public class PoseControlMixerBehavior : PlayableBehaviour
         prevNorm = finalNorm;
 
         //assign the result to the bound object
-        actuator._NormExtension = finalNorm;
+        actuator.NormExtension = finalNorm;
     }
 }

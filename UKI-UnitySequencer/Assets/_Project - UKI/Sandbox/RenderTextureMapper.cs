@@ -8,7 +8,7 @@ public class RenderTextureMapper : MonoBehaviour
 
     public Vector2 _SampleUV;
 
-    public int _SampleCount = 4000;
+    public int _SampleCount = 3000;
     Color[] _Cols;
     
     // Start is called before the first frame update
