@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 
 public class PoseControlAsset : PlayableAsset
 {
+    public PoseData _PoseData;
     public float _NormExtention = 0f;
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
