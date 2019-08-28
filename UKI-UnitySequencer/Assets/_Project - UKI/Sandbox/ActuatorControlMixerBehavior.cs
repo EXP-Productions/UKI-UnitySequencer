@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 public class ActuatorControlMixerBehavior : PlayableBehaviour
-{   
-    public float _NormExtention = 1f;
+{
+    float prevNorm = 0;
 
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
@@ -14,7 +14,6 @@ public class ActuatorControlMixerBehavior : PlayableBehaviour
 
         if (!actuator)
         {
-            Debug.Log("here");
             return;
         }
 
@@ -26,10 +25,22 @@ public class ActuatorControlMixerBehavior : PlayableBehaviour
             float inputWeight = playable.GetInputWeight(i);
             ScriptPlayable<ActuatorControlBehavior> inputPlayable = (ScriptPlayable<ActuatorControlBehavior>)playable.GetInput(i);
             ActuatorControlBehavior input = inputPlayable.GetBehaviour();
-
+            
             // Use the above variables to process each frame of this playable.
             finalNorm += input._NormExtention * inputWeight;
         }
+
+
+        float extensionPerSecond = (finalNorm - prevNorm) * (1 / info.deltaTime);
+
+        // Check delta
+        if (extensionPerSecond > actuator.MaxExtensionPersecond)
+        {
+            //Debug.LogWarning("Extention rate warning - Current / Max extension p/s: " + extensionPerSecond + " / " + actuator.MaxExtensionPersecond);
+            //Debug.LogWarning("Full extension time: " + actuator._FullExtensionDuration);
+        }
+        
+        prevNorm = finalNorm;
 
         //assign the result to the bound object
         actuator._NormExtension = finalNorm;

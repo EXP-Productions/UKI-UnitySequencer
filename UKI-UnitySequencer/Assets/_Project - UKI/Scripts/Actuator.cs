@@ -36,9 +36,12 @@ public enum ActuatorSide
     Middle,
 }
 
+[ExecuteInEditMode]
 /// Basic actuator test that sets the position to move too
 public class Actuator : MonoBehaviour
 {
+    #region VARIABLES
+
     UKI_UIManager _UKIManager;
 
     // State of the limb. Paused, Calibrating, Calibrated or Animating
@@ -61,6 +64,8 @@ public class Actuator : MonoBehaviour
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
     [Range(0, 1)]  public float _NormExtension;
+    float RotationAngle { get { return Mathf.Lerp(0, RotationRange, _NormExtension); } }
+
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
 
@@ -80,6 +85,9 @@ public class Actuator : MonoBehaviour
     public float _FullExtensionDuration = 10;
     // The time taken to extend from 1 - 0
     public float _FullRetractionDuration = 10;
+
+    public float MaxExtensionPersecond { get { return 1.0f / _FullExtensionDuration; } }
+    public float MaxRetractionDelta { get { return 1.0f / _FullRetractionDuration; } }
     #endregion
 
     #region ROTATION
@@ -89,7 +97,7 @@ public class Actuator : MonoBehaviour
     public Vector3  _ForwardAxis = Vector3.up;
     public float _RotationRange = 30;
     float RotationRange { get { return _RotationRange; } }
-    Quaternion _InitialRotation;
+    public Quaternion _InitialRotation;
     #endregion
     
     #region MODBUS
@@ -112,9 +120,13 @@ public class Actuator : MonoBehaviour
     public bool _DEBUG_SelfInit = false;
     public bool _Donotsend = false;
 
+    #endregion
+
+    #region UNITY METHODS
+
     private void Awake()
     {
-        if(_CollisionReporter != null)
+        if (_CollisionReporter != null)
             _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
     }
 
@@ -128,6 +140,117 @@ public class Actuator : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        //if (_ReportedActuatorTransform == null)
+        //    return;
+
+            // CHECK BOOST
+        if (_BoostSpeedToggled)
+        {
+            _BoostTimer += Time.deltaTime;
+            if (_BoostTimer > _MaxBoostDuration)
+            {
+                _BoostSpeedToggled = false;
+                _BoostTimer = 0;
+            }
+        }
+
+        // ACTUATOR ROTATION
+        // Set the rotation from normalized extension       
+        transform.localRotation = _InitialRotation * Quaternion.AngleAxis(RotationAngle, _RotationAxis);
+
+        if (_DEBUG)
+            print(name + "   " + RotationAngle);
+
+        if (!Application.isPlaying)
+            return;
+
+        #region REPORTED EXTENSION
+
+        // Run sim without modbus
+        if (_DEBUG_NoModBusSimulationMode)
+        {
+            if (!UkiCommunicationsManager.Instance._EStopping)
+            {
+                if (_State == UKIEnums.State.Animating)
+                {
+                    //if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) >= _ReportedTollerance)
+                    //{
+                    // CALCULATE BOOST
+                    float boost = 1;
+                    if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
+
+                    boost *= _OfflineSpeedScaler;
+
+                    if (_ReportedExtension < CurrentEncoderExtension)
+                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
+                    else
+                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime * boost;
+                }
+
+                _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+            }
+        }
+        else
+        {
+            // READ IN
+            // Get the reported values from mod bus
+            _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+            ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
+            ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
+
+            // Update the readin actuator transform
+            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
+        }
+
+        #endregion
+
+        #region REPORTED ACTUATOR ROTATION
+
+        // UPDATE REPORTED ACTUATOR
+        float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
+        _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
+
+        // difference between reported and the set length
+        float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
+
+        #endregion
+
+        #region  UPDATE STATES
+
+        if (_State == UKIEnums.State.Calibrating)
+        {
+            print(name + "    " + _ReportedExtension);
+            if (_ReportedExtension == 0)
+                SetState(UKIEnums.State.CalibratedToZero);
+        }
+        else if (_State == UKIEnums.State.Paused)
+        {
+            // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
+            if (reportedDiff >= _ReportedTollerance * 3)
+                SetState(UKIEnums.State.Animating);
+        }
+        else if (_State == UKIEnums.State.Animating)
+        {
+            // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
+            if (reportedDiff < _ReportedTollerance)
+                SetState(UKIEnums.State.Paused);
+        }
+
+        #endregion
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.TransformPoint(-_RotationAxis * .3f), transform.TransformPoint(_RotationAxis * .3f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
+    }
+
+    #endregion
+    
     public void Init(Transform reportedActuatorTransform)
     {
         _UKIManager = FindObjectOfType<UKI_UIManager>();
@@ -166,13 +289,6 @@ public class Actuator : MonoBehaviour
         print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
     }
 
-    [ContextMenu("Set rotation axis")]
-    public void SetRotationAxis()
-    {
-        // Set rotation axis from local right axis
-        _RotationAxis = transform.TransformDirection(_RotationAxis);
-    }
-
     public void Calibrate()
     {
         _NormExtension = 0f;
@@ -180,100 +296,11 @@ public class Actuator : MonoBehaviour
     }
 
     float _ReportedTollerance = 10;
-    // Update is called once per frame
-    void Update()
-    {
-        if (_ReportedActuatorTransform == null)
-        {
-            return;
-        }
-
-        // CHECK BOOST
-        if (_BoostSpeedToggled)
-        {
-            _BoostTimer += Time.deltaTime;
-            if (_BoostTimer > _MaxBoostDuration)
-            {
-                _BoostSpeedToggled = false;
-                _BoostTimer = 0;
-            }
-        }
-
-        // Set the rotation from normalized extension
-        //float rot = _NormExtension.ScaleFrom01(_MinRotationInDegrees, _MaxRotationInDegrees); 
-        float rot = _NormExtension.ScaleFrom01(0, RotationRange);
-        transform.localRotation = _InitialRotation * Quaternion.AngleAxis(rot, _RotationAxis);
-
-        // Run sim without modbus
-        if (_DEBUG_NoModBusSimulationMode)
-        {
-            if (!UkiCommunicationsManager.Instance._EStopping)
-            {
-                if(_State == UKIEnums.State.Animating)
-                { 
-                //if (Mathf.Abs(_ReportedExtension - CurrentEncoderExtension) >= _ReportedTollerance)
-                //{
-                    // CALCULATE BOOST
-                    float boost = 1;
-                    if (_BoostSpeedToggled) boost = _BoostExtensionSpeed / _ExtensionSpeed;
-
-                    boost *= _OfflineSpeedScaler;
-
-                    if (_ReportedExtension < CurrentEncoderExtension)
-                        _ReportedExtension += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
-                    else
-                        _ReportedExtension -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime * boost;
-                }
-
-                _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-            }
-        }
-        else
-        {
-            // READ IN
-            // Get the reported values from mod bus
-            _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
-            ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
-            ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
-
-            // Update the readin actuator transform
-            _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
-        }
-
-        // UPDATE REPORTED ACTUATOR
-        float reportedRotation = _NormReportedExtension.ScaleFrom01(0, RotationRange);
-        _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
-
-        // difference between reported and the set length
-        float reportedDiff = Mathf.Abs(_ReportedExtension - (_NormExtension * _MaxReportedExtension));
-
-        // UPDATE STATES
-        if (_State == UKIEnums.State.Calibrating)
-        {
-            print(name + "    " + _ReportedExtension);
-            if (_ReportedExtension == 0)
-                SetState(UKIEnums.State.CalibratedToZero);
-        }
-        else if (_State == UKIEnums.State.Paused)
-        {
-            // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
-            if (reportedDiff >= _ReportedTollerance * 3)
-                SetState(UKIEnums.State.Animating);
-        }
-        else if (_State == UKIEnums.State.Animating)
-        {
-            // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
-            if (reportedDiff < _ReportedTollerance)
-                SetState(UKIEnums.State.Paused);
-        }
-    }
-
-
+   
     public void SetToReportedExtension()
     {
         _NormExtension = _NormReportedExtension;
     }
-
 
     public void SetState(UKIEnums.State state)
     {
@@ -295,27 +322,7 @@ public class Actuator : MonoBehaviour
     {
         return _State == UKIEnums.State.CalibratedToZero;
     }
-
-
-    [ContextMenu("Set max reported extension")]
-    void SetMaxReportedExtension()
-    {
-        _MaxReportedExtension = _ReportedExtension;
-    }
-
-
-    [ContextMenu("Calibrate Extension Speed")]
-    void CalibrateRealWorldExtensionSpeed()
-    {
-        StartCoroutine(CalibrateRealWorldSpeedRoutine(true));
-    }
-
-    [ContextMenu("Calibrate Retraction Speed")]
-    void CalibrateRealWorldRetractionsSpeed()
-    {
-        StartCoroutine(CalibrateRealWorldSpeedRoutine(false));
-    }
-
+    
     IEnumerator CalibrateRealWorldSpeedRoutine(bool extension)
     {
         print("SPEED TEST STARTED: " + name);
@@ -343,6 +350,8 @@ public class Actuator : MonoBehaviour
 
         print("SPEED TEST COMPLETED: " + name + " Duration: " + _FullExtensionDuration);
     }
+
+    #region COLLISION HANDLING
 
     private void OnCollisionReportHandler(Collider collider)
     {
@@ -384,7 +393,9 @@ public class Actuator : MonoBehaviour
         }
         audioSource.PlayOneShot(SRResources.collision);
     }
-    
+
+    #endregion
+
     public void ResetEStop()
     {
         // Resets prev pos to set the pos to dirty so it resends
@@ -409,8 +420,7 @@ public class Actuator : MonoBehaviour
     {
         UkiCommunicationsManager.Instance.SendCalibrationMessage((int)_ActuatorIndex, -(int)_ExtensionSpeed);      
     }
-
-   
+       
     IEnumerator SendPosAtRate(float ratePerSecond)
     {
         float wait = 1f / ratePerSecond;
@@ -430,16 +440,38 @@ public class Actuator : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    #region HELPER METHODS
+
+    [ContextMenu("Set rotation axis")]
+    public void SetRotationAxis()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.TransformPoint(-_RotationAxis * .3f), transform.TransformPoint(_RotationAxis * .3f));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.TransformPoint(_ForwardAxis * .3f));
+        // Set rotation axis from local right axis
+        _RotationAxis = transform.TransformDirection(_RotationAxis);
     }
 
-    private void OnDrawGizmosSelected()
+    [ContextMenu("Set max reported extension")]
+    void SetMaxReportedExtension()
     {
-       
+        _MaxReportedExtension = _ReportedExtension;
     }
+
+    [ContextMenu("Calibrate Extension Speed")]
+    void CalibrateRealWorldExtensionSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(true));
+    }
+
+    [ContextMenu("Calibrate Retraction Speed")]
+    void CalibrateRealWorldRetractionsSpeed()
+    {
+        StartCoroutine(CalibrateRealWorldSpeedRoutine(false));
+    }
+
+    [ContextMenu("Store Initial Rotation")]
+    void StoreInitialRotation()
+    {
+        _InitialRotation = transform.localRotation;
+    }
+
+    #endregion
 }

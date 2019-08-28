@@ -47,8 +47,6 @@ public class UKI_TimelineManager : MonoBehaviour
 
         _AllLimbs = FindObjectsOfType<UKILimb>();
 
-
-
         // UI
         _Button_Play1.onClick.AddListener(() => PlayTimeline(0, true));
         _Button_Play2.onClick.AddListener(() => PlayTimeline(1, true));

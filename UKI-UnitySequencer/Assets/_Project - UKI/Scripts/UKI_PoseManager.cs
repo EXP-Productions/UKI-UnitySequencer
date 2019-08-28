@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 public class PoseData
 {
     public string _Name;
-
     public List<ActuatorData> _ActuatorData = new List<ActuatorData>();
 
     public PoseData()
