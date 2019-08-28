@@ -1,8 +1,8 @@
 ﻿
 namespace Uki.Example.Animations
 {
-    public interface IBlinkyAnimation
+    public interface  IBlinkyAnimation
     {
-         void Run();
+        void Run();
     }
 }

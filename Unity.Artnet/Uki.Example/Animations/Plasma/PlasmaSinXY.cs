@@ -9,18 +9,15 @@ namespace Unity.BlinkyBlinky.Animations
         bool showRed, showGreen, showBlue, morphGreen, morphBlue, showPink;
         double brightness;
         double size;
-        double minShade = -1.1;
-        double maxShade = 1.1;
+        double minShade = -1;
+        double maxShade = 1;
 
-        //double  worldWidth = 33;
-        //double worldHeight = 19;
-
-        double worldWidth = 278;
-        double worldHeight = 224;
+        double worldWidth = 2000; //defines the aread where the circle point will move  withing
+        double worldHeight = 2000;
 
         public void SetParameters(int _brightness, int _size, bool _showRed, bool _showGreen, bool _showBlue, bool _morphGreen, bool _morphBlue, bool _showPink)
         {
-            brightness = _brightness * 25;
+            brightness = _brightness;
             size = _size ; //rescale
             showRed = _showRed;
             showGreen = _showGreen;
@@ -67,10 +64,8 @@ namespace Unity.BlinkyBlinky.Animations
                 if (showGreen) sinShadePiGreen = Math.Sin(shade * Math.PI + (Math.PI / 2));
                 if (showBlue) sinShadePiBlue = Math.Sin(shade * Math.PI + Math.PI);
 
-
                 //map colors
                 if (showRed) result.r = Map(sinShadePiRed, brightness);
-
 
                 if (showGreen)
                 {
@@ -130,7 +125,7 @@ namespace Unity.BlinkyBlinky.Animations
             var normalized = source - minShade;
             var scope = maxShade - minShade;
 
-            var percentage = normalized / scope;
+            var percentage = normalized / scope; 
             return (byte)(brightness * percentage);
         }
     }

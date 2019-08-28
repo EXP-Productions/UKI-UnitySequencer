@@ -16,18 +16,19 @@ namespace Unity.BlinkyBlinky
                 int remainingPixelsToProcess = chain.Pixels.Count % 170;
 
                 //PROCESS FULL UNIVERSES (more than 170 pixels) 
-                while (universesProcessed < chain.DmxUniversesRequired-1)
+                while (universesProcessed < chain.DmxUniversesRequired)
                 {
                     var buffer = new byte[510];
                     var pixelIndex = 0;
 
                     while (pixelIndex < 170)
                     {
+                        var universePixelIndex = pixelIndex + (universesProcessed * 170);
                         var idx = pixelIndex * 3;
 
-                        buffer[idx] = (byte)chain.Pixels[pixelIndex].R;
-                        buffer[idx + 1] = (byte)chain.Pixels[pixelIndex].G;
-                        buffer[idx + 2] = (byte)chain.Pixels[pixelIndex].B;
+                        buffer[idx] = (byte)chain.Pixels[universePixelIndex].R;
+                        buffer[idx + 1] = (byte)chain.Pixels[universePixelIndex].G;
+                        buffer[idx + 2] = (byte)chain.Pixels[universePixelIndex].B;
 
                         pixelIndex++;
                     }
@@ -43,7 +44,7 @@ namespace Unity.BlinkyBlinky
 
                 while (pixelIndexLast < remainingPixelsToProcess)
                 {
-                    var pixelIndexFinal = pixelIndexLast + ( 170 * universesProcessed);
+                    var pixelIndexFinal = pixelIndexLast + (  universesProcessed * 170);
                     var idx = pixelIndexLast * 3;
 
                     remainingBuffer[idx] = (byte)chain.Pixels[pixelIndexFinal].R;

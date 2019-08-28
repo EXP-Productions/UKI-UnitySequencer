@@ -41,11 +41,6 @@ namespace Unity.BlinkyNetworking
             return result;
         }
 
-        public void UpdateAllLights()
-        {
-
-        }
-
         private void Send(DMXDatagram datagram)
         {
             try

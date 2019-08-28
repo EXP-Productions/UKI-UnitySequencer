@@ -5,26 +5,26 @@ using Unity.BlinkyShared.DMX;
 using System;
 using Uki.Example.Animations;
 using Unity.BlinkyBlinky.Animations;
-using System.Threading;
 
 namespace Uki.Example
 {
     public class Program
     {
         //describe the physical controllers we have.
-        private static DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.2.50", DMXProtocol.sACN);
-        private static DMXDeviceDetail ARTNET_CONTROLLER = new DMXDeviceDetail("ArtNetController", "192.168.2.100", DMXProtocol.Artnet);
+        private static DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.20.50", DMXProtocol.sACN);
+        //private static DMXDeviceDetail ARTNET_CONTROLLER = new DMXDeviceDetail("ArtNetController", "192.168.2.100", DMXProtocol.Artnet);
 
         //Setup Fixtures on the PixliteController
-        private static short LEFT_WING_STARTING_UNIVERSE = 1;
-        private static short RIGHT_WING_STARTING_UNIVERSE = 8;
-        private static short EYES_STARTING_UNIVERSE = 13;
-   
-        private static short LEGS_STARTING_UNIVERSE = 12;
-        private static short FLOODS_STARTING_UNIVERSE_A = 0; //artnet
-        private static short FLOODS_STARTING_UNIVERSE_B = 11; //sacn
+        private static short LEFT_WING_FIRST_UNIVERSE = 1;
+        private static short LEFT_WING_SECOND_UNIVERSE = 7;
+        private static short RIGHT_WING_FIRST_UNIVERSE = 16; //not my fault
+        private static short RIGHT_WING_SECOND_UNIVERSE = 11; //not my fault
 
-        private static short ARMOUR_A_STARTING_UNIVERSE = 1;
+        private static short EYES_STARTING_UNIVERSE = 29;
+        private static short LEGS_STARTING_UNIVERSE = 28;
+        private static short FLOODS_STARTING_UNIVERSE = 27; 
+
+        private static short ARMOUR_A_STARTING_UNIVERSE = 1; //hmmm
         private static short ARMOUR_B_STARTING_UNIVERSE = 2;
         private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
@@ -37,25 +37,35 @@ namespace Uki.Example
             LoadFixturesFromCSVs();
 
             //TestAnimation();
-            Plasma();
+            RunPlasma();
+            //One();
         }
 
-        private static void Plasma()
+        private static void One()
         {
-            var plasma = new Plasma();
+            var animation = new OnePixel();
+            while (CallanIsAwesome) //infinate loop
+            {
+                animation.Run();
+                BlinkyBlinky.UpdateLights();
+            }
+        }
 
-            var size = 300;
-            var speed = 10;
-            var bright = 33;
+        private static void RunPlasma()
+        {
+            Console.WriteLine("Running Plasma Animation");
+            var plasma = new PlasmaAnimation();
 
-            plasma.Initialize(bright, size, speed, true, true, true, false, false, true);
+            var size = 100;
+            var speed = 100;
+            var brightness = 128;
+
+            plasma.Initialize(brightness, size, speed, true, true, true, true,true, false);
 
             while (CallanIsAwesome) //infinate loop
             {
                 plasma.Run();
-
                 BlinkyBlinky.UpdateLights();
-                Thread.Sleep(33); //WONT WORK IN UNITY
             }
         }
 
@@ -63,20 +73,20 @@ namespace Uki.Example
         { 
             //repalce with managed system. Lots of work...better to accept a feed?
             var animation = new OneColorFixtureTest();
-            int count = 1;
-            long avg = 0;
-            
             while (CallanIsAwesome) //infinate loop
             {
                 animation.Run();
-
                 BlinkyBlinky.UpdateLights();
             }
         }
 
+        private static void ConsolFirstPixel()
+        {
+            Console.WriteLine(BlinkyBlinky.pixels[0].R + " " + BlinkyBlinky.pixels[0].G + " " + BlinkyBlinky.pixels[0].B);
+        }
+
         private static void InitializeNetworkAndControllers()
         {
-
             BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
            // BlinkyCoordinator.AddNetworkDevice(ARTNET_CONTROLLER);
         }
@@ -87,13 +97,14 @@ namespace Uki.Example
             BlinkyBlinky.AddFixture(LeftWing());
             BlinkyBlinky.AddFixture(RightWing());
             BlinkyBlinky.AddFixture(Eyes());
+            BlinkyBlinky.AddFixture(Flood());
+            BlinkyBlinky.AddFixture(Legs());
 
             //artnet fixtures
             //  BlinkyBlinky.AddFixture(ArmourA());
             //  BlinkyBlinky.AddFixture(ArmourB());
             //  BlinkyBlinky.AddFixture(ArmourC());
-            //  BlinkyBlinky.AddFixture(Flood());
-            //  BlinkyBlinky.AddFixture(Legs());
+
         }
 
         #region Fixtures
@@ -101,9 +112,10 @@ namespace Uki.Example
         private static Fixture LeftWing()
         {
             var leftWing = new Fixture("LeftWing", PIXLITE_CONTROLLER);
-            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", LEFT_WING_STARTING_UNIVERSE);
-            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", leftWing.GetNextUniverse());
 
+            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingUpper.csv", LEFT_WING_FIRST_UNIVERSE );
+            leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", LEFT_WING_SECOND_UNIVERSE );
+            
             leftWing.ScaleFixture(1.3f);
             leftWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
             //leftWing.RotateFixture(new Vector3(45, 0, 0));   //cant rotate outside unity
@@ -114,9 +126,9 @@ namespace Uki.Example
         private static Fixture RightWing()
         {
             var rightWing = new Fixture("RightWing", PIXLITE_CONTROLLER);
-            rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingUpper.csv", RIGHT_WING_STARTING_UNIVERSE);
-            rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingLower.csv", rightWing.GetNextUniverse());
-            rightWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
+            rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingUpper.csv", RIGHT_WING_FIRST_UNIVERSE  );
+            rightWing.TryLoadLedChainFromFile(@".\Indexes\RightWingLower.csv", RIGHT_WING_SECOND_UNIVERSE);
+           // rightWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
             // rightWing.RotateFixture(new Vector3(45, 0, 0));
             return rightWing;
         }
@@ -125,7 +137,7 @@ namespace Uki.Example
         {
             var eyes = new Fixture("Eyes", PIXLITE_CONTROLLER);
             eyes.TryLoadLedChainFromFile(@".\Indexes\Eyes.csv", EYES_STARTING_UNIVERSE);//last string was on the left wing
-            eyes.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
+            //eyes.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
             // eyes.RotateFixture(new Vector3(0, 0, 0));
 
             return eyes;
@@ -134,21 +146,21 @@ namespace Uki.Example
         private static Fixture ArmourA()
         {
             //repeat Armour on 3 universes for 3 suits.
-            var armourA = new Fixture("Armour", ARTNET_CONTROLLER);
+            var armourA = new Fixture("Armour", PIXLITE_CONTROLLER);
             armourA.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_A_STARTING_UNIVERSE);//last string was on the left wing
             return armourA;
         }
 
         private static Fixture ArmourB()
         {
-            var armourB = new Fixture("Armour", ARTNET_CONTROLLER);
+            var armourB = new Fixture("Armour", PIXLITE_CONTROLLER);
             armourB.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_B_STARTING_UNIVERSE);//last string was on the left wing
             return armourB;
         }
 
         private static Fixture ArmourC()
         {
-            var armourC = new Fixture("Armour", ARTNET_CONTROLLER);
+            var armourC = new Fixture("Armour", PIXLITE_CONTROLLER);
             armourC.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_C_STARTING_UNIVERSE);//last string was on the left wing
             return armourC;
         }
@@ -156,14 +168,14 @@ namespace Uki.Example
         private static Fixture Flood()
         {
             //to make the floods less blinky on video feeds (from sampling one led), import the legs index, then average all the pixels.
-            var flood = new Fixture("Flood", ARTNET_CONTROLLER);
-            flood.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", FLOODS_STARTING_UNIVERSE_A);//last string was on the left wing
+            var flood = new Fixture("Floods", PIXLITE_CONTROLLER);
+            flood.TryLoadLedChainFromFile(@".\Indexes\RightWingLower.csv", FLOODS_STARTING_UNIVERSE);//last string was on the left wing
              return flood;
         }
 
         private static Fixture Legs()
         {
-            var legs = new Fixture("Legs", ARTNET_CONTROLLER);
+            var legs = new Fixture("Legs", PIXLITE_CONTROLLER);
             legs.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", LEGS_STARTING_UNIVERSE);//last string was on the left wing
             return legs;
         }

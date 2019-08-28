@@ -9,7 +9,7 @@ namespace Unity.BlinkyBlinky
     public static unsafe class BlinkyBlinky
     {
         private static BlinkyNetwork Network = new BlinkyNetwork();
-        private static BlinkyModel Model = new BlinkyModel();
+        public static BlinkyModel Model = new BlinkyModel();
 
         //accessors
         public static List<Pixel> pixels = new List<Pixel>();

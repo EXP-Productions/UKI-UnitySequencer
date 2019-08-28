@@ -4,23 +4,17 @@ using Uki.Example.Animations;
 
 namespace Unity.BlinkyBlinky.Animations
 {
-    public class Plasma : IBlinkyAnimation
+    public class PlasmaAnimation : IBlinkyAnimation
     {
         private Stopwatch stopWatch;
 
         IPlasma plasmaGenerator;
-
-        private int itterations;
+        
         private int currentItternation;
         private double movement = 0;
         private double speed;
-
-        private string fileNane;
-
-        private int lastFrameDisplayTime;
-        private bool display;
-
-        public Plasma()
+        
+        public PlasmaAnimation()
         {
             stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -43,8 +37,8 @@ namespace Unity.BlinkyBlinky.Animations
             {
                 pixel.color = plasmaGenerator.RenderPlasmaPixel((int)pixel.X, (int)pixel.Y, movement);
             }
-                
-            movement += speed / 1000;
+
+            movement += speed / 100000;
             currentItternation++;
         }
 
