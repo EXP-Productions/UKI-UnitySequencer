@@ -45,28 +45,36 @@ public class UKI_PoseManager : MonoBehaviour
         LoadAllPoses();
     }
 
+    public float _InPositionRane = 30;
+
     // Update is called once per frame
     void Update()
     {
         if(_LoopPoses)
         {
             // CHECK IF ALL ACTUATORS ARE STOPPED
-            int pausedCount = 0;
+            int readyCount = 0;
             for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
             {
-                if (UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused)
-                    pausedCount++;
+                if (UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(_InPositionRane))//UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused || UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.NoiseMovement)
+                    readyCount++;
             }
 
-            print("Actuators Paused count: " + pausedCount + "/" + _AllTestActuators.Count);
+            //print("Actuators Paused count: " + pausedCount + "/" + _AllTestActuators.Count);
 
-            if(pausedCount == UKI_UIManager.Instance._AllActuators.Count)
+            if(readyCount == UKI_UIManager.Instance._AllActuators.Count - 3)
             {
+              
+
                 _SelectedPose++;
                 if (_SelectedPose >= _AllPoses.Count)
                     _SelectedPose = 0;
 
+               
+
                 SetPose(_SelectedPose, _MaskWings);
+
+                print("Setting to pose: " + _SelectedPose + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
 

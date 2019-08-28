@@ -109,7 +109,16 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             EStop("Button press");
         }
-        
+
+        _Timer += Time.deltaTime;
+
+        if(_Timer >= 10)
+        {
+            _Timer -= 10;
+            msgCount = 0;
+        }
+
+
         ReceiveStateData();
         //while(_ReceivedPackets.Count > 0)
         //{
@@ -168,6 +177,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
     // Max rated speed 30
     // Accel 0 - 100
+    int msgCount = 0;
+    float _Timer = 0;
+    public float msgPerSec = 0;
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
         if (!_SendToModbus)
@@ -192,6 +204,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage2[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorMessage2[2] = (uint)position;
         SendInts(actuatorMessage2, true);
+
+        msgCount++;
+
+        msgPerSec = (msgCount / _Timer)*.1f;
     }
     
     // Only used on joints without actuators
