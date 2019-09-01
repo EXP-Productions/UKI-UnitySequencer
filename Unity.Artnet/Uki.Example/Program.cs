@@ -5,6 +5,7 @@ using Unity.BlinkyShared.DMX;
 using System;
 using Uki.Example.Animations;
 using Unity.BlinkyBlinky.Animations;
+using System.Threading;
 
 namespace Uki.Example
 {
@@ -12,21 +13,27 @@ namespace Uki.Example
     {
         //describe the physical controllers we have.
         private static DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.20.50", DMXProtocol.sACN);
-        //private static DMXDeviceDetail ARTNET_CONTROLLER = new DMXDeviceDetail("ArtNetController", "192.168.2.100", DMXProtocol.Artnet);
+        private static DMXDeviceDetail ARTNET_CONTROLLERS = new DMXDeviceDetail("ArmourControllers", "127.0.0.1", DMXProtocol.Artnet);  //IP is a hack to get it to start without a contorller online. Arnet is always broadcast
 
         //Setup Fixtures on the PixliteController
         private static short LEFT_WING_FIRST_UNIVERSE = 1;
         private static short LEFT_WING_SECOND_UNIVERSE = 7;
-        private static short RIGHT_WING_FIRST_UNIVERSE = 16; //not my fault
-        private static short RIGHT_WING_SECOND_UNIVERSE = 11; //not my fault
+        private static short RIGHT_WING_FIRST_UNIVERSE = 16; //BIGS!!!!! WHAT THE HELLL!!!!! 
+        private static short RIGHT_WING_SECOND_UNIVERSE = 11; // Upper and lower cables swapped on right wing. dont swap back or mapping in Touch (fallback option) will be flipped in the wing. 
 
         private static short EYES_STARTING_UNIVERSE = 29;
         private static short LEGS_STARTING_UNIVERSE = 28;
         private static short FLOODS_STARTING_UNIVERSE = 27; 
 
-        private static short ARMOUR_A_STARTING_UNIVERSE = 1; //hmmm
+        private static short ARMOUR_A_STARTING_UNIVERSE = 1; //artnet protocol is broadcast
         private static short ARMOUR_B_STARTING_UNIVERSE = 2;
         private static short ARMOUR_C_STARTING_UNIVERSE = 3;
+
+        //FramerateLimit
+        private static long framerate = 60;
+        private static long ticksLast = DateTime.Now.Ticks;
+        private static long ticksPerFrame = 1000 / 60 * 100000; //ms / rate * ticksPerMS
+
 
         //loop condition
         public static bool CallanIsAwesome = true;
@@ -54,6 +61,7 @@ namespace Uki.Example
         private static void RunPlasma()
         {
             Console.WriteLine("Running Plasma Animation");
+
             var plasma = new PlasmaAnimation();
 
             var size = 100;
@@ -66,7 +74,23 @@ namespace Uki.Example
             {
                 plasma.Run();
                 BlinkyBlinky.UpdateLights();
+
+                LimitFramerate();
             }
+        }
+
+        private static void LimitFramerate()
+        {
+
+            var ticksNow = DateTime.Now.Ticks;
+            var ticksDiff = ticksNow - ticksLast;//remaining ticks for framerate
+            var sleep = Math.Max((int)(ticksPerFrame - ticksDiff) / 10000, 0) ;
+
+            //Thread.Sleep(sleep);
+
+            //Console.Clear();
+            Console.WriteLine(" Sleep:" + sleep);
+            ticksLast = ticksNow;
         }
 
         private static void TestAnimation()
@@ -88,7 +112,7 @@ namespace Uki.Example
         private static void InitializeNetworkAndControllers()
         {
             BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
-           // BlinkyCoordinator.AddNetworkDevice(ARTNET_CONTROLLER);
+            BlinkyBlinky.AddNetworkDevice(ARTNET_CONTROLLERS);
         }
 
         private static void LoadFixturesFromCSVs()
@@ -101,9 +125,9 @@ namespace Uki.Example
             BlinkyBlinky.AddFixture(Legs());
 
             //artnet fixtures
-            //  BlinkyBlinky.AddFixture(ArmourA());
-            //  BlinkyBlinky.AddFixture(ArmourB());
-            //  BlinkyBlinky.AddFixture(ArmourC());
+              BlinkyBlinky.AddFixture(ArmourA());
+              BlinkyBlinky.AddFixture(ArmourB());
+              BlinkyBlinky.AddFixture(ArmourC());
 
         }
 
@@ -146,21 +170,21 @@ namespace Uki.Example
         private static Fixture ArmourA()
         {
             //repeat Armour on 3 universes for 3 suits.
-            var armourA = new Fixture("Armour", PIXLITE_CONTROLLER);
+            var armourA = new Fixture("Armour", ARTNET_CONTROLLERS);
             armourA.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_A_STARTING_UNIVERSE);//last string was on the left wing
             return armourA;
         }
 
         private static Fixture ArmourB()
         {
-            var armourB = new Fixture("Armour", PIXLITE_CONTROLLER);
+            var armourB = new Fixture("Armour", ARTNET_CONTROLLERS);
             armourB.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_B_STARTING_UNIVERSE);//last string was on the left wing
             return armourB;
         }
 
         private static Fixture ArmourC()
         {
-            var armourC = new Fixture("Armour", PIXLITE_CONTROLLER);
+            var armourC = new Fixture("Armour", ARTNET_CONTROLLERS);
             armourC.TryLoadLedChainFromFile(@".\Indexes\Armour.csv", ARMOUR_C_STARTING_UNIVERSE);//last string was on the left wing
             return armourC;
         }

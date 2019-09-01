@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Unity.BlinkyNetworking.Artnet
 {
-    class ArtnetNetwork : DMXNetwork
+    public  class ArtnetNetwork : DMXNetwork
     {
         private ArtNetSocket artnetSocket;
         private const int artnetPort = 6454;
@@ -17,6 +17,7 @@ namespace Unity.BlinkyNetworking.Artnet
             //initialize Artnet Device
             artnetSocket = new ArtNetSocket();
             artnetSocket.EnableBroadcast = true;
+            
             try
             {
                 artnetSocket.Connect(device.IPAddress, artnetPort);
