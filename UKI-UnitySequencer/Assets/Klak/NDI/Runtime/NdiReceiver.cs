@@ -72,7 +72,7 @@ namespace Klak.Ndi
 
         #region Internal members
 
-        internal void RequestReconnect()
+        public void RequestReconnect()
         {
             OnDisable();
         }
