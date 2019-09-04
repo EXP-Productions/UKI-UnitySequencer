@@ -19,6 +19,9 @@ public class ActuatorSlider : MonoBehaviour
 
     public Color _NormalCol;
     public Color _CollidedCol;
+    public Color _AnimatingCol = Color.green;
+
+    ColorBlock _ColBlock;
 
     private void Start()
     {
@@ -29,15 +32,22 @@ public class ActuatorSlider : MonoBehaviour
                 _Actuator = actuators[i];
         }
 
+        _ColBlock = new ColorBlock();
+        _ColBlock.normalColor = Color.gray;
+        _ColBlock.highlightedColor = Color.gray * 1.3f;
+        _ColBlock.pressedColor = Color.gray * .65f;
+
         if (_Actuator == null)
         {
             print("UI INIT: " + name + " no actuator found");
         }
         else
         {
-            _Slider.onValueChanged.AddListener((float f) => _Actuator._NormExtension = f);
+            _Slider.onValueChanged.AddListener((float f) => _Actuator.NormExtension = f);
             _TextName.text = _ActuatorAssignment.ToString();
         }
+
+        
 
         if (_Slider == null)
             print(name);
@@ -51,6 +61,22 @@ public class ActuatorSlider : MonoBehaviour
         }
         else
             print(name);
+
+
+        switch (_Actuator._State)
+        {
+            case UKIEnums.State.Animating:
+                _ColBlock.normalColor = Color.yellow;
+                break;
+            case UKIEnums.State.Paused:
+                _ColBlock.normalColor = Color.gray;
+                break;
+            case UKIEnums.State.NoiseMovement:
+                _ColBlock.normalColor = Color.blue;
+                break;
+        }
+
+        _Slider.colors = _ColBlock;
     }
 
     [ContextMenu("Name")]
@@ -64,6 +90,6 @@ public class ActuatorSlider : MonoBehaviour
         if (_Actuator == null)
             print(name);
 
-        _Slider.normalizedValue = _Actuator._NormExtension;
+        _Slider.normalizedValue = _Actuator.NormExtension;
     }
 }

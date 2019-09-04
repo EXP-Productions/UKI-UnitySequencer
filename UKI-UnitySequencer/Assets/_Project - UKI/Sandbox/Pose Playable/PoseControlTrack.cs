@@ -3,7 +3,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 [TrackClipType(typeof(PoseControlAsset))]
-[TrackBindingType(typeof(UKI_PoseManager))]
+[TrackBindingType(typeof(Actuator))]
 public class PoseControlTrack : TrackAsset
 {
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)

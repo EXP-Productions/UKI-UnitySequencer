@@ -43,7 +43,7 @@ public class TestUKILimb : MonoBehaviour
         {
             for (int i = 0; i < _ActuatorArray.Length; i++)
             {
-                _ActuatorArray[i]._NormExtension = _NormExtension;
+                _ActuatorArray[i].NormExtension = _NormExtension;
             }
         }
     }
@@ -56,16 +56,7 @@ public class TestUKILimb : MonoBehaviour
         {
            // _IKSolver.enabled = true;
         }
-        else if (_State == UKIEnums.State.Calibrating)
-        {
-            // Disable the IK solver so we can set the rotation manually
-            // _IKSolver.enabled = false;
-            
-            for (int i = 0; i < _ActuatorArray.Length; i++)
-            {
-                _ActuatorArray[i].SetState(UKIEnums.State.Calibrating);
-            }
-        }
+        
 
         print(name + " State set too: " + _State.ToString());
     }
