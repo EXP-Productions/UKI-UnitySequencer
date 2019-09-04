@@ -22,6 +22,10 @@ public class FixtureGameObject : MonoBehaviour
         ArtnetController,
     }
 
+    UKILightingManager _Manager;
+
+    public Transform _TFormToFollow;
+
     public ControllerType _ControllerType = ControllerType.PixliteController;
     public FixtureData[] _FixtureData;
 
@@ -69,19 +73,21 @@ public class FixtureGameObject : MonoBehaviour
     }
 
     public bool _DrawDebug = false;
-    public Vector3 _DebugScale = new Vector3(.02f, .02f, .02f);
+   
 
     // Start is called before the first frame update
-    public Fixture Init(UKILightingManager lightingTest)
+    public Fixture Init(UKILightingManager lightingManager)
     {
-        DMXDeviceDetail controller = lightingTest.PIXLITE_CONTROLLER;
+        _Manager = lightingManager;
+
+        DMXDeviceDetail controller = lightingManager.PIXLITE_CONTROLLER;
         switch (_ControllerType)
         {
             case ControllerType.PixliteController:
-                controller = lightingTest.PIXLITE_CONTROLLER;
+                controller = lightingManager.PIXLITE_CONTROLLER;
                 break;
             case ControllerType.ArtnetController:
-                controller = lightingTest.ARTNET_CONTROLLERS;
+                controller = lightingManager.ARTNET_CONTROLLERS;
                 break;
         }
 
@@ -101,6 +107,10 @@ public class FixtureGameObject : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+        transform.position = _TFormToFollow.position;
+        transform.rotation = _TFormToFollow.rotation;
+        transform.localScale = _TFormToFollow.localScale;
+
         Position = transform.position;
         Rotation = transform.localEulerAngles;
         Scale = transform.localScale.x;
@@ -122,7 +132,7 @@ public class FixtureGameObject : MonoBehaviour
                 {
                     //Gizmos.color = Color.blue;
                     Gizmos.color =  p.color;
-                    Gizmos.DrawWireCube(_Fixture.Origin + (p.currentLocation * .001f), _DebugScale);
+                    Gizmos.DrawWireCube(_Fixture.Origin + (p.currentLocation * .001f), _Manager._DebugGizmoScale);
                 }
             }
         }

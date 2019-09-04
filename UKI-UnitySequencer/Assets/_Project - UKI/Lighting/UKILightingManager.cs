@@ -10,11 +10,14 @@ using Unity.BlinkyBlinky.Animations;
 public class UKILightingManager : MonoBehaviour
 {
     // Describe the physical controllers we have.
+   
     public DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.20.50", DMXProtocol.sACN);
     public DMXDeviceDetail ARTNET_CONTROLLERS = new DMXDeviceDetail("ArmourControllers", "127.0.0.1", DMXProtocol.Artnet);  //IP is a hack to get it to start without a contorller online. Arnet is always broadcast
 
     // Setup Fixtures on the PixliteController
+    [HideInInspector]
     public short LEFT_WING_FIRST_UNIVERSE = 1;
+    [HideInInspector]
     public short LEFT_WING_SECOND_UNIVERSE = 7;
     private static short RIGHT_WING_FIRST_UNIVERSE = 16;    // BIGS!!!!! WHAT THE HELLL!!!!! 
     private static short RIGHT_WING_SECOND_UNIVERSE = 11;   // Upper and lower cables swapped on right wing. dont swap back or mapping in Touch (fallback option) will be flipped in the wing. 
@@ -40,7 +43,8 @@ public class UKILightingManager : MonoBehaviour
 
     public float _FrameRate = 30;
 
-    public FixtureGameObject[] _FixtureArray;
+    FixtureGameObject[] _FixtureArray;
+    public Vector3 _DebugGizmoScale = new Vector3(.02f, .02f, .02f);
 
     #region INITIALIZATION
 
