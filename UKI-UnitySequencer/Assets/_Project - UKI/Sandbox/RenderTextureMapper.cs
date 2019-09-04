@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.BlinkyBlinky;
 
 public class RenderTextureMapper : MonoBehaviour
 {
     public RenderTexture _RTex;
-
     public Vector2 _SampleUV;
-
     public int _SampleCount = 3000;
     Color[] _Cols;
-    
+
+    public bool _MapToLEDs = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,21 +21,6 @@ public class RenderTextureMapper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!Input.GetMouseButton(0))
-            return;
-
-        RaycastHit hit;
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-            return;
-
-        Renderer rend = hit.transform.GetComponent<Renderer>();
-        MeshCollider meshCollider = hit.collider as MeshCollider;
-
-        _SampleUV = hit.textureCoord;
-
-
-
-
         // Create a temporary RenderTexture of the same size as the texture
         RenderTexture tmp = RenderTexture.GetTemporary(
                         _RTex.width,
@@ -67,10 +53,23 @@ public class RenderTextureMapper : MonoBehaviour
 
         // "myTexture2D" now has the same pixels from "texture" and it's readable.
 
-       
-        for (int i = 0; i < _Cols.Length; i++)
+        if (_MapToLEDs)
         {
-            _Cols[i] = myTexture2D.GetPixelBilinear(_SampleUV.x + (Random.value * .05f), _SampleUV.y + (Random.value * .05f));
+            foreach (var pixel in BlinkyBlinky.pixels)
+            {
+                pixel.color = myTexture2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y);
+            }
+        } 
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_MapToLEDs)
+        {
+            foreach (var pixel in BlinkyBlinky.pixels)
+            {
+                Gizmos.DrawWireCube(transform.TransformPoint(pixel.UV - new Vector2(.5f, .5f)), Vector3.one * .02f);
+            }
         }
     }
 }

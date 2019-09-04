@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.BlinkyLights;
 using Unity.BlinkyShared.DMX;
+using UnityEngine;
 
 namespace Unity.BlinkyBlinky
 {

@@ -7,10 +7,10 @@ namespace Unity.BlinkyBlinky
     {
         public string Name;
         public List<Pixel> pixels = new List<Pixel>();
-
+        
         public BlinkyFixture(Fixture fixture)
         {
-            Name = fixture.Name;
+            Name = fixture.gameObject.name;
             fixture.LedChains.ForEach(chain => pixels.AddRange(chain.Pixels));
         }
     }

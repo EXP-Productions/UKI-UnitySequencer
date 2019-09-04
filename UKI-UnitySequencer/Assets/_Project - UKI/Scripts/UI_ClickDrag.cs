@@ -15,7 +15,6 @@ public class UI_ClickDrag : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData pointerEventData)
     {
         _Clicked = true;
-        print(name);
     }
 
     void Update()

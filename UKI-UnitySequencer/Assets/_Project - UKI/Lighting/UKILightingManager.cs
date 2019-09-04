@@ -30,20 +30,12 @@ public class UKILightingManager : MonoBehaviour
     private static short ARMOUR_B_STARTING_UNIVERSE = 2;
     private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
-    // FramerateLimit
-    private static long framerate = 60;
-    private static long ticksLast = DateTime.Now.Ticks;
-    private static long ticksPerFrame = 1000 / 60 * 100000; // ms / rate * ticksPerMS
-
-    // Fixture parents
-        
-        
     // Loop condition
     public static bool CallanIsAwesome = true;
 
     public float _FrameRate = 30;
 
-    FixtureGameObject[] _FixtureArray;
+    Fixture[] _FixtureArray;
     public Vector3 _DebugGizmoScale = new Vector3(.02f, .02f, .02f);
 
     #region INITIALIZATION
@@ -52,16 +44,23 @@ public class UKILightingManager : MonoBehaviour
     {
         InitializeNetworkAndControllers();
 
-        _FixtureArray = FindObjectsOfType<FixtureGameObject>();
+        _FixtureArray = FindObjectsOfType<Fixture>();
 
-        foreach (FixtureGameObject fixture in _FixtureArray)
+        foreach (Fixture fixture in _FixtureArray)
             BlinkyBlinky.AddFixture(fixture.Init(this));
 
-        //LoadFixturesFromCSVs();
+        Bounds b = new Bounds();
+        foreach (var pixel in BlinkyBlinky.pixels)        
+            b.Encapsulate(pixel.origin);
 
+        foreach (var pixel in BlinkyBlinky.pixels)
+            pixel.SetUV(b.min.x, b.max.x, b.min.y, b.max.y);
+
+
+        print(BlinkyBlinky.pixels[1].UV);
+                   
         //RunTestAnimation();
-        RunPlasmaAnimation();
-        //RunOneAnimation();
+        //RunPlasmaAnimation();
     }
 
     private void InitializeNetworkAndControllers()
@@ -104,7 +103,7 @@ public class UKILightingManager : MonoBehaviour
         
     private void RunTestAnimation()
     {
-        StartCoroutine(AnimationRoutine(_FrameRate, new OneColorFixtureTest()));
+        StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
     }
 
     private void RunPlasmaAnimation()
@@ -119,16 +118,10 @@ public class UKILightingManager : MonoBehaviour
 
         StartCoroutine(AnimationRoutine(_FrameRate, plasma));
     }
-
-    private void RunOneAnimation()
-    {
-        StartCoroutine(AnimationRoutine(_FrameRate, new OnePixel()));
-    }
-
     #endregion
         
     #region FIXTURES
-
+    /*
     private Fixture LeftWing()
     {
         var leftWing = new Fixture("LeftWing", PIXLITE_CONTROLLER);
@@ -201,6 +194,7 @@ public class UKILightingManager : MonoBehaviour
         legs.TryLoadLedChainFromFile(@".\Indexes\Legs.csv", LEGS_STARTING_UNIVERSE);//last string was on the left wing
         return legs;
     }
+    */
 
     private enum Is { Awesome}
 
