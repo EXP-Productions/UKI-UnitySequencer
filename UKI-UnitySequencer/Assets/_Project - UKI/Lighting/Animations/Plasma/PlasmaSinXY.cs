@@ -92,6 +92,8 @@ namespace Unity.BlinkyBlinky.Animations
                 }
             }
 
+            result.a = .5f;
+
             return result;
        }
 

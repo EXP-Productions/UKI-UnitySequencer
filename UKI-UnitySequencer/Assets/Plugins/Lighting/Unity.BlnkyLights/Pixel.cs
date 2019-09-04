@@ -6,15 +6,15 @@ namespace Unity.BlinkyLights
     {
         public Color color; 
         public Vector3 origin { get; private set; }
-        public Vector3 location;
+        public Vector3 currentLocation;
 
         public float R { get { return color.r; } set { color.r = value; } }
         public float G { get { return color.g; } set { color.g = value; } }
         public float B { get { return color.b; } set { color.b = value; } }
 
-        public float X { get { return location.x; } set { location.x = value; } }
-        public float Y { get { return location.y; } set { location.y = value; } }
-        public float Z { get { return location.z; } set { location.x = value; } }
+        public float X { get { return currentLocation.x; } set { currentLocation.x = value; } }
+        public float Y { get { return currentLocation.y; } set { currentLocation.y = value; } }
+        public float Z { get { return currentLocation.z; } set { currentLocation.x = value; } }
 
         public Pixel() { }
 
@@ -26,22 +26,22 @@ namespace Unity.BlinkyLights
         public Pixel(Color c, Vector3 nativeLocation)
         {
             color = c ;
-            origin = location = nativeLocation;
+            origin = currentLocation = nativeLocation;
         }
 
         public Pixel(float x, float y)
         {
-            origin = location = new Vector3(x, y);
+            origin = currentLocation = new Vector3(x, y);
         }
 
         public Pixel(Vector3 v)
         {
-            origin = location = v;
+            origin = currentLocation = v;
         }
 
-        public void Relocate(Vector3 relocationPoint)
+        public void UpdateLocation(Transform parentTransform)
         {
-            location = relocationPoint;
+            currentLocation = parentTransform.TransformPoint(origin);
         }
 
         public void Black()

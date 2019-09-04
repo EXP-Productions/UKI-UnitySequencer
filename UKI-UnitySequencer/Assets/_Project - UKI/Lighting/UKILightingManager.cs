@@ -49,7 +49,9 @@ public class UKILightingManager : MonoBehaviour
         InitializeNetworkAndControllers();
 
         _FixtureArray = FindObjectsOfType<FixtureGameObject>();
-        foreach (FixtureGameObject fixture in _FixtureArray) fixture.Init(this);
+
+        foreach (FixtureGameObject fixture in _FixtureArray)
+            BlinkyBlinky.AddFixture(fixture.Init(this));
 
         //LoadFixturesFromCSVs();
 
@@ -67,7 +69,7 @@ public class UKILightingManager : MonoBehaviour
     private void LoadFixturesFromCSVs()
     {
         //pixliteFixtures
-        BlinkyBlinky.AddFixture(LeftWing());
+        //BlinkyBlinky.AddFixture(LeftWing());
         //BlinkyBlinky.AddFixture(RightWing());
         //BlinkyBlinky.AddFixture(Eyes());
         //BlinkyBlinky.AddFixture(Flood());
@@ -106,8 +108,8 @@ public class UKILightingManager : MonoBehaviour
         var plasma = new PlasmaAnimation();
 
         var size = 100;
-        var speed = 100;
-        var brightness = 128;
+        var speed = 10000;
+        var brightness = 20;
 
         plasma.Initialize(brightness, size, speed, true, true, true, true,true, false);
 
@@ -131,7 +133,6 @@ public class UKILightingManager : MonoBehaviour
         leftWing.TryLoadLedChainFromFile(filePath, LEFT_WING_FIRST_UNIVERSE );
         leftWing.TryLoadLedChainFromFile(@".\Indexes\LeftWingLower.csv", LEFT_WING_SECOND_UNIVERSE );
             
-        leftWing.ScaleFixture(1.3f);
         leftWing.SetFixtureOrigin(new Vector3(2000, 2500, 4000));
         //leftWing.RotateFixture(new Vector3(45, 0, 0));   //cant rotate outside unity
 

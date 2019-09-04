@@ -12,8 +12,8 @@ namespace Uki.Example.Animations
         public void Run()
         {
 
-            BlinkyBlinky.Model.Fixtures.First(x => x.Name == "LeftWing").LedChains[0].Pixels.ForEach(f => f.R = f.X/8);
-            BlinkyBlinky.Model.Fixtures.First(x => x.Name == "LeftWing").LedChains[1].Pixels.ForEach(f => f.B = f.Y / 8);
+            BlinkyBlinky.Model.Fixtures.First(x => x.Name == "Fixture - Left Wing").LedChains[0].Pixels.ForEach(f => f.R = f.X/8);
+            BlinkyBlinky.Model.Fixtures.First(x => x.Name == "LeftWing").LedChains[1].Pixels.ForEach(f => f.B = f.Y/8);
 
             BlinkyBlinky.Model.Fixtures.First(x => x.Name == "RightWing").LedChains[0].Pixels.ForEach(f => f.G = 64);
             BlinkyBlinky.Model.Fixtures.First(x => x.Name == "RightWing").LedChains[1].Pixels.ForEach(f => f.color = new UnityEngine.Color(64,0,64));

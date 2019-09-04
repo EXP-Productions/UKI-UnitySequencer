@@ -1,6 +1,6 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Uki.Example.Animations;
+using UnityEngine;
 
 namespace Unity.BlinkyBlinky.Animations
 {
@@ -37,7 +37,7 @@ namespace Unity.BlinkyBlinky.Animations
             {
                 pixel.color = plasmaGenerator.RenderPlasmaPixel((int)pixel.X, (int)pixel.Y, movement);
             }
-
+            
             movement += speed / 100000;
             currentItternation++;
         }
