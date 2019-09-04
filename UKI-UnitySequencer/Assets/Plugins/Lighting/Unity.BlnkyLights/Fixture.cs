@@ -7,6 +7,11 @@ using UnityEngine;
 
 namespace Unity.BlinkyLights
 {
+    /// <summary>
+    /// A fixture contians LED chains which have LEDS with 3D positions.
+    /// Each fixture has an origin position to position the leds. TODO: replace with a transform so the leds can be transformed in 3D space
+    /// </summary>
+
     public class Fixture 
     {
         public string Name;
@@ -40,10 +45,9 @@ namespace Unity.BlinkyLights
         /// <param name="filePath"></param>
         /// <param name="universe"></param>
         public void TryLoadLedChainFromFile(string filePath, short universe)
-        {
-         
-            try {
-
+        {         
+            try
+            {
                 //Name the chain based on the source index file
                 var chain = new LedChain(Path.GetFileNameWithoutExtension(filePath), universe);
                
@@ -61,11 +65,10 @@ namespace Unity.BlinkyLights
                 }
 
                 AddLedChain(chain);
-
             }
             catch (Exception e)
             {
-               Console.WriteLine("Loading an led mapping file fialed. " + e.ToString());
+               Debug.Log("Loading an led mapping file fialed. " + e.ToString());
             }
           
         }
@@ -108,7 +111,7 @@ namespace Unity.BlinkyLights
         /// Pass in a vector that will be used to rotate all Pixels around the fixtures origin point.
         /// </summary>
         /// <param name="rotateBy"></param>
-        public void RotateFixture( Vector3 rotateBy)
+        public void RotateFixture(Vector3 rotateBy)
         {
 
             foreach (var ledChain in LedChains)
