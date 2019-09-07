@@ -169,15 +169,13 @@ public class UKI_UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;
-
         //_EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
 
         _IgnoreCollisionHoldButton._OnDown.AddListener(() => { UkiCommunicationsManager.Instance.EStopButtonToggle(); _IgnoreCollisions = true; });
         _IgnoreCollisionHoldButton._OnUp.AddListener(() => _IgnoreCollisions = false);
 
         _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
-        _OfflineSimModeToggle.onValueChanged.AddListener((bool b) => ToggleOfflineSimMode(b));
+        _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;      
 
        // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
        // _MirrorRightButton.onClick.AddListener(() => MirrorRight());
@@ -207,14 +205,6 @@ public class UKI_UIManager : MonoBehaviour
 
         if (actuator != null)
             _AllActuators.Add(actuator);
-    }
-
-    void ToggleOfflineSimMode(bool b)
-    {
-        for (int i = 0; i < _AllActuators.Count; i++)
-        {
-            _AllActuators[i]._DEBUG_NoModBusSimulationMode = b;
-        }
     }
 
     public void SetOfflineSpeedScaler(float f)

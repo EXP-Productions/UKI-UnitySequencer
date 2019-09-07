@@ -56,10 +56,8 @@ public class UKILightingManager : MonoBehaviour
         foreach (var pixel in BlinkyBlinky.pixels)
             pixel.SetUV(b.min.x, b.max.x, b.min.y, b.max.y);
 
-
-        print(BlinkyBlinky.pixels[1].UV);
                    
-        //RunTestAnimation();
+        RunTestAnimation();
         //RunPlasmaAnimation();
     }
 

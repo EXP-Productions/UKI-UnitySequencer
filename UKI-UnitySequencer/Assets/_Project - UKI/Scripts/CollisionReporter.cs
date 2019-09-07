@@ -12,6 +12,17 @@ public class CollisionReporter : MonoBehaviour
     public event TriggerReport OnTriggerReport;
 
     public bool _Debug = false;
+    bool _Detecting = false;
+
+    private void Start()
+    {
+        //Invoke("TurnOnDetecting", 5);
+    }
+
+    void TurnOnDetecting()
+    {
+        _Detecting = true;
+    }
 
     void OnCollisionEnter(Collision collision)
     {

@@ -15,6 +15,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     [HideInInspector]
     public UKI_UIManager _UIManager;
 
+    Actuator[] _Actuators;
+
     // Calibration wait time, this is how long we wait for all limbs to come in before we consider them calibrated
     public static float _CalibrateWaitTime = 60f;
 
@@ -38,12 +40,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public override void Awake()
     {
         base.Awake();
-        _Instance = this;
-        _UIManager = GetComponent<UKI_UIManager>();
+        _Instance = this;       
     }
 
     void Start()
     {
+        _Actuators = FindObjectsOfType<Actuator>();
+        _UIManager = UKI_UIManager.Instance;
         EStop("Start E Stop");
         StartCoroutine(SetReportedExtensions());
         StartCoroutine(SendHeartBeat());
@@ -94,12 +97,17 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         // TODO don't base this on time alone
         yield return new WaitForSeconds(1f);
-        foreach (Actuator actuator in FindObjectsOfType<Actuator>())
+        if (_SendToModbus)
         {
-            actuator.SetToReportedExtension();
+            foreach (Actuator actuator in _Actuators)
+            {
+                actuator.SetToReportedExtension();
+            }
         }
         yield return new WaitForSeconds(1f);
+
         ResetEStop();
+
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 

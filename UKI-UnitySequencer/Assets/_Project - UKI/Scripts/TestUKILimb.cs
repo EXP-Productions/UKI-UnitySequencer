@@ -37,15 +37,6 @@ public class TestUKILimb : MonoBehaviour
             if (calibratedCount == _ActuatorArray.Length)
                 SetState(UKIEnums.State.CalibratedToZero);
         }
-
-        // Control all linear movements at once
-        if(_ControlAllLinear)
-        {
-            for (int i = 0; i < _ActuatorArray.Length; i++)
-            {
-                _ActuatorArray[i].NormExtension = _NormExtension;
-            }
-        }
     }
 
     public void SetState(UKIEnums.State state)

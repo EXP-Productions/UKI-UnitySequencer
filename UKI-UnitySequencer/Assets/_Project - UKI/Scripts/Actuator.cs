@@ -26,6 +26,8 @@ public class ActuatorData
     {
         _NormalizedValue = actuator.NormExtension;
         _ActuatorIndex = actuator._ActuatorIndex;
+
+        Debug.Log(_ActuatorIndex.ToString() +"  Setting from data: Norm - " + _NormalizedValue);
     }
 }
 
@@ -43,6 +45,8 @@ public class Actuator : MonoBehaviour
     #region VARIABLES
 
     UKI_UIManager _UKIManager;
+
+    public bool _ActuatorDisabled = false;
 
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;
@@ -129,12 +133,11 @@ public class Actuator : MonoBehaviour
     // Keeps the previous position so that the actuator only sends a position out if the new position is different
     public float prevPos = 0;
 
-    public bool _DEBUG = false;
-    public bool _DEBUG_NoModBusSimulationMode = false;
+    public bool _DEBUG = false;   
     public bool _DEBUG_SelfInit = false;
     public bool _Donotsend = false;
     public bool _DEBUG_NoiseMovement = false;
-    public bool _ForcePaused = false;
+   
 
     #endregion
     public float _ReportedTollerance = 20;
@@ -162,7 +165,7 @@ public class Actuator : MonoBehaviour
         //if (_ReportedActuatorTransform == null)
         //    return;
 
-        if (_ForcePaused)
+        if (_ActuatorDisabled)
         {
             SetState(UKIEnums.State.Paused);
             return;
@@ -192,8 +195,8 @@ public class Actuator : MonoBehaviour
 
         #region REPORTED EXTENSION
 
-        // Run sim without modbus
-        if (_DEBUG_NoModBusSimulationMode)
+        // If offline - Run simulation without sending to modbus
+        if (!UkiCommunicationsManager.Instance._SendToModbus)
         {
             if (!UkiCommunicationsManager.Instance._EStopping)
             {
@@ -293,7 +296,7 @@ public class Actuator : MonoBehaviour
             }
             else
             {
-                print(name + "  extension diff:  " + _ReportedExtensionDiff + "   " + _ReportedTollerance);
+                //print(name + "  extension diff:  " + _ReportedExtensionDiff + "   " + _ReportedTollerance);
             }
         }
 
@@ -314,7 +317,7 @@ public class Actuator : MonoBehaviour
     
     public void Init(Transform reportedActuatorTransform)
     {
-        _UKIManager = FindObjectOfType<UKI_UIManager>();
+        _UKIManager = UKI_UIManager.Instance;
         _ReportedActuatorTransform = reportedActuatorTransform;
 
         // Register the actuator
@@ -326,7 +329,7 @@ public class Actuator : MonoBehaviour
 
         // Set names of the actuators and the reported actuator transforms
         name = "Actuator - " + _ActuatorIndex.ToString();
-
+      
         if (_ActuatorIndex.ToString().Contains("Left"))
             _Side = ActuatorSide.Left;
         else if (_ActuatorIndex.ToString().Contains("Right"))
@@ -347,7 +350,15 @@ public class Actuator : MonoBehaviour
             _CollisionReporter.name = "Collision reporter " + _ActuatorIndex.ToString();
         }
 
-        print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
+        if(_ActuatorDisabled)
+            print("** NOT IN USE ** - ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
+        else
+            print("ACTUATOR INIT: " + name + "   MAX EXTENSION: " + _MaxEncoderExtension);
+
+
+        _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+        ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
+        _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
     }
 
     public void Calibrate()
@@ -373,7 +384,7 @@ public class Actuator : MonoBehaviour
                 SetState(UKIEnums.State.NoiseMovement);
         }
 
-        if(!_ForcePaused)
+        if(!_ActuatorDisabled)
             print(name + " State set too: " + _State.ToString());
     }
 
@@ -510,6 +521,7 @@ public class Actuator : MonoBehaviour
     public void SetToReportedExtension()
     {
         NormExtension = _NormReportedExtension;
+        Debug.Log(_ActuatorIndex.ToString() + "  Setting from reported extension: Norm - " + NormExtension);
     }
 
     [ContextMenu("Set rotation axis")]
