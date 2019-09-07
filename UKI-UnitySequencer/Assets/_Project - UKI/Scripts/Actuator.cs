@@ -498,7 +498,7 @@ public class Actuator : MonoBehaviour
        
         while (true)
         {
-            if( !AtTargetExtension && _State != UKIEnums.State.Paused )
+            if(  _State != UKIEnums.State.Paused && !AtTargetExtension  )
             {
                 if (!_Donotsend)
                 {

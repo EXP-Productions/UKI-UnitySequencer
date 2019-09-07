@@ -97,13 +97,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         // TODO don't base this on time alone
         yield return new WaitForSeconds(1f);
-        if (_SendToModbus)
-        {
+        //if (_SendToModbus)
+       // {
             foreach (Actuator actuator in _Actuators)
             {
                 actuator.SetToReportedExtension();
             }
-        }
+        //}
         yield return new WaitForSeconds(1f);
 
         ResetEStop();
@@ -188,6 +188,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     int msgCount = 0;
     float _Timer = 0;
     public float msgPerSec = 0;
+    float lastTime = 0;
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
         if (!_SendToModbus)
@@ -215,7 +216,17 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         msgCount++;
 
-        msgPerSec = (msgCount / _Timer)*.1f;
+        if(lastTime == 0)
+        {
+            lastTime = Time.time;
+        }
+        else
+        {
+
+        }
+
+        msgPerSec = (msgCount / _Timer) * .1f;
+        //print("Messages per second: " + msgPerSec);
     }
     
     // Only used on joints without actuators
@@ -256,8 +267,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             if (_SendToModbus && !_EStopping)
             {
                 yield return new WaitForSeconds(0.5f);
-                _UIManager._HeartBeatDisplay.color = Color.red;
-                
+                _UIManager._HeartBeatDisplay.color = Color.red;                
                 SendInts(_HeartBeatMessage, true);
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.white;
@@ -266,7 +276,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             {
                 yield return new WaitForSeconds(1f);
             }
-
         }
     }
 

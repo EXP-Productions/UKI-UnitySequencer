@@ -31,9 +31,11 @@ public class UKILightingManager : MonoBehaviour
     private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
     // Loop condition
-    public static bool CallanIsAwesome = true;
+    public bool CallanIsAwesome = true;
 
     public float _FrameRate = 30;
+
+    public Transform _InputTransform;
 
     Fixture[] _FixtureArray;
     public Vector3 _DebugGizmoScale = new Vector3(.02f, .02f, .02f);
@@ -85,16 +87,19 @@ public class UKILightingManager : MonoBehaviour
     #endregion
 
     #region ANIMATIONS
-
+    public bool _UpdateAnimation = false;
     IEnumerator AnimationRoutine(float fps, IBlinkyAnimation animation)
     {
         float wait = 1f / fps;
 
         while(CallanIsAwesome)
         {
-            animation.Run();
+            if(_UpdateAnimation)
+                animation.Run();
+
             BlinkyBlinky.UpdateLights();
 
+            //print(BlinkyBlinky.pixels[100].currentLocation + "    " + BlinkyBlinky.pixels[100].color);
             yield return new WaitForSeconds(wait);
         }
     }
@@ -108,7 +113,7 @@ public class UKILightingManager : MonoBehaviour
     {
         var plasma = new PlasmaAnimation();
 
-        var size = 100;
+        var size = 1000000;
         var speed = 10000;
         var brightness = 20;
 

@@ -6,24 +6,23 @@ using Unity.BlinkyBlinky;
 
 public class XWash : IBlinkyAnimation
 {
-    float _XPos;
-    float _Width = .03f;
+    float _Offset;
+    float _Width = .3f;
     public Color _Col1 = Color.blue;
     public Color _Col2 = Color.yellow;
     
     public void Run()
     {
-        _XPos += Time.deltaTime;
-
-        if (_XPos > 3)
-            _XPos -= _XPos;
-
+        _Offset = (Time.time / 3f)%1;
+        float height = 6;
+        
         // Iterate all LEDS to generate the next frame
         foreach (var pixel in BlinkyBlinky.pixels)
         {
-            float x = Mathf.Abs(pixel.X) + _XPos;
-            float lerp = x % 1;
-            pixel.color = Color.Lerp(_Col1, _Col2, lerp);
+            if (pixel._DistFromInputT > (_Offset * height) && pixel._DistFromInputT < (_Offset * height) + _Width)
+                pixel.Color = Color.white * 255;
+            else
+                pixel.Color = Color.blue * 255;
         }
     }
 }

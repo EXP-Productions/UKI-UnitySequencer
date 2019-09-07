@@ -57,7 +57,7 @@ public class RenderTextureMapper : MonoBehaviour
         {
             foreach (var pixel in BlinkyBlinky.pixels)
             {
-                pixel.color = myTexture2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y);
+                pixel.Color = myTexture2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y) * 255;
             }
         } 
     }

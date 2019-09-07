@@ -35,9 +35,12 @@ namespace Unity.BlinkyBlinky.Animations
             //itterate all LEDS to generate the next frame of plasma 
             foreach (var pixel in BlinkyBlinky.pixels)
             {
-                pixel.color = plasmaGenerator.RenderPlasmaPixel((int)pixel.X, (int)pixel.Y, movement);
+                
+                //Color.Lerp(Color.blue, Color.red, Time.time % 1);// 
+                pixel.Color = plasmaGenerator.RenderPlasmaPixel((int)pixel.X, (int)pixel.Y, movement);
+               
             }
-            
+
             movement += speed / 100000;
             currentItternation++;
         }

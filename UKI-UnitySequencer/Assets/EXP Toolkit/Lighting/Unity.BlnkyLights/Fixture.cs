@@ -39,6 +39,8 @@ namespace Unity.BlinkyLights
         public DMXDeviceDetail DmxDevice;
         public string NetworkName => DmxDevice.NetworkName;
 
+        public float _Smoothing = 0;
+
         public Bounds _Bounds;
 
         bool isDirty = false;
@@ -127,7 +129,7 @@ namespace Unity.BlinkyLights
             Rotation = transform.localEulerAngles;
             Scale = transform.localScale.x;
 
-            if (isDirty)
+            //if (isDirty)
             {
                 UpdateTransform(transform);
                 isDirty = false;
@@ -156,7 +158,7 @@ namespace Unity.BlinkyLights
                     var x = (float.Parse(led[0]) * .001f) + offset.x;
                     var y = (float.Parse(led[1]) * .001f) + offset.y;
 
-                    chain.AddPixel(new Pixel(x, y));
+                    chain.AddPixel(new Pixel(x, y, _Smoothing));
 
                     _Bounds.Encapsulate(new Vector3(x, y));
                 }
@@ -185,7 +187,7 @@ namespace Unity.BlinkyLights
             {
                 foreach (var pixel in ledChain.Pixels)
                 {
-                    pixel.UpdateLocation(parent);// = parent.transform.position;// + parent.TransformPoint(pixel.originalLocation);
+                    pixel.UpdateLocation(parent, _Manager._InputTransform);// = parent.transform.position;// + parent.TransformPoint(pixel.originalLocation);
                 }
             }
         }
@@ -199,7 +201,7 @@ namespace Unity.BlinkyLights
                     foreach (Pixel p in ledChain.Pixels)
                     {
                         //Gizmos.color = Color.blue;
-                        Gizmos.color = p.color;
+                        Gizmos.color = p.Color / 255f;
                         Gizmos.DrawWireCube(p.currentLocation, _Manager._DebugGizmoScale);
                     }
                 }
