@@ -26,26 +26,11 @@ public class UKI_UIManager : MonoBehaviour
     public Slider _OfflineSpeedScalerSlider;
     public Toggle _OfflineSimModeToggle;
 
-    //public Button _MirrorLeftButton;
-    //public Button _MirrorRightButton;
-
-    [Header("UI - POSE MANAGER")]
-    public Button _SaveCurrentPose;
-    public Button _DeleteSelectedPose;
-    List<Button> _PoseButtons = new List<Button>();
-    public Toggle _LoopPosesToggle;
-    public Toggle _MaskWingsToggle;
-
-    public RectTransform _PoseButtonParent;
-    public Button _SelectPoseButtonPrefab;
-
     [Header("UI - ACTUATORS")]
     public Toggle _LeftEnabledToggle;
     public Toggle _RightEnabledToggle;
     
-    public GameObject _SavePoseDialog;
-    public Button _SavePoseNameButton;
-    public InputField _SavePoseNameInput;
+   
 
     
 
@@ -182,17 +167,14 @@ public class UKI_UIManager : MonoBehaviour
 
         _CalibrateButton.onClick.AddListener(CalibrateActuators);
 
-        _SaveCurrentPose.onClick.AddListener(() => UKI_PoseManager.Instance.SavePose());
-        _DeleteSelectedPose.onClick.AddListener(() => UKI_PoseManager.Instance.DeletePose());
-
+      
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
 
-        _LoopPosesToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._LoopPoses = b);
-        _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
+   
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
 
-        _SavePoseNameButton.onClick.AddListener(() => SavePose());
+     
 
     }
 
@@ -227,28 +209,7 @@ public class UKI_UIManager : MonoBehaviour
         }
     }
 
-    public void AddPoseButton(int index)
-    {
-        Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
-        newBtn.GetComponentInChildren<Text>().text = UKI_PoseManager.Instance._AllPoses[index]._Name;
-        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index, UKI_PoseManager.Instance._MaskWings));
-
-        _PoseButtons.Add(newBtn);
-    }
-
-    public void RemovePoseButton()
-    {
-        Button btn = _PoseButtons[0];
-        _PoseButtons.Remove(btn);
-        Destroy(btn.gameObject);
-
-        for (int i = 0; i < _PoseButtons.Count; i++)
-        {
-            _PoseButtons[i].onClick.RemoveAllListeners();
-            int index = i;
-            _PoseButtons[i].onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(index));
-        }
-    }
+ 
 
     public void SetActuatorSliders()
     {
@@ -289,14 +250,5 @@ public class UKI_UIManager : MonoBehaviour
         }
     }
 
-    void SavePose()
-    {
-        PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators, _SavePoseNameInput.text);
-        UKI_PoseManager.Instance._AllPoses.Add(newPoseData);
-        UKI_UIManager.Instance.AddPoseButton(UKI_PoseManager.Instance._AllPoses.Count - 1);
-        JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), UKI_PoseManager.Instance._AllPoses);
-        print("Poses saved: " + UKI_PoseManager.Instance._AllPoses.Count);
-        _SavePoseDialog.SetActive(false);
-    }
-
+   
 }

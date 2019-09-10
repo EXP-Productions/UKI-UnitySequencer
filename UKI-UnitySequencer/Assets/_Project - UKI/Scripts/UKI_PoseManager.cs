@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 [System.Serializable]
 public class PoseData
@@ -64,13 +65,9 @@ public class UKI_PoseManager : MonoBehaviour
 
             if(readyCount == UKI_UIManager.Instance._AllActuators.Count - 3)
             {
-              
-
                 _SelectedPose++;
                 if (_SelectedPose >= _AllPoses.Count)
                     _SelectedPose = 0;
-
-               
 
                 SetPose(_SelectedPose, _MaskWings);
 
@@ -107,10 +104,18 @@ public class UKI_PoseManager : MonoBehaviour
     {
         _AllPoses = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
 
-        for (int i = 0; i < _AllPoses.Count; i++)        
-            UKI_UIManager.Instance.AddPoseButton(i);
+        for (int i = 0; i < _AllPoses.Count; i++)      
+           UKI_PoseManager_UI.Instance.AddPoseButton(_AllPoses[i]._Name);
 
-        print("Poses loaded: " + _AllPoses.Count);
+        print(name + " Poses loaded: " + _AllPoses.Count);
+    }
+
+    public void SetPose(string name, bool maskWings = false)
+    {
+        PoseData poseData = _AllPoses.Single(s => s._Name == name);
+
+        if (poseData != null)
+            SetPose(_AllPoses.IndexOf(poseData), maskWings);
     }
 
     public void SetPose(int index, bool maskWings = false)
@@ -134,20 +139,19 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 
-    public void SavePose()
+    public void DeletePose(string poseName)
     {
-        UKI_UIManager.Instance._SavePoseDialog.SetActive(true);
-    }
+        PoseData poseData = _AllPoses.Single(p => p._Name == poseName);
 
-    public void DeletePose()
-    {
-        if(_AllPoses[_SelectedPose] != null)
-            _AllPoses.Remove(_AllPoses[_SelectedPose]);
-
-        UKI_UIManager.Instance.RemovePoseButton();
-
-        JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
-
-        print("Poses deleted: " + _AllPoses.Count);
+        if (poseData != null)
+        {
+            _AllPoses.Remove(poseData);    
+            JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
+            print("Poses deleted: " + _AllPoses.Count);
+        }
+        else
+        {
+            print("Cannot find pose to remove: " + _AllPoses.Count);
+        }
     }
 }

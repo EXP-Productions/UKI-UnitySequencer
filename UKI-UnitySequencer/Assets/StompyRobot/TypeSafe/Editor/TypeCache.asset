@@ -25,6 +25,9 @@ MonoBehaviour:
       PublicKeyToken=null
   - Path: Packages/com.unity.multiplayer-hlapi/Tests/Runtime/SpawningTests/Resources/SpawningBase_PlayerScript.cs
     Type: UnityEditor.MonoScript, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
+    Type: SRDebugger.Settings, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - Path: Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset
     Type: TMPro.TMP_StyleSheet, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
@@ -52,7 +55,4 @@ MonoBehaviour:
       PublicKeyToken=null
   - Path: Assets/TextMesh Pro/Resources/TMP Settings.asset
     Type: TMPro.TMP_Settings, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
-    Type: SRDebugger.Settings, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null

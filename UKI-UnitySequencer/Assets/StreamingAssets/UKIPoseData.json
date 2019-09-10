@@ -1,9 +1,9 @@
 [
   {
-    "_Name": "Legs In",
+    "_Name": "W up/out L In",
     "_ActuatorData": [
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
       },
       {
@@ -47,205 +47,11 @@
         "_ActuatorIndex": 21
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 26
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 25
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 31
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 5
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 30
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 7
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 8
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 9
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 10
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 11
       },
       {
         "_NormalizedValue": 1.0,
-        "_ActuatorIndex": 12
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 27
-      }
-    ]
-  },
-  {
-    "_Name": "halfup",
-    "_ActuatorData": [
-      {
-        "_NormalizedValue": 0.395725936,
-        "_ActuatorIndex": 23
-      },
-      {
-        "_NormalizedValue": 0.4156229,
-        "_ActuatorIndex": 22
-      },
-      {
-        "_NormalizedValue": 0.29624182,
-        "_ActuatorIndex": 13
-      },
-      {
-        "_NormalizedValue": 0.3360357,
-        "_ActuatorIndex": 14
-      },
-      {
-        "_NormalizedValue": 0.2763449,
-        "_ActuatorIndex": 15
-      },
-      {
-        "_NormalizedValue": 0.2763449,
-        "_ActuatorIndex": 16
-      },
-      {
-        "_NormalizedValue": 0.2763449,
-        "_ActuatorIndex": 17
-      },
-      {
-        "_NormalizedValue": 0.256447971,
-        "_ActuatorIndex": 18
-      },
-      {
-        "_NormalizedValue": 0.3360357,
-        "_ActuatorIndex": 19
-      },
-      {
-        "_NormalizedValue": 0.3360357,
-        "_ActuatorIndex": 20
-      },
-      {
-        "_NormalizedValue": 0.236551031,
-        "_ActuatorIndex": 21
-      },
-      {
-        "_NormalizedValue": 0.203448758,
-        "_ActuatorIndex": 26
-      },
-      {
-        "_NormalizedValue": 0.143758491,
-        "_ActuatorIndex": 25
-      },
-      {
-        "_NormalizedValue": 0.3228298,
-        "_ActuatorIndex": 31
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 5
-      },
-      {
-        "_NormalizedValue": 0.263139546,
-        "_ActuatorIndex": 30
-      },
-      {
-        "_NormalizedValue": 0.223345682,
-        "_ActuatorIndex": 7
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 8
-      },
-      {
-        "_NormalizedValue": 0.5019016,
-        "_ActuatorIndex": 9
-      },
-      {
-        "_NormalizedValue": 0.263139546,
-        "_ActuatorIndex": 10
-      },
-      {
-        "_NormalizedValue": 0.263139546,
-        "_ActuatorIndex": 11
-      },
-      {
-        "_NormalizedValue": 0.263139546,
-        "_ActuatorIndex": 12
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 27
-      }
-    ]
-  },
-  {
-    "_Name": "all in",
-    "_ActuatorData": [
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 23
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 22
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 13
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 14
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 15
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 16
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 17
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 18
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 19
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 20
-      },
-      {
-        "_NormalizedValue": 0.0,
-        "_ActuatorIndex": 21
-      },
-      {
-        "_NormalizedValue": 0.203448758,
-        "_ActuatorIndex": 26
-      },
-      {
-        "_NormalizedValue": 0.143758491,
         "_ActuatorIndex": 25
       },
       {
@@ -281,7 +87,7 @@
         "_ActuatorIndex": 11
       },
       {
-        "_NormalizedValue": 0.263139546,
+        "_NormalizedValue": 0.0,
         "_ActuatorIndex": 12
       },
       {
@@ -291,7 +97,201 @@
     ]
   },
   {
-    "_Name": "all in",
+    "_Name": "W up/out L Up",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 12
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      }
+    ]
+  },
+  {
+    "_Name": "W up/out L Ground",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.360869557,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.456521749,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.473913,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.305217177,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.470434576,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.513912857,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 12
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      }
+    ]
+  },
+  {
+    "_Name": "W down/in L Ground",
     "_ActuatorData": [
       {
         "_NormalizedValue": 0.0,
@@ -306,23 +306,23 @@
         "_ActuatorIndex": 13
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.360869557,
         "_ActuatorIndex": 14
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 15
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 16
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.456521749,
         "_ActuatorIndex": 17
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 18
       },
       {
@@ -330,7 +330,7 @@
         "_ActuatorIndex": 19
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.473913,
         "_ActuatorIndex": 20
       },
       {
@@ -350,23 +350,23 @@
         "_ActuatorIndex": 31
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.305217177,
         "_ActuatorIndex": 5
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 30
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 7
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.470434576,
         "_ActuatorIndex": 8
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 9
       },
       {
@@ -374,11 +374,11 @@
         "_ActuatorIndex": 10
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.513912857,
         "_ActuatorIndex": 11
       },
       {
-        "_NormalizedValue": 0.263139546,
+        "_NormalizedValue": 0.0,
         "_ActuatorIndex": 12
       },
       {
@@ -388,14 +388,14 @@
     ]
   },
   {
-    "_Name": "all in 2",
+    "_Name": "W down/out L Ground",
     "_ActuatorData": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 22
       },
       {
@@ -403,23 +403,23 @@
         "_ActuatorIndex": 13
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.360869557,
         "_ActuatorIndex": 14
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 15
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 16
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.456521749,
         "_ActuatorIndex": 17
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 18
       },
       {
@@ -427,7 +427,201 @@
         "_ActuatorIndex": 19
       },
       {
+        "_NormalizedValue": 0.473913,
+        "_ActuatorIndex": 20
+      },
+      {
         "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.305217177,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.470434576,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.513912857,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 12
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      }
+    ]
+  },
+  {
+    "_Name": "rW up/out L Ground",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.360869557,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.456521749,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.473913,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.305217177,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.470434576,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.513912857,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 12
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      }
+    ]
+  },
+  {
+    "_Name": "lW up/out L Ground",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.360869557,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.456521749,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.473913,
         "_ActuatorIndex": 20
       },
       {
@@ -447,23 +641,23 @@
         "_ActuatorIndex": 31
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.305217177,
         "_ActuatorIndex": 5
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 30
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 7
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.470434576,
         "_ActuatorIndex": 8
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 1.0,
         "_ActuatorIndex": 9
       },
       {
@@ -471,11 +665,11 @@
         "_ActuatorIndex": 10
       },
       {
-        "_NormalizedValue": 0.0,
+        "_NormalizedValue": 0.513912857,
         "_ActuatorIndex": 11
       },
       {
-        "_NormalizedValue": 0.263139546,
+        "_NormalizedValue": 0.0,
         "_ActuatorIndex": 12
       },
       {
