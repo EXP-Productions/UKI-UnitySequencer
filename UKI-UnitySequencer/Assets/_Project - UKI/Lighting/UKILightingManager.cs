@@ -9,6 +9,8 @@ using Unity.BlinkyBlinky.Animations;
 
 public class UKILightingManager : MonoBehaviour
 {
+    public RenderTextureMapper _RenderTextureMapper;
+
     // Describe the physical controllers we have.
    
     public DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.20.50", DMXProtocol.sACN);
