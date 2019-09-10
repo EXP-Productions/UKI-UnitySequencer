@@ -21,6 +21,8 @@ public class UKILightingManager : MonoBehaviour
 
     public RenderTextureMapper _RenderTextureMapper;
 
+    public Transform _InputTransform;
+
     // Describe the physical controllers we have.
    
     public DMXDeviceDetail PIXLITE_CONTROLLER = new DMXDeviceDetail("Pixlite16", "192.168.20.50", DMXProtocol.sACN);
