@@ -97,7 +97,7 @@ namespace Klak.Ndi
             Util.Destroy(_receivedTexture);
         }
 
-        void Update()
+        public void Update()
         {
             if (!PluginEntry.IsAvailable) return;
 

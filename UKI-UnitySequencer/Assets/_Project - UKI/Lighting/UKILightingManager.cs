@@ -6,9 +6,19 @@ using Unity.BlinkyBlinky;
 using Unity.BlinkyShared.DMX;   
 using Uki.Example.Animations;
 using Unity.BlinkyBlinky.Animations;
+using Klak.Ndi;
 
 public class UKILightingManager : MonoBehaviour
 {
+    public enum AnimationSource
+    {
+        NDI0,
+        NDI1,
+        Animation0,
+    }
+
+    public static UKILightingManager Instance;
+
     public RenderTextureMapper _RenderTextureMapper;
 
     // Describe the physical controllers we have.
@@ -33,18 +43,29 @@ public class UKILightingManager : MonoBehaviour
     private static short ARMOUR_C_STARTING_UNIVERSE = 3;
 
     // Loop condition
-    public static bool CallanIsAwesome = true;
+    public static bool AnimationsRunning = true;
 
     public float _FrameRate = 30;
 
+    AnimationSource _AnimSource;
+
     Fixture[] _FixtureArray;
     public Vector3 _DebugGizmoScale = new Vector3(.02f, .02f, .02f);
+        
+    NdiReceiver _NDIReciever;
 
     #region INITIALIZATION
 
-    void Start()
+    private void Awake()
     {
-        InitializeNetworkAndControllers();
+        Instance = this;
+    }
+
+    void Start()
+    {        
+        // Initialize Network And Controllers
+        BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
+        BlinkyBlinky.AddNetworkDevice(ARTNET_CONTROLLERS);
 
         _FixtureArray = FindObjectsOfType<Fixture>();
 
@@ -58,30 +79,13 @@ public class UKILightingManager : MonoBehaviour
         foreach (var pixel in BlinkyBlinky.pixels)
             pixel.SetUV(b.min.x, b.max.x, b.min.y, b.max.y);
 
-                   
-        RunTestAnimation();
-        //RunPlasmaAnimation();
+        StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
     }
 
-    private void InitializeNetworkAndControllers()
+    public void SetAnimSource(int index)
     {
-        BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
-        BlinkyBlinky.AddNetworkDevice(ARTNET_CONTROLLERS);
-    }
-
-    private void LoadFixturesFromCSVs()
-    {
-        //pixliteFixtures
-        //BlinkyBlinky.AddFixture(LeftWing());
-        //BlinkyBlinky.AddFixture(RightWing());
-        //BlinkyBlinky.AddFixture(Eyes());
-        //BlinkyBlinky.AddFixture(Flood());
-        //BlinkyBlinky.AddFixture(Legs());
-
-        //artnet fixtures
-        //BlinkyBlinky.AddFixture(ArmourA());
-        //BlinkyBlinky.AddFixture(ArmourB());
-        //BlinkyBlinky.AddFixture(ArmourC());
+        _AnimSource = (AnimationSource)index;
+        print("Setting anim source too: " + (AnimationSource)index);
     }
 
     #endregion
@@ -92,20 +96,19 @@ public class UKILightingManager : MonoBehaviour
     {
         float wait = 1f / fps;
 
-        while(CallanIsAwesome)
+        while(AnimationsRunning)
         {
-            animation.Run();
+            if (_AnimSource == AnimationSource.NDI0 || _AnimSource == AnimationSource.NDI1)
+                _RenderTextureMapper.ManualUpdate();
+            else                 
+                animation.Run();
+
             BlinkyBlinky.UpdateLights();
 
             yield return new WaitForSeconds(wait);
         }
     }
         
-    private void RunTestAnimation()
-    {
-        StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
-    }
-
     private void RunPlasmaAnimation()
     {
         var plasma = new PlasmaAnimation();
