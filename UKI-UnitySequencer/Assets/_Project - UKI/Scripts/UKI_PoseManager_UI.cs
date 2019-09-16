@@ -44,15 +44,15 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
         _SavePoseButton.onClick.AddListener(() => SavePose());
 
-        _PoseLibraryList.OnElementDropped.AddListener(call => UKI_PoseManager.Instance.HandleUpdatedPoseSequenceEvent(call));
-        _PoseSequenceList.OnElementAdded.AddListener(call => UKI_PoseManager.Instance.HandleUpdatedPoseSequenceEvent(call));
+        _PoseLibraryList.OnElementDropped.AddListener(call => HandleSequenceListUpdated(call));
+        _PoseSequenceList.OnElementAdded.AddListener(call => HandleSequenceListUpdated(call));
     }
 
     public void AddPoseButton(string name)
     {
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
         newBtn.GetComponentInChildren<Text>().text = name;
-        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPose(name, UKI_PoseManager.Instance._MaskWings));
+        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
 
         _PoseButtons.Add(newBtn);
@@ -85,11 +85,52 @@ public class UKI_PoseManager_UI : MonoBehaviour
     void SavePose()
     {
         PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators, _SavePoseNameInput.text);
-        UKI_PoseManager.Instance._AllPoses.Add(newPoseData);
-        AddPoseButton( UKI_PoseManager.Instance._AllPoses[UKI_PoseManager.Instance._AllPoses.Count - 1]._Name);
-        JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), UKI_PoseManager.Instance._AllPoses);
-        print("Poses saved: " + UKI_PoseManager.Instance._AllPoses.Count);
+        UKI_PoseManager.Instance._PoseLibrary.Add(newPoseData);
+        AddPoseButton( UKI_PoseManager.Instance._PoseLibrary[UKI_PoseManager.Instance._PoseLibrary.Count - 1]._Name);
+        JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), UKI_PoseManager.Instance._PoseLibrary);
+        print("Poses saved: " + UKI_PoseManager.Instance._PoseLibrary.Count);
         _SavePoseDialog.SetActive(false);
     }
 
+    public void HandleSequenceListUpdated(UnityEngine.UI.Extensions.ReorderableList.ReorderableListEventStruct item)
+    {
+        if (item.ToList != _PoseSequenceList)
+            return;
+
+        // Add right click destroy
+        if (item.DroppedObject.GetComponent<UI_RightClickDestroy>() == null)
+            item.DroppedObject.AddComponent<UI_RightClickDestroy>();
+
+        Invoke("UpdateSequenceListButtons", .1f);
+    }
+
+    public void UpdateSequenceListButtonsAfterWait()
+    {
+        Invoke("UpdateSequenceListButtons", .1f);
+    }
+
+    public void UpdateSequenceListButtons()
+    {
+        // Clear pose sequence
+        UKI_PoseManager.Instance._PoseSequence.Clear();
+        print("Pose sequence...");
+
+        // Add poses based on names
+        int listItemCount = _PoseSequenceList.Content.childCount;
+        for (int i = 0; i < listItemCount; i++)
+        {
+            GameObject buttonObject = _PoseSequenceList.Content.GetChild(i).gameObject;
+          
+            string poseName = buttonObject.GetComponentInChildren<UnityEngine.UI.Text>().text;
+            UKI_PoseManager.Instance._PoseSequence.Add(poseName);
+
+            UnityEngine.UI.Button button = buttonObject.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+
+            int index = i;
+            button.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseFromSequence(index));
+
+            print("Pose: " + index + "   " + poseName);            
+        }
+    }
 }

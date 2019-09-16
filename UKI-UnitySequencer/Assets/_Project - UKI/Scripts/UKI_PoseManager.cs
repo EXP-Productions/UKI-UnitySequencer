@@ -34,13 +34,14 @@ public class UKI_PoseManager : MonoBehaviour
     List<Actuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
 
     [HideInInspector]
-    public List<PoseData> _AllPoses = new List<PoseData>();
+    public List<PoseData> _PoseLibrary = new List<PoseData>();
     public List<string> _PoseSequence = new List<string>();
-    int _SelectedPose = 0;
+    int _PoseSequenceIndex = 0;
 
     public bool _LoopPoses = false;
     public bool _MaskWings = true;
 
+    public bool _Debug = false;
    
     // Start is called before the first frame update
     public void Start()
@@ -68,13 +69,13 @@ public class UKI_PoseManager : MonoBehaviour
 
             if(readyCount == UKI_UIManager.Instance._AllActuators.Count - 3)
             {
-                _SelectedPose++;
-                if (_SelectedPose >= _AllPoses.Count)
-                    _SelectedPose = 0;
+                _PoseSequenceIndex++;
+                if (_PoseSequenceIndex >= _PoseSequence.Count)
+                    _PoseSequenceIndex = 0;
 
-                SetPose(_SelectedPose, _MaskWings);
+                SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
 
-                print("Setting to pose: " + _SelectedPose + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
+                print("Setting to pose: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
 
@@ -82,52 +83,46 @@ public class UKI_PoseManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                SetPose(0);
+                SetPoseFromSequence(0);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                SetPose(1);
+                SetPoseFromSequence(1);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                SetPose(2);
+                SetPoseFromSequence(2);
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                SetPose(3);
+                SetPoseFromSequence(3);
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                SetPose(4);
+                SetPoseFromSequence(4);
             }
         }
     }
 
     void LoadAllPoses()
     {
-        _AllPoses = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
+        _PoseLibrary = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
 
-        for (int i = 0; i < _AllPoses.Count; i++)      
-           UKI_PoseManager_UI.Instance.AddPoseButton(_AllPoses[i]._Name);
+        for (int i = 0; i < _PoseLibrary.Count; i++)      
+           UKI_PoseManager_UI.Instance.AddPoseButton(_PoseLibrary[i]._Name);
 
-        print(name + " Poses loaded: " + _AllPoses.Count);
+        print(name + " Poses loaded: " + _PoseLibrary.Count);
     }
 
-    public void SetPose(string name, bool maskWings = false)
+    public void SetPoseByName(string name, bool maskWings = false)
     {
-        PoseData poseData = _AllPoses.Single(s => s._Name == name);
+        print("Setting pose by name: " + name);
 
-        if (poseData != null)
-            SetPose(_AllPoses.IndexOf(poseData), maskWings);
-    }
+        PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
 
-    public void SetPose(int index, bool maskWings = false)
-    {
-        _SelectedPose = index;
-        print("Setting pose: " + index);
         for (int i = 0; i < _AllTestActuators.Count; i++)
         {
-            foreach (ActuatorData data in _AllPoses[index]._ActuatorData)
+            foreach (ActuatorData data in poseData._ActuatorData)
             {
                 if (_AllTestActuators[i]._ActuatorIndex == data._ActuatorIndex)
                 {
@@ -139,50 +134,33 @@ public class UKI_PoseManager : MonoBehaviour
             }
         }
 
+        // Set UI
         UKI_UIManager.Instance.SetActuatorSliders();
+    }
+
+    public void SetPoseFromSequence(int poseSeqIndex, bool maskWings = false)
+    {
+        print("Setting pose by sequence index: " + poseSeqIndex);
+
+        _PoseSequenceIndex = poseSeqIndex;
+        SetPoseByName(_PoseSequence[_PoseSequenceIndex], _MaskWings);
     }
 
     public void DeletePose(string poseName)
     {
-        PoseData poseData = _AllPoses.Single(p => p._Name == poseName);
+        PoseData poseData = _PoseLibrary.Single(p => p._Name == poseName);
 
         if (poseData != null)
         {
-            _AllPoses.Remove(poseData);    
-            JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _AllPoses);
-            print("Poses deleted: " + _AllPoses.Count);
+            _PoseLibrary.Remove(poseData);    
+            JsonSerialisationHelper.Save(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), _PoseLibrary);
+            print("Poses deleted: " + _PoseLibrary.Count);
         }
         else
         {
-            print("Cannot find pose to remove: " + _AllPoses.Count);
+            print("Cannot find pose to remove: " + _PoseLibrary.Count);
         }
     }
 
-    public void HandleUpdatedPoseSequenceEvent(UnityEngine.UI.Extensions.ReorderableList.ReorderableListEventStruct item)
-    {
-        if (item.ToList != UKI_PoseManager_UI.Instance._PoseSequenceList)
-            return;
-
-        _PoseSequence.Clear();
-
-        print("Pose sequecne...");
-
-        int listItemCount = item.ToList.Content.childCount;
-        for (int i = 0; i < listItemCount; i++)
-        {
-            if (item.ToList.Content.GetChild(i).name != "Fake")
-            {
-                string poseName = item.ToList.Content.GetChild(i).GetComponentInChildren<UnityEngine.UI.Text>().text;
-                _PoseSequence.Add(poseName);
-            }
-        }
-
-        int count = 0;
-        foreach (string s in _PoseSequence)
-        {           
-            print("Pose " + count + "   " + _PoseSequence[count]);
-            count++;
-        }
-    }
-
+    
 }

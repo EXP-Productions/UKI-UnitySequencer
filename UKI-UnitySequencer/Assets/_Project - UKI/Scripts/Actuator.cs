@@ -384,7 +384,7 @@ public class Actuator : MonoBehaviour
                 SetState(UKIEnums.State.NoiseMovement);
         }
 
-        if(!_ActuatorDisabled)
+        if(!_ActuatorDisabled && UKI_PoseManager.Instance._Debug)
             print(name + " State set too: " + _State.ToString());
     }
 
