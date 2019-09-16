@@ -56,6 +56,8 @@ public class UKILightingManager : MonoBehaviour
         
     NdiReceiver _NDIReciever;
 
+    public ParticleSystem _LedPS;
+
     #region INITIALIZATION
 
     private void Awake()
@@ -81,6 +83,10 @@ public class UKILightingManager : MonoBehaviour
         foreach (var pixel in BlinkyBlinky.pixels)
             pixel.SetUV(b.min.x, b.max.x, b.min.y, b.max.y);
 
+        _LedPS.maxParticles = BlinkyBlinky.pixels.Count;
+        _LedPS.Emit(_LedPS.maxParticles);
+        _LEDParticles = new ParticleSystem.Particle[_LedPS.main.maxParticles];
+
         StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
     }
 
@@ -94,6 +100,7 @@ public class UKILightingManager : MonoBehaviour
 
     #region ANIMATIONS
     public bool _UpdateAnimation = false;
+    ParticleSystem.Particle[] _LEDParticles;
     IEnumerator AnimationRoutine(float fps, IBlinkyAnimation animation)
     {
         float wait = 1f / fps;
@@ -107,9 +114,27 @@ public class UKILightingManager : MonoBehaviour
 
             BlinkyBlinky.UpdateLights();
 
+            UpdateParticles();
+
             //print(BlinkyBlinky.pixels[100].currentLocation + "    " + BlinkyBlinky.pixels[100].color);
             yield return new WaitForSeconds(wait);
         }
+    }
+
+    void UpdateParticles()
+    {
+        // GetParticles is allocation free because we reuse the m_Particles buffer between updates
+        int numParticlesAlive = _LedPS.GetParticles(_LEDParticles);
+
+        // Change only the particles that are alive
+        for (int i = 0; i < numParticlesAlive; i++)
+        {
+            _LEDParticles[i].position = BlinkyBlinky.pixels[i].currentLocation;
+            _LEDParticles[i].color = BlinkyBlinky.pixels[i].Color;
+        }
+
+        // Apply the particle changes to the Particle System
+        _LedPS.SetParticles(_LEDParticles, numParticlesAlive);
     }
         
     private void RunPlasmaAnimation()
