@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System;
 
 
@@ -68,7 +69,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public void EStop(string reason)
     {
         _UIManager._EstopWarning.SetActive(true);
-        _UIManager._EstopWarning.GetComponentInChildren<Text>().text = reason;
+        _UIManager._EstopWarning.GetComponentInChildren<TextMeshProUGUI>().text = reason;
         print("E Stop activated: " + reason);
         _EStopping = true;
         _UIManager.UpdateEstopButton();
