@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using UnityEngine.UI.Extensions;
 
 [System.Serializable]
 public class PoseData
@@ -34,11 +35,13 @@ public class UKI_PoseManager : MonoBehaviour
 
     [HideInInspector]
     public List<PoseData> _AllPoses = new List<PoseData>();
+    public List<string> _PoseSequence = new List<string>();
     int _SelectedPose = 0;
 
     public bool _LoopPoses = false;
     public bool _MaskWings = true;
 
+   
     // Start is called before the first frame update
     public void Start()
     {
@@ -154,4 +157,32 @@ public class UKI_PoseManager : MonoBehaviour
             print("Cannot find pose to remove: " + _AllPoses.Count);
         }
     }
+
+    public void HandleUpdatedPoseSequenceEvent(UnityEngine.UI.Extensions.ReorderableList.ReorderableListEventStruct item)
+    {
+        if (item.ToList != UKI_PoseManager_UI.Instance._PoseSequenceList)
+            return;
+
+        _PoseSequence.Clear();
+
+        print("Pose sequecne...");
+
+        int listItemCount = item.ToList.Content.childCount;
+        for (int i = 0; i < listItemCount; i++)
+        {
+            if (item.ToList.Content.GetChild(i).name != "Fake")
+            {
+                string poseName = item.ToList.Content.GetChild(i).GetComponentInChildren<UnityEngine.UI.Text>().text;
+                _PoseSequence.Add(poseName);
+            }
+        }
+
+        int count = 0;
+        foreach (string s in _PoseSequence)
+        {           
+            print("Pose " + count + "   " + _PoseSequence[count]);
+            count++;
+        }
+    }
+
 }

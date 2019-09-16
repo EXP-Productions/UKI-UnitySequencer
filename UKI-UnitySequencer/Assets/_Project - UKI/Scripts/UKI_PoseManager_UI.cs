@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 using System.Linq;
 
 public class UKI_PoseManager_UI : MonoBehaviour
@@ -26,6 +27,9 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     string _ActiveButtonName = "";
 
+    public ReorderableList _PoseLibraryList;
+    public ReorderableList _PoseSequenceList;
+
     private void Awake()
     {
         Instance = this;
@@ -39,6 +43,9 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _LoopPosesToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._LoopPoses = b);
         _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
         _SavePoseButton.onClick.AddListener(() => SavePose());
+
+        _PoseLibraryList.OnElementDropped.AddListener(call => UKI_PoseManager.Instance.HandleUpdatedPoseSequenceEvent(call));
+        _PoseSequenceList.OnElementAdded.AddListener(call => UKI_PoseManager.Instance.HandleUpdatedPoseSequenceEvent(call));
     }
 
     public void AddPoseButton(string name)
