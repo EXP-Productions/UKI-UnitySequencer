@@ -36,7 +36,7 @@ public class UKI_PoseManager : MonoBehaviour
     [HideInInspector]
     public List<PoseData> _PoseLibrary = new List<PoseData>();
     public List<string> _PoseSequence = new List<string>();
-    int _PoseSequenceIndex = 0;
+    public int _PoseSequenceIndex = 0;
 
     public bool _LoopPoses = false;
     public bool _MaskWings = true;
@@ -65,9 +65,9 @@ public class UKI_PoseManager : MonoBehaviour
                     readyCount++;
             }
 
-            //print("Actuators Paused count: " + pausedCount + "/" + _AllTestActuators.Count);
+            if(_Debug) print("Actuators ready count: " + readyCount + "/" + _AllTestActuators.Count);
 
-            if(readyCount == UKI_UIManager.Instance._AllActuators.Count - 3)
+            if(readyCount == UKI_UIManager.Instance._AllActuators.Count)
             {
                 _PoseSequenceIndex++;
                 if (_PoseSequenceIndex >= _PoseSequence.Count)
@@ -144,6 +144,7 @@ public class UKI_PoseManager : MonoBehaviour
 
         _PoseSequenceIndex = poseSeqIndex;
         SetPoseByName(_PoseSequence[_PoseSequenceIndex], _MaskWings);
+        UKI_PoseManager_UI.Instance.HighlightSequenceButton();
     }
 
     public void DeletePose(string poseName)

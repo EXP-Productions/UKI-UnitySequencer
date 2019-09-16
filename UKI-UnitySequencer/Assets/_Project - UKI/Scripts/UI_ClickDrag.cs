@@ -12,6 +12,8 @@ public class UI_ClickDrag : MonoBehaviour, IPointerDownHandler
     public float _YSpeed = .1f;
     public float _ZoomSpeed = .1f;
 
+    public Camera _Cam;
+
     public void OnPointerDown(PointerEventData pointerEventData)
     {
         _Clicked = true;
@@ -27,6 +29,6 @@ public class UI_ClickDrag : MonoBehaviour, IPointerDownHandler
                 _Clicked = false;
         }
 
-        Camera.main.transform.SetLocalZ(Camera.main.transform.localPosition.z + Input.GetAxis("Mouse ScrollWheel") * _ZoomSpeed);
+        _Cam.transform.SetLocalZ(_Cam.transform.localPosition.z + Input.GetAxis("Mouse ScrollWheel") * _ZoomSpeed);
     }
 }

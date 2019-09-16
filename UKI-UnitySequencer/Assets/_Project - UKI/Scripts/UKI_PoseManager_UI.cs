@@ -132,5 +132,13 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
             print("Pose: " + index + "   " + poseName);            
         }
+
+        UKI_PoseManager.Instance._PoseSequenceIndex = 0;
+        HighlightSequenceButton();
+    }
+
+    public void HighlightSequenceButton()
+    {
+        _PoseSequenceList.Content.GetChild(UKI_PoseManager.Instance._PoseSequenceIndex).GetComponent<Button>().Select();        
     }
 }
