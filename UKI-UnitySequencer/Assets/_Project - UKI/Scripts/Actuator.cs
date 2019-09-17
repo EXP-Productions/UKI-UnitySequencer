@@ -392,6 +392,11 @@ public class Actuator : MonoBehaviour
         return _State == UKIEnums.State.CalibratedToZero;
     }
     
+    public void Stop()
+    {
+        NormExtension = _NormReportedExtension;
+    }
+
     IEnumerator CalibrateRealWorldSpeedRoutine(bool extension)
     {
         print("SPEED TEST STARTED: " + name);
@@ -496,7 +501,7 @@ public class Actuator : MonoBehaviour
        
         while (true)
         {
-            if(  _State != UKIEnums.State.Paused && !AtTargetExtension  )
+            if( _State != UKIEnums.State.Paused && !AtTargetExtension  )
             {
                 if (!_Donotsend)
                 {
@@ -516,7 +521,7 @@ public class Actuator : MonoBehaviour
         return _ReportedExtensionDiff < range;
     }
 
-    public void SetToReportedExtension()
+    public void SetToReportedExtensionOnStartup()
     {
         NormExtension = _NormReportedExtension;
         Debug.Log(_ActuatorIndex.ToString() + "  Setting from reported extension: Norm - " + NormExtension);

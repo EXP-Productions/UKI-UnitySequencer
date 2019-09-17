@@ -54,8 +54,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         _Actuators = FindObjectsOfType<Actuator>();
         _UIManager = UKI_UIManager.Instance;
-        EStop("Start E Stop");
-        StartCoroutine(SetReportedExtensions());
+
+        StartCoroutine(UDPStartupProcedure());
+
         StartCoroutine(SendHeartBeat());
     }
 
@@ -64,6 +65,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         print("UKI Mode set too: " + i);
 
         _UKIMode = (UKIMode)i;
+
+        if(_UKIMode == UKIMode.SendUDP)
+        {
+            StartCoroutine(UDPStartupProcedure());
+        }
     }
 
     public void EStopButtonToggle()
@@ -102,17 +108,19 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _UIManager._EstopWarning.SetActive(false);
     }
 
-    IEnumerator SetReportedExtensions()
+    IEnumerator UDPStartupProcedure()
     {
+        // Send estop at start
+        EStop("Start E Stop");
+
         // TODO don't base this on time alone
         yield return new WaitForSeconds(1f);
-        //if (_SendToModbus)
-       // {
-            foreach (Actuator actuator in _Actuators)
-            {
-                actuator.SetToReportedExtension();
-            }
-        //}
+      
+        foreach (Actuator actuator in _Actuators)
+        {
+            actuator.SetToReportedExtensionOnStartup();
+        }
+        
         yield return new WaitForSeconds(1f);
 
         ResetEStop();

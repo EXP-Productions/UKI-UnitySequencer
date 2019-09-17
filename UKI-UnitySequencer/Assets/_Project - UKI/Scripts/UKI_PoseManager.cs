@@ -27,6 +27,13 @@ public class PoseData
     }
 }
 
+public enum SequencerState
+{
+    Stopped,
+    Playing,
+    Paused,
+}
+
 public class UKI_PoseManager : MonoBehaviour
 {
     public static UKI_PoseManager Instance;
@@ -38,8 +45,11 @@ public class UKI_PoseManager : MonoBehaviour
     public List<string> _PoseSequence = new List<string>();
     public int _PoseSequenceIndex = 0;
 
-    public bool _LoopPoses = false;
+    SequencerState _SequencerState = SequencerState.Paused;
+
     public bool _MaskWings = false;
+
+    public float _InPositionRane = 30;
 
     public bool _Debug = false;
    
@@ -50,13 +60,17 @@ public class UKI_PoseManager : MonoBehaviour
         LoadAllPoses();
     }
 
-    public float _InPositionRane = 30;
-
     // Update is called once per frame
     void Update()
     {
-        if(_LoopPoses)
+        if(_SequencerState == SequencerState.Playing)
         {
+            if(_PoseSequence.Count == 0)
+            {
+                SetState(SequencerState.Stopped);
+                return;
+            }
+
             // CHECK IF ALL ACTUATORS ARE STOPPED
             int readyCount = 0;
             for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
@@ -65,7 +79,8 @@ public class UKI_PoseManager : MonoBehaviour
                     readyCount++;
             }
 
-            if(_Debug) print("Actuators ready count: " + readyCount + "/" + _AllTestActuators.Count);
+            if(_Debug)
+                print("Actuators ready count: " + readyCount + "/" + _AllTestActuators.Count);
 
             if(readyCount == UKI_UIManager.Instance._AllActuators.Count)
             {
@@ -75,33 +90,50 @@ public class UKI_PoseManager : MonoBehaviour
 
                 SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
 
-                print("Setting to pose: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
+                print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
+        }
+    }
+
+    public void SetState(SequencerState state)
+    {
+        Debug.Log("Sequencer state: " + state);
+
+        _SequencerState = state;
+
+        // If stopping then set the sequence index back to 0
+        if(_SequencerState == SequencerState.Stopped)
+        {
+            _PoseSequenceIndex = 0;
+            UKI_PoseManager_UI.Instance._StopButton.Select();
+        }
+        else if (_SequencerState == SequencerState.Paused)
+        {
+            if(_PoseSequence.Count == 0)
+            {
+                SetState(SequencerState.Stopped);
+                return;
+            }
+
+            PauseAllActuators();
+            UKI_PoseManager_UI.Instance._PauseButton.Select();
+        }
+        else if (_SequencerState == SequencerState.Playing)
+        {
+            PauseAllActuators();
+            UKI_PoseManager_UI.Instance._PlayButton.Select();
+        }
+    }
+
+    void PauseAllActuators()
+    {
+        for (int i = 0; i < _AllTestActuators.Count; i++)
+        {
+            _AllTestActuators[i].Stop();
         }
 
-        if (Input.GetKey(KeyCode.RightShift))
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                SetPoseFromSequence(0);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                SetPoseFromSequence(1);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                SetPoseFromSequence(2);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                SetPoseFromSequence(3);
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                SetPoseFromSequence(4);
-            }
-        }
+        // Set UI
+        UKI_UIManager.Instance.SetActuatorSliders();
     }
 
     void LoadAllPoses()
@@ -162,6 +194,4 @@ public class UKI_PoseManager : MonoBehaviour
             print("Cannot find pose to remove: " + _PoseLibrary.Count);
         }
     }
-
-    
 }

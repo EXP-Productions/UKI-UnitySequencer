@@ -14,7 +14,9 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public Button _OpenSaveDialogueButton;
     public Button _DeleteSelectedPose;
     List<Button> _PoseButtons = new List<Button>();
-    public Toggle _LoopPosesToggle;
+
+    public Button _PlayButton, _PauseButton, _StopButton;
+
     public Toggle _MaskWingsToggle;
 
     public RectTransform _PoseButtonParent;
@@ -40,7 +42,10 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _OpenSaveDialogueButton.onClick.AddListener(() => OpenSaveDialogue());
         _DeleteSelectedPose.onClick.AddListener(() => RemoveActivePoseButton());
 
-        _LoopPosesToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._LoopPoses = b);
+        _PlayButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetState(SequencerState.Playing));
+        _PauseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetState(SequencerState.Paused));
+        _StopButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetState(SequencerState.Stopped));
+
         _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
         _SavePoseButton.onClick.AddListener(() => SavePose());
 
