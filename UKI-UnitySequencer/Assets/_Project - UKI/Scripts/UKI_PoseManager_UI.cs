@@ -55,6 +55,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     public void AddPoseButton(string name)
     {
+        Debug.Log("POSE UI - Button added: " + name);
+
         Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
         newBtn.GetComponentInChildren<Text>().text = name;
         newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));

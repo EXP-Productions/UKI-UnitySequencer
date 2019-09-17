@@ -171,7 +171,6 @@ GameObject:
   - component: {fileID: 3358339930868427426}
   - component: {fileID: 5338286388045185923}
   - component: {fileID: 5409400995710764913}
-  - component: {fileID: 9021035363669971808}
   m_Layer: 5
   m_Name: UI Panel
   m_TagString: Untagged
@@ -237,30 +236,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &9021035363669971808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8498625230595248732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a07fdae6bfbad3c42b9a67274b6b06d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _OpenSaveDialogueButton: {fileID: 0}
-  _DeleteSelectedPose: {fileID: 0}
-  _LoopPosesToggle: {fileID: 0}
-  _MaskWingsToggle: {fileID: 0}
-  _PoseButtonParent: {fileID: 0}
-  _SelectPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
-    type: 3}
-  _SavePoseDialog: {fileID: 0}
-  _SavePoseButton: {fileID: 0}
-  _SavePoseNameInput: {fileID: 0}
-  _PoseLibraryList: {fileID: 0}
-  _PoseSequenceList: {fileID: 0}
 --- !u!1 &8838538554937355015
 GameObject:
   m_ObjectHideFlags: 0

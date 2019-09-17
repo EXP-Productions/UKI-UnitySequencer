@@ -34,11 +34,11 @@ namespace Unity.BlinkyBlinky
         }
 
         public static void UpdateLights()
-        {         
+        {
             Model.Fixtures.ForEach(fixture =>
             Network.Networks.First(network => network.NetworkName == fixture.NetworkName)
                             .Send(DatagramComposer.GetDMXDatagrams(fixture)
-                            ));
+                            ));                            
         }
     }
 }

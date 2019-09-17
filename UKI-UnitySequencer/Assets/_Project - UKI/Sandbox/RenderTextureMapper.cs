@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.BlinkyBlinky;
+using UnityEngine.Profiling;
 
 public class RenderTextureMapper : MonoBehaviour
 {
@@ -14,18 +15,33 @@ public class RenderTextureMapper : MonoBehaviour
     List<Vector3> _LEDUVs = new List<Vector3>();
 
     RenderTexture _RTexTemp;
+    Texture2D myTexture2D;
 
     // Start is called before the first frame update
     void Start()
     {
         _Cols = new Color[_SampleCount];
 
+
+        _RTexTemp = new RenderTexture(
+                       _RTex.width,
+                       _RTex.height,
+                       0,
+                       RenderTextureFormat.Default,
+                       RenderTextureReadWrite.Linear);
+
+        // Create a new readable Texture2D to copy the pixels to it
+        myTexture2D = new Texture2D(_RTex.width, _RTex.height);
+
+        /*
         _RTexTemp = RenderTexture.GetTemporary(
                         _RTex.width,
                         _RTex.height,
                         0,
                         RenderTextureFormat.Default,
                         RenderTextureReadWrite.Linear);
+                        */
+
     }
 
     // Update is called once per frame
@@ -40,22 +56,14 @@ public class RenderTextureMapper : MonoBehaviour
         // Set the current RenderTexture to the temporary one we created
         RenderTexture.active = _RTexTemp;
 
-        // Create a new readable Texture2D to copy the pixels to it
-        Texture2D myTexture2D = new Texture2D(_RTex.width, _RTex.height);
-
         // Copy the pixels from the RenderTexture to the new Texture
         myTexture2D.ReadPixels(new Rect(0, 0, _RTexTemp.width, _RTexTemp.height), 0, 0);
         myTexture2D.Apply();
 
         // Reset the active RenderTexture
         RenderTexture.active = previous;
-
-        // Release the temporary RenderTexture
-        //RenderTexture.ReleaseTemporary(tmp);
-
-        // "myTexture2D" now has the same pixels from "texture" and it's readable.
-
-        if(_LEDUVs.Count == 0)
+        
+        if (_LEDUVs.Count == 0)
         {
             foreach (var pixel in BlinkyBlinky.pixels)
                 _LEDUVs.Add( _UVQuad.TransformPoint(pixel.UV) );
@@ -64,7 +72,9 @@ public class RenderTextureMapper : MonoBehaviour
         foreach (var pixel in BlinkyBlinky.pixels)
         {
             pixel.Color = myTexture2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y) * 255;
-        }        
+        }
+
+   
     }
 
     /*

@@ -7,6 +7,7 @@ using Unity.BlinkyShared.DMX;
 using Uki.Example.Animations;
 using Unity.BlinkyBlinky.Animations;
 using Klak.Ndi;
+using UnityEngine.Profiling;
 
 public class UKILightingManager : MonoBehaviour
 {
@@ -112,9 +113,13 @@ public class UKILightingManager : MonoBehaviour
             else                 
                 animation.Run();
 
-            BlinkyBlinky.UpdateLights();
+           // Profiler.BeginSample("Updating lights"); 
+            BlinkyBlinky.UpdateLights();  // TODO has 282k GC
+            //Profiler.EndSample();
 
+           // Profiler.BeginSample("Updating particles");
             UpdateParticles();
+           // Profiler.EndSample();
 
             //print(BlinkyBlinky.pixels[100].currentLocation + "    " + BlinkyBlinky.pixels[100].color);
             yield return new WaitForSeconds(wait);
