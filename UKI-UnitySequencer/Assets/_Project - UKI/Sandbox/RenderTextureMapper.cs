@@ -15,7 +15,7 @@ public class RenderTextureMapper : MonoBehaviour
     List<Vector3> _LEDUVs = new List<Vector3>();
 
     RenderTexture _RTexTemp;
-    Texture2D myTexture2D;
+    Texture2D _Tex2D;
 
     // Start is called before the first frame update
     void Start()
@@ -31,16 +31,7 @@ public class RenderTextureMapper : MonoBehaviour
                        RenderTextureReadWrite.Linear);
 
         // Create a new readable Texture2D to copy the pixels to it
-        myTexture2D = new Texture2D(_RTex.width, _RTex.height);
-
-        /*
-        _RTexTemp = RenderTexture.GetTemporary(
-                        _RTex.width,
-                        _RTex.height,
-                        0,
-                        RenderTextureFormat.Default,
-                        RenderTextureReadWrite.Linear);
-                        */
+        _Tex2D = new Texture2D(_RTex.width, _RTex.height);
 
     }
 
@@ -51,17 +42,17 @@ public class RenderTextureMapper : MonoBehaviour
         Graphics.Blit(_RTex, _RTexTemp);
 
         // Backup the currently set RenderTexture
-        RenderTexture previous = RenderTexture.active;
+       // RenderTexture previous = RenderTexture.active;
 
         // Set the current RenderTexture to the temporary one we created
-        RenderTexture.active = _RTexTemp;
+       // RenderTexture.active = _RTexTemp;
 
         // Copy the pixels from the RenderTexture to the new Texture
-        myTexture2D.ReadPixels(new Rect(0, 0, _RTexTemp.width, _RTexTemp.height), 0, 0);
-        myTexture2D.Apply();
+        _Tex2D.ReadPixels(new Rect(0, 0, _RTex.width, _RTex.height), 0, 0);
+        _Tex2D.Apply();
 
         // Reset the active RenderTexture
-        RenderTexture.active = previous;
+       // RenderTexture.active = previous;
         
         if (_LEDUVs.Count == 0)
         {
@@ -71,7 +62,7 @@ public class RenderTextureMapper : MonoBehaviour
 
         foreach (var pixel in BlinkyBlinky.pixels)
         {
-            pixel.Color = myTexture2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y) * 255;
+            pixel.Color = _Tex2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y) * 255;
         }
 
    

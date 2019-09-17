@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.BlinkyLights;
 using Unity.BlinkyBlinky;
@@ -13,10 +14,11 @@ public class UKILightingManager : MonoBehaviour
 {
     public enum AnimationSource
     {
-        NDI0,
-        NDI1,
-        Animation0,
+        NDI,
+        Animation,
     }
+
+    string _SourceName; // either NDI or animation source name
 
     public static UKILightingManager Instance;
 
@@ -67,7 +69,9 @@ public class UKILightingManager : MonoBehaviour
     }
 
     void Start()
-    {        
+    {
+        _NDIReciever = GetComponent<NdiReceiver>();
+
         // Initialize Network And Controllers
         BlinkyBlinky.AddNetworkDevice(PIXLITE_CONTROLLER);
         BlinkyBlinky.AddNetworkDevice(ARTNET_CONTROLLERS);
@@ -91,12 +95,15 @@ public class UKILightingManager : MonoBehaviour
         StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
     }
 
-    public void SetAnimSource(int index)
+    public void SetAnimSource(AnimationSource source, string name)
     {
-        _AnimSource = (AnimationSource)index;
-        print("Setting anim source too: " + (AnimationSource)index);
-    }
+        _AnimSource = source;
 
+        if(_AnimSource == AnimationSource.NDI)
+            _NDIReciever.sourceName = name;
+
+        Debug.Log("LIGHTING MANAGER - Setting source too: " + source.ToString() + " - " + name);
+    }
     #endregion
 
     #region ANIMATIONS
@@ -108,10 +115,14 @@ public class UKILightingManager : MonoBehaviour
 
         while(AnimationsRunning)
         {
-            if (_AnimSource == AnimationSource.NDI0 || _AnimSource == AnimationSource.NDI1)
+            if (_AnimSource == AnimationSource.NDI)
+            {
                 _RenderTextureMapper.ManualUpdate();
-            else                 
+            }
+            else if (_AnimSource == AnimationSource.Animation)
+            {
                 animation.Run();
+            }
 
            // Profiler.BeginSample("Updating lights"); 
             BlinkyBlinky.UpdateLights();  // TODO has 282k GC
