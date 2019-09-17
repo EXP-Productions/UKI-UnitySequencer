@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class UKI_UIManager : MonoBehaviour
 {
     public static UKI_UIManager Instance;
-    
+
+
+
+
     [Header("Actuators")]    
     public List<Actuator> _LeftActuators = new List<Actuator>();
     public List<Actuator> _RightActuators = new List<Actuator>();
@@ -20,7 +23,10 @@ public class UKI_UIManager : MonoBehaviour
     public Button _EStopButton;
     public UI_ButtonHold _IgnoreCollisionHoldButton;
     public Button _CalibrateButton;
+
     public Toggle _SendToModBusToggle;
+    public TMPro.TMP_Dropdown _UKIModeDropDown;
+
     public GameObject _EstopWarning;
     public Image _HeartBeatDisplay;
     public Slider _OfflineSpeedScalerSlider;
@@ -48,107 +54,9 @@ public class UKI_UIManager : MonoBehaviour
             {
                 UkiCommunicationsManager.Instance.EStop("ESTOP sent from C2");
             }
-
-            // Raise wings
-            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                HackWings(true);
-            }
-
-            // Lower wings
-            if (Input.GetKey(KeyCode.W) && Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                HackWings(false);
-            }
-
-            // Toggle loop poses
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                UKI_PoseManager.Instance._LoopPoses = !UKI_PoseManager.Instance._LoopPoses;
-            }
-
-            // Raise ankles
-            if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                HackAnkles(true);
-            }
-
-            // Lower ankles
-            if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                HackAnkles(false);
-            }
-
-            // Raise butt
-            if (Input.GetKey(KeyCode.B) && Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                ButtHack(true);
-            }
-
-            // Lower butt
-            if (Input.GetKey(KeyCode.B) && Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                ButtHack(false);
-            }
-
         }
     }
 
-    void HackWings(bool raise)
-    {
-        UKI_PoseManager.Instance._MaskWings = true;
-
-        foreach (Actuator actuator in _AllActuators)
-        {
-            if (actuator._ActuatorIndex == UkiActuatorAssignments.RightWingRaise || actuator._ActuatorIndex == UkiActuatorAssignments.LeftWingRaise)
-            {
-                if (raise)
-                {
-                    actuator.NormExtension += 0.1f;
-                }
-                else
-                {
-                    actuator.NormExtension -= 0.1f;
-                }
-            }
-        }
-    }
-
-    void HackAnkles(bool raise)
-    {
-        foreach (Actuator actuator in _AllActuators)
-        {
-            if (actuator._ActuatorIndex == UkiActuatorAssignments.LeftFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.LeftRearAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightFrontAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightMidAnkle || actuator._ActuatorIndex == UkiActuatorAssignments.RightRearAnkle)
-            {
-                if (raise)
-                {
-                    actuator.NormExtension = 1.0f;
-                }
-                else
-                {
-                    actuator.NormExtension = 0.0f;
-                }
-            }
-        }
-    }
-
-    void ButtHack(bool raise)
-    {
-        foreach (Actuator actuator in _AllActuators)
-        {
-            if (actuator._ActuatorIndex == UkiActuatorAssignments.Arse)
-            {
-                if (raise)
-                {
-                    actuator.NormExtension = 1.0f;
-                }
-                else
-                {
-                    actuator.NormExtension = 0.0f;
-                }
-            }
-        }
-    }
 
     public bool _IgnoreCollisions = false;
     // Start is called before the first frame update
@@ -159,8 +67,9 @@ public class UKI_UIManager : MonoBehaviour
         _IgnoreCollisionHoldButton._OnDown.AddListener(() => { UkiCommunicationsManager.Instance.EStopButtonToggle(); _IgnoreCollisions = true; });
         _IgnoreCollisionHoldButton._OnUp.AddListener(() => _IgnoreCollisions = false);
 
-        _SendToModBusToggle.onValueChanged.AddListener(delegate { UkiCommunicationsManager.Instance.SendToModbusToggle(_SendToModBusToggle); });
-        _SendToModBusToggle.isOn = UkiCommunicationsManager.Instance._SendToModbus;      
+        _UKIModeDropDown.AddOptions(new List<string>() { "Sending UDP", "Simulation" });
+        _UKIModeDropDown.onValueChanged.AddListener((int i) => UkiCommunicationsManager.Instance.SetUKIMode(i));
+        _UKIModeDropDown.SetValueWithoutNotify(1);
 
        // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
        // _MirrorRightButton.onClick.AddListener(() => MirrorRight());
@@ -177,6 +86,7 @@ public class UKI_UIManager : MonoBehaviour
      
 
     }
+
 
     public void AddActuator(Actuator actuator)
     {
@@ -248,6 +158,9 @@ public class UKI_UIManager : MonoBehaviour
         {
             actuator.Calibrate();
         }
+
+        // Set UI
+        UKI_UIManager.Instance.SetActuatorSliders();
     }
 
    

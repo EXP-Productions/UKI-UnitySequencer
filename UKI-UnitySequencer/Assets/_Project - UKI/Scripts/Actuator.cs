@@ -195,8 +195,8 @@ public class Actuator : MonoBehaviour
 
         #region REPORTED EXTENSION
 
-        // If offline - Run simulation without sending to modbus
-        if (!UkiCommunicationsManager.Instance._SendToModbus)
+        // SIMULATION MODE - Run simulation without sending to modbus
+        if (UkiCommunicationsManager.Instance._UKIMode == UKIMode.Simulation)
         {
             if (!UkiCommunicationsManager.Instance._EStopping)
             {
@@ -219,13 +219,11 @@ public class Actuator : MonoBehaviour
                 _NormReportedExtension = (float)_ReportedExtension / _MaxReportedExtension;
             }
         }
+        // UDP MODE - read in actuators from udp
         else
         {
             // READ IN
-            // Get the reported values from mod bus
-            //print(name + "   " + _ActuatorIndex.ToString());
             _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
-            //ReportedSpeed = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_GOTO_SPEED_SETPOINT];
             ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
 
             // Update the readin actuator transform

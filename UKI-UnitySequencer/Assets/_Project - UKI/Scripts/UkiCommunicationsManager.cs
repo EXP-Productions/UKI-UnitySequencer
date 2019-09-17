@@ -6,6 +6,12 @@ using TMPro;
 using System;
 
 
+public enum UKIMode
+{
+    SendUDP,
+    Simulation,
+}
+
 /// Comms manager for UKI
 /// Sends out the commands that come in from the actuators
 public class UkiCommunicationsManager : ThreadedUDPReceiver
@@ -34,7 +40,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public float _TestPos = 100;
 
     // Send the messages out to modbus to set the real world limbs positions
-    public bool _SendToModbus = true;
+    public UKIMode _UKIMode = UKIMode.Simulation;
 
     public bool _Debug = false;
 
@@ -53,9 +59,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         StartCoroutine(SendHeartBeat());
     }
 
-    public void SendToModbusToggle(Toggle toggle)
+    public void SetUKIMode(int i)
     {
-        _SendToModbus = toggle.isOn;
+        print("UKI Mode set too: " + i);
+
+        _UKIMode = (UKIMode)i;
     }
 
     public void EStopButtonToggle()
@@ -192,7 +200,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     float lastTime = 0;
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
-        if (!_SendToModbus)
+        if (_UKIMode == UKIMode.Simulation)
             return;
 
         if(_Debug)
@@ -233,7 +241,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Only used on joints without actuators
     public void SendCalibrationMessage(int index, int motorSpeed)
     {
-        if (!_SendToModbus)
+        if (_UKIMode == UKIMode.Simulation)
             return;
 
         uint[] actuatorMessage1 = new uint[3];
@@ -251,7 +259,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void SendActuatorMessage(int index, int length, ModBusRegisters register)
     {
-        if (!_SendToModbus)
+        if (_UKIMode == UKIMode.Simulation)
             return;
 
         uint[] actuatorMessage = new uint[3];
@@ -265,7 +273,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         while (true)
         {
-            if (_SendToModbus && !_EStopping)
+            if (_UKIMode == UKIMode.SendUDP && !_EStopping)
             {
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.red;                

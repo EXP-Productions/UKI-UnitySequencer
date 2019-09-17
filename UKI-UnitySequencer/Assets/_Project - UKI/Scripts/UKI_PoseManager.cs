@@ -39,7 +39,7 @@ public class UKI_PoseManager : MonoBehaviour
     public int _PoseSequenceIndex = 0;
 
     public bool _LoopPoses = false;
-    public bool _MaskWings = true;
+    public bool _MaskWings = false;
 
     public bool _Debug = false;
    
