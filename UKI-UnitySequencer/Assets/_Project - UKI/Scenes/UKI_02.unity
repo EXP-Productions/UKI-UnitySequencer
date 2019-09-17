@@ -273,13 +273,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331434732}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9, z: -1.66}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
+  m_LocalPosition: {x: 4.53, y: 0.73, z: 3.9}
+  m_LocalScale: {x: 8.10874, y: 10.149866, z: 3.2732}
   m_Children: []
   m_Father: {fileID: 4738677111634209717}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
 --- !u!114 &331434734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +298,7 @@ MonoBehaviour:
   _FixtureData:
   - _MappingFilename: Legs.csv
     _StartUniverse: 28
-  _Smoothing: 8
+  _Smoothing: 0
   _Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -9253,13 +9253,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944847544}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9, z: -1.66}
+  m_LocalRotation: {x: 0.2164396, y: -0, z: -0, w: 0.97629607}
+  m_LocalPosition: {x: 0.466, y: 1.422, z: -1.644}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4738677111634209717}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: 0, z: 0}
 --- !u!114 &1944847546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9278,7 +9278,7 @@ MonoBehaviour:
   _FixtureData:
   - _MappingFilename: Eyes.csv
     _StartUniverse: 29
-  _Smoothing: 8
+  _Smoothing: 0
   _Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -9444,7 +9444,7 @@ MonoBehaviour:
   _FixtureData:
   - _MappingFilename: RightWingLower.csv
     _StartUniverse: 27
-  _Smoothing: 8
+  _Smoothing: 0
   _Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
