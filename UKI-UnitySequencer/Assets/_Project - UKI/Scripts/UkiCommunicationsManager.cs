@@ -130,11 +130,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            EStop("Button press");
-        }
-
         _Timer += Time.deltaTime;
 
         if(_Timer >= 10)
