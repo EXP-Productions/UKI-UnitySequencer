@@ -53,6 +53,11 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _PoseSequenceList.OnElementAdded.AddListener(call => HandleSequenceListUpdated(call));
     }
 
+    private void Update()
+    {
+        HighlightSequenceButton();
+    }
+
     public void AddPoseButton(string name)
     {
         Debug.Log("POSE UI - Button added: " + name);
