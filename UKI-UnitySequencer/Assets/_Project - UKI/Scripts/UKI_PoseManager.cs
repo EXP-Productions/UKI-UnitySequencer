@@ -27,6 +27,8 @@ public class PoseData
     }
 }
 
+
+
 public enum SequencerState
 {
     Stopped,
@@ -43,6 +45,7 @@ public class UKI_PoseManager : MonoBehaviour
     [HideInInspector]
     public List<PoseData> _PoseLibrary = new List<PoseData>();
     public List<string> _PoseSequence = new List<string>();
+
     public int _PoseSequenceIndex = 0;
 
     SequencerState _SequencerState = SequencerState.Paused;
@@ -93,6 +96,7 @@ public class UKI_PoseManager : MonoBehaviour
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
+
     }
 
     public void SetState(SequencerState state)
@@ -193,5 +197,15 @@ public class UKI_PoseManager : MonoBehaviour
         {
             print("Cannot find pose to remove: " + _PoseLibrary.Count);
         }
+    }
+
+    void SaveSequence(string name)
+    {
+
+    }
+
+    void LoadSequence(string name)
+    {
+
     }
 }

@@ -32,6 +32,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public ReorderableList _PoseLibraryList;
     public ReorderableList _PoseSequenceList;
 
+    public RectTransform _SequencerButtonParent;
+
     private void Awake()
     {
         Instance = this;
@@ -68,6 +70,39 @@ public class UKI_PoseManager_UI : MonoBehaviour
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
 
         _PoseButtons.Add(newBtn);
+    }
+
+    public void SelectSequence(SequenceData seqData)
+    {
+        Debug.Log("Setting up sequence: " + seqData._Name);
+
+        ClearSequence();
+
+        for (int i = 0; i < seqData._SequenceData.Count; i++)
+        {
+            string name = seqData._SequenceData[i];
+            Debug.Log("POSE name - Button added: " + name);
+
+            Button newBtn = Instantiate(_SelectPoseButtonPrefab, _SequencerButtonParent);
+            newBtn.GetComponentInChildren<Text>().text = name;
+            newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));
+            newBtn.onClick.AddListener(() => _ActiveButtonName = name);
+
+            newBtn.gameObject.AddComponent<UI_RightClickDestroy>();
+        }
+
+        UpdateSequenceListButtons();
+    }
+
+    void ClearSequence()
+    {
+        int listItemCount = _PoseSequenceList.Content.childCount;
+        for (int i = 0; i < listItemCount; i++)
+        {
+            Destroy(_PoseSequenceList.Content.GetChild(i).gameObject);
+        }
+
+        UpdateSequenceListButtons();
     }
 
     public void RemoveActivePoseButton()
@@ -151,6 +186,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     public void HighlightSequenceButton()
     {
-        _PoseSequenceList.Content.GetChild(UKI_PoseManager.Instance._PoseSequenceIndex).GetComponent<Button>().Select();        
+        //if(_PoseSequenceList.Content.childCount > 0)
+         //   _PoseSequenceList.Content.GetChild(UKI_PoseManager.Instance._PoseSequenceIndex).GetComponent<Button>().Select();        
     }
 }

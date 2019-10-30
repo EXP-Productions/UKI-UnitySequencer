@@ -459,6 +459,8 @@ public class Actuator : MonoBehaviour
         GameObject collisionMarker = Instantiate(SRResources.CollisionMarker.Load());
         collisionMarker.transform.position = go.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
 
+
+        /* TODO
         // Provide audio feedback for collision
         AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
         if (audioSource == null)
@@ -466,6 +468,7 @@ public class Actuator : MonoBehaviour
             audioSource = Camera.main.gameObject.AddComponent<AudioSource>();
         }
         audioSource.PlayOneShot(SRResources.collision);
+        */
     }
 
     #endregion
