@@ -55,15 +55,7 @@ public class UKI_TimelineManager : MonoBehaviour
         _Button_Pause.onClick.AddListener(() => Pause());
         _Button_Calibrate.onClick.AddListener(() => CalibrateToZero());
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) PlayTimeline(0, false);
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) PlayTimeline(1);
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) PlayTimeline(2);
-        else if (Input.GetKeyDown(KeyCode.Z)) CalibrateToZero();
-    }
-
+    
     void Play()
     {
         _PlayableDirector.Play();

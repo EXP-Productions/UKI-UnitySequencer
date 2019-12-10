@@ -94,7 +94,7 @@ public class Actuator : MonoBehaviour
     float _BoostTimer = 0;
     public float _OfflineSpeedScaler = 1;
 
-    float _ReportedExtensionDiff;
+    public float _ReportedExtensionDiff;
 
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
     float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
@@ -459,6 +459,8 @@ public class Actuator : MonoBehaviour
         GameObject collisionMarker = Instantiate(SRResources.CollisionMarker.Load());
         collisionMarker.transform.position = go.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
 
+
+        /* TODO
         // Provide audio feedback for collision
         AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
         if (audioSource == null)
@@ -466,6 +468,7 @@ public class Actuator : MonoBehaviour
             audioSource = Camera.main.gameObject.AddComponent<AudioSource>();
         }
         audioSource.PlayOneShot(SRResources.collision);
+        */
     }
 
     #endregion

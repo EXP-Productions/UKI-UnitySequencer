@@ -27,6 +27,8 @@ public class PoseData
     }
 }
 
+
+
 public enum SequencerState
 {
     Stopped,
@@ -43,6 +45,7 @@ public class UKI_PoseManager : MonoBehaviour
     [HideInInspector]
     public List<PoseData> _PoseLibrary = new List<PoseData>();
     public List<string> _PoseSequence = new List<string>();
+
     public int _PoseSequenceIndex = 0;
 
     SequencerState _SequencerState = SequencerState.Paused;
@@ -60,6 +63,26 @@ public class UKI_PoseManager : MonoBehaviour
         LoadAllPoses();
     }
 
+    public void PrintAllActuatorRanges()
+    {
+        int outOfPlace = 0;
+        for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
+        {
+            if (!UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            {
+                print("ACTUATOR: " + UKI_UIManager.Instance._AllActuators[i] + " Reported extension diff: " + UKI_UIManager.Instance._AllActuators[i]._ReportedExtensionDiff);
+                outOfPlace++;
+            }
+
+           
+        }
+
+        if (outOfPlace == 0)
+        {
+            print("All actuators are at set positions.");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -75,7 +98,7 @@ public class UKI_PoseManager : MonoBehaviour
             int readyCount = 0;
             for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
             {
-                if (UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(_InPositionRane))//UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused || UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.NoiseMovement)
+                if (UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))//UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused || UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.NoiseMovement)
                     readyCount++;
             }
 
@@ -93,6 +116,7 @@ public class UKI_PoseManager : MonoBehaviour
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
+
     }
 
     public void SetState(SequencerState state)
@@ -193,5 +217,15 @@ public class UKI_PoseManager : MonoBehaviour
         {
             print("Cannot find pose to remove: " + _PoseLibrary.Count);
         }
+    }
+
+    void SaveSequence(string name)
+    {
+
+    }
+
+    void LoadSequence(string name)
+    {
+
     }
 }

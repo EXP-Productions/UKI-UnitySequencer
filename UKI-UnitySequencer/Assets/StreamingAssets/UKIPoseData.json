@@ -871,5 +871,296 @@
         "_ActuatorIndex": 27
       }
     ]
+  },
+  {
+    "_Name": "AnklesUp",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 12
+      }
+    ]
+  },
+  {
+    "_Name": "AnklesUp HipsUp",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 12
+      }
+    ]
+  },
+  {
+    "_Name": "LegsMidWay",
+    "_ActuatorData": [
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 23
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 22
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 27
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 19
+      },
+      {
+        "_NormalizedValue": 0.521860242,
+        "_ActuatorIndex": 20
+      },
+      {
+        "_NormalizedValue": 0.304185867,
+        "_ActuatorIndex": 21
+      },
+      {
+        "_NormalizedValue": 0.5627906,
+        "_ActuatorIndex": 7
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 8
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 9
+      },
+      {
+        "_NormalizedValue": 0.529302239,
+        "_ActuatorIndex": 31
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 5
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 30
+      },
+      {
+        "_NormalizedValue": 0.560930133,
+        "_ActuatorIndex": 16
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 17
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 18
+      },
+      {
+        "_NormalizedValue": 0.605581164,
+        "_ActuatorIndex": 13
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 14
+      },
+      {
+        "_NormalizedValue": 1.0,
+        "_ActuatorIndex": 15
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 26
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 25
+      },
+      {
+        "_NormalizedValue": 0.0,
+        "_ActuatorIndex": 10
+      },
+      {
+        "_NormalizedValue": 0.5851162,
+        "_ActuatorIndex": 11
+      },
+      {
+        "_NormalizedValue": 0.345116049,
+        "_ActuatorIndex": 12
+      }
+    ]
   }
 ]
