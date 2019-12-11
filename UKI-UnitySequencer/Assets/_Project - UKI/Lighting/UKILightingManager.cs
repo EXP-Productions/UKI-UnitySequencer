@@ -61,6 +61,8 @@ public class UKILightingManager : MonoBehaviour
 
     public ParticleSystem _LedPS;
 
+    IBlinkyAnimation _Animation;
+
     #region INITIALIZATION
 
     private void Awake()
@@ -92,7 +94,7 @@ public class UKILightingManager : MonoBehaviour
         _LedPS.Emit(_LedPS.maxParticles);
         _LEDParticles = new ParticleSystem.Particle[_LedPS.main.maxParticles];
 
-        StartCoroutine(AnimationRoutine(_FrameRate, new XWash()));
+        _Animation = new XWash();
     }
 
     public void SetAnimSource(AnimationSource source, string name)
@@ -109,36 +111,43 @@ public class UKILightingManager : MonoBehaviour
     #region ANIMATIONS
     public bool _UpdateAnimation = false;
     ParticleSystem.Particle[] _LEDParticles;
-    IEnumerator AnimationRoutine(float fps, IBlinkyAnimation animation)
+    public bool forceGC = false;
+    private void FixedUpdate()
     {
-        float wait = 1f / fps;
-
-        while(AnimationsRunning)
+        if (AnimationsRunning)
         {
             if (_AnimSource == AnimationSource.NDI)
             {
+                Profiler.BeginSample("Updating redner texture mapper");
                 _RenderTextureMapper.ManualUpdate();
+               
+                Profiler.EndSample();
             }
             else if (_AnimSource == AnimationSource.Animation)
             {
-                animation.Run();
+                Profiler.BeginSample("Updating animation");
+                _Animation.Run();
+               
+
+                Profiler.EndSample();
             }
 
-           // Profiler.BeginSample("Updating lights"); 
+            Profiler.BeginSample("Updating BlinkyBlinky lights"); 
             BlinkyBlinky.UpdateLights();  // TODO has 282k GC
-            //Profiler.EndSample();
+            Profiler.EndSample();
 
-           // Profiler.BeginSample("Updating particles");
+            // Profiler.BeginSample("Updating particles");
             UpdateParticles();
-           // Profiler.EndSample();
-
-            //print(BlinkyBlinky.pixels[100].currentLocation + "    " + BlinkyBlinky.pixels[100].color);
-            yield return new WaitForSeconds(wait);
+            // Profiler.EndSample();       
+            
+            if(forceGC)
+                System.GC.Collect();
         }
     }
 
     void UpdateParticles()
     {
+        Profiler.BeginSample("Update particles");
         // GetParticles is allocation free because we reuse the m_Particles buffer between updates
         int numParticlesAlive = _LedPS.GetParticles(_LEDParticles);
 
@@ -146,11 +155,12 @@ public class UKILightingManager : MonoBehaviour
         for (int i = 0; i < numParticlesAlive; i++)
         {
             _LEDParticles[i].position = BlinkyBlinky.pixels[i].currentLocation;
-            _LEDParticles[i].color = BlinkyBlinky.pixels[i].Color;
+            _LEDParticles[i].startColor = BlinkyBlinky.pixels[i].Color;
         }
 
         // Apply the particle changes to the Particle System
         _LedPS.SetParticles(_LEDParticles, numParticlesAlive);
+        Profiler.EndSample();
     }
         
     private void RunPlasmaAnimation()
@@ -163,7 +173,7 @@ public class UKILightingManager : MonoBehaviour
 
         plasma.Initialize(brightness, size, speed, true, true, true, true,true, false);
 
-        StartCoroutine(AnimationRoutine(_FrameRate, plasma));
+        _Animation = plasma;
     }
     #endregion
         

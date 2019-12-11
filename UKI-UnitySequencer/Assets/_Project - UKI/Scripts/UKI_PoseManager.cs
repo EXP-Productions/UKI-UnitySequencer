@@ -53,6 +53,8 @@ public class UKI_PoseManager : MonoBehaviour
     public bool _MaskWings = false;
 
     public float _InPositionRane = 30;
+    
+    float _HoldDuration = 0;
 
     public bool _Debug = false;
    
@@ -102,14 +104,27 @@ public class UKI_PoseManager : MonoBehaviour
                     readyCount++;
             }
 
-            if(_Debug)
+            if (_HoldDuration > 0)
+            {
+                _HoldDuration -= Time.deltaTime;
+                if (_HoldDuration < 0) _HoldDuration = 0;
+                print("Holding: " + _HoldDuration);
+            }
+
+            if (_Debug)
                 print("Actuators ready count: " + readyCount + "/" + _AllTestActuators.Count);
 
-            if(readyCount == UKI_UIManager.Instance._AllActuators.Count)
+            // If enough actuators are ready then go to next pose
+            if(_HoldDuration == 0 && readyCount == UKI_UIManager.Instance._AllActuators.Count)
             {
                 _PoseSequenceIndex++;
                 if (_PoseSequenceIndex >= _PoseSequence.Count)
                     _PoseSequenceIndex = 0;
+
+                if(_PoseSequence[_PoseSequenceIndex] == "Hold 10")
+                {
+                    _HoldDuration = 10;
+                }
 
                 SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
 
@@ -166,6 +181,9 @@ public class UKI_PoseManager : MonoBehaviour
 
         for (int i = 0; i < _PoseLibrary.Count; i++)      
            UKI_PoseManager_UI.Instance.AddPoseButton(_PoseLibrary[i]._Name);
+
+        // Add hold pose
+        UKI_PoseManager_UI.Instance.AddPoseButton("Hold 10");
 
         print(name + " Poses loaded: " + _PoseLibrary.Count);
     }

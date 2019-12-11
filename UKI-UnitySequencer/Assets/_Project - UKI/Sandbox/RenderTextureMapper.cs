@@ -51,9 +51,12 @@ public class RenderTextureMapper : MonoBehaviour
         _Tex2D.ReadPixels(new Rect(0, 0, _RTex.width, _RTex.height), 0, 0);
         _Tex2D.Apply();
 
+
+
         // Reset the active RenderTexture
-       // RenderTexture.active = previous;
-        
+        // RenderTexture.active = previous;
+
+        Profiler.BeginSample("Writing to leds");
         if (_LEDUVs.Count == 0)
         {
             foreach (var pixel in BlinkyBlinky.pixels)
@@ -64,8 +67,8 @@ public class RenderTextureMapper : MonoBehaviour
         {
             pixel.Color = _Tex2D.GetPixelBilinear(pixel.UV.x, pixel.UV.y) * 255;
         }
-
-   
+        Profiler.EndSample();
+        
     }
 
     /*

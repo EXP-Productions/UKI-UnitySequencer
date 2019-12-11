@@ -185,6 +185,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
         UKI_PoseManager.Instance._PoseSequenceIndex = 0;
         HighlightSequenceButton();
     }
+    
 
     public void HighlightSequenceButton()
     {

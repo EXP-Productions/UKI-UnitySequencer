@@ -26,5 +26,14 @@
       "W down/out L Ground",
       "Legs up Wings up"
     ]
+  },
+  {
+    "_Name": "Hold test",
+    "_SequenceData": [
+      "Legs up Wings up",
+      "Hold 10",
+      "AnklesUp",
+      "Legs up Wings up"
+    ]
   }
 ]
