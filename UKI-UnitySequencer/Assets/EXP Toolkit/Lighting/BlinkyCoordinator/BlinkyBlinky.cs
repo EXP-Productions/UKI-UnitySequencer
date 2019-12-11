@@ -3,6 +3,7 @@ using Unity.BlinkyShared.DMX;
 using Unity.BlinkyNetworking;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.Profiling;
 
 namespace Unity.BlinkyBlinky
 {
@@ -32,13 +33,27 @@ namespace Unity.BlinkyBlinky
             fixtures.Add(newFixture);
             pixels.AddRange(newFixture.pixels);
         }
-
+        
         public static void UpdateLights()
-        {
+        {           
+            foreach (Fixture fixture in Model.Fixtures)
+            {
+                Profiler.BeginSample("Datagrams");
+                fixture.UpdateDatagrams();
+                Profiler.EndSample();
+
+                Profiler.BeginSample("Sending datagrams"); // massive 230kb allocation here
+
+                
+                Network.Networks.First(network => network.NetworkName == fixture.NetworkName).Send(fixture._Datagrams);
+                Profiler.EndSample();
+            }
+
+            /*
             Model.Fixtures.ForEach(fixture =>
-            Network.Networks.First(network => network.NetworkName == fixture.NetworkName)
-                            .Send(DatagramComposer.GetDMXDatagrams(fixture)
-                            ));                            
+            Network.Networks.First(network => network.NetworkName == fixture.NetworkName).Send(DatagramComposer.GetDMXDatagrams(fixture)
+                            ));   
+                            */
         }
     }
 }

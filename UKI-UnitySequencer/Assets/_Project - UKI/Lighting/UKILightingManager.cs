@@ -116,6 +116,7 @@ public class UKILightingManager : MonoBehaviour
     {
         if (AnimationsRunning)
         {
+            
             if (_AnimSource == AnimationSource.NDI)
             {
                 Profiler.BeginSample("Updating redner texture mapper");
@@ -131,6 +132,7 @@ public class UKILightingManager : MonoBehaviour
 
                 Profiler.EndSample();
             }
+            
 
             Profiler.BeginSample("Updating BlinkyBlinky lights"); 
             BlinkyBlinky.UpdateLights();  // TODO has 282k GC

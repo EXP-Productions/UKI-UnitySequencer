@@ -5,6 +5,9 @@ using System;
 using System.Linq;
 using UnityEngine;
 using Unity.BlinkyShared.DMX;
+using Unity.BlinkyLights;
+using Unity.BlinkyBlinky;
+using Unity.BlinkyNetworking;
 //using Unity.BlinkyLights;
 
 [System.Serializable]
@@ -85,6 +88,8 @@ namespace Unity.BlinkyLights
             }
         }
 
+        
+        public DMXDatagram[] _Datagrams;
 
         public bool _DrawDebug = false;
 
@@ -108,6 +113,9 @@ namespace Unity.BlinkyLights
                 string filePath = Application.streamingAssetsPath + "/FixtureMappings/" + _FixtureData[i]._MappingFilename;
                 TryLoadLedChainFromFile(filePath, _FixtureData[i]._StartUniverse, _OriginalPositionOffset);
             }
+
+            _Datagrams = DatagramComposer.InitDMXDatagrams(this);
+            Debug.Log(name + "     Fixture initialized with datagram length: " + _Datagrams.Length);
 
             print("Fixture loaded: " + name);
             return this;
@@ -134,6 +142,12 @@ namespace Unity.BlinkyLights
                 UpdateTransform(transform);
                 isDirty = false;
             }
+        }
+
+        public DMXDatagram[] UpdateDatagrams()
+        {
+            _Datagrams = DatagramComposer.UpdateDMXDatagramBuffers(this, _Datagrams);
+            return _Datagrams;
         }
 
         /// <summary>

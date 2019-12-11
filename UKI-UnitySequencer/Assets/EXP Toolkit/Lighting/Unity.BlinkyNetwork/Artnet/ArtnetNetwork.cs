@@ -4,6 +4,7 @@ using Unity.BlinkyNetworking.DMX;
 using System;
 using Unity.BlinkyShared.DMX;
 using System.Collections.Generic;
+using UnityEngine.Profiling;
 
 namespace Unity.BlinkyNetworking.Artnet
 {
@@ -31,10 +32,14 @@ namespace Unity.BlinkyNetworking.Artnet
 
         public override void Send(DMXDatagram datagram)
         {
+            Profiler.BeginSample("Sending DMX");
+
             ArtNetDmxPacket packet = new ArtNetDmxPacket();
             packet.DmxData = datagram.Buffer;
             packet.Universe = datagram.UniverseNo;
             artnetSocket.Send(packet);
+
+            Profiler.EndSample();
         }
 
         public override string ToString()
@@ -45,6 +50,15 @@ namespace Unity.BlinkyNetworking.Artnet
         public override void Send(List<DMXDatagram> datagrams)
         {
             datagrams.ForEach(datagram => Send(datagram));
+        }
+
+        public override void Send(DMXDatagram[] datagrams)
+        {
+            
+            for (int i = 0; i < datagrams.Length; i++)
+            {
+                Send(datagrams[i]);
+            }
         }
     }
 }

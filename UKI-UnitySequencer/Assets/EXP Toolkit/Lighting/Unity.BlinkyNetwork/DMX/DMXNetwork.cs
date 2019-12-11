@@ -20,5 +20,7 @@ namespace Unity.BlinkyNetworking.DMX
 
         public abstract void Send(List<DMXDatagram> datagrams);
 
+        public abstract void Send(DMXDatagram[] datagrams);
+
     }
 }

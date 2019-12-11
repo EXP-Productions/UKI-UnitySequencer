@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine.Profiling;
 
 namespace kadmium_sacn
 {
@@ -27,10 +28,21 @@ namespace kadmium_sacn
 
         public void Send(Int16 universeID, byte[] data)
         {
+            Profiler.BeginSample("Creating SACN packet");
             SACNPacket packet = new SACNPacket(universeID, SourceName, UUID, sequenceID++, data);
+            Profiler.EndSample();
+
+            Profiler.BeginSample("SACN packet to array");
             byte[] packetBytes = packet.ToArray();
+            Profiler.EndSample();
+
+            Profiler.BeginSample("Parsing SACN packet");
             SACNPacket parsed = SACNPacket.Parse(packetBytes);
+            Profiler.EndSample();
+
+            Profiler.BeginSample("Sending SACN packet");
             Socket.Send(packetBytes, packetBytes.Length, GetEndPoint(universeID, Port));
+            Profiler.EndSample();
         }
 
         private IPEndPoint GetEndPoint(Int16 universeID, int port)
