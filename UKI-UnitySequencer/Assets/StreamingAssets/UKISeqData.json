@@ -1,15 +1,5 @@
 [
   {
-    "_Name": "seq1",
-    "_SequenceData": [
-      "W down/in L Ground",
-      "W down/out L Ground",
-      "W down/in L Ground",
-      "lW up/out L Ground",
-      "rW up/out L Ground"
-    ]
-  },
-  {
     "_Name": "seq2",
     "_SequenceData": [
       "W down/in L Ground",
@@ -20,11 +10,21 @@
     ]
   },
   {
-    "_Name": "new",
+    "_Name": "test",
     "_SequenceData": [
-      "W up/out L In",
+      "AnklesUp",
+      "Legs up Wings up",
+      "AnklesUp HipsUp",
+      "W down/in L Ground"
+    ]
+  },
+  {
+    "_Name": "test2",
+    "_SequenceData": [
+      "LegsMidWay",
       "W up/out L Up",
-      "W half FL up"
+      "W down/out L Ground",
+      "Legs up Wings up"
     ]
   }
 ]
