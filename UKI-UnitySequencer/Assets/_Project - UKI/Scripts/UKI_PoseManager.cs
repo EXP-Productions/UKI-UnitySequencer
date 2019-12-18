@@ -53,6 +53,8 @@ public class UKI_PoseManager : MonoBehaviour
     // Active pose sequence
     public List<string> _PoseSequence = new List<string>();
 
+    float _SequenceDuration = 0;
+
     // The current sequence index we are at
     public int _PoseSequenceIndex = 0;
 
@@ -94,9 +96,12 @@ public class UKI_PoseManager : MonoBehaviour
             }
 
             // CHECK IF ALL ACTUATORS ARE STOPPED
+            float maxTimeToTaget = 0;
             int readyCount = 0;
             for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
             {
+                maxTimeToTaget = Mathf.Max(maxTimeToTaget, UKI_UIManager.Instance._AllActuators[i].TimeToTarget());
+
                 if (UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))//UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused || UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.NoiseMovement)
                     readyCount++;
             }
@@ -109,7 +114,10 @@ public class UKI_PoseManager : MonoBehaviour
             }
 
             if (_Debug)
+            {
+                print("Max time to target: " + maxTimeToTaget);
                 print("Actuators ready count: " + readyCount + "/" + AllActuators.Count);
+            }
 
             // If enough actuators are ready then go to next pose
             if(_HoldDuration == 0 && readyCount == UKI_UIManager.Instance._AllActuators.Count)
@@ -184,6 +192,34 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_PoseManager_UI.Instance.HighlightSequenceButton();
     }
 
+    void AssessSequenceDuration()
+    {
+        _SequenceDuration = 0;// _PoseSequence
+
+        float maxDurationBetweenPoses = 0;
+
+        // For the whole sequence
+        for (int j = 0; j < _PoseSequence.Count - 1; j++)
+        {
+            PoseData poseCurrentData = _PoseLibrary.Single(s => s._Name == _PoseSequence[j]);
+            PoseData poseNextData = _PoseLibrary.Single(s => s._Name == _PoseSequence[j+1]);
+
+            // for every actuator
+            for (int i = 0; i < AllActuators.Count; i++)
+            {
+                // find the actuator for pose current
+                foreach (ActuatorData data in poseCurrentData._ActuatorData)
+                {
+                    if (AllActuators[i]._ActuatorIndex == data._ActuatorIndex)
+                    {
+
+
+                    }
+                }
+            }
+        }
+    }
+
     public void SetPoseByName(string name, bool maskWings = false)
     {
         print("Setting pose by name: " + name);
@@ -207,6 +243,7 @@ public class UKI_PoseManager : MonoBehaviour
         // Set UI
         UKI_UIManager.Instance.SetActuatorSliders();
     }
+
 
     #region SERIALIZATION
 

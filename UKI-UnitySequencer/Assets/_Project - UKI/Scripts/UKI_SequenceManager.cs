@@ -86,8 +86,7 @@ public class UKI_SequenceManager : MonoBehaviour
 
         _SequenceButtons.Add(newBtn);
     }
-
-
+    
     public void SetSeqByName(string name)
     {
         print("Setting pose by name: " + name);
@@ -95,8 +94,7 @@ public class UKI_SequenceManager : MonoBehaviour
         SequenceData seqData = _SeqLibrary.Single(s => s._Name == name);
         UKI_PoseManager_UI.Instance.SelectSequence(seqData);
     }
-
-
+    
     public void RemoveActiveButton()
     {
         Button activeButton = _SequenceButtons.Single(s => s.GetComponentInChildren<Text>().text == _ActiveButtonName);

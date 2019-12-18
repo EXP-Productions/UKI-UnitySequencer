@@ -302,23 +302,27 @@ public class Actuator : MonoBehaviour
         #endregion
     }
 
-    float TimeToTarget()
+    public float TimeToTarget()
     {
         float normDiff = Mathf.Abs(_TargetNormExtension - _CurrentNormExtension);
+        float scalar = 1;
+
+        if(UkiCommunicationsManager.Instance._UKIMode == UKIMode.Simulation)
+            scalar = _OfflineSpeedScaler;
 
         // extending
         if (_TargetNormExtension > _CurrentNormExtension)
         {
-            return normDiff * _FullExtensionDuration;
+            return (normDiff * _FullExtensionDuration) / scalar;
         }
         // retracting
         else
         {
-            return normDiff * _FullRetractionDuration;
+            return (normDiff * _FullRetractionDuration) / scalar;
         }
     }
 
-    float TimeToTargetFrom(float fromNorm, float targetNorm)
+    public float TimeToTargetFrom(float fromNorm, float targetNorm)
     {
         float normDiff = Mathf.Abs(fromNorm - targetNorm);
 
