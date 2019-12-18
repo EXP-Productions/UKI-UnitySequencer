@@ -33,11 +33,11 @@ public class PoseDataGO : MonoBehaviour
 
         if (_Preview)// && !Application.isPlaying)
         {
-            for (int i = 0; i < _PoseData._ActuatorData.Count; i++)
+            for (int i = 0; i < _PoseData._ActuatorDataList.Count; i++)
             {
-                print(_PoseData._ActuatorData[i]._ActuatorIndex.ToString());
-                print(_ActuatorDict[_PoseData._ActuatorData[i]._ActuatorIndex].name);
-                _ActuatorDict[_PoseData._ActuatorData[i]._ActuatorIndex].TargetNormExtension = _PoseData._ActuatorData[i]._NormalizedValue;
+                print(_PoseData._ActuatorDataList[i]._ActuatorIndex.ToString());
+                print(_ActuatorDict[_PoseData._ActuatorDataList[i]._ActuatorIndex].name);
+                _ActuatorDict[_PoseData._ActuatorDataList[i]._ActuatorIndex].TargetNormExtension = _PoseData._ActuatorDataList[i]._NormalizedValue;
             }
         }
     }

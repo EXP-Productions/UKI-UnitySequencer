@@ -1,7 +1,7 @@
 [
   {
     "_Name": "W up/out L In",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
@@ -98,7 +98,7 @@
   },
   {
     "_Name": "W up/out L Up",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
@@ -195,7 +195,7 @@
   },
   {
     "_Name": "W up/out L Ground",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
@@ -292,7 +292,7 @@
   },
   {
     "_Name": "W down/in L Ground",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
@@ -389,7 +389,7 @@
   },
   {
     "_Name": "W down/out L Ground",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
@@ -486,7 +486,7 @@
   },
   {
     "_Name": "rW up/out L Ground",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
@@ -583,7 +583,7 @@
   },
   {
     "_Name": "lW up/out L Ground",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
@@ -680,7 +680,7 @@
   },
   {
     "_Name": "W half FL up",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.494927555,
         "_ActuatorIndex": 23
@@ -777,7 +777,7 @@
   },
   {
     "_Name": "Legs up Wings up",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 1.0,
         "_ActuatorIndex": 23
@@ -874,7 +874,7 @@
   },
   {
     "_Name": "AnklesUp",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
@@ -971,7 +971,7 @@
   },
   {
     "_Name": "AnklesUp HipsUp",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23
@@ -1068,7 +1068,7 @@
   },
   {
     "_Name": "LegsMidWay",
-    "_ActuatorData": [
+    "_ActuatorDataList": [
       {
         "_NormalizedValue": 0.0,
         "_ActuatorIndex": 23

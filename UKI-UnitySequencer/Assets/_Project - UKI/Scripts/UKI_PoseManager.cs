@@ -10,7 +10,7 @@ using UnityEngine.UI.Extensions;
 public class PoseData
 {
     public string _Name;
-    public List<ActuatorData> _ActuatorData = new List<ActuatorData>();
+    public List<ActuatorData> _ActuatorDataList = new List<ActuatorData>();
 
     public PoseData()
     {
@@ -22,7 +22,7 @@ public class PoseData
 
         foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
         {
-            _ActuatorData.Add(new ActuatorData(actuator.Value));
+            _ActuatorDataList.Add(new ActuatorData(actuator.Value));
         }
     }
 }
@@ -85,7 +85,10 @@ public class UKI_PoseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_SequencerState == SequencerState.Playing)
+      
+
+
+        if (_SequencerState == SequencerState.Playing)
         {
             if(_PoseSequence.Count == 0)
             {
@@ -135,10 +138,16 @@ public class UKI_PoseManager : MonoBehaviour
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+                AssessSequenceDuration();
+        }
 
     }
 
     #endregion
+
 
     // Sets the sequencer state
     public void SetState(SequencerState state)
@@ -189,34 +198,67 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_PoseManager_UI.Instance.HighlightSequenceButton();
     }
 
-    void AssessSequenceDuration()
+    public void ScrubSequence(float norm)
     {
-        /*
-        _SequenceDuration = 0;// _PoseSequence
+        LerpBetweenPoses(GetPoseData(0), GetPoseData(1), norm);
+    }
 
-        float maxDurationBetweenPoses = 0;
+    void LerpBetweenPoses(PoseData fromData, PoseData toData, float normLerp)
+    {
+        print("LerpBetweenPoses : " + fromData._Name + "    " + toData._Name + "   Norm: " + normLerp);
+        
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+        {
+            ActuatorData actuatorDataFrom = fromData._ActuatorDataList.Find(e => e._ActuatorIndex == actuator.Key);
+            ActuatorData actuatorDataTo = toData._ActuatorDataList.Find(e => e._ActuatorIndex == actuator.Key);
+
+            float normExtension = Mathf.Lerp(actuatorDataFrom._NormalizedValue, actuatorDataTo._NormalizedValue, normLerp);
+
+            UKI_UIManager.Instance._AllActuators[actuator.Key]._TargetNormExtension = normExtension;
+
+            print("Lerping: " + actuator.Key.ToString());
+        }
+    }
+
+  
+
+    // Doesn't currently work with holds
+    void AssessSequenceDuration()
+    {        
+        _SequenceDuration = 0;
+        float totalDuration = 0;
 
         // For the whole sequence
         for (int j = 0; j < _PoseSequence.Count - 1; j++)
         {
-            PoseData poseCurrentData = _PoseLibrary.Single(s => s._Name == _PoseSequence[j]);
-            PoseData poseNextData = _PoseLibrary.Single(s => s._Name == _PoseSequence[j+1]);
+            // Test the time from the current pose to the next pose
+            PoseData poseCurrentData = GetPoseData(j);
+            PoseData poseNextData = GetPoseData(j+1);
 
-            // for every actuator
-            for (int i = 0; i < AllActuators.Count; i++)
+            /*
+            if (poseNextData._Name.Contains("Hold"))
             {
-                // find the actuator for pose current
-                foreach (ActuatorData data in poseCurrentData._ActuatorData)
-                {
-                    if (AllActuators[i]._ActuatorIndex == data._ActuatorIndex)
-                    {
-
-
-                    }
-                }
+                totalDuration += 10;
             }
+            else
+            {
+            */
+            float maxDurationBetweenPoses = 0;
+
+                for (int i = 0; i < poseCurrentData._ActuatorDataList.Count; i++)
+                {
+                    Actuator actuator = UKI_UIManager.Instance._AllActuators[poseCurrentData._ActuatorDataList[i]._ActuatorIndex];
+                    float timeBetweenPoses = actuator.TimeToTargetFrom(poseCurrentData._ActuatorDataList[i]._NormalizedValue, poseNextData._ActuatorDataList[i]._NormalizedValue);
+
+                    if (timeBetweenPoses > maxDurationBetweenPoses)
+                        maxDurationBetweenPoses = timeBetweenPoses;
+                }
+
+                totalDuration += maxDurationBetweenPoses;
+            //}
         }
-        */
+
+        print("Total sequence duration: " + totalDuration);
     }
 
     public void SetPoseByName(string name, bool maskWings = false)
@@ -226,21 +268,26 @@ public class UKI_PoseManager : MonoBehaviour
         PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
 
         // for each actuator in pose data
-        for (int i = 0; i < poseData._ActuatorData.Count; i++)
+        for (int i = 0; i < poseData._ActuatorDataList.Count; i++)
         {
-            Actuator actuator = UKI_UIManager.Instance._AllActuators[poseData._ActuatorData[i]._ActuatorIndex];
+            Actuator actuator = UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex];
 
             // set actuator target norm extension unless wing mask is active
-            if (maskWings && poseData._ActuatorData[i]._ActuatorIndex.ToString().Contains("Wing"))
+            if (maskWings && poseData._ActuatorDataList[i]._ActuatorIndex.ToString().Contains("Wing"))
                 continue;
             else
-                UKI_UIManager.Instance._AllActuators[poseData._ActuatorData[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorData[i]._NormalizedValue;
+                UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorDataList[i]._NormalizedValue;
         }
 
         // Set UI
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 
+    PoseData GetPoseData(int poseIndex)
+    {
+        print("Trying to get pose: " + poseIndex + " from pose sequence list of count: " + _PoseSequence.Count);
+        return _PoseLibrary.Single(s => s._Name == _PoseSequence[poseIndex]);
+    }
 
     #region SERIALIZATION
 

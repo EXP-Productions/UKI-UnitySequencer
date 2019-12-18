@@ -34,6 +34,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     public RectTransform _SequencerButtonParent;
 
+    public Slider _PlaybackSlider;
+
     public GameObject _SaveSeqDialog;
 
     private void Awake()
@@ -55,6 +57,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
         _PoseLibraryList.OnElementDropped.AddListener(call => HandleSequenceListUpdated(call));
         _PoseSequenceList.OnElementAdded.AddListener(call => HandleSequenceListUpdated(call));
+
+        _PlaybackSlider.onValueChanged.AddListener(call => UKI_PoseManager.Instance.ScrubSequence(_PlaybackSlider.value));
     }
 
     private void Update()
