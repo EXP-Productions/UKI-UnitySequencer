@@ -16,13 +16,13 @@ public class PoseData
     {
     }
 
-    public PoseData(List<Actuator> actuators, string name)
+    public PoseData(Dictionary<UkiActuatorAssignments, Actuator> actuators, string name)
     {
         _Name = name;
 
-        for (int i = 0; i < actuators.Count; i++)
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
         {
-            _ActuatorData.Add(new ActuatorData(actuators[i]));
+            _ActuatorData.Add(new ActuatorData(actuator.Value));
         }
     }
 }
@@ -44,8 +44,6 @@ public class UKI_PoseManager : MonoBehaviour
     // State of sequencer. Playing, paused, stopped
     SequencerState _SequencerState = SequencerState.Paused;
 
-    // List of all actuators
-    List<Actuator> AllActuators { get { return UKI_UIManager.Instance._AllActuators; } }
 
     // List of all poses
     [HideInInspector]
@@ -98,11 +96,12 @@ public class UKI_PoseManager : MonoBehaviour
             // CHECK IF ALL ACTUATORS ARE STOPPED
             float maxTimeToTaget = 0;
             int readyCount = 0;
-            for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
-            {
-                maxTimeToTaget = Mathf.Max(maxTimeToTaget, UKI_UIManager.Instance._AllActuators[i].TimeToTarget());
 
-                if (UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))//UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.Paused || UKI_UIManager.Instance._AllActuators[i]._State == UKIEnums.State.NoiseMovement)
+            foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+            {
+                maxTimeToTaget = Mathf.Max(maxTimeToTaget, actuator.Value.TimeToTarget());
+
+                if (actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
                     readyCount++;
             }
 
@@ -116,7 +115,7 @@ public class UKI_PoseManager : MonoBehaviour
             if (_Debug)
             {
                 print("Max time to target: " + maxTimeToTaget);
-                print("Actuators ready count: " + readyCount + "/" + AllActuators.Count);
+                print("Actuators ready count: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
             }
 
             // If enough actuators are ready then go to next pose
@@ -174,10 +173,8 @@ public class UKI_PoseManager : MonoBehaviour
 
     void PauseAllActuators()
     {
-        for (int i = 0; i < AllActuators.Count; i++)
-        {
-            AllActuators[i].Stop();
-        }
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+            actuator.Value.Stop();        
 
         // Set UI
         UKI_UIManager.Instance.SetActuatorSliders();
@@ -194,6 +191,7 @@ public class UKI_PoseManager : MonoBehaviour
 
     void AssessSequenceDuration()
     {
+        /*
         _SequenceDuration = 0;// _PoseSequence
 
         float maxDurationBetweenPoses = 0;
@@ -218,6 +216,7 @@ public class UKI_PoseManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     public void SetPoseByName(string name, bool maskWings = false)
@@ -226,18 +225,16 @@ public class UKI_PoseManager : MonoBehaviour
 
         PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
 
-        for (int i = 0; i < AllActuators.Count; i++)
+        // for each actuator in pose data
+        for (int i = 0; i < poseData._ActuatorData.Count; i++)
         {
-            foreach (ActuatorData data in poseData._ActuatorData)
-            {
-                if (AllActuators[i]._ActuatorIndex == data._ActuatorIndex)
-                {
-                    if (maskWings && AllActuators[i]._ActuatorIndex.ToString().Contains("Wing"))
-                        continue;
-                    else
-                        AllActuators[i].NormExtension = data._NormalizedValue;
-                }
-            }
+            Actuator actuator = UKI_UIManager.Instance._AllActuators[poseData._ActuatorData[i]._ActuatorIndex];
+
+            // set actuator target norm extension unless wing mask is active
+            if (maskWings && poseData._ActuatorData[i]._ActuatorIndex.ToString().Contains("Wing"))
+                continue;
+            else
+                UKI_UIManager.Instance._AllActuators[poseData._ActuatorData[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorData[i]._NormalizedValue;
         }
 
         // Set UI
@@ -281,11 +278,12 @@ public class UKI_PoseManager : MonoBehaviour
     public void PrintAllActuatorRanges()
     {
         int outOfPlace = 0;
-        for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
+
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
         {
-            if (!UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            if(actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
             {
-                print("ACTUATOR: " + UKI_UIManager.Instance._AllActuators[i] + " Reported extension diff: " + UKI_UIManager.Instance._AllActuators[i]._ReportedExtensionDiff);
+                print("ACTUATOR: " + actuator.Value + " Reported extension diff: " + actuator.Value._ReportedExtensionDiff);
                 outOfPlace++;
             }
         }

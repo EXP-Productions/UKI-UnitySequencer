@@ -102,8 +102,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             Destroy(collisionMarker);
         }
 
-        foreach (Actuator act in UKI_UIManager.Instance._AllActuators)
-            act.ResetEStop();
+
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+            actuator.Value.ResetEStop();
 
         _UIManager._EstopWarning.SetActive(false);
     }

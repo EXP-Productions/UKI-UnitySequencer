@@ -7,13 +7,10 @@ public class UKI_UIManager : MonoBehaviour
 {
     public static UKI_UIManager Instance;
 
-
-
-
     [Header("Actuators")]    
     public List<Actuator> _LeftActuators = new List<Actuator>();
     public List<Actuator> _RightActuators = new List<Actuator>();
-    public List<Actuator> _AllActuators = new List<Actuator>();
+    public Dictionary<UkiActuatorAssignments, Actuator> _AllActuators = new Dictionary<UkiActuatorAssignments, Actuator>();
 
     // UI
     [HideInInspector]
@@ -96,15 +93,15 @@ public class UKI_UIManager : MonoBehaviour
             _RightActuators.Add(actuator);
 
         if (actuator != null)
-            _AllActuators.Add(actuator);
+            _AllActuators.Add(actuator._ActuatorIndex, actuator);
     }
 
     public void SetOfflineSpeedScaler(float f)
     {
         print("Offline speed scaler: " + f);
 
-        foreach (Actuator act in _AllActuators)
-            act._OfflineSpeedScaler = f;
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+            actuator.Value._OfflineSpeedScaler = f;
     }
 
     public void UpdateEstopButton()
@@ -131,7 +128,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _RightActuators.Count; i++)
         {
-            _LeftActuators[i].NormExtension = _RightActuators[i].NormExtension;
+            _LeftActuators[i].TargetNormExtension = _RightActuators[i].TargetNormExtension;
         }
 
         SetActuatorSliders();
@@ -141,7 +138,7 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _LeftActuators.Count; i++)
         {
-            _RightActuators[i].NormExtension = _LeftActuators[i].NormExtension;
+            _RightActuators[i].TargetNormExtension = _LeftActuators[i].TargetNormExtension;
         }
 
         SetActuatorSliders();
@@ -149,7 +146,7 @@ public class UKI_UIManager : MonoBehaviour
 
     void SetActuatorExtension(ActuatorSlider actuatorSlider)
     {
-        actuatorSlider._Actuator.NormExtension = actuatorSlider._Slider.value;
+        actuatorSlider._Actuator.TargetNormExtension = actuatorSlider._Slider.value;
     }
 
     void CalibrateActuators()

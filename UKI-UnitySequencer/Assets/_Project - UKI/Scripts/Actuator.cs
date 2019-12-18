@@ -24,7 +24,7 @@ public class ActuatorData
 
     public ActuatorData(Actuator actuator)
     {
-        _NormalizedValue = actuator.NormExtension;
+        _NormalizedValue = actuator.TargetNormExtension;
         _ActuatorIndex = actuator._ActuatorIndex;
 
         Debug.Log(_ActuatorIndex.ToString() +"  Setting from data: Norm - " + _NormalizedValue);
@@ -68,7 +68,7 @@ public class Actuator : MonoBehaviour
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
     [Range(0, 1)]  public float _TargetNormExtension;
-    public float NormExtension
+    public float TargetNormExtension
     {
         get { return _TargetNormExtension; }
         set
@@ -79,7 +79,7 @@ public class Actuator : MonoBehaviour
         }
     }
 
-    float RotationAngle { get { return Mathf.Lerp(0, RotationRange, NormExtension); } }
+    float RotationAngle { get { return Mathf.Lerp(0, RotationRange, TargetNormExtension); } }
     bool AtTargetExtension { get { return _ReportedExtensionDiff < _ReportedTollerance; } }
     // Maximum value the encoder can be extended too  
     public float    _MaxEncoderExtension = 40;
@@ -97,7 +97,7 @@ public class Actuator : MonoBehaviour
     public float _ReportedExtensionDiff;
 
     // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
-    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(NormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
+    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(TargetNormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
 
     // The time taken to extend from 0 - 1
     public float _FullExtensionDuration = 10;
@@ -240,7 +240,7 @@ public class Actuator : MonoBehaviour
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
 
         // difference between reported and the set length
-        _ReportedExtensionDiff = Mathf.Abs(_ReportedExtension - (NormExtension * _MaxReportedExtension));
+        _ReportedExtensionDiff = Mathf.Abs(_ReportedExtension - (TargetNormExtension * _MaxReportedExtension));
 
         #endregion
 
@@ -277,17 +277,17 @@ public class Actuator : MonoBehaviour
                 print(name + " Setting noise movement.");
                 if (_MovementAnimationDirection > 0)
                 {
-                    if(NormExtension == 0)
-                        NormExtension += amount;
+                    if(TargetNormExtension == 0)
+                        TargetNormExtension += amount;
                     else
-                        NormExtension -= amount;
+                        TargetNormExtension -= amount;
                 }
                 else
                 {
-                    if (NormExtension == 1)
-                        NormExtension -= amount;
+                    if (TargetNormExtension == 1)
+                        TargetNormExtension -= amount;
                     else
-                        NormExtension += amount;
+                        TargetNormExtension += amount;
 
 
 
@@ -397,7 +397,7 @@ public class Actuator : MonoBehaviour
 
     public void Calibrate()
     {
-        NormExtension = 0f;
+        TargetNormExtension = 0f;
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
     }
   
@@ -430,7 +430,7 @@ public class Actuator : MonoBehaviour
     
     public void Stop()
     {
-        NormExtension = _CurrentNormExtension;
+        TargetNormExtension = _CurrentNormExtension;
     }
 
     IEnumerator CalibrateRealWorldSpeedRoutine(bool extension)
@@ -440,15 +440,15 @@ public class Actuator : MonoBehaviour
         if (extension)
         {
             // From 0 set to full normalized extension
-            NormExtension = 1;
+            TargetNormExtension = 1;
         }
         else
         {
             // From 1 set to 0 normalized extension
-            NormExtension = 0;
+            TargetNormExtension = 0;
         }
 
-        while (_CurrentNormExtension != NormExtension)
+        while (_CurrentNormExtension != TargetNormExtension)
         {
             yield return new WaitForEndOfFrame();
 
@@ -562,8 +562,8 @@ public class Actuator : MonoBehaviour
 
     public void SetToReportedExtensionOnStartup()
     {
-        NormExtension = _CurrentNormExtension;
-        Debug.Log(_ActuatorIndex.ToString() + "  Setting from reported extension: Norm - " + NormExtension);
+        TargetNormExtension = _CurrentNormExtension;
+        Debug.Log(_ActuatorIndex.ToString() + "  Setting from reported extension: Norm - " + TargetNormExtension);
     }
 
     [ContextMenu("Set rotation axis")]
