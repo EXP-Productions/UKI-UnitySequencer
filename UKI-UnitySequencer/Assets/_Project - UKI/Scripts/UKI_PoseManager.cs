@@ -38,51 +38,48 @@ public enum SequencerState
 
 public class UKI_PoseManager : MonoBehaviour
 {
+    #region VARIABLES
     public static UKI_PoseManager Instance;
 
-    List<Actuator> _AllTestActuators { get { return UKI_UIManager.Instance._AllActuators; } }
-
-    [HideInInspector]
-    public List<PoseData> _PoseLibrary = new List<PoseData>();
-    public List<string> _PoseSequence = new List<string>();
-
-    public int _PoseSequenceIndex = 0;
-
+    // State of sequencer. Playing, paused, stopped
     SequencerState _SequencerState = SequencerState.Paused;
 
+    // List of all actuators
+    List<Actuator> AllActuators { get { return UKI_UIManager.Instance._AllActuators; } }
+
+    // List of all poses
+    [HideInInspector]
+    public List<PoseData> _PoseLibrary = new List<PoseData>();
+    // Active pose sequence
+    public List<string> _PoseSequence = new List<string>();
+
+    // The current sequence index we are at
+    public int _PoseSequenceIndex = 0;
+
+    // Whether or not to mask out the wings
     public bool _MaskWings = false;
 
-    public float _InPositionRane = 30;
+    // The range within which an actuator has to be to be considered in that pose
+    // i.e. actuator told ot move to 200 and it gets too 170 with an _InPositionRange of 30 it would be considered finished and able to go to the next pose
+    public float _InPositionRange = 30;
     
+    // How long to hold a pose for
     float _HoldDuration = 0;
 
+    // How long to hold a pose for
+    float _NoiseDuration = 0;
+
     public bool _Debug = false;
-   
+
+    #endregion
+
+    #region UNITY METHODS
+
     // Start is called before the first frame update
     public void Start()
     {
         Instance = this;
         LoadAllPoses();
-    }
-
-    public void PrintAllActuatorRanges()
-    {
-        int outOfPlace = 0;
-        for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
-        {
-            if (!UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
-            {
-                print("ACTUATOR: " + UKI_UIManager.Instance._AllActuators[i] + " Reported extension diff: " + UKI_UIManager.Instance._AllActuators[i]._ReportedExtensionDiff);
-                outOfPlace++;
-            }
-
-           
-        }
-
-        if (outOfPlace == 0)
-        {
-            print("All actuators are at set positions.");
-        }
     }
 
     // Update is called once per frame
@@ -112,7 +109,7 @@ public class UKI_PoseManager : MonoBehaviour
             }
 
             if (_Debug)
-                print("Actuators ready count: " + readyCount + "/" + _AllTestActuators.Count);
+                print("Actuators ready count: " + readyCount + "/" + AllActuators.Count);
 
             // If enough actuators are ready then go to next pose
             if(_HoldDuration == 0 && readyCount == UKI_UIManager.Instance._AllActuators.Count)
@@ -134,6 +131,9 @@ public class UKI_PoseManager : MonoBehaviour
 
     }
 
+    #endregion
+
+    // Sets the sequencer state
     public void SetState(SequencerState state)
     {
         Debug.Log("Sequencer state: " + state);
@@ -166,26 +166,22 @@ public class UKI_PoseManager : MonoBehaviour
 
     void PauseAllActuators()
     {
-        for (int i = 0; i < _AllTestActuators.Count; i++)
+        for (int i = 0; i < AllActuators.Count; i++)
         {
-            _AllTestActuators[i].Stop();
+            AllActuators[i].Stop();
         }
 
         // Set UI
         UKI_UIManager.Instance.SetActuatorSliders();
     }
-
-    void LoadAllPoses()
+     
+    public void SetPoseFromSequence(int poseSeqIndex, bool maskWings = false)
     {
-        _PoseLibrary = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
+        print("Setting pose by sequence index: " + poseSeqIndex);
 
-        for (int i = 0; i < _PoseLibrary.Count; i++)      
-           UKI_PoseManager_UI.Instance.AddPoseButton(_PoseLibrary[i]._Name);
-
-        // Add hold pose
-        UKI_PoseManager_UI.Instance.AddPoseButton("Hold 10");
-
-        print(name + " Poses loaded: " + _PoseLibrary.Count);
+        _PoseSequenceIndex = poseSeqIndex;
+        SetPoseByName(_PoseSequence[_PoseSequenceIndex], _MaskWings);
+        UKI_PoseManager_UI.Instance.HighlightSequenceButton();
     }
 
     public void SetPoseByName(string name, bool maskWings = false)
@@ -194,16 +190,16 @@ public class UKI_PoseManager : MonoBehaviour
 
         PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
 
-        for (int i = 0; i < _AllTestActuators.Count; i++)
+        for (int i = 0; i < AllActuators.Count; i++)
         {
             foreach (ActuatorData data in poseData._ActuatorData)
             {
-                if (_AllTestActuators[i]._ActuatorIndex == data._ActuatorIndex)
+                if (AllActuators[i]._ActuatorIndex == data._ActuatorIndex)
                 {
-                    if (maskWings && _AllTestActuators[i]._ActuatorIndex.ToString().Contains("Wing"))
+                    if (maskWings && AllActuators[i]._ActuatorIndex.ToString().Contains("Wing"))
                         continue;
                     else
-                        _AllTestActuators[i].NormExtension = data._NormalizedValue;
+                        AllActuators[i].NormExtension = data._NormalizedValue;
                 }
             }
         }
@@ -212,13 +208,19 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 
-    public void SetPoseFromSequence(int poseSeqIndex, bool maskWings = false)
-    {
-        print("Setting pose by sequence index: " + poseSeqIndex);
+    #region SERIALIZATION
 
-        _PoseSequenceIndex = poseSeqIndex;
-        SetPoseByName(_PoseSequence[_PoseSequenceIndex], _MaskWings);
-        UKI_PoseManager_UI.Instance.HighlightSequenceButton();
+    void LoadAllPoses()
+    {
+        _PoseLibrary = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
+
+        for (int i = 0; i < _PoseLibrary.Count; i++)
+            UKI_PoseManager_UI.Instance.AddPoseButton(_PoseLibrary[i]._Name);
+
+        // Add hold pose
+        UKI_PoseManager_UI.Instance.AddPoseButton("Hold 10");
+
+        print(name + " Poses loaded: " + _PoseLibrary.Count);
     }
 
     public void DeletePose(string poseName)
@@ -237,13 +239,23 @@ public class UKI_PoseManager : MonoBehaviour
         }
     }
 
-    void SaveSequence(string name)
+    #endregion
+
+    public void PrintAllActuatorRanges()
     {
+        int outOfPlace = 0;
+        for (int i = 0; i < UKI_UIManager.Instance._AllActuators.Count; i++)
+        {
+            if (!UKI_UIManager.Instance._AllActuators[i].IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            {
+                print("ACTUATOR: " + UKI_UIManager.Instance._AllActuators[i] + " Reported extension diff: " + UKI_UIManager.Instance._AllActuators[i]._ReportedExtensionDiff);
+                outOfPlace++;
+            }
+        }
 
-    }
-
-    void LoadSequence(string name)
-    {
-
+        if (outOfPlace == 0)
+        {
+            print("All actuators are at set positions.");
+        }
     }
 }

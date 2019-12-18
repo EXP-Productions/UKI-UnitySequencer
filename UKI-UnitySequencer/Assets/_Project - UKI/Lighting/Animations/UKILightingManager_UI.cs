@@ -26,6 +26,7 @@ public class UKILightingManager_UI : MonoBehaviour
         });
 
         _RefreshButton.onClick.AddListener(() => Refresh());
+        Refresh();
     }
 
     //Ouput the new value of the Dropdown into Text
