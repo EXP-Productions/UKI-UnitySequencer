@@ -98,6 +98,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
         }
 
         UpdateSequenceListButtons();
+        UpdateSequenceListButtons();
     }
 
     void ClearSequence()

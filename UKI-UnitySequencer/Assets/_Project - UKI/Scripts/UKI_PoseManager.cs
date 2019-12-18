@@ -200,7 +200,15 @@ public class UKI_PoseManager : MonoBehaviour
 
     public void ScrubSequence(float norm)
     {
-        LerpBetweenPoses(GetPoseData(0), GetPoseData(1), norm);
+        norm = Mathf.Min(norm, .99f);
+
+        int firstIndex = (int)Mathf.Floor(norm * (_PoseSequence.Count-1));
+        int nextIndex = firstIndex + 1;
+        float lerpValue = (norm * (_PoseSequence.Count - 1)) %1;
+
+        print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _PoseSequence.Count);
+
+        LerpBetweenPoses(GetPoseData(firstIndex), GetPoseData(nextIndex), lerpValue);
     }
 
     void LerpBetweenPoses(PoseData fromData, PoseData toData, float normLerp)
@@ -216,7 +224,7 @@ public class UKI_PoseManager : MonoBehaviour
 
             UKI_UIManager.Instance._AllActuators[actuator.Key]._TargetNormExtension = normExtension;
 
-            print("Lerping: " + actuator.Key.ToString());
+           //print("Lerping: " + actuator.Key.ToString());
         }
     }
 
@@ -286,6 +294,12 @@ public class UKI_PoseManager : MonoBehaviour
     PoseData GetPoseData(int poseIndex)
     {
         print("Trying to get pose: " + poseIndex + " from pose sequence list of count: " + _PoseSequence.Count);
+
+        for (int i = 0; i < _PoseSequence.Count; i++)
+        {
+            print(i + "   " + _PoseSequence[i]);
+        }
+
         return _PoseLibrary.Single(s => s._Name == _PoseSequence[poseIndex]);
     }
 

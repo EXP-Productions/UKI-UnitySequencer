@@ -35,5 +35,25 @@
       "AnklesUp",
       "Legs up Wings up"
     ]
+  },
+  {
+    "_Name": "SeqScrubTest",
+    "_SequenceData": [
+      "LegsMidWay",
+      "AnklesUp HipsUp",
+      "Legs up Wings up"
+    ]
+  },
+  {
+    "_Name": "Scrub Test 2",
+    "_SequenceData": [
+      "AnklesUp",
+      "AnklesUp HipsUp",
+      "LegsMidWay",
+      "AnklesUp",
+      "AnklesUp HipsUp",
+      "LegsMidWay",
+      "W up/out L In"
+    ]
   }
 ]
