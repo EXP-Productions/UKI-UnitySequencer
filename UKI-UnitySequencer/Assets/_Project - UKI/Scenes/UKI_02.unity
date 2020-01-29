@@ -5937,7 +5937,9 @@ Transform:
   - {fileID: 361074607}
   - {fileID: 968188274}
   - {fileID: 1997029322}
+  - {fileID: 1979933186}
   - {fileID: 4738677111634209717}
+  - {fileID: 836308449}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6765,6 +6767,59 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3426306643939504176}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &836308448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 836308449}
+  - component: {fileID: 836308450}
+  m_Layer: 0
+  m_Name: Sequence Manager UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &836308449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836308448}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 637.1542, y: 461.40985, z: 189.26776}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 473480123}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836308450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836308448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d8bbf8358a4de43b5a527ae4e5a7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _SeqLibrary: []
+  _OpenSaveDialogueButton: {fileID: 143018456}
+  _DeleteSelectedSequence: {fileID: 365281633}
+  _SequenceButtonParent: {fileID: 1210341750}
+  _SelectSequenceButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
+    type: 3}
+  _SaveDialog: {fileID: 2136621357}
+  _SaveButton: {fileID: 2136621356}
+  _SaveNameInput: {fileID: 2136621355}
+  _LibraryList: {fileID: 101360253}
 --- !u!1 &859301170
 GameObject:
   m_ObjectHideFlags: 0
@@ -6862,28 +6917,6 @@ MonoBehaviour:
   m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &933195046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6288751735898031907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7d8bbf8358a4de43b5a527ae4e5a7a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _SeqLibrary: []
-  _OpenSaveDialogueButton: {fileID: 143018456}
-  _DeleteSelectedSequence: {fileID: 365281633}
-  _SequenceButtonParent: {fileID: 1210341750}
-  _SelectSequenceButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
-    type: 3}
-  _SaveDialog: {fileID: 2136621357}
-  _SaveButton: {fileID: 2136621356}
-  _SaveNameInput: {fileID: 2136621355}
-  _LibraryList: {fileID: 101360253}
 --- !u!114 &933195047 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7213589028162771168, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
@@ -10473,6 +10506,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b333d67eb08d464d823874f6a1666c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1979933185
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1979933186}
+  - component: {fileID: 1979933187}
+  m_Layer: 0
+  m_Name: Pose Manager UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1979933186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979933185}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 637.1542, y: 461.40985, z: 189.26776}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 473480123}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1979933187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979933185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07fdae6bfbad3c42b9a67274b6b06d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OpenSaveDialogueButton: {fileID: 815567467}
+  _DeleteSelectedPose: {fileID: 505863847}
+  _PlayButton: {fileID: 578452351}
+  _PauseButton: {fileID: 2146180104}
+  _StopButton: {fileID: 862228320}
+  _MaskWingsToggle: {fileID: 570131747}
+  _PoseButtonParent: {fileID: 1815402561}
+  _SelectPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
+    type: 3}
+  _SavePoseDialog: {fileID: 575473107}
+  _SavePoseButton: {fileID: 216445551}
+  _SavePoseNameInput: {fileID: 1769367122}
+  _PoseLibraryList: {fileID: 1965756894}
+  _PoseSequenceList: {fileID: 314803912}
+  _SequencerButtonParent: {fileID: 1091566046}
+  _PlaybackSlider: {fileID: 1881854850}
+  _SaveSeqDialog: {fileID: 2136621357}
 --- !u!224 &1994493752 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6863310736262982761, guid: ebd1c552694b0844ea66a407189d84c8,
@@ -14269,7 +14362,7 @@ Transform:
   - {fileID: 2045133591}
   - {fileID: 365995941}
   m_Father: {fileID: 473480123}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4738677111634209718
 MonoBehaviour:
@@ -14549,35 +14642,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fea2206d0c74524d8b0df6dca1bd04e, type: 3}
---- !u!114 &5028401341722749247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6288751735898031907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a07fdae6bfbad3c42b9a67274b6b06d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _OpenSaveDialogueButton: {fileID: 815567467}
-  _DeleteSelectedPose: {fileID: 505863847}
-  _PlayButton: {fileID: 578452351}
-  _PauseButton: {fileID: 2146180104}
-  _StopButton: {fileID: 862228320}
-  _MaskWingsToggle: {fileID: 570131747}
-  _PoseButtonParent: {fileID: 1815402561}
-  _SelectPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
-    type: 3}
-  _SavePoseDialog: {fileID: 575473107}
-  _SavePoseButton: {fileID: 216445551}
-  _SavePoseNameInput: {fileID: 1769367122}
-  _PoseLibraryList: {fileID: 1965756894}
-  _PoseSequenceList: {fileID: 314803912}
-  _SequencerButtonParent: {fileID: 1091566046}
-  _PlaybackSlider: {fileID: 1881854850}
-  _SaveSeqDialog: {fileID: 2136621357}
 --- !u!1001 &5037251177006018168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14745,7 +14809,7 @@ GameObject:
   - component: {fileID: 168238822719556067}
   - component: {fileID: 6231066884300625903}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Panel - Menu Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16096,8 +16160,6 @@ GameObject:
   - component: {fileID: 7598466833044063817}
   - component: {fileID: 5817146615292598166}
   - component: {fileID: 7578493392968788495}
-  - component: {fileID: 5028401341722749247}
-  - component: {fileID: 933195046}
   m_Layer: 5
   m_Name: Panel - Sequencer
   m_TagString: Untagged
@@ -22545,6 +22607,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Toggle - Heartbeat
       objectReference: {fileID: 0}
+    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.90368867
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.9150943
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.13381095
+      objectReference: {fileID: 0}
     - target: {fileID: 3462947632115418976, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22649,21 +22726,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0.90368867
-      objectReference: {fileID: 0}
-    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0.9150943
-      objectReference: {fileID: 0}
-    - target: {fileID: 4355389122913046272, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0.13381095
       objectReference: {fileID: 0}
     - target: {fileID: 7213589028162771168, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
