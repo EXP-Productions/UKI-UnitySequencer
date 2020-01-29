@@ -66,12 +66,8 @@ public class UKI_UIManager : MonoBehaviour
         _UKIModeDropDown.onValueChanged.AddListener((int i) => SetUKIModeFromDropDown(i));
         _UKIModeDropDown.SetValueWithoutNotify(1);
 
-       // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
-       // _MirrorRightButton.onClick.AddListener(() => MirrorRight());
-
         _CalibrateButton.onClick.AddListener(UKI_PoseManager.Instance.CalibrationPose);
 
-      
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
 
 
@@ -140,7 +136,7 @@ public class UKI_UIManager : MonoBehaviour
             _ActuatorSliders[i].SetToActuatorNorm();
     }
 
-    public void MirrorRight()
+    public void MirrorRightToLeft()
     {
         for (int i = 0; i < _RightActuators.Count; i++)
         {
@@ -150,7 +146,7 @@ public class UKI_UIManager : MonoBehaviour
         SetActuatorSliders();
     }
 
-    public void MirrorLeft()
+    public void MirrorLeftToRight()
     {
         for (int i = 0; i < _LeftActuators.Count; i++)
         {

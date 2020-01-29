@@ -64,6 +64,9 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
         _ResetPoseButton.onClick.AddListener(UKI_PoseManager.Instance.CalibrationPose);
 
+        _MirrorLRButton.onClick.AddListener(UKI_UIManager.Instance.MirrorLeftToRight);
+        _MirrorRLButton.onClick.AddListener(UKI_UIManager.Instance.MirrorRightToLeft);
+
         _PlaybackSlider.onValueChanged.AddListener(call => UKI_PoseManager.Instance.ScrubSequence(_PlaybackSlider.value));
     }
 
@@ -103,7 +106,6 @@ public class UKI_PoseManager_UI : MonoBehaviour
             newBtn.gameObject.AddComponent<UI_RightClickDestroy>();
         }
 
-        UpdateSequenceListButtons();
         UpdateSequenceListButtons();
     }
 
@@ -177,16 +179,19 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public void UpdateSequenceListButtons()
     {
         // Clear pose sequence
-        UKI_PoseManager.Instance._PoseSequence.Clear();
-        print("Pose sequence...");
+        UKI_PoseManager.Instance._PoseSequence = new List<string>();
 
         // Add poses based on names
         int listItemCount = _PoseSequenceList.Content.childCount;
+
+        print("Updating sequence buttons with buttons count: " + listItemCount);
         for (int i = 0; i < listItemCount; i++)
         {
-            GameObject buttonObject = _PoseSequenceList.Content.GetChild(i).gameObject;
-          
+            // Create new button and set name
+            GameObject buttonObject = _PoseSequenceList.Content.GetChild(i).gameObject;          
             string poseName = buttonObject.GetComponentInChildren<UnityEngine.UI.Text>().text;
+
+            // Add name to pose sequence
             UKI_PoseManager.Instance._PoseSequence.Add(poseName);
 
             UnityEngine.UI.Button button = buttonObject.GetComponent<Button>();
@@ -195,7 +200,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
             int index = i;
             button.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseFromSequence(index));
 
-            print("Pose: " + index + "   " + poseName);            
+            print("Pose button added: " + index + "   " + poseName);            
         }
 
         UKI_PoseManager.Instance._PoseSequenceIndex = 0;

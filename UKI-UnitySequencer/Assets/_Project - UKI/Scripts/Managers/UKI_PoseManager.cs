@@ -74,11 +74,14 @@ public class UKI_PoseManager : MonoBehaviour
     #endregion
 
     #region UNITY METHODS
+    public void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     public void Start()
     {
-        Instance = this;
         LoadAllPoses();
     }
 

@@ -90,7 +90,7 @@ public class UKI_SequenceManager : MonoBehaviour
     
     public void SetSeqByName(string name)
     {
-        print("Setting pose by name: " + name);
+        print("Setting SEQUENCE by name: " + name);
 
         SequenceData seqData = _SeqLibrary.Single(s => s._Name == name);
         UKI_PoseManager_UI.Instance.SelectSequence(seqData);
