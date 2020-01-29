@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Holds the states for all the actuiators
+// Gets updated in the UKI comms manager and allows us to query the state of each of the actuators
 public static class UkiStateDB
 {
     public static Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>> _StateDB = new Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>>();
