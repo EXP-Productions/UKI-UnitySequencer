@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 public static class UkiStateDB
 {
     public static Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>> _StateDB = new Dictionary<UkiActuatorAssignments, Dictionary<ModBusRegisters, int>>();
-
-    public static void RegisterActuator(Actuator_Old actuator)
-    {
-        RegisterActuator(actuator._ActuatorIndex);
-    }
-
+    
     public static void RegisterActuator(UkiActuatorAssignments actuator)
     {
         if (!_StateDB.ContainsKey(actuator))
