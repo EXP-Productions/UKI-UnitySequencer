@@ -16,6 +16,7 @@ public enum UKIMode
 /// Sends out the commands that come in from the actuators
 public class UkiCommunicationsManager : ThreadedUDPReceiver
 {
+    // Singleton
     public static UkiCommunicationsManager Instance { get { return _Instance; } }
     private static UkiCommunicationsManager _Instance;
 
@@ -39,11 +40,27 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public float _TestPos = 100;
 
+
+    public bool _DBInitialized = false;
+
     // Send the messages out to modbus to set the real world limbs positions
     public UKIMode _UKIMode = UKIMode.Simulation;
 
+
+    // 20 0 65
+    // -30 -10 85
+    // 55 20 77
+    // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
+    // Max rated speed 30
+    // Accel 0 - 100
+    int msgCount = 0;
+    float _Timer = 0;
+    public float msgPerSec = 0;
+    float lastTime = 0;
+
     public bool _Debug = false;
 
+    // Set singleton instance and start Threaded UDP reciever
     public override void Awake()
     {
         base.Awake();
@@ -87,14 +104,30 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         print("E Stop activated: " + reason);
         _EStopping = true;
         _UIManager.UpdateEstopButton();
-        SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_ESTOP);
+        
+        if (_UKIMode == UKIMode.Simulation)
+            return;
+
+        // Send message to wrapper
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_ESTOP;
+        actuatorMessage[2] = (uint)20560;
+        SendInts(actuatorMessage, true);
     }
     
     void ResetEStop()
     {
         print("Resetting estop");
-        SendActuatorMessage((int)UkiTestActuatorAssignments.Global, 20560, ModBusRegisters.MB_RESET_ESTOP);
-      
+        //SendActuatorMessage((int)UkiTestActuatorAssignments.Global, ModBusRegisters.MB_RESET_ESTOP);
+
+        // Send message to wrapper
+        uint[] actuatorMessage = new uint[3];
+        actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
+        actuatorMessage[1] = (uint)ModBusRegisters.MB_RESET_ESTOP;
+        actuatorMessage[2] = (uint)20560;
+        SendInts(actuatorMessage, true);
+
         _EStopping = false;
         _UIManager.UpdateEstopButton();
         foreach (GameObject collisionMarker in GameObject.FindGameObjectsWithTag(SRTags.CollisionMarker))
@@ -164,7 +197,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //}  
     }
 
-    public bool _DBInitialized = false;
     public void ReceiveStateData()
     {
         while (_ReceivedPackets.Count > 0)
@@ -192,16 +224,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         }
     }
 
-    // 20 0 65
-    // -30 -10 85
-    // 55 20 77
-    // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
-    // Max rated speed 30
-    // Accel 0 - 100
-    int msgCount = 0;
-    float _Timer = 0;
-    public float msgPerSec = 0;
-    float lastTime = 0;
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
         if (_UKIMode == UKIMode.Simulation)
@@ -242,7 +264,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //print("Messages per second: " + msgPerSec);
     }
     
-    // Only used on joints without actuators
+    // Sends a message to set actuator accel to 90 and setpoint 0 
     public void SendCalibrationMessage(int index, int motorSpeed)
     {
         if (_UKIMode == UKIMode.Simulation)
@@ -261,7 +283,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         SendInts(actuatorMessage2, true);
     }
 
-    public void SendActuatorMessage(int index, int length, ModBusRegisters register)
+    /*
+    public void SendActuatorMessage(int index, ModBusRegisters register)
     {
         if (_UKIMode == UKIMode.Simulation)
             return;
@@ -269,9 +292,10 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         uint[] actuatorMessage = new uint[3];
         actuatorMessage[0] = (uint)index;
         actuatorMessage[1] = (uint)register;
-        actuatorMessage[2] = (uint)length;
+        actuatorMessage[2] = (uint)20560;
         SendInts(actuatorMessage, true);
     }
+    */
 
     IEnumerator SendHeartBeat()
     {
@@ -291,8 +315,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             }
         }
     }
-
-
+    
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
     {
         return (data[startIndex + 1] << 8)

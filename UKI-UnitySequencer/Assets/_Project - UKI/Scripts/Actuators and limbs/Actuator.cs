@@ -522,9 +522,9 @@ public class Actuator : MonoBehaviour
         if (_DEBUG)
             print(CurrentEncoderExtension);
 
-        if (_Side == ActuatorSide.Left && !_UKIManager._LeftEnabledToggle.isOn)
+        if (_Side == ActuatorSide.Left && !_UKIManager._LeftSendToggle.isOn)
             return;
-        else if (_Side == ActuatorSide.Right && !_UKIManager._RightEnabledToggle.isOn)
+        else if (_Side == ActuatorSide.Right && !_UKIManager._RightSendToggle.isOn)
             return;
 
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);

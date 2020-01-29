@@ -20,18 +20,16 @@ public class UKI_UIManager : MonoBehaviour
     public Button _EStopButton;
     public UI_ButtonHold _IgnoreCollisionHoldButton;
     public Button _CalibrateButton;
-
-    public Toggle _SendToModBusToggle;
+    
     public TMPro.TMP_Dropdown _UKIModeDropDown;
 
     public GameObject _EstopWarning;
     public Image _HeartBeatDisplay;
     public Slider _OfflineSpeedScalerSlider;
-    public Toggle _OfflineSimModeToggle;
 
     [Header("UI - ACTUATORS")]
-    public Toggle _LeftEnabledToggle;
-    public Toggle _RightEnabledToggle;
+    public Toggle _LeftSendToggle;
+    public Toggle _RightSendToggle;
     
    
 
@@ -65,7 +63,7 @@ public class UKI_UIManager : MonoBehaviour
         _IgnoreCollisionHoldButton._OnUp.AddListener(() => _IgnoreCollisions = false);
 
         _UKIModeDropDown.AddOptions(new List<string>() { "Sending UDP", "Simulation" });
-        _UKIModeDropDown.onValueChanged.AddListener((int i) => UkiCommunicationsManager.Instance.SetUKIMode(i));
+        _UKIModeDropDown.onValueChanged.AddListener((int i) => SetUKIModeFromDropDown(i));
         _UKIModeDropDown.SetValueWithoutNotify(1);
 
        // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
@@ -79,9 +77,26 @@ public class UKI_UIManager : MonoBehaviour
    
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
+    }
 
-     
+    void SetUKIModeFromDropDown(int i)
+    {
+        // Enable sends for left and right
+        if (i == (int)UKIMode.SendUDP)
+        {
+            _LeftSendToggle.gameObject.SetActive(true);
+            _RightSendToggle.gameObject.SetActive(true);
+            _OfflineSpeedScalerSlider.gameObject.SetActive(false);
+        }
+        // Enable simulation scaler
+        else
+        {
+            _LeftSendToggle.gameObject.SetActive(false);
+            _RightSendToggle.gameObject.SetActive(false);
+            _OfflineSpeedScalerSlider.gameObject.SetActive(true);
+        }
 
+        UkiCommunicationsManager.Instance.SetUKIMode(i);
     }
 
 
