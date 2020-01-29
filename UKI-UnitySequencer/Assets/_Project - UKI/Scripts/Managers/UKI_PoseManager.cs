@@ -82,12 +82,10 @@ public class UKI_PoseManager : MonoBehaviour
         LoadAllPoses();
     }
 
+    float _PrevMaxTime = 0;
     // Update is called once per frame
     void Update()
     {
-      
-
-
         if (_SequencerState == SequencerState.Playing)
         {
             if(_PoseSequence.Count == 0)
@@ -108,6 +106,8 @@ public class UKI_PoseManager : MonoBehaviour
                     readyCount++;
             }
 
+
+
             if (_HoldDuration > 0)
             {
                 _HoldDuration -= Time.deltaTime;
@@ -115,10 +115,10 @@ public class UKI_PoseManager : MonoBehaviour
                 print("Holding: " + _HoldDuration);
             }
 
-            if (_Debug)
+            if (_Debug && maxTimeToTaget != _PrevMaxTime)
             {
-                print("Max time to target: " + maxTimeToTaget);
-                print("Actuators ready count: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
+                print("SEQ PLAYING: Max time to next pose [" + _PoseSequenceIndex + "]: " + maxTimeToTaget + "    Acts. ready: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
+                _PrevMaxTime = maxTimeToTaget;
             }
 
             // If enough actuators are ready then go to next pose

@@ -322,6 +322,7 @@ public class Actuator : MonoBehaviour
         }
     }
 
+    // Returns the time it will take to reach the target extension
     public float TimeToTargetFrom(float fromNorm, float targetNorm)
     {
         float normDiff = Mathf.Abs(fromNorm - targetNorm);
