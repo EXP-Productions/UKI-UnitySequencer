@@ -16,6 +16,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
     List<Button> _PoseButtons = new List<Button>();
 
     public Button _PlayButton, _PauseButton, _StopButton;
+    public Button _ClearSequenceButton;
 
     public Toggle _MaskWingsToggle;
 
@@ -24,7 +25,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     [Header("UI - SAVE POSE DIALOGUE")]
     public GameObject _SavePoseDialog;
-    public Button _SavePoseButton;
+    public Button _SavePoseButton, _MirrorLRButton, _MirrorRLButton, _ResetPoseButton;
+
     public InputField _SavePoseNameInput;
 
     string _ActiveButtonName = "";
@@ -57,6 +59,10 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
         _PoseLibraryList.OnElementDropped.AddListener(call => HandleSequenceListUpdated(call));
         _PoseSequenceList.OnElementAdded.AddListener(call => HandleSequenceListUpdated(call));
+
+        _ClearSequenceButton.onClick.AddListener(() => ClearSequence());
+
+        _ResetPoseButton.onClick.AddListener(UKI_PoseManager.Instance.CalibrationPose);
 
         _PlaybackSlider.onValueChanged.AddListener(call => UKI_PoseManager.Instance.ScrubSequence(_PlaybackSlider.value));
     }
@@ -103,8 +109,13 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     void ClearSequence()
     {
-        int listItemCount = _PoseSequenceList.Content.childCount;
-        for (int i = 0; i < listItemCount; i++)
+        if (_PoseSequenceList.Content.childCount <= 0)
+            return;
+
+        print("Clearing sequence.");
+
+        int tempCount = _PoseSequenceList.Content.childCount;
+        for (int i = 0; i < tempCount; i++)
         {
             Destroy(_PoseSequenceList.Content.GetChild(i).gameObject);
         }

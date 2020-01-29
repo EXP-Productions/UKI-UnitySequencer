@@ -303,8 +303,8 @@ public class UKI_PoseManager : MonoBehaviour
         return _PoseLibrary.Single(s => s._Name == _PoseSequence[poseIndex]);
     }
 
-    #region SERIALIZATION
 
+    #region SERIALIZATION
     void LoadAllPoses()
     {
         _PoseLibrary = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
@@ -333,8 +333,18 @@ public class UKI_PoseManager : MonoBehaviour
             print("Cannot find pose to remove: " + _PoseLibrary.Count);
         }
     }
-
     #endregion
+
+    public void CalibrationPose()
+    {
+        foreach (Actuator actuator in FindObjectsOfType<Actuator>())
+        {
+            actuator.Calibrate();
+        }
+
+        // Set UI
+        UKI_UIManager.Instance.SetActuatorSliders();
+    }
 
     public void PrintAllActuatorRanges()
     {

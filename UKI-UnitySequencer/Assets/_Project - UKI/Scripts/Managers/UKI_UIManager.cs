@@ -69,7 +69,7 @@ public class UKI_UIManager : MonoBehaviour
        // _MirrorLeftButton.onClick.AddListener(() => MirrorLeft());
        // _MirrorRightButton.onClick.AddListener(() => MirrorRight());
 
-        _CalibrateButton.onClick.AddListener(CalibrateActuators);
+        _CalibrateButton.onClick.AddListener(UKI_PoseManager.Instance.CalibrationPose);
 
       
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
@@ -164,17 +164,4 @@ public class UKI_UIManager : MonoBehaviour
     {
         actuatorSlider._Actuator.TargetNormExtension = actuatorSlider._Slider.value;
     }
-
-    void CalibrateActuators()
-    {
-        foreach (Actuator actuator in FindObjectsOfType<Actuator>())
-        {
-            actuator.Calibrate();
-        }
-
-        // Set UI
-        UKI_UIManager.Instance.SetActuatorSliders();
-    }
-
-   
 }

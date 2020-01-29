@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_ClickDrag : MonoBehaviour, IPointerDownHandler
+public class UI_ClickDragCameraMove : MonoBehaviour, IPointerDownHandler
 {
     bool _Clicked = false;
 
@@ -29,6 +29,7 @@ public class UI_ClickDrag : MonoBehaviour, IPointerDownHandler
                 _Clicked = false;
         }
 
-        _Cam.transform.SetLocalZ(_Cam.transform.localPosition.z + Input.GetAxis("Mouse ScrollWheel") * _ZoomSpeed);
+        if(Input.GetKey(KeyCode.LeftShift))
+            _Cam.transform.SetLocalZ(_Cam.transform.localPosition.z + Input.GetAxis("Mouse ScrollWheel") * _ZoomSpeed);
     }
 }
