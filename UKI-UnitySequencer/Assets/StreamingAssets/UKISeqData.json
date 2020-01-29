@@ -55,5 +55,31 @@
       "LegsMidWay",
       "W up/out L In"
     ]
+  },
+  {
+    "_Name": "Mid leg test seq",
+    "_SequenceData": [
+      "MidLeftLegTest1",
+      "MidLeftLegTest2",
+      "MidLeftLegTest3",
+      "MidLeftLegTest4"
+    ]
+  },
+  {
+    "_Name": "LeftTest",
+    "_SequenceData": [
+      "LeftTest1",
+      "LeftTest2",
+      "LeftTest3",
+      "LeftTest4",
+      "LeftTest5"
+    ]
+  },
+  {
+    "_Name": "testfull",
+    "_SequenceData": [
+      "testfull1",
+      "testfull2"
+    ]
   }
 ]

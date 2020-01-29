@@ -4,7 +4,7 @@ using UnityEngine;
 public partial class SROptions
 {
     // Default Value for property
-    private float _ActuatorArrivalRange = 40f;
+    private float _ActuatorArrivalRange = 60f;
 
     // Options will be grouped by category
     [NumberRange(0, 100)]   
