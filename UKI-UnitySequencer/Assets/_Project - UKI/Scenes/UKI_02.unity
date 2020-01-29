@@ -16069,7 +16069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _PoseLibrary: []
-  _PoseSequence: []
+  _ActiveSequencePoseList: []
   _PoseSequenceIndex: 0
   _MaskWings: 0
   _InPositionRange: 30

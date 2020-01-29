@@ -49,7 +49,7 @@ public class UKI_PoseManager : MonoBehaviour
     [HideInInspector]
     public List<PoseData> _PoseLibrary = new List<PoseData>();
     // Active pose sequence
-    public List<string> _PoseSequence = new List<string>();
+    public List<string> _ActiveSequencePoseList = new List<string>();
 
     float _SequenceDuration = 0;
 
@@ -91,7 +91,7 @@ public class UKI_PoseManager : MonoBehaviour
     {
         if (_SequencerState == SequencerState.Playing)
         {
-            if(_PoseSequence.Count == 0)
+            if(_ActiveSequencePoseList.Count == 0)
             {
                 SetState(SequencerState.Stopped);
                 return;
@@ -120,7 +120,7 @@ public class UKI_PoseManager : MonoBehaviour
 
             if (_Debug && maxTimeToTaget != _PrevMaxTime)
             {
-                print("SEQ PLAYING: Max time to next pose [" + _PoseSequenceIndex + "]: " + maxTimeToTaget + "    Acts. ready: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
+                print("SEQ PLAYING: Max time to next pose [" + _PoseSequenceIndex + "/"+ _ActiveSequencePoseList.Count + " ]: " + maxTimeToTaget + "    Acts. ready: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
                 _PrevMaxTime = maxTimeToTaget;
             }
 
@@ -128,10 +128,10 @@ public class UKI_PoseManager : MonoBehaviour
             if(_HoldDuration == 0 && readyCount == UKI_UIManager.Instance._AllActuators.Count)
             {
                 _PoseSequenceIndex++;
-                if (_PoseSequenceIndex >= _PoseSequence.Count)
+                if (_PoseSequenceIndex >= _ActiveSequencePoseList.Count)
                     _PoseSequenceIndex = 0;
 
-                if(_PoseSequence[_PoseSequenceIndex] == "Hold 10")
+                if(_ActiveSequencePoseList[_PoseSequenceIndex] == "Hold 10")
                 {
                     _HoldDuration = 10;
                 }
@@ -167,7 +167,7 @@ public class UKI_PoseManager : MonoBehaviour
         }
         else if (_SequencerState == SequencerState.Paused)
         {
-            if(_PoseSequence.Count == 0)
+            if(_ActiveSequencePoseList.Count == 0)
             {
                 SetState(SequencerState.Stopped);
                 return;
@@ -197,7 +197,7 @@ public class UKI_PoseManager : MonoBehaviour
         print("Setting pose by sequence index: " + poseSeqIndex);
 
         _PoseSequenceIndex = poseSeqIndex;
-        SetPoseByName(_PoseSequence[_PoseSequenceIndex], _MaskWings);
+        SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], _MaskWings);
         UKI_PoseManager_UI.Instance.HighlightSequenceButton();
     }
 
@@ -205,11 +205,11 @@ public class UKI_PoseManager : MonoBehaviour
     {
         norm = Mathf.Min(norm, .99f);
 
-        int firstIndex = (int)Mathf.Floor(norm * (_PoseSequence.Count-1));
+        int firstIndex = (int)Mathf.Floor(norm * (_ActiveSequencePoseList.Count-1));
         int nextIndex = firstIndex + 1;
-        float lerpValue = (norm * (_PoseSequence.Count - 1)) %1;
+        float lerpValue = (norm * (_ActiveSequencePoseList.Count - 1)) %1;
 
-        print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _PoseSequence.Count);
+        print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _ActiveSequencePoseList.Count);
 
         LerpBetweenPoses(GetPoseData(firstIndex), GetPoseData(nextIndex), lerpValue);
     }
@@ -240,7 +240,7 @@ public class UKI_PoseManager : MonoBehaviour
         float totalDuration = 0;
 
         // For the whole sequence
-        for (int j = 0; j < _PoseSequence.Count - 1; j++)
+        for (int j = 0; j < _ActiveSequencePoseList.Count - 1; j++)
         {
             // Test the time from the current pose to the next pose
             PoseData poseCurrentData = GetPoseData(j);
@@ -296,14 +296,14 @@ public class UKI_PoseManager : MonoBehaviour
 
     PoseData GetPoseData(int poseIndex)
     {
-        print("Trying to get pose: " + poseIndex + " from pose sequence list of count: " + _PoseSequence.Count);
+        print("Trying to get pose: " + poseIndex + " from pose sequence list of count: " + _ActiveSequencePoseList.Count);
 
-        for (int i = 0; i < _PoseSequence.Count; i++)
+        for (int i = 0; i < _ActiveSequencePoseList.Count; i++)
         {
-            print(i + "   " + _PoseSequence[i]);
+            print(i + "   " + _ActiveSequencePoseList[i]);
         }
 
-        return _PoseLibrary.Single(s => s._Name == _PoseSequence[poseIndex]);
+        return _PoseLibrary.Single(s => s._Name == _ActiveSequencePoseList[poseIndex]);
     }
 
 
@@ -337,6 +337,12 @@ public class UKI_PoseManager : MonoBehaviour
         }
     }
     #endregion
+
+    public void ClearActiveSequencePoseList()
+    {
+        print("Active Sequence Pose List cleared");
+        _ActiveSequencePoseList.Clear();
+    }
 
     public void CalibrationPose()
     {

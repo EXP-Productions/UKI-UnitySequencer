@@ -90,9 +90,11 @@ public class UKI_SequenceManager : MonoBehaviour
     
     public void SetSeqByName(string name)
     {
-        print("Setting SEQUENCE by name: " + name);
+        print("Setting SEQUENCE: " + name);
 
+        // Get seq data
         SequenceData seqData = _SeqLibrary.Single(s => s._Name == name);
+        // Select the sequence from data
         UKI_PoseManager_UI.Instance.SelectSequence(seqData);
     }
     
@@ -129,12 +131,12 @@ public class UKI_SequenceManager : MonoBehaviour
         }
 
         print("Saving sequence: " + _SaveNameInput.text);
-        for (int i = 0; i < UKI_PoseManager.Instance._PoseSequence.Count; i++)
+        for (int i = 0; i < UKI_PoseManager.Instance._ActiveSequencePoseList.Count; i++)
         {
-            print(UKI_PoseManager.Instance._PoseSequence[i]);
+            print(UKI_PoseManager.Instance._ActiveSequencePoseList[i]);
         }
 
-        SequenceData newSeqData = new SequenceData(UKI_PoseManager.Instance._PoseSequence, _SaveNameInput.text);
+        SequenceData newSeqData = new SequenceData(UKI_PoseManager.Instance._ActiveSequencePoseList, _SaveNameInput.text);
         _SeqLibrary.Add(newSeqData);
         AddSequenceButton(_SeqLibrary[_SeqLibrary.Count - 1]._Name);
         JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, _FileName), _SeqLibrary);
