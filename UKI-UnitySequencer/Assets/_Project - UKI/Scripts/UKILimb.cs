@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RootMotion.FinalIK;
 
-public class TestUKILimb : MonoBehaviour
+public class UKILimb : MonoBehaviour
 {
     // State of the limb. Paused, Calibrating, Calibrated or Animating
     public UKIEnums.State _State = UKIEnums.State.Paused;

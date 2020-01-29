@@ -5,7 +5,7 @@ using System;
 
 // Maps rotations to linear values and back again for leg articulations, so they can be animated or scripted
 // Renders a target location for the limbs as well as a real world location that is fed back in from the actuator encoders
-public class UKILimb_Leg : TestUKILimb
+public class UKILimb_Leg : UKILimb
 {
     public UkiLegs _LegAssignment; // TODO: change this enum to limb
 
