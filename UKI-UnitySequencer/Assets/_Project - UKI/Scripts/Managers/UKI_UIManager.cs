@@ -74,7 +74,8 @@ public class UKI_UIManager : MonoBehaviour
       
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
 
-   
+
+        SetUKIModeFromDropDown((int)UKIMode.Simulation);
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
     }
@@ -86,14 +87,14 @@ public class UKI_UIManager : MonoBehaviour
         {
             _LeftSendToggle.gameObject.SetActive(true);
             _RightSendToggle.gameObject.SetActive(true);
-            _OfflineSpeedScalerSlider.gameObject.SetActive(false);
+            _OfflineSpeedScalerSlider.transform.parent.gameObject.SetActive(false);
         }
         // Enable simulation scaler
         else
         {
             _LeftSendToggle.gameObject.SetActive(false);
             _RightSendToggle.gameObject.SetActive(false);
-            _OfflineSpeedScalerSlider.gameObject.SetActive(true);
+            _OfflineSpeedScalerSlider.transform.parent.gameObject.SetActive(true);
         }
 
         UkiCommunicationsManager.Instance.SetUKIMode(i);
