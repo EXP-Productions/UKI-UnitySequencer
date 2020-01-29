@@ -7,6 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.UI.Extensions;
 
+// Holds a list of pose names
 [System.Serializable]
 public class SequenceData
 {
