@@ -137,6 +137,7 @@ public class UKI_PoseManager : MonoBehaviour
                 }
 
                 SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
+                UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex / (float)(_ActiveSequencePoseList.Count - 1));
 
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
@@ -199,6 +200,8 @@ public class UKI_PoseManager : MonoBehaviour
         _PoseSequenceIndex = poseSeqIndex;
         SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], _MaskWings);
         UKI_PoseManager_UI.Instance.HighlightSequenceButton();
+
+        UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex/(float)(_ActiveSequencePoseList.Count-1));
     }
 
     public void ScrubSequence(float norm)
@@ -209,8 +212,11 @@ public class UKI_PoseManager : MonoBehaviour
         int nextIndex = firstIndex + 1;
         float lerpValue = (norm * (_ActiveSequencePoseList.Count - 1)) %1;
 
+        
+
         print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _ActiveSequencePoseList.Count);
 
+        _PoseSequenceIndex = nextIndex;
         LerpBetweenPoses(GetPoseData(firstIndex), GetPoseData(nextIndex), lerpValue);
     }
 
@@ -230,9 +236,7 @@ public class UKI_PoseManager : MonoBehaviour
            //print("Lerping: " + actuator.Key.ToString());
         }
     }
-
-  
-
+    
     // Doesn't currently work with holds
     void AssessSequenceDuration()
     {        

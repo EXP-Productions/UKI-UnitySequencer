@@ -117,6 +117,11 @@ public class UKI_PoseManager_UI : MonoBehaviour
         }
     }
 
+    public void SetSequencePlayheadSlider(float norm)
+    {
+        _PlaybackSlider.SetValueWithoutNotify(norm);
+    }
+
     void ClearActiveSequenceButtons()
     {
         if (_PoseSequenceList.Content.childCount <= 0)
