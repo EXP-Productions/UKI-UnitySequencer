@@ -74,6 +74,12 @@ public class UKI_PoseManager_UI : MonoBehaviour
     private void Update()
     {
         HighlightSequenceButton();
+
+        for (int i = 0; i < _PoseSequenceList.ContentLayout.transform.childCount; i++)
+        {
+            int index = i;
+            _PoseSequenceList.ContentLayout.transform.GetChild(index).GetComponentsInChildren<Image>()[1].color = UKI_PoseManager.Instance._PoseSequenceIndex == i ? Color.white : new Color(1, 1, 1, 0);
+        }
     }
 
     public void AddPoseButton(string name)

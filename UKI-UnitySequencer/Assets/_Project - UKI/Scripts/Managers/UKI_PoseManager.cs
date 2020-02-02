@@ -109,8 +109,6 @@ public class UKI_PoseManager : MonoBehaviour
                     readyCount++;
             }
 
-
-
             if (_HoldDuration > 0)
             {
                 _HoldDuration -= Time.deltaTime;
@@ -168,6 +166,7 @@ public class UKI_PoseManager : MonoBehaviour
         if(_SequencerState == SequencerState.Stopped)
         {
             _PoseSequenceIndex = 0;
+            PauseAllActuators();
             UKI_PoseManager_UI.Instance._StopButton.Select();
         }
         else if (_SequencerState == SequencerState.Paused)
