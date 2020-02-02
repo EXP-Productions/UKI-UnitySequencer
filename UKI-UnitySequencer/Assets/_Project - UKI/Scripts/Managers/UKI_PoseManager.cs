@@ -138,15 +138,19 @@ public class UKI_PoseManager : MonoBehaviour
 
                 SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
                 UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex / (float)(_ActiveSequencePoseList.Count - 1));
-
+                //UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "[" + _PoseSequenceIndex / _ActiveSequencePoseList.Count + "]";
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
         }
         else
         {
+           
+
             if (Input.GetKeyDown(KeyCode.P))
                 AssessSequenceDuration();
         }
+        // Update status text
+        UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "  POSE [" + (_PoseSequenceIndex+1) +"/"+ _ActiveSequencePoseList.Count + "]";
 
     }
 

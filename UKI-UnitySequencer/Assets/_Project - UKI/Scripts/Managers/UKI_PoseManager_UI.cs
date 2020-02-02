@@ -37,6 +37,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public RectTransform _SequencerButtonParent;
 
     public Slider _PlaybackSlider;
+    public TMPro.TextMeshProUGUI _PlaybackStatusText;
 
     public GameObject _SaveSeqDialog;
 
