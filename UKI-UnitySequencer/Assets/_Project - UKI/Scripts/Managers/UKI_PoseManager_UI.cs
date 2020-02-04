@@ -83,14 +83,24 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public void AddPoseButtonToLibrary(string name)
     {
         Debug.Log("POSE UI - Button added: " + name);
+        _PoseButtons.Add(CreatePoseButton(name, _PoseLibraryContentParent));
+    }
 
-        Button newBtn = Instantiate(_SequencerPoseButtonPrefab, _PoseLibraryContentParent);
+    Button CreatePoseButton(string name, Transform parent)
+    {
+        // Instatiate
+        Button newBtn = Instantiate(_SequencerPoseButtonPrefab, parent);// _PoseLibraryContentParent);
+        // Set name
         newBtn.GetComponentInChildren<Text>().text = name;
         newBtn.name = "Pose button - " + name;
+        // Add listener to set pose
         newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));
+        // Add listener to set active button name
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
-        
-        _PoseButtons.Add(newBtn);
+
+        print("Created button pose sequence button: " + newBtn.name);
+
+        return newBtn;
     }
 
     public void SelectSequence(SequenceData seqData)
@@ -101,24 +111,24 @@ public class UKI_PoseManager_UI : MonoBehaviour
         for (int i = 0; i < seqData._SequenceData.Count; i++)
         {
             // Get pose name
-            string poseName = seqData._SequenceData[i];
-            int index = i;
+            string poseName = seqData._SequenceData[i];            
 
+            Button newBtn = CreatePoseButton(poseName, _SequencerButtonParent);
+            newBtn.gameObject.AddComponent<UI_RightClickDestroy>();
+
+            /*
             // Create new button, set name, add set pose by name listener, add active button name listener, add right click destroy context menu
             Button newSequencePoseButton = Instantiate(_SequencerPoseButtonPrefab, _SequencerButtonParent);
             newSequencePoseButton.GetComponentInChildren<Text>().text = poseName;
-            newSequencePoseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseFromSequence(index));
+            newSequencePoseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(poseName, UKI_PoseManager.Instance._MaskWings));
             newSequencePoseButton.onClick.AddListener(() => _ActiveButtonName = poseName);
             newSequencePoseButton.gameObject.AddComponent<UI_RightClickDestroy>();
+            */
 
             // Add name to pose sequence
             UKI_PoseManager.Instance._ActiveSequencePoseList.Add(poseName);
 
             Debug.Log("POSE name - Button added: " + poseName);
-
-            //button.onClick.RemoveAllListeners();
-
-            //print("Pose button added to active sequence: " + index + "   " + poseName);
         }
     }
 
@@ -192,12 +202,6 @@ public class UKI_PoseManager_UI : MonoBehaviour
         Invoke("UpdateActiveSequenceListButtons", .1f);
     }
 
-    public void UpdateSequenceListButtonsAfterWait()
-    {
-        Invoke("UpdateActiveSequenceListButtons", .1f);
-    }
-
-    
     public void UpdateActiveSequenceListButtons()
     {
         // Add poses based on names

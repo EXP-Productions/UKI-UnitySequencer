@@ -52,6 +52,7 @@ namespace UnityEngine.UI.Extensions
             if (_reorderableList.CloneDraggedObject == false)
             {
                 _draggingObject = _rect;
+                print("here    rect " + _rect.name);
                 _fromIndex = _rect.GetSiblingIndex();
                 //Send OnElementRemoved Event
                 if (_reorderableList.OnElementRemoved != null)
@@ -65,9 +66,11 @@ namespace UnityEngine.UI.Extensions
                         FromIndex = _fromIndex,
                     });
                 }
+
                 if (isValid == false)
                 {
                     _draggingObject = null;
+                    print("NULL    rect " + _rect.name);
                     return;
                 }
             }
@@ -82,7 +85,7 @@ namespace UnityEngine.UI.Extensions
             _draggingObjectOriginalSize = gameObject.GetComponent<RectTransform>().rect.size;
             _draggingObjectLE = _draggingObject.GetComponent<LayoutElement>();
             try 
-            {
+            {             
                 _draggingObject.SetParent(_reorderableList.DraggableArea, true);
             }
             catch
