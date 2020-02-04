@@ -140,7 +140,14 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _RightActuators.Count; i++)
         {
-            _LeftActuators[i].TargetNormExtension = _RightActuators[i].TargetNormExtension;
+            string name = _RightActuators[i]._ActuatorIndex.ToString();
+            name = name.Replace("Right", "Left");
+
+            // Find the left actuator
+            Actuator match = _LeftActuators.Find(x => x._ActuatorIndex.ToString() == name);
+            match.TargetNormExtension = _RightActuators[i].TargetNormExtension;
+
+            print("Match: " + _LeftActuators[i]._ActuatorIndex.ToString() + "    " + match._ActuatorIndex.ToString());
         }
 
         SetActuatorSliders();
@@ -150,7 +157,14 @@ public class UKI_UIManager : MonoBehaviour
     {
         for (int i = 0; i < _LeftActuators.Count; i++)
         {
-            _RightActuators[i].TargetNormExtension = _LeftActuators[i].TargetNormExtension;
+            string name = _LeftActuators[i]._ActuatorIndex.ToString();
+            name = name.Replace("Left", "Right");
+
+            // Find the right actuator
+            Actuator match = _RightActuators.Find(x => x._ActuatorIndex.ToString() == name);
+            match.TargetNormExtension = _LeftActuators[i].TargetNormExtension;
+
+            print("Match: " + _LeftActuators[i]._ActuatorIndex.ToString() + "    " + match._ActuatorIndex.ToString());
         }
 
         SetActuatorSliders();

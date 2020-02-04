@@ -211,15 +211,26 @@ public class UKI_PoseManager : MonoBehaviour
     {
         norm = Mathf.Min(norm, .99f);
 
-        int firstIndex = (int)Mathf.Floor(norm * (_ActiveSequencePoseList.Count-1));
-        int nextIndex = firstIndex + 1;
-        float lerpValue = (norm * (_ActiveSequencePoseList.Count - 1)) % 1;
-               
+        _PoseSequenceIndex = (int)(norm * (_ActiveSequencePoseList.Count));
+        print("Scrubbing: " + _PoseSequenceIndex);
 
-        print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _ActiveSequencePoseList.Count);
+        int prevIndex = _PoseSequenceIndex - 1;
 
-        _PoseSequenceIndex = nextIndex;
-        LerpBetweenPoses(GetPoseData(firstIndex), GetPoseData(nextIndex), lerpValue);
+        if (prevIndex < 0)
+            prevIndex = _ActiveSequencePoseList.Count - 1;
+
+        float lerpValue = (norm * (_ActiveSequencePoseList.Count)) % 1;
+
+        print("SCrubbing: " + prevIndex + "   " + _PoseSequenceIndex + "   " + lerpValue + "      pose count: " + _ActiveSequencePoseList.Count);
+
+        if(norm == 0)
+        {
+            LerpBetweenPoses(GetPoseData(0), GetPoseData(0), 0);
+        }
+        else
+        {
+            LerpBetweenPoses(GetPoseData(prevIndex), GetPoseData(_PoseSequenceIndex), lerpValue);
+        }
     }
 
     void LerpBetweenPoses(PoseData fromData, PoseData toData, float normLerp)

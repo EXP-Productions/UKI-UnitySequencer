@@ -342,6 +342,7 @@ MonoBehaviour:
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
   _Collided: 0
+  _PairedActuator: {fileID: 0}
   _DEBUG_Waver: 0
   _TargetNormExtension: 0
   _MaxEncoderExtension: 110

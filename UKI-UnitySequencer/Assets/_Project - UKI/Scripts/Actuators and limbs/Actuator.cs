@@ -61,6 +61,8 @@ public class Actuator : MonoBehaviour
     [HideInInspector] public CollisionReporter _CollidersToIgnore;
     public bool _Collided = false;
 
+    public Actuator _PairedActuator;
+
     public bool _DEBUG_Waver = false;
 
     #region LINEAR EXTENSION
