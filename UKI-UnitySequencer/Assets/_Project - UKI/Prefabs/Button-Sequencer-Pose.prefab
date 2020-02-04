@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8559065690864242677}
   - component: {fileID: -1919953625394525192}
   m_Layer: 5
-  m_Name: Button - Pose
+  m_Name: Button-Sequencer-Pose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 6343401670956625675}
   - component: {fileID: 1121182088307824668}
   - component: {fileID: 6691771885173152500}
+  - component: {fileID: 4869436667394701805}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -217,6 +218,18 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &4869436667394701805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3460997967995694202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0eb5712cb9e47849906256fc8b3fcd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8713317478399690128
 GameObject:
   m_ObjectHideFlags: 0

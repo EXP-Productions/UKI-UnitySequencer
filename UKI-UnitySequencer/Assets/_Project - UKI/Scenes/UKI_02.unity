@@ -9203,12 +9203,12 @@ MonoBehaviour:
   _OpenSaveDialogueButton: {fileID: 143018456}
   _DeleteSelectedSequence: {fileID: 365281633}
   _SequenceButtonParent: {fileID: 1210341750}
-  _SelectSequenceButtonPrefab: {fileID: 8559065690864242677, guid: 71b5f29b1394c3f4ab4dc5ca889baaf2,
-    type: 3}
   _SaveDialog: {fileID: 2136621357}
   _SaveButton: {fileID: 2136621356}
   _SaveNameInput: {fileID: 2136621355}
   _LibraryList: {fileID: 101360253}
+  _LibrarySequenceSelectButtonPrefab: {fileID: 8559065690864242677, guid: 71b5f29b1394c3f4ab4dc5ca889baaf2,
+    type: 3}
 --- !u!1 &859301170
 GameObject:
   m_ObjectHideFlags: 0
@@ -12684,6 +12684,58 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slider - Sequence scrubber
       objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7817aa50dc6ec594d93e2ea791056568,
+        type: 2}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -6285924363406455024, guid: 7817aa50dc6ec594d93e2ea791056568,
+        type: 2}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_margin.z
+      value: 0.6973572
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6863310736236689228, guid: ebd1c552694b0844ea66a407189d84c8,
         type: 3}
       propertyPath: m_MinValue
@@ -12892,58 +12944,6 @@ PrefabInstance:
     - target: {fileID: 6863310735417462569, guid: ebd1c552694b0844ea66a407189d84c8,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7817aa50dc6ec594d93e2ea791056568,
-        type: 2}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -6285924363406455024, guid: 7817aa50dc6ec594d93e2ea791056568,
-        type: 2}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_fontStyle
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_margin.z
-      value: 0.6973572
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6863310736755739190, guid: ebd1c552694b0844ea66a407189d84c8,
@@ -16022,9 +16022,7 @@ MonoBehaviour:
   _StopButton: {fileID: 862228320}
   _ClearSequenceButton: {fileID: 1096674825}
   _MaskWingsToggle: {fileID: 570131747}
-  _PoseButtonParent: {fileID: 1815402561}
-  _SelectPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
-    type: 3}
+  _PoseLibraryContentParent: {fileID: 1815402561}
   _SavePoseDialog: {fileID: 575473107}
   _SavePoseButton: {fileID: 216445551}
   _MirrorLRButton: {fileID: 250924070}
@@ -16037,6 +16035,8 @@ MonoBehaviour:
   _PlaybackSlider: {fileID: 1881854850}
   _PlaybackStatusText: {fileID: 685334947}
   _SaveSeqDialog: {fileID: 2136621357}
+  _SequencerPoseButtonPrefab: {fileID: 8559065690864242677, guid: 97a8c5c152012114b8f46c0397272367,
+    type: 3}
 --- !u!224 &1994493752 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6863310736262982761, guid: ebd1c552694b0844ea66a407189d84c8,
@@ -20556,7 +20556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &4738677111634209715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22674,6 +22674,48 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_text
+      value: SIM SPEED
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7817aa50dc6ec594d93e2ea791056568,
+        type: 2}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -6285924363406455024, guid: 7817aa50dc6ec594d93e2ea791056568,
+        type: 2}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_margin.z
+      value: 0.6973572
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6863310736236689228, guid: ebd1c552694b0844ea66a407189d84c8,
         type: 3}
       propertyPath: m_MinValue
@@ -22823,48 +22865,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_text
-      value: SIM SPEED
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7817aa50dc6ec594d93e2ea791056568,
-        type: 2}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -6285924363406455024, guid: 7817aa50dc6ec594d93e2ea791056568,
-        type: 2}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_fontStyle
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_margin.z
-      value: 0.6973572
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863310735865440198, guid: ebd1c552694b0844ea66a407189d84c8,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6863310736755739190, guid: ebd1c552694b0844ea66a407189d84c8,
         type: 3}

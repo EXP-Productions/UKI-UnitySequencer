@@ -81,7 +81,15 @@ namespace UnityEngine.UI.Extensions
             //Put _dragging object into the dragging area
             _draggingObjectOriginalSize = gameObject.GetComponent<RectTransform>().rect.size;
             _draggingObjectLE = _draggingObject.GetComponent<LayoutElement>();
-            _draggingObject.SetParent(_reorderableList.DraggableArea, true);
+            try 
+            {
+                _draggingObject.SetParent(_reorderableList.DraggableArea, true);
+            }
+            catch
+            {
+                print("WTF can't set parent of a prefab that isnt a prefab");
+            }
+            
             _draggingObject.SetAsLastSibling();
 
             //Create a fake element for previewing placement

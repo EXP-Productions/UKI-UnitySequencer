@@ -202,7 +202,7 @@ public class UKI_PoseManager : MonoBehaviour
 
         _PoseSequenceIndex = poseSeqIndex;
         SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], _MaskWings);
-        UKI_PoseManager_UI.Instance.HighlightSequenceButton();
+        UKI_PoseManager_UI.Instance.HighlightPoseSequenceButton();
 
         UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex/(float)(_ActiveSequencePoseList.Count-1));
     }
@@ -213,9 +213,8 @@ public class UKI_PoseManager : MonoBehaviour
 
         int firstIndex = (int)Mathf.Floor(norm * (_ActiveSequencePoseList.Count-1));
         int nextIndex = firstIndex + 1;
-        float lerpValue = (norm * (_ActiveSequencePoseList.Count - 1)) %1;
-
-        
+        float lerpValue = (norm * (_ActiveSequencePoseList.Count - 1)) % 1;
+               
 
         print(firstIndex + "   " + nextIndex + "   " + lerpValue + "      pose count: " + _ActiveSequencePoseList.Count);
 
@@ -320,10 +319,10 @@ public class UKI_PoseManager : MonoBehaviour
         _PoseLibrary = JsonSerialisationHelper.LoadFromFile<List<PoseData>>(Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json")) as List<PoseData>;
 
         for (int i = 0; i < _PoseLibrary.Count; i++)
-            UKI_PoseManager_UI.Instance.AddPoseButton(_PoseLibrary[i]._Name);
+            UKI_PoseManager_UI.Instance.AddPoseButtonToLibrary(_PoseLibrary[i]._Name);
 
         // Add hold pose
-        UKI_PoseManager_UI.Instance.AddPoseButton("Hold 10");
+        UKI_PoseManager_UI.Instance.AddPoseButtonToLibrary("Hold 10");
 
         print(name + " Poses loaded: " + _PoseLibrary.Count);
     }

@@ -20,8 +20,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     public Toggle _MaskWingsToggle;
 
-    public RectTransform _PoseButtonParent;
-    public Button _SelectPoseButtonPrefab;
+    public RectTransform _PoseLibraryContentParent;
+  
 
     [Header("UI - SAVE POSE DIALOGUE")]
     public GameObject _SavePoseDialog;
@@ -40,6 +40,9 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public TMPro.TextMeshProUGUI _PlaybackStatusText;
 
     public GameObject _SaveSeqDialog;
+
+    [Header("Prefabs")]
+    public Button _SequencerPoseButtonPrefab;
 
     private void Awake()
     {
@@ -73,24 +76,20 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
     private void Update()
     {
-        HighlightSequenceButton();
-
-        for (int i = 0; i < _PoseSequenceList.ContentLayout.transform.childCount; i++)
-        {
-            int index = i;
-            _PoseSequenceList.ContentLayout.transform.GetChild(index).GetComponentsInChildren<Image>()[1].color = UKI_PoseManager.Instance._PoseSequenceIndex == i ? Color.white : new Color(1, 1, 1, 0);
-        }
+        // Highlight sequence button
+        HighlightPoseSequenceButton();
     }
 
-    public void AddPoseButton(string name)
+    public void AddPoseButtonToLibrary(string name)
     {
         Debug.Log("POSE UI - Button added: " + name);
 
-        Button newBtn = Instantiate(_SelectPoseButtonPrefab, _PoseButtonParent);
+        Button newBtn = Instantiate(_SequencerPoseButtonPrefab, _PoseLibraryContentParent);
         newBtn.GetComponentInChildren<Text>().text = name;
+        newBtn.name = "Pose button - " + name;
         newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
-
+        
         _PoseButtons.Add(newBtn);
     }
 
@@ -104,12 +103,13 @@ public class UKI_PoseManager_UI : MonoBehaviour
             // Get pose name
             string poseName = seqData._SequenceData[i];
             int index = i;
+
             // Create new button, set name, add set pose by name listener, add active button name listener, add right click destroy context menu
-            Button newPoseButton = Instantiate(_SelectPoseButtonPrefab, _SequencerButtonParent);
-            newPoseButton.GetComponentInChildren<Text>().text = poseName;
-            newPoseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseFromSequence(index));
-            newPoseButton.onClick.AddListener(() => _ActiveButtonName = poseName);
-            newPoseButton.gameObject.AddComponent<UI_RightClickDestroy>();
+            Button newSequencePoseButton = Instantiate(_SequencerPoseButtonPrefab, _SequencerButtonParent);
+            newSequencePoseButton.GetComponentInChildren<Text>().text = poseName;
+            newSequencePoseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseFromSequence(index));
+            newSequencePoseButton.onClick.AddListener(() => _ActiveButtonName = poseName);
+            newSequencePoseButton.gameObject.AddComponent<UI_RightClickDestroy>();
 
             // Add name to pose sequence
             UKI_PoseManager.Instance._ActiveSequencePoseList.Add(poseName);
@@ -118,9 +118,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
 
             //button.onClick.RemoveAllListeners();
 
-           
-
-           // print("Pose button added to active sequence: " + index + "   " + poseName);
+            //print("Pose button added to active sequence: " + index + "   " + poseName);
         }
     }
 
@@ -174,7 +172,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
     {
         PoseData newPoseData = new PoseData(UKI_UIManager.Instance._AllActuators, _SavePoseNameInput.text);
         UKI_PoseManager.Instance._PoseLibrary.Add(newPoseData);
-        AddPoseButton( UKI_PoseManager.Instance._PoseLibrary[UKI_PoseManager.Instance._PoseLibrary.Count - 1]._Name);
+        AddPoseButtonToLibrary( UKI_PoseManager.Instance._PoseLibrary[UKI_PoseManager.Instance._PoseLibrary.Count - 1]._Name);
         JsonSerialisationHelper.Save(System.IO.Path.Combine(Application.streamingAssetsPath, "UKIPoseData.json"), UKI_PoseManager.Instance._PoseLibrary);
         print("Poses saved: " + UKI_PoseManager.Instance._PoseLibrary.Count);
         _SavePoseDialog.SetActive(false);
@@ -189,25 +187,30 @@ public class UKI_PoseManager_UI : MonoBehaviour
         if (item.DroppedObject.GetComponent<UI_RightClickDestroy>() == null)
             item.DroppedObject.AddComponent<UI_RightClickDestroy>();
 
-        Invoke("UpdateSequenceListButtons", .1f);
+        print("Sequence list updated");
+
+        Invoke("UpdateActiveSequenceListButtons", .1f);
     }
 
     public void UpdateSequenceListButtonsAfterWait()
     {
-        Invoke("UpdateSequenceListButtons", .1f);
+        Invoke("UpdateActiveSequenceListButtons", .1f);
     }
 
-    /*
+    
     public void UpdateActiveSequenceListButtons()
     {
         // Add poses based on names
         int listItemCount = _PoseSequenceList.Content.childCount;
+        UKI_PoseManager.Instance._ActiveSequencePoseList.Clear();
 
         print("Updating sequence buttons with buttons count: " + listItemCount);
         for (int i = 0; i < listItemCount; i++)
         {
-            // Create new button and set name
-            GameObject buttonObject = _PoseSequenceList.Content.GetChild(i).gameObject;          
+            // Get button in the pose sequence
+            GameObject buttonObject = _PoseSequenceList.Content.GetChild(i).gameObject;
+            
+            // Get pose name
             string poseName = buttonObject.GetComponentInChildren<UnityEngine.UI.Text>().text;
 
             // Add name to pose sequence
@@ -223,13 +226,20 @@ public class UKI_PoseManager_UI : MonoBehaviour
         }
 
         UKI_PoseManager.Instance._PoseSequenceIndex = 0;
-        HighlightSequenceButton();
+        HighlightPoseSequenceButton();
     }
-    */
+    
 
-    public void HighlightSequenceButton()
+    public void HighlightPoseSequenceButton()
     {
-       // if(_PoseSequenceList.Content.childCount > 0 && !_SavePoseDialog.activeSelf && !_SaveSeqDialog.activeSelf)
-       //     _PoseSequenceList.Content.GetChild(UKI_PoseManager.Instance._PoseSequenceIndex).GetComponent<Button>().Select();        
+        int childCount = _PoseSequenceList.ContentLayout.transform.childCount;
+
+        for (int i = 0; i < childCount; i++)
+        {
+            int index = i;
+            ButtonHighlight btnHighlight = _PoseSequenceList.ContentLayout.transform.GetChild(index).GetComponentInChildren<ButtonHighlight>();
+            if(btnHighlight != null)
+                btnHighlight.Highlight(i == UKI_PoseManager.Instance._PoseSequenceIndex);
+        }    
     }
 }

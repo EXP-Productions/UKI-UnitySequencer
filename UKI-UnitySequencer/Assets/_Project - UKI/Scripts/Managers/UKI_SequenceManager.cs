@@ -37,7 +37,7 @@ public class UKI_SequenceManager : MonoBehaviour
     List<Button> _SequenceButtons = new List<Button>();
 
     public RectTransform _SequenceButtonParent;
-    public Button _SelectSequenceButtonPrefab;
+   
 
     string _ActiveButtonName = "";
 
@@ -49,6 +49,9 @@ public class UKI_SequenceManager : MonoBehaviour
     public ReorderableList _LibraryList;
 
     string _FileName = "UKISeqData.json";
+
+    [Header("Prefabs")]
+    public Button _LibrarySequenceSelectButtonPrefab;
 
     private void Awake()
     {
@@ -80,7 +83,7 @@ public class UKI_SequenceManager : MonoBehaviour
     {
         Debug.Log("Sequence UI - Button added: " + name);
 
-        Button newBtn = Instantiate(_SelectSequenceButtonPrefab, _SequenceButtonParent);
+        Button newBtn = Instantiate(_LibrarySequenceSelectButtonPrefab, _SequenceButtonParent);
         newBtn.GetComponentInChildren<Text>().text = name;
         newBtn.onClick.AddListener(() => SetSeqByName(name));
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
