@@ -13,36 +13,36 @@ MonoBehaviour:
   m_Name: TypeCache
   m_EditorClassIdentifier: 
   Contents:
-  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro_Surface.cginc
+  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro.cginc
     Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt
+  - Path: Assets/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
+    Type: SRDebugger.Settings, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Path: Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset
+    Type: TMPro.TMP_StyleSheet, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Path: Assets/TextMesh Pro/Resources/TMP Settings.asset
+    Type: TMPro.TMP_Settings, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Path: Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
+    Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc
     Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - Path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
     Type: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc
-    Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+  - Path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+    Type: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/TMP Settings.asset
-    Type: TMPro.TMP_Settings, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset
-    Type: TMPro.TMP_StyleSheet, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
-    Type: SRDebugger.Settings, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro.cginc
+  - Path: Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt
     Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - Path: Assets/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset
     Type: TMPro.TMP_SpriteAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
-    Type: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
+  - Path: Assets/TextMesh Pro/Resources/Shaders/TMPro_Surface.cginc
     Type: UnityEngine.TextAsset, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null

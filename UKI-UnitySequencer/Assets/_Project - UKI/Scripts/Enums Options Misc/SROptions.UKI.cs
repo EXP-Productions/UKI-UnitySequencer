@@ -18,8 +18,9 @@ public partial class SROptions
     public void PrintActuatorPositions()
     {
         UKI_PoseManager.Instance.PrintAllActuatorRanges();
-
     }
+
+    
 
 
 

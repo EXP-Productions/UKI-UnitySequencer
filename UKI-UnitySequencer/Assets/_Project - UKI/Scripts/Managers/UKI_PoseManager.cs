@@ -73,6 +73,8 @@ public class UKI_PoseManager : MonoBehaviour
 
     #endregion
 
+    public bool _IgnoreCollission = false;
+
     #region UNITY METHODS
     public void Awake()
     {
@@ -89,6 +91,9 @@ public class UKI_PoseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C))
+            _IgnoreCollission = !_IgnoreCollission;
+
         if (_SequencerState == SequencerState.Playing)
         {
             if(_ActiveSequencePoseList.Count == 0)
@@ -99,14 +104,14 @@ public class UKI_PoseManager : MonoBehaviour
 
             // CHECK IF ALL ACTUATORS ARE STOPPED
             float maxTimeToTaget = 0;
-            int readyCount = 0;
+            _ReadyCount = 0;
 
             foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
             {
                 maxTimeToTaget = Mathf.Max(maxTimeToTaget, actuator.Value.TimeToTarget());
 
                 if (actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
-                    readyCount++;
+                    _ReadyCount++;
             }
 
             if (_HoldDuration > 0)
@@ -118,12 +123,12 @@ public class UKI_PoseManager : MonoBehaviour
 
             if (_Debug && maxTimeToTaget != _PrevMaxTime)
             {
-                print("SEQ PLAYING: Max time to next pose [" + _PoseSequenceIndex + "/"+ _ActiveSequencePoseList.Count + " ]: " + maxTimeToTaget + "    Acts. ready: " + readyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
+                print("SEQ PLAYING: Max time to next pose [" + _PoseSequenceIndex + "/"+ _ActiveSequencePoseList.Count + " ]: " + maxTimeToTaget + "    Acts. ready: " + _ReadyCount + "/" + UKI_UIManager.Instance._AllActuators.Count);
                 _PrevMaxTime = maxTimeToTaget;
             }
 
             // If enough actuators are ready then go to next pose
-            if(_HoldDuration == 0 && readyCount == UKI_UIManager.Instance._AllActuators.Count)
+            if(_HoldDuration == 0 && _ReadyCount == UKI_UIManager.Instance._AllActuators.Count)
             {
                 _PoseSequenceIndex++;
                 if (_PoseSequenceIndex >= _ActiveSequencePoseList.Count)
@@ -137,8 +142,10 @@ public class UKI_PoseManager : MonoBehaviour
                 SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
                 UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex / (float)(_ActiveSequencePoseList.Count - 1));
                 //UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "[" + _PoseSequenceIndex / _ActiveSequencePoseList.Count + "]";
-                print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + readyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
+                print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + _ReadyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
             }
+
+            
         }
         else
         {
@@ -147,13 +154,27 @@ public class UKI_PoseManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.P))
                 AssessSequenceDuration();
         }
-        // Update status text
-        UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "  POSE [" + (_PoseSequenceIndex+1) +"/"+ _ActiveSequencePoseList.Count + "]";
+
+        if (UKI_PoseManager.Instance._SequencerState == SequencerState.Playing)
+        {
+            // Update status text
+            UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "  POSE [" + (_PoseSequenceIndex + 1) + "/" + _ActiveSequencePoseList.Count + "]";
+        }
+        else if (UKI_PoseManager.Instance._SequencerState == SequencerState.Paused)
+        {
+            UKI_PoseManager_UI.Instance._PlaybackStatusText.text = "PAUSED";
+
+        }
+        else if (UKI_PoseManager.Instance._SequencerState == SequencerState.Stopped)
+        {
+            UKI_PoseManager_UI.Instance._PlaybackStatusText.text = "STOPPED";
+
+        }
 
     }
 
     #endregion
-
+    public int _ReadyCount = 0;
 
     // Sets the sequencer state
     public void SetState(SequencerState state)

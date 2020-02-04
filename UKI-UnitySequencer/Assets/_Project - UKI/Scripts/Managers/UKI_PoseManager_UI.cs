@@ -21,6 +21,10 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public Toggle _MaskWingsToggle;
 
     public RectTransform _PoseLibraryContentParent;
+
+
+    public Toggle _IgnoreCollisionToggle;
+    public TMPro.TextMeshProUGUI _DEBUG_SequenceText;
   
 
     [Header("UI - SAVE POSE DIALOGUE")]
@@ -71,13 +75,23 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _MirrorLRButton.onClick.AddListener(UKI_UIManager.Instance.MirrorLeftToRight);
         _MirrorRLButton.onClick.AddListener(UKI_UIManager.Instance.MirrorRightToLeft);
 
+        _IgnoreCollisionToggle.onValueChanged.AddListener(delegate { SetIgnoreCollision();  } );
+
         _PlaybackSlider.onValueChanged.AddListener(call => UKI_PoseManager.Instance.ScrubSequence(_PlaybackSlider.value));
+    }
+
+    void SetIgnoreCollision()
+    {
+        UKI_PoseManager.Instance._IgnoreCollission = _IgnoreCollisionToggle.isOn;
+        Debug.Log("Ignore collisions: " + UKI_PoseManager.Instance._IgnoreCollission);
     }
 
     private void Update()
     {
         // Highlight sequence button
         HighlightPoseSequenceButton();
+
+        _DEBUG_SequenceText.text = "POSE MANAGER - Setting pose index: " + UKI_PoseManager.Instance._PoseSequenceIndex + "   ready count: " + UKI_PoseManager.Instance._ReadyCount + " / " + UKI_UIManager.Instance._AllActuators.Count;
     }
 
     public void AddPoseButtonToLibrary(string name)

@@ -471,6 +471,9 @@ public class Actuator : MonoBehaviour
         if (Time.time < 1)
             return;
 
+        if (UKI_PoseManager.Instance._IgnoreCollission)
+            return;
+
         // See if it has collided with another actuated limb
         CollisionReporter actuatorCollider = collider.gameObject.GetComponent<CollisionReporter>();
         if(actuatorCollider != null)
