@@ -6,6 +6,8 @@ public partial class SROptions
     // Default Value for property
     private float _ActuatorArrivalRange = 60f;
 
+    private float _RequiredReadyCount = 23;
+
     // Options will be grouped by category
     [NumberRange(0, 100)]   
     [Category("Animation")]
@@ -14,7 +16,15 @@ public partial class SROptions
         get { return _ActuatorArrivalRange; }
         set { _ActuatorArrivalRange = value; }
     }
-    
+
+    [NumberRange(0, 100)]
+    [Category("Animation")]
+    public int RequiredReadyCount
+    {
+        get { return (int)_RequiredReadyCount; }
+        set { _RequiredReadyCount = value; UKI_PoseManager.Instance._RequiredReadyCount = (int)_RequiredReadyCount; }
+    }
+
     public void PrintActuatorPositions()
     {
         UKI_PoseManager.Instance.PrintAllActuatorRanges();

@@ -110,7 +110,10 @@ public class UKI_PoseManager : MonoBehaviour
             {
                 maxTimeToTaget = Mathf.Max(maxTimeToTaget, actuator.Value.TimeToTarget());
 
-                if (actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+                // make arse always ready bc sometimes it doesnt get the msg
+                if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
+                    _ReadyCount++;
+                else if (actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
                     _ReadyCount++;
             }
 
@@ -128,7 +131,7 @@ public class UKI_PoseManager : MonoBehaviour
             }
 
             // If enough actuators are ready then go to next pose
-            if(_HoldDuration == 0 && _ReadyCount == UKI_UIManager.Instance._AllActuators.Count)
+            if(_HoldDuration == 0 && _ReadyCount >= _RequiredReadyCount)
             {
                 _PoseSequenceIndex++;
                 if (_PoseSequenceIndex >= _ActiveSequencePoseList.Count)
@@ -175,6 +178,7 @@ public class UKI_PoseManager : MonoBehaviour
 
     #endregion
     public int _ReadyCount = 0;
+    public int _RequiredReadyCount = 23;
 
     // Sets the sequencer state
     public void SetState(SequencerState state)

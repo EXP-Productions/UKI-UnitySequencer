@@ -91,7 +91,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
         // Highlight sequence button
         HighlightPoseSequenceButton();
 
-        _DEBUG_SequenceText.text = "POSE MANAGER - Setting pose index: " + UKI_PoseManager.Instance._PoseSequenceIndex + "   ready count: " + UKI_PoseManager.Instance._ReadyCount + " / " + UKI_UIManager.Instance._AllActuators.Count;
+        _DEBUG_SequenceText.text = "POSE MANAGER - Setting pose index: " + UKI_PoseManager.Instance._PoseSequenceIndex + "   ready count: " + UKI_PoseManager.Instance._ReadyCount + " / " + UKI_PoseManager.Instance._RequiredReadyCount;
     }
 
     public void AddPoseButtonToLibrary(string name)
