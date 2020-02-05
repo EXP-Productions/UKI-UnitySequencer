@@ -53,11 +53,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Sends MB_GOTO_POSITION and MB_GOTO_SPEED_SETPOINT. Uses the inbuilt ramp to ramp up the motor speed
     // Max rated speed 30
     // Accel 0 - 100
-    int msgCount = 0;
+    int _SentMsgCount = 0;
     float _Timer = 0;
     public float msgPerSec = 0;
     float lastTime = 0;
-
+    
     public bool _Debug = false;
 
     // Set singleton instance and start Threaded UDP reciever
@@ -169,51 +169,37 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if(_Timer >= 10)
         {
             _Timer -= 10;
-            msgCount = 0;
+            _SentMsgCount = 0;
         }
 
-
+        // Try moving to Fixed update
         ReceiveStateData();
-        //while(_ReceivedPackets.Count > 0)
-        //{
-        //    byte[] packet = _ReceivedPackets.Dequeue();
-
-        //    //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
-        //    int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
-
-        //    for (int i = 2; i < packet.Length; i+=4)
-        //    {
-        //        int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
-        //        int registerValue = GetLittleEndianIntegerFromByteArray(packet,  i+2);
-        //        if(registerIndex == 299)
-        //            //print("Actuator: " + actuatorIndex + ", Extension :" + registerValue);
-        //        if (registerIndex == 303)
-        //            //print("Actuator: " + actuatorIndex + ", MB_INWARD_ENDSTOP_STATE :" + registerValue);
-        //        if (UkiStateDB._StateDB.ContainsKey(actuatorIndex))
-        //        {
-        //            UkiStateDB._StateDB[actuatorIndex][registerIndex] = registerValue;
-        //        }
-        //    }
-        //}  
     }
-
+    
     public void ReceiveStateData()
     {
+        if(_Debug)
+            Debug.Log("Packets recieved: " + _ReceivedPackets.Count);
+
         while (_ReceivedPackets.Count > 0)
         {
+            // Get packet
             byte[] packet = _ReceivedPackets.Dequeue();
-
-            //int actuatorIndex = System.BitConverter.ToInt16(packet, 0);
+            // Get actuator index
             int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
 
+            // Start at index 2 (TODO why steeb?) and iterate with a step of 4
             for (int i = 2; i < packet.Length; i += 4)
             {
+                // get index and value for register
                 int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
                 int registerValue = GetLittleEndianIntegerFromByteArray(packet, i + 2);
 
+                // Get actuator enum
                 UkiActuatorAssignments actuatorEnum = (UkiActuatorAssignments)actuatorIndex;
                 ModBusRegisters registerEnum = (ModBusRegisters)registerIndex;
-
+                
+                
                 if (UkiStateDB._StateDB.ContainsKey(actuatorEnum))
                 {
                     UkiStateDB._StateDB[actuatorEnum][registerEnum] = registerValue;
@@ -229,8 +215,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.Simulation)
             return;
 
-        if(_Debug)
-            print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
+        //if(_Debug)
+       //     print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
 
         speed = Mathf.Clamp(speed, 0, 30);
         //position = Mathf.Clamp(speed, 0, 100);
@@ -249,7 +235,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage2[2] = (uint)position;
         SendInts(actuatorMessage2, true);
 
-        msgCount++;
+        _SentMsgCount++;
 
         if(lastTime == 0)
         {
@@ -260,7 +246,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         }
 
-        msgPerSec = (msgCount / _Timer) * .1f;
+        msgPerSec = (_SentMsgCount / _Timer) * .1f;
         //print("Messages per second: " + msgPerSec);
     }
     

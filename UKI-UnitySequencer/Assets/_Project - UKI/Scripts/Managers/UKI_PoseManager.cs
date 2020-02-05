@@ -316,7 +316,7 @@ public class UKI_PoseManager : MonoBehaviour
 
     public void SetPoseByName(string name, bool maskWings = false)
     {
-        print("Setting pose by name: " + name);
+        //print("Setting pose by name: " + name);
 
         PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
 

@@ -6,7 +6,7 @@ public partial class SROptions
     // Default Value for property
     private float _ActuatorArrivalRange = 60f;
 
-    private float _RequiredReadyCount = 23;
+    private float _RequiredReadyCount = 23;    
 
     // Options will be grouped by category
     [NumberRange(0, 100)]   
@@ -30,7 +30,22 @@ public partial class SROptions
         UKI_PoseManager.Instance.PrintAllActuatorRanges();
     }
 
-    
+
+    private bool _DebugComms;
+
+    [Category("Comms")]
+    public bool DebugComms
+    {
+        get { return _DebugComms; }
+        set
+        {
+            _DebugComms = value;
+            UkiCommunicationsManager.Instance._Debug = _DebugComms;
+        }
+    }
+
+
+
 
 
 
