@@ -144,6 +144,7 @@ public class Actuator : MonoBehaviour
 
     float _NoiseAmount = .15f;
     #endregion
+    float _RoundRobinTime = 0;
 
     #region UNITY METHODS
 
@@ -226,7 +227,16 @@ public class Actuator : MonoBehaviour
         else
         {
             // READ IN
-            _ReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+
+            float newReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+
+            if(newReportedExtension != _ReportedExtension && _DEBUG_RoundRobin)
+            {
+                Debug.Log(name + " reporting interval: " + (Time.time - _RoundRobinTime));
+                _RoundRobinTime = Time.time;
+            }
+
+            _ReportedExtension = newReportedExtension;
             ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
 
             // Update the readin actuator transform
@@ -234,6 +244,8 @@ public class Actuator : MonoBehaviour
         }
 
         #endregion
+
+        
 
         #region REPORTED ACTUATOR ROTATION
 
@@ -404,6 +416,7 @@ public class Actuator : MonoBehaviour
         UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, 0, 30);
     }
   
+    public bool _DEBUG_RoundRobin = false;
     public void SetState(UKIEnums.State state)
     {
         _State = state;

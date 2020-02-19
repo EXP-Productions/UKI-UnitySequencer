@@ -24,5 +24,13 @@
       "testfull1",
       "testfull2"
     ]
+  },
+  {
+    "_Name": "all legs test",
+    "_SequenceData": [
+      "all legs0",
+      "all legs1",
+      "all legs2"
+    ]
   }
 ]
