@@ -69,15 +69,23 @@ public class Actuator : MonoBehaviour
     [Header("LINEAR EXTENSION")]
     // Actuator extension. Linear travel that gets converted into rotational movement   
     // Normalized extension value
-    [Range(0, 1)]  public float _TargetNormExtension;
+    [SerializeField]
+    [Range(0, 1)]  float _TargetNormExtension;
     public float TargetNormExtension
     {
         get { return _TargetNormExtension; }
         set
         {
             float prevNorm = _TargetNormExtension;
-            _TargetNormExtension = Mathf.Clamp01(value);
-            _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
+
+            if (value != _TargetNormExtension)
+            {
+                _TargetNormExtension = Mathf.Clamp(value, 0.05f, .95f);
+                _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
+
+                SendEncoderExtensionLength();
+                print("Sending: " + name + " Norm: " + value);
+            }            
         }
     }
 
@@ -537,6 +545,9 @@ public class Actuator : MonoBehaviour
 
     void SendEncoderExtensionLength()
     {
+        if (_Donotsend)
+            return;
+
         if (_DEBUG)
             print(CurrentEncoderExtension);
 
@@ -555,7 +566,7 @@ public class Actuator : MonoBehaviour
     
     IEnumerator SendPosAtRate(float ratePerSecond)
     {
-        float wait = .5f;// 1f / ratePerSecond;
+        float wait = 1;// 1f / ratePerSecond;
        
         while (true)
         {
@@ -563,8 +574,8 @@ public class Actuator : MonoBehaviour
             {
                 if (!_Donotsend)
                 {
-                    prevPos = CurrentEncoderExtension;
-                    SendEncoderExtensionLength();
+                    //prevPos = CurrentEncoderExtension;
+                    //SendEncoderExtensionLength();
                 }
             }
 

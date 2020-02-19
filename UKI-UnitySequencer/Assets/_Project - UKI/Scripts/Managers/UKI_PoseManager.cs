@@ -269,7 +269,7 @@ public class UKI_PoseManager : MonoBehaviour
 
             float normExtension = Mathf.Lerp(actuatorDataFrom._NormalizedValue, actuatorDataTo._NormalizedValue, normLerp);
 
-            UKI_UIManager.Instance._AllActuators[actuator.Key]._TargetNormExtension = normExtension;
+            UKI_UIManager.Instance._AllActuators[actuator.Key].TargetNormExtension = normExtension;
 
            //print("Lerping: " + actuator.Key.ToString());
         }

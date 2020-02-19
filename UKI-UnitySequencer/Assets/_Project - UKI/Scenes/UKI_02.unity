@@ -366,6 +366,7 @@ MonoBehaviour:
   _Donotsend: 0
   _DEBUG_NoiseMovement: 0
   _ReportedTollerance: 20
+  _DEBUG_RoundRobin: 0
 --- !u!224 &98601611 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
@@ -11915,6 +11916,11 @@ PrefabInstance:
       propertyPath: _ReportedExtension
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144349596994, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.z
@@ -21960,6 +21966,11 @@ PrefabInstance:
       propertyPath: _ReportedTollerance
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144349596994, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorDisabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -21984,6 +21995,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _ReportedTollerance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _TargetNormExtension
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 408755143713368709, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
