@@ -12,6 +12,13 @@ public enum UKIMode
     Simulation,
 }
 
+
+// Time stamp - Using system time and time from start
+// Add send recieve counts
+// Send recieve over time in SR debugger
+// Add anlge and and extension into the debug
+
+
 /// Comms manager for UKI
 /// Sends out the commands that come in from the actuators
 public class UkiCommunicationsManager : ThreadedUDPReceiver
@@ -57,8 +64,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     float _Timer = 0;
     public float msgPerSec = 0;
     float lastTime = 0;
-    
-    public bool _Debug = false;
+
+    public bool _DebugActuatorInternal = false;
+    public bool _DebugSend = false;
+    public bool _DebugRecieve = false;
+    public bool _DebugUDP = false;
 
     // Set singleton instance and start Threaded UDP reciever
     public override void Awake()
@@ -165,21 +175,21 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     private void Update()
     {
         _Timer += Time.deltaTime;
-
-        if(_Timer >= 10)
-        {
-            _Timer -= 10;
-            _SentMsgCount = 0;
-        }
+             
 
         // Try moving to Fixed update
         ReceiveStateData();
     }
-    
+
+    int _RecieveCount;
     public void ReceiveStateData()
     {
-        if(_Debug)
-            Debug.Log("Packets recieved: " + _ReceivedPackets.Count);
+        if (_DebugRecieve && _ReceivedPackets.Count > 0)
+        {
+            _RecieveCount++;
+            Debug.LogWarning("Packets recieved: " + _ReceivedPackets.Count + "  Time:  " + _Timer + "   recieve count: " + _RecieveCount);
+           
+        }
 
         while (_ReceivedPackets.Count > 0)
         {
@@ -215,8 +225,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.Simulation)
             return;
 
-        //if(_Debug)
-       //     print("Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed);
+        if (_DebugSend)
+            Debug.LogWarning(" ----------------------------------- Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed + "     Time:" + _Timer );
 
         speed = Mathf.Clamp(speed, 0, 30);
         //position = Mathf.Clamp(speed, 0, 100);
@@ -246,8 +256,14 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         }
 
-        msgPerSec = (_SentMsgCount / _Timer) * .1f;
-        //print("Messages per second: " + msgPerSec);
+        if (_DebugSend)
+        {
+            msgPerSec = _SentMsgCount / _Timer;
+            Debug.LogWarning("Total msg count: " + _SentMsgCount + "   Total run time: " + _Timer);
+        }
+
+        
+
     }
     
     // Sends a message to set actuator accel to 90 and setpoint 0 

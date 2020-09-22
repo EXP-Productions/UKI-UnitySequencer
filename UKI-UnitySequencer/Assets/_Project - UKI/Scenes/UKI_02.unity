@@ -10070,7 +10070,10 @@ MonoBehaviour:
   _DBInitialized: 0
   _UKIMode: 1
   msgPerSec: 0
-  _Debug: 0
+  _DebugActuatorInternal: 0
+  _DebugSend: 1
+  _DebugRecieve: 0
+  _DebugUDP: 0
 --- !u!224 &988891199 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,

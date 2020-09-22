@@ -78,13 +78,16 @@ public class Actuator : MonoBehaviour
         {
             float prevNorm = _TargetNormExtension;
 
+            // if the new value isn't the target value then send set point to wrapper
             if (value != _TargetNormExtension)
             {
                 _TargetNormExtension = Mathf.Clamp(value, 0.05f, .95f);
                 _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
 
                 SendEncoderExtensionLength();
-                print("Sending: " + name + " Norm: " + value);
+
+                if(UkiCommunicationsManager.Instance._DebugActuatorInternal)
+                    print("Sending: " + name + " Norm: " + value   + "  Actuator length: " + CurrentEncoderExtension);
             }            
         }
     }

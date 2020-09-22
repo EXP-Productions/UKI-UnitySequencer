@@ -333,7 +333,7 @@ public class UKI_PoseManager : MonoBehaviour
         }
 
         // Set UI
-        UKI_UIManager.Instance.SetActuatorSliders();
+        UKI_UIManager.Instance.SetActuatorSliders(true);
     }
 
     PoseData GetPoseData(int poseIndex)

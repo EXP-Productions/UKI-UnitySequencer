@@ -130,10 +130,10 @@ public class UKI_UIManager : MonoBehaviour
 
  
 
-    public void SetActuatorSliders()
+    public void SetActuatorSliders(bool withoutNotify = false)
     {
         for (int i = 0; i < _ActuatorSliders.Length; i++)
-            _ActuatorSliders[i].SetToActuatorNorm();
+            _ActuatorSliders[i].SetToActuatorNorm(withoutNotify);
     }
 
     public void MirrorRightToLeft()

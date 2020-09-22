@@ -85,11 +85,15 @@ public class ActuatorSlider : MonoBehaviour
         name = "Actuator Control - " + _ActuatorAssignment.ToString();
     }
 
-    public void SetToActuatorNorm()
+    public void SetToActuatorNorm(bool setWithoutNotify)
     {
         if (_Actuator == null)
             print(name);
 
-        _Slider.normalizedValue = _Actuator.TargetNormExtension;
+
+        if (setWithoutNotify)
+            _Slider.SetValueWithoutNotify(_Actuator.TargetNormExtension);
+        else
+            _Slider.normalizedValue = _Actuator.TargetNormExtension;
     }
 }

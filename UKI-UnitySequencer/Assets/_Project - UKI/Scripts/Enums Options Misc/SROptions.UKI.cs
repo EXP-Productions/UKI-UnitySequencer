@@ -30,17 +30,52 @@ public partial class SROptions
         UKI_PoseManager.Instance.PrintAllActuatorRanges();
     }
 
-
-    private bool _DebugComms;
+    private bool _DebugUDP;
+    private bool _DebugActuatorInternal;
+    private bool _DebugCommSend;
+    private bool _DebugCommRecieve;
 
     [Category("Comms")]
-    public bool DebugComms
+    public bool DebugCommsSend
     {
-        get { return _DebugComms; }
+        get { return _DebugCommSend; }
         set
         {
-            _DebugComms = value;
-            UkiCommunicationsManager.Instance._Debug = _DebugComms;
+            _DebugCommSend = value;
+            UkiCommunicationsManager.Instance._DebugSend = _DebugCommSend;
+        }
+    }
+
+    [Category("Comms")]
+    public bool DebugCommsRecieve
+    {
+        get { return _DebugCommRecieve; }
+        set
+        {
+            _DebugCommRecieve = value;
+            UkiCommunicationsManager.Instance._DebugRecieve = _DebugCommRecieve;
+        }
+    }
+
+    [Category("Comms")]
+    public bool DebugUDP
+    {
+        get { return _DebugUDP; }
+        set
+        {
+            _DebugUDP = value;
+            UkiCommunicationsManager.Instance._DebugUDP = _DebugUDP;
+        }
+    }
+
+    [Category("Comms")]
+    public bool DebugActuatorInternal
+    {
+        get { return _DebugActuatorInternal; }
+        set
+        {
+            _DebugActuatorInternal = value;
+            UkiCommunicationsManager.Instance._DebugActuatorInternal = _DebugActuatorInternal;
         }
     }
 

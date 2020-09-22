@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
 using System;
+using UnityEngine.Analytics;
 
 
 //This Class essentially wraps the native .Net UdpClient class and adds threads to handle the sending and receiving of packets 
@@ -79,6 +80,9 @@ public class ThreadedUDPReceiver : MonoBehaviour
             }
             if (payloadBytes != null)
             {
+                if(UkiCommunicationsManager.Instance._DebugSend)
+                    Debug.LogWarning( DateTime.Now.ToString() + "  ---  UDP sending: " + ByteArrayToString(payloadBytes) );
+
                 _Client.Send(payloadBytes, payloadBytes.Length, _BroadcastIP, _BroadcastPort);
             }
             else
@@ -86,6 +90,22 @@ public class ThreadedUDPReceiver : MonoBehaviour
                 Thread.Sleep(10);
             }
         }
+    }
+
+    string ByteArrayToString(byte[] val)
+    {
+        string b = "";
+        int len = val.Length;
+        for (int i = 0; i < len; i++)
+        {
+            if (i != 0)
+            {
+                b += ",";
+            }
+            int hex =  int.Parse(val[i].ToString());
+            b += val[i].ToString();
+        }
+        return b;
     }
     #endregion
 
