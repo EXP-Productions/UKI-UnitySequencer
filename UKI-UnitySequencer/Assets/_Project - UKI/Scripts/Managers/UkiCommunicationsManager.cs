@@ -70,6 +70,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public bool _DebugRecieve = false;
     public bool _DebugUDP = false;
 
+    int _PacketCounter = 0;
+
     // Set singleton instance and start Threaded UDP reciever
     public override void Awake()
     {
@@ -193,21 +195,27 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         while (_ReceivedPackets.Count > 0)
         {
             // Get packet
+            // First 2 bytes - Actuator index second 2 bytes - register index Next 2 bytes - reg value 
+            // Total 6 bytes
             byte[] packet = _ReceivedPackets.Dequeue();
-            // Get actuator index
-            int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
 
             if (_DebugRecieve)
             {
-                Debug.LogWarning($"Packet recieved {Time.time} raw data: {packet.ToString()}");
+                for (int i = 0; i < packet.Length; i++)
+                {
+                    Debug.Log($"Packet {i}   ");
+                }
             }
+
+
+            // Get actuator index
+            int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
+
+            _PacketCounter++;
 
             // Start at index 2 (TODO why steeb?) and iterate with a step of 4
             for (int i = 2; i < packet.Length; i += 4)
             {
-              
-
-
                 // get index and value for register
                 int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
                 int registerValue = GetLittleEndianIntegerFromByteArray(packet, i + 2);
@@ -215,8 +223,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                 // Get actuator enum
                 UkiActuatorAssignments actuatorEnum = (UkiActuatorAssignments)actuatorIndex;
                 ModBusRegisters registerEnum = (ModBusRegisters)registerIndex;
-                
-                
+
+
+                if (_DebugRecieve)
+                {
+                    Debug.LogWarning($"Packet recieved {_PacketCounter} {Time.time}  Actuator {actuatorEnum.ToString()}   Reg Index {registerIndex}  Reg Enum {registerEnum.ToString()}   Reg Value {registerValue}");
+                }
+
                 if (UkiStateDB._StateDB.ContainsKey(actuatorEnum))
                 {
                     UkiStateDB._StateDB[actuatorEnum][registerEnum] = registerValue;
