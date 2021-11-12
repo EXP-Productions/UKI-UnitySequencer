@@ -16,7 +16,7 @@ public class PoseControlBehavior : PlayableBehaviour
 
         if (actuator != null)
         {
-            actuator.NormExtension = _NormExtention;
+            actuator.TargetNormExtension = _NormExtention;
 
             float extensionPerSecond = (Mathf.Abs(_NormExtention - _PrevNorm)) * (1 / info.deltaTime);
 

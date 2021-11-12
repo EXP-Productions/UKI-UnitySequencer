@@ -52,6 +52,7 @@ namespace UnityEngine.UI.Extensions
             if (_reorderableList.CloneDraggedObject == false)
             {
                 _draggingObject = _rect;
+                print("here    rect " + _rect.name);
                 _fromIndex = _rect.GetSiblingIndex();
                 //Send OnElementRemoved Event
                 if (_reorderableList.OnElementRemoved != null)
@@ -65,9 +66,11 @@ namespace UnityEngine.UI.Extensions
                         FromIndex = _fromIndex,
                     });
                 }
+
                 if (isValid == false)
                 {
                     _draggingObject = null;
+                    print("NULL    rect " + _rect.name);
                     return;
                 }
             }
@@ -81,7 +84,15 @@ namespace UnityEngine.UI.Extensions
             //Put _dragging object into the dragging area
             _draggingObjectOriginalSize = gameObject.GetComponent<RectTransform>().rect.size;
             _draggingObjectLE = _draggingObject.GetComponent<LayoutElement>();
-            _draggingObject.SetParent(_reorderableList.DraggableArea, true);
+            try 
+            {             
+                _draggingObject.SetParent(_reorderableList.DraggableArea, true);
+            }
+            catch
+            {
+                print("WTF can't set parent of a prefab that isnt a prefab");
+            }
+            
             _draggingObject.SetAsLastSibling();
 
             //Create a fake element for previewing placement
