@@ -187,8 +187,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_DebugRecieve && _ReceivedPackets.Count > 0)
         {
             _RecieveCount++;
-            Debug.LogWarning("Packets recieved: " + _ReceivedPackets.Count + "  Time:  " + _Timer + "   recieve count: " + _RecieveCount);
-           
+            Debug.LogWarning("Packets recieved: " + _ReceivedPackets.Count + "  Time:  " + _Timer + "   recieve count: " + _RecieveCount);           
         }
 
         while (_ReceivedPackets.Count > 0)
@@ -198,9 +197,17 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             // Get actuator index
             int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
 
+            if (_DebugRecieve)
+            {
+                Debug.LogWarning($"Packet recieved {Time.time} raw data: {packet.ToString()}");
+            }
+
             // Start at index 2 (TODO why steeb?) and iterate with a step of 4
             for (int i = 2; i < packet.Length; i += 4)
             {
+              
+
+
                 // get index and value for register
                 int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
                 int registerValue = GetLittleEndianIntegerFromByteArray(packet, i + 2);
