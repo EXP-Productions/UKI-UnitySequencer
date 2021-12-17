@@ -4,12 +4,12 @@ using UnityEngine;
 public partial class SROptions
 {
     // Default Value for property
-    private float _ActuatorArrivalRange = 60f;
+    private float _ActuatorArrivalRange = 2f;
 
     private float _RequiredReadyCount = 23;    
 
     // Options will be grouped by category
-    [NumberRange(0, 100)]   
+    [NumberRange(0, 10)]   
     [Category("Animation")]
     public float ActuatorArrivalRange
     {

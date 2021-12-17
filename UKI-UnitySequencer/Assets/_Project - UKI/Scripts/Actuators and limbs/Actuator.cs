@@ -94,6 +94,15 @@ public class Actuator : MonoBehaviour
 
     float RotationAngle { get { return Mathf.Lerp(0, RotationRange, TargetNormExtension); } }
     bool AtTargetExtension { get { return _ReportedExtensionDiff < _ReportedToleranceMM; } }
+
+    public bool IsNearTargetPos(float range = 2)
+    {
+        if(_ReportedExtensionDiff > range)
+            print(_ActuatorIndex + "    _ReportedExtensionDiff: " + _ReportedExtensionDiff);
+
+        return _ReportedExtensionDiff < range;
+    }
+
     // Maximum value the encoder can be extended too (mm)
     public float    _MaxEncoderExtension = 40;
 
@@ -150,7 +159,7 @@ public class Actuator : MonoBehaviour
     public bool _Donotsend = false;
     public bool _DEBUG_NoiseMovement = false;
 
-    float _ReportedToleranceMM = 10f;
+    float _ReportedToleranceMM = 2f;
 
     float _NoiseAmount = .15f;
     #endregion
@@ -324,9 +333,6 @@ public class Actuator : MonoBehaviour
                         TargetNormExtension -= amount;
                     else
                         TargetNormExtension += amount;
-
-
-
                 }
             }
             else
@@ -599,10 +605,7 @@ public class Actuator : MonoBehaviour
 
     #region HELPER METHODS
     
-    public bool IsNearTargetPos(float range = 20)
-    {
-        return _ReportedExtensionDiff < range;
-    }
+ 
 
     public void SetToReportedExtensionOnStartup()
     {
