@@ -397,15 +397,30 @@ public class UKI_PoseManager : MonoBehaviour
         UKI_UIManager.Instance.SetActuatorSliders();
     }
 
-    public void PrintAllActuatorRanges()
+    public void PrintAllActuatorValues()
+    {
+        //int outOfPlace = 0;
+
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+        {
+            //if(actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            {
+                print("ACTUATOR: " + actuator.Value + " Reported extension diff: " + actuator.Value._ReportedExtensionDiff);
+               
+            }
+        }
+
+    }
+
+    public void PrintAllActuatorOutOfRanges()
     {
         int outOfPlace = 0;
 
         foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
         {
-            if(actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            if (!actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
             {
-                print("ACTUATOR: " + actuator.Value + " Reported extension diff: " + actuator.Value._ReportedExtensionDiff);
+                print("ACTUATOR: " + actuator.Value + " Reported extension diff: " + actuator.Value._ReportedExtensionDiff + " Reported extension mm: " + actuator.Value._ReportedExtensionInMM);
                 outOfPlace++;
             }
         }

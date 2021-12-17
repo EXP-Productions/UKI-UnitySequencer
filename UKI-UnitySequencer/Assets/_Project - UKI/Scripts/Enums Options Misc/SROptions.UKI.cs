@@ -27,7 +27,12 @@ public partial class SROptions
 
     public void PrintActuatorPositions()
     {
-        UKI_PoseManager.Instance.PrintAllActuatorRanges();
+        UKI_PoseManager.Instance.PrintAllActuatorValues();
+    }
+
+    public void PrintActuatorsOutOfRange()
+    {
+        UKI_PoseManager.Instance.PrintAllActuatorOutOfRanges();
     }
 
     private bool _DebugUDP;

@@ -340,7 +340,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     
     int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
     {
-        return (data[startIndex + 1] << 8)
-             | data[startIndex];
+        return (data[startIndex + 1] << 8) | data[startIndex];
     }
+
 }
