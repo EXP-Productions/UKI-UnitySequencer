@@ -81,20 +81,20 @@ public class Actuator : MonoBehaviour
             // if the new value isn't the target value then send set point to wrapper
             if (value != _TargetNormExtension)
             {
-                _TargetNormExtension = Mathf.Clamp(value, 0.05f, .95f);
+                _TargetNormExtension = Mathf.Clamp(value, 0.05f, .95f); // TODO - may not needed with new safety features
                 _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
 
                 SendEncoderExtensionLength();
 
                 if(UkiCommunicationsManager.Instance._DebugActuatorInternal)
-                    print("Sending: " + name + " Norm: " + value   + "  Actuator length: " + CurrentEncoderExtension);
+                    print("Sending: " + name + " Norm: " + value   + "  Actuator length: " + CurrentTargetExtensionMM);
             }            
         }
     }
 
     float RotationAngle { get { return Mathf.Lerp(0, RotationRange, TargetNormExtension); } }
-    bool AtTargetExtension { get { return _ReportedExtensionDiff < _ReportedTollerance; } }
-    // Maximum value the encoder can be extended too  
+    bool AtTargetExtension { get { return _ReportedExtensionDiff < _ReportedToleranceMM; } }
+    // Maximum value the encoder can be extended too (mm)
     public float    _MaxEncoderExtension = 40;
 
     float _MovementAnimationDirection = 1;
@@ -109,8 +109,7 @@ public class Actuator : MonoBehaviour
 
     public float _ReportedExtensionDiff;
 
-    // The current encoder extension is scaled by 10 because modbus is expecting a mm value with a decimal place
-    float CurrentEncoderExtension { get { return Mathf.Clamp(Mathf.Clamp01(TargetNormExtension) * _MaxEncoderExtension * 10, 0, _MaxEncoderExtension * 10); } }
+    float CurrentTargetExtensionMM { get { return Mathf.Clamp(Mathf.Clamp01(TargetNormExtension) * _MaxEncoderExtension, 0, _MaxEncoderExtension); } }
 
     // The time taken to extend from 0 - 1
     public float _FullExtensionDuration = 10;
@@ -137,7 +136,7 @@ public class Actuator : MonoBehaviour
     // Extension value read in from modbus - Doesn't line up exactly with the set point value we send
     public float _ReportedExtensionInMM;
     // The maximum extension reported when extended to the full length of _MaxEncoderExtension in mm
-    public float _MaxReportedExtension = 40;    
+    public float _MaxReportedExtensionMM = 40;    
     // Reporeted speed and accel read in from modbus
     public int ReportedSpeed { private set; get; }
     public int ReportedAcceleration { private set; get; }
@@ -151,7 +150,7 @@ public class Actuator : MonoBehaviour
     public bool _Donotsend = false;
     public bool _DEBUG_NoiseMovement = false;
 
-    public float _ReportedTollerance = 20;
+    float _ReportedToleranceMM = 10f;
 
     float _NoiseAmount = .15f;
     #endregion
@@ -225,13 +224,14 @@ public class Actuator : MonoBehaviour
 
                     boost *= _OfflineSpeedScaler;
 
-                    if (_ReportedExtensionInMM < CurrentEncoderExtension)
-                        _ReportedExtensionInMM += (_MaxReportedExtension / _FullExtensionDuration) * Time.deltaTime * boost;
+                    if (_ReportedExtensionInMM < CurrentTargetExtensionMM)
+                        _ReportedExtensionInMM += (_MaxReportedExtensionMM / _FullExtensionDuration) * Time.deltaTime * boost;
                     else
-                        _ReportedExtensionInMM -= (_MaxReportedExtension / _FullRetractionDuration) * Time.deltaTime * boost;
+                        _ReportedExtensionInMM -= (_MaxReportedExtensionMM / _FullRetractionDuration) * Time.deltaTime * boost;
+
                 }
 
-                _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtension;
+                _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtensionMM;
             }
         }
         // UDP MODE - read in actuators from udp
@@ -239,19 +239,19 @@ public class Actuator : MonoBehaviour
         {
             // READ IN
 
-            float newReportedExtension = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
+            float newReportedExtensionMM = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
 
-            if(newReportedExtension != _ReportedExtensionInMM && _DEBUG_RoundRobin)
+            if(newReportedExtensionMM != _ReportedExtensionInMM && _DEBUG_RoundRobin)
             {
                 Debug.Log(name + " reporting interval: " + (Time.time - _RoundRobinTime));
                 _RoundRobinTime = Time.time;
             }
 
-            _ReportedExtensionInMM = newReportedExtension;
+            _ReportedExtensionInMM = newReportedExtensionMM;
             ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
 
             // Update the readin actuator transform
-            _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtension;
+            _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtensionMM;
         }
 
         #endregion
@@ -265,7 +265,7 @@ public class Actuator : MonoBehaviour
         _ReportedActuatorTransform.localRotation = _InitialRotation * Quaternion.AngleAxis(reportedRotation, _RotationAxis);
 
         // difference between reported and the set length
-        _ReportedExtensionDiff = Mathf.Abs(_ReportedExtensionInMM - (TargetNormExtension * _MaxReportedExtension));
+        _ReportedExtensionDiff = Mathf.Abs(_ReportedExtensionInMM - CurrentTargetExtensionMM);// (TargetNormExtension * _MaxReportedExtensionMM));
 
         #endregion
 
@@ -280,11 +280,22 @@ public class Actuator : MonoBehaviour
         else if (_State == UKIEnums.State.Paused)
         {
             // IF REPORTED AND TARGET EXTENSION AREN't EQUAL THEN SET TO ANIMATING
-            if (_ReportedExtensionDiff >= _ReportedTollerance * 3)
+            if (_ReportedExtensionDiff >= _ReportedToleranceMM * 3)
                 SetState(UKIEnums.State.Animating);
         }
         else if (_State == UKIEnums.State.Animating)
         {
+            //TODO - cleanup
+            if (_DEBUG)
+            {
+                print("CurrentTargetExtensionMM: " + CurrentTargetExtensionMM);
+                print("_ReportedExtensionInMM: " + _ReportedExtensionInMM);
+                print("_ReportedExtensionDiff: " + _ReportedExtensionDiff);
+                print("TargetNormExtension: " + TargetNormExtension);
+                print("_RotationRange: " + _RotationRange);
+                print(AtTargetExtension);
+            }
+
             // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING
             if (AtTargetExtension)
             {
@@ -418,7 +429,7 @@ public class Actuator : MonoBehaviour
 
         _ReportedExtensionInMM = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
         ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
-        _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtension;
+        _CurrentNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtensionMM;
     }
 
     public void Calibrate()
@@ -552,14 +563,14 @@ public class Actuator : MonoBehaviour
             return;
 
         if (_DEBUG)
-            print(CurrentEncoderExtension);
+            print(CurrentTargetExtensionMM);
 
         if (_Side == ActuatorSide.Left && !_UKIManager._LeftSendToggle.isOn)
             return;
         else if (_Side == ActuatorSide.Right && !_UKIManager._RightSendToggle.isOn)
             return;
 
-        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentEncoderExtension, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);
+        UkiCommunicationsManager.Instance.SendActuatorSetPointCommand(_ActuatorIndex, (int)CurrentTargetExtensionMM, _BoostSpeedToggled ? (int)_BoostExtensionSpeed : (int)_ExtensionSpeed);
     }
     
     void SendCalibrateMessage()
@@ -609,7 +620,7 @@ public class Actuator : MonoBehaviour
     [ContextMenu("Set max reported extension")]
     void SetMaxReportedExtension()
     {
-        _MaxReportedExtension = _ReportedExtensionInMM;
+        _MaxReportedExtensionMM = _ReportedExtensionInMM;
     }
 
     [ContextMenu("Calibrate Extension Speed")]

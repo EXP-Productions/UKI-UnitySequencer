@@ -252,18 +252,18 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         //position = Mathf.Clamp(speed, 0, 100);
 
         // Set speed
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)actuator;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
-        actuatorMessage[2] = (uint)speed;
-        SendInts(actuatorMessage, true);
+        uint[] actuatorSpeedMsg = new uint[3];
+        actuatorSpeedMsg[0] = (uint)actuator;
+        actuatorSpeedMsg[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
+        actuatorSpeedMsg[2] = (uint)speed;
+        SendInts(actuatorSpeedMsg, true);
 
         // Set actuator position
-        uint[] actuatorMessage2 = new uint[3];
-        actuatorMessage2[0] = (uint)actuator;
-        actuatorMessage2[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
-        actuatorMessage2[2] = (uint)position;
-        SendInts(actuatorMessage2, true);
+        uint[] actuatorPosMsg = new uint[3];
+        actuatorPosMsg[0] = (uint)actuator;
+        actuatorPosMsg[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
+        actuatorPosMsg[2] = (uint)position;
+        SendInts(actuatorPosMsg, true);
 
         _SentMsgCount++;
 
