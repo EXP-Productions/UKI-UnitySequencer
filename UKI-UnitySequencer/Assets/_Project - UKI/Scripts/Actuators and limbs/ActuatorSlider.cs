@@ -76,6 +76,11 @@ public class ActuatorSlider : MonoBehaviour
                 break;
         }
 
+        if (!_Actuator.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            _TextName.text = _ActuatorAssignment.ToString() + "  " + _Actuator._ReportedExtensionDiff.ToString("##.#");
+        else
+            _TextName.text = _ActuatorAssignment.ToString();
+
         _Slider.colors = _ColBlock;
     }
 

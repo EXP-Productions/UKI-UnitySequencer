@@ -112,6 +112,7 @@ public class UKILightingManager : MonoBehaviour
     public bool _UpdateAnimation = false;
     ParticleSystem.Particle[] _LEDParticles;
     public bool forceGC = false;
+    public bool UpdateLighting { private get; set; } = false;
     private void FixedUpdate()
     {
         if (AnimationsRunning)
@@ -133,7 +134,8 @@ public class UKILightingManager : MonoBehaviour
             }
 
             Profiler.BeginSample("Updating BlinkyBlinky lights"); 
-            BlinkyBlinky.UpdateLights();  // TODO has 282k GC
+            if(UpdateLighting)
+                BlinkyBlinky.UpdateLights();  // TODO has 282k GC
             Profiler.EndSample();
 
             // Profiler.BeginSample("Updating particles");

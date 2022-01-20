@@ -30,33 +30,28 @@ public class UKI_UIManager : MonoBehaviour
     [Header("UI - ACTUATORS")]
     public Toggle _LeftSendToggle;
     public Toggle _RightSendToggle;
-    
-   
 
-    
+    [Header("UI - LIGHTING")]
+    public Toggle _LightingSend;
+
+
+
+
 
     private void Awake()
     {
         Instance = this;
     }
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            // Send EStop
-            if (Input.GetKey(KeyCode.E))
-            {
-                UkiCommunicationsManager.Instance.EStop("ESTOP sent from C2");
-            }
-        }
-    }
-
-
+   
     public bool _IgnoreCollisions = false;
     // Start is called before the first frame update
     void Start()
     {
+        //-- LIGHTING UPDATE      
+        _LightingSend.onValueChanged.AddListener((bool b) => UKILightingManager.Instance.UpdateLighting = b);
+        UKILightingManager.Instance.UpdateLighting = false;
+
         //_EStopButton.onClick.AddListener(() => UkiCommunicationsManager.Instance.EStopButtonToggle());
 
         _IgnoreCollisionHoldButton._OnDown.AddListener(() => { UkiCommunicationsManager.Instance.EStopButtonToggle(); _IgnoreCollisions = true; });
@@ -74,6 +69,18 @@ public class UKI_UIManager : MonoBehaviour
         SetUKIModeFromDropDown((int)UKIMode.Simulation);
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            // Send EStop
+            if (Input.GetKey(KeyCode.E))
+            {
+                UkiCommunicationsManager.Instance.EStop("ESTOP sent from C2");
+            }
+        }
     }
 
     void SetUKIModeFromDropDown(int i)
