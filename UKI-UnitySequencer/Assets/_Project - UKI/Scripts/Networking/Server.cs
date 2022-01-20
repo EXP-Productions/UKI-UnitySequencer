@@ -104,13 +104,19 @@ public class Server : MonoBehaviour
             {
                 WriteBytes(new byte[] { 8, 7, 6, 4 });
                 WriteBytes(new byte[] { 81, 71, 61, 41, 31, 91 });
-                BroadcastBytes(_Clients);
+                //BroadcastBytes(_Clients);
             }
             else
             {
                 Broadcast(_TestMessage, _Clients);
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if(_BytesList.Count > 0)
+            BroadcastBytes(_Clients);
     }
 
     #region CONNECTION
@@ -217,6 +223,37 @@ public class Server : MonoBehaviour
         {
             _BytesList.Add(data[i]);
         }
+    }
+
+    public void WriteInts(uint[] intVals, bool littleEndian, bool debugPrint = true)
+    {
+        for (uint i = 0; i < intVals.Length; i++)
+        {
+            if (littleEndian)
+            {
+                _BytesList.AddRange(IntToLittleEndian(intVals[i]));
+            }
+            else
+            {
+                _BytesList.AddRange(System.BitConverter.GetBytes(intVals[i]));
+            }
+        }
+
+        string debug = "";
+        foreach (byte by in _BytesList)
+        {
+            debug += by.ToString() + ",";
+        }
+
+        if (debugPrint) Debug.Log(Time.timeSinceLevelLoad + "  -  Adding bytes array to stack: " + debug);
+    }
+
+    byte[] IntToLittleEndian(uint data)
+    {
+        byte[] b = new byte[2];
+        b[0] = (byte)data;
+        b[1] = (byte)((data >> 8) & 0xFF);
+        return b;
     }
     #endregion
 

@@ -221,7 +221,7 @@ public class Actuator : MonoBehaviour
         #region REPORTED EXTENSION
 
         // SIMULATION MODE - Run simulation without sending to modbus
-        if (UkiCommunicationsManager.Instance._UKIMode == UKIMode.Simulation)
+        if (UkiCommunicationsManager.Instance.IsSimulating)
         {
             if (!UkiCommunicationsManager.Instance._EStopping)
             {
@@ -249,7 +249,6 @@ public class Actuator : MonoBehaviour
         else
         {
             // READ IN
-
             float newReportedExtensionMM = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
 
             if(newReportedExtensionMM != _ReportedExtensionInMM && _DEBUG_RoundRobin)
@@ -349,7 +348,7 @@ public class Actuator : MonoBehaviour
         float normDiff = Mathf.Abs(_TargetNormExtension - _ReportedNormExtension);
         float scalar = 1;
 
-        if(UkiCommunicationsManager.Instance._UKIMode == UKIMode.Simulation)
+        if(UkiCommunicationsManager.Instance.IsSimulating)
             scalar = _OfflineSpeedScaler;
 
         // extending

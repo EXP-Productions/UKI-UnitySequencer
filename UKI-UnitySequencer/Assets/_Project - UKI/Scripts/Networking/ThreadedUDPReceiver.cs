@@ -133,6 +133,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
         }
                 
         if(debugPrint) Debug.Log(Time.timeSinceLevelLoad + "  -  Adding bytes array to stack: " + debug);
+        
         Send(payloadBytesList.ToArray());
     }
 

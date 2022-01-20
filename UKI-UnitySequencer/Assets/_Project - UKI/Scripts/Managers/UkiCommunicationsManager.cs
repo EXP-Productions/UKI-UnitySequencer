@@ -8,8 +8,9 @@ using System;
 
 public enum UKIMode
 {
-    SendUDP,
     Simulation,
+    SendUDP,
+    SendTCP,    
 }
 
 
@@ -30,6 +31,8 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     [HideInInspector]
     public UKI_UIManager _UIManager;
 
+    public Server _TCPServer;
+
     Actuator[] _Actuators;
 
     // Calibration wait time, this is how long we wait for all limbs to come in before we consider them calibrated
@@ -44,15 +47,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public UkiActuatorAssignments[] _TestActuator;
     public float _TestSpeed = 1;
     public float _TestTime = 1;
-
     public float _TestPos = 100;
-
 
     public bool _DBInitialized = false;
 
     // Send the messages out to modbus to set the real world limbs positions
     public UKIMode _UKIMode = UKIMode.Simulation;
-
+    public bool IsSimulating { get { return _UKIMode == UKIMode.Simulation; } }
 
     // 20 0 65
     // -30 -10 85
@@ -85,7 +86,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _UIManager = UKI_UIManager.Instance;
 
         StartCoroutine(UDPStartupProcedure());
-
         StartCoroutine(SendHeartBeat());
     }
 
@@ -97,6 +97,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         if(_UKIMode == UKIMode.SendUDP)
         {
+            StartCoroutine(UDPStartupProcedure());
+        }
+        else if(_UKIMode == UKIMode.SendTCP)
+        {
+            print("SendTCP");
             StartCoroutine(UDPStartupProcedure());
         }
     }
@@ -117,7 +122,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _EStopping = true;
         _UIManager.UpdateEstopButton();
         
-        if (_UKIMode == UKIMode.Simulation)
+        if (IsSimulating)
             return;
 
         // Send message to wrapper
@@ -125,7 +130,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
         actuatorMessage[1] = (uint)ModBusRegisters.MB_ESTOP;
         actuatorMessage[2] = (uint)20560;
-        SendInts(actuatorMessage, true);
+
+        if(_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorMessage, true);
+        else
+            _TCPServer.WriteInts(actuatorMessage, true);
     }
     
     void ResetEStop()
@@ -138,7 +147,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
         actuatorMessage[1] = (uint)ModBusRegisters.MB_RESET_ESTOP;
         actuatorMessage[2] = (uint)20560;
-        SendInts(actuatorMessage, true);
+
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorMessage, true);
+        else
+            _TCPServer.WriteInts(actuatorMessage, true);
 
         _EStopping = false;
         _UIManager.UpdateEstopButton();
@@ -242,7 +255,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
-        if (_UKIMode == UKIMode.Simulation)
+        if (IsSimulating)
             return;
         
         if (_DebugSend)
@@ -256,17 +269,26 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorPosMsg[0] = (uint)actuator;
         actuatorPosMsg[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorPosMsg[2] = (uint)position;
-        SendInts(actuatorPosMsg, true, _DebugSend);
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorPosMsg, true);
+        else
+            _TCPServer.WriteInts(actuatorPosMsg, true);
 
         // Set speed
         uint[] actuatorSpeedMsg = new uint[3];
         actuatorSpeedMsg[0] = (uint)actuator;
         actuatorSpeedMsg[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
         actuatorSpeedMsg[2] = (uint)speed;
-        SendInts(actuatorSpeedMsg, true, _DebugSend);
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorSpeedMsg, true);
+        else
+            _TCPServer.WriteInts(actuatorSpeedMsg, true);
 
         // TODO - DEBUG ADDING PADDING
-        SendInts(_HeartBeatMessage, true);
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(_HeartBeatMessage, true);
+        else
+            _TCPServer.WriteInts(_HeartBeatMessage, true);
 
 
         _SentMsgCount++;
@@ -293,20 +315,26 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     // Sends a message to set actuator accel to 90 and setpoint 0 
     public void SendCalibrationMessage(int index, int motorSpeed)
     {
-        if (_UKIMode == UKIMode.Simulation)
+        if (IsSimulating)
             return;
 
         uint[] actuatorMessage1 = new uint[3];
         actuatorMessage1[0] = (uint)index;
         actuatorMessage1[1] = (uint)ModBusRegisters.MB_MOTOR_ACCEL;
         actuatorMessage1[2] = (uint)95; // accel
-        SendInts(actuatorMessage1, true);
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorMessage1, true);
+        else
+            _TCPServer.WriteInts(actuatorMessage1, true);
 
         uint[] actuatorMessage2 = new uint[3];
         actuatorMessage2[0] = (uint)index;
         actuatorMessage2[1] = (uint)ModBusRegisters.MB_MOTOR_SETPOINT;
         actuatorMessage2[2] = (uint)motorSpeed;
-        SendInts(actuatorMessage2, true);
+        if (_UKIMode == UKIMode.SendUDP)
+            SendInts(actuatorMessage2, true);
+        else
+            _TCPServer.WriteInts(actuatorMessage2, true);
     }
 
     /*
@@ -330,8 +358,11 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             if (_UKIMode == UKIMode.SendUDP && !_EStopping)
             {
                 yield return new WaitForSeconds(0.5f);
-                _UIManager._HeartBeatDisplay.color = Color.red;                
-                SendInts(_HeartBeatMessage, true);
+                _UIManager._HeartBeatDisplay.color = Color.red;
+                if (_UKIMode == UKIMode.SendUDP)
+                    SendInts(_HeartBeatMessage, true);
+                else
+                    _TCPServer.WriteInts(_HeartBeatMessage, true);
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.white;
             }

@@ -57,14 +57,13 @@ public class UKI_UIManager : MonoBehaviour
         _IgnoreCollisionHoldButton._OnDown.AddListener(() => { UkiCommunicationsManager.Instance.EStopButtonToggle(); _IgnoreCollisions = true; });
         _IgnoreCollisionHoldButton._OnUp.AddListener(() => _IgnoreCollisions = false);
 
-        _UKIModeDropDown.AddOptions(new List<string>() { "Sending UDP", "Simulation" });
+        _UKIModeDropDown.AddOptions(new List<string>() { "Simulation", "Sending UDP", "Sending TCP",  });
         _UKIModeDropDown.onValueChanged.AddListener((int i) => SetUKIModeFromDropDown(i));
-        _UKIModeDropDown.SetValueWithoutNotify(1);
+        _UKIModeDropDown.SetValueWithoutNotify(0);
 
         _CalibrateButton.onClick.AddListener(UKI_PoseManager.Instance.CalibrationPose);
 
         _ActuatorSliders = FindObjectsOfType<ActuatorSlider>();
-
 
         SetUKIModeFromDropDown((int)UKIMode.Simulation);
 
@@ -86,7 +85,7 @@ public class UKI_UIManager : MonoBehaviour
     void SetUKIModeFromDropDown(int i)
     {
         // Enable sends for left and right
-        if (i == (int)UKIMode.SendUDP)
+        if (i != (int)UKIMode.Simulation)
         {
             _LeftSendToggle.gameObject.SetActive(true);
             _RightSendToggle.gameObject.SetActive(true);

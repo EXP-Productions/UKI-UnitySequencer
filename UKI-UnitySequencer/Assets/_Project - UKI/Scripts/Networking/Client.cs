@@ -8,6 +8,8 @@ using UnityEngine;
 public class Client : MonoBehaviour
 {
     public ReadType _ReadType = ReadType.String;
+    public int _Port = 8001;
+    public string _Host = "127.0.0.1";
 
     bool _SocketReady;
     TcpClient _Socket;
@@ -26,13 +28,9 @@ public class Client : MonoBehaviour
         if (_SocketReady)
             return;
 
-        // Default values
-        string host = "127.0.0.1";
-        int port = 6321;
-
         try
         {
-            _Socket = new TcpClient(host, port);
+            _Socket = new TcpClient(_Host, _Port);
             _Stream = _Socket.GetStream();
             _Writer = new StreamWriter(_Stream);
             _Reader = new StreamReader(_Stream);
