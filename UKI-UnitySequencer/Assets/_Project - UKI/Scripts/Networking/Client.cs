@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Client : MonoBehaviour
 {
+    public ReadType _ReadType = ReadType.String;
+
     bool _SocketReady;
     TcpClient _Socket;
     NetworkStream _Stream;
@@ -49,26 +51,56 @@ public class Client : MonoBehaviour
         {
             if(_Stream.DataAvailable)
             {
-                string data = _Reader.ReadLine();
-                if (data != null)
-                    OnIncomingData(data);
+                if (_ReadType == ReadType.String)
+                {
+                    string data = _Reader.ReadLine();
+                    if (data != null)
+                        OnIncomingData(data);
+                }
+                else
+                {
+                    int count = _Stream.ReadByte();
+                    byte[] byteData = new byte[count];
+                    _Stream.Read(byteData, 0, byteData.Length);
+                    if (byteData != null)
+                        OnIncomingData(byteData);
+                }
             }
         }
 
         //--  DEBUG
         if(Input.GetKeyDown(KeyCode.C))
         {
-            WriteBytes(new byte[] { 0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19, 20 });
-            WriteBytes(new byte[] { 15, 16, 17, 18, 19, 20, 99, 98 });
-            SendBytes();
+            if (_ReadType == ReadType.ByteArray)
+            {
+                WriteBytes(new byte[] { 0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19, 20 });
+                WriteBytes(new byte[] { 15, 16, 17, 18, 19, 20, 99, 98 });
+                SendBytes();
+            }
+            else
+            {
+                Send("Test string");
+            }
         }
     }
 
+    #region READ
     private void OnIncomingData(string data)
     {
         Debug.Log("Server: " + data);
     }
 
+    private void OnIncomingData(byte[] data)
+    {
+        Debug.Log("Recieved data of length : " + data.Length);
+        for (int i = 0; i < data.Length; i++)
+        {
+            Debug.Log(i + " - " + data[i]);
+        }
+    }
+    #endregion
+
+    #region WRITE
     void Send(string data)
     {
         if (!_SocketReady)
@@ -89,21 +121,16 @@ public class Client : MonoBehaviour
 
     void SendBytes()
     {
+        // Insert bytelist count at start of list
         _BytesList.Insert(0, (byte)_BytesList.Count);
+
         _Stream.Write(_BytesList.ToArray(), 0, _BytesList.Count);
         _Stream.Flush();
         _BytesList.Clear();
     }
+    #endregion
 
-    void Send(byte[] data)
-    {
-        if (!_SocketReady)
-            return;
-
-        _Stream.Write(data, 0, data.Length);
-        _Stream.Flush();
-    }
-
+    #region CLEAN UP
     void CloseSocket()
     {
         if (!_SocketReady)
@@ -124,4 +151,5 @@ public class Client : MonoBehaviour
     {
         CloseSocket();
     }
+    #endregion
 }

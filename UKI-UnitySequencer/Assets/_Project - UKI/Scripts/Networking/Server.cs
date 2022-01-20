@@ -6,25 +6,22 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
+public enum ReadType
+{
+    String,
+    ByteArray
+}
+
 public class Server : MonoBehaviour
 {
-    public enum ReadType
-    {
-        String,
-        ByteArray
-    }
-
     List<ServerClient> _Clients = new List<ServerClient>();
     List<ServerClient> _DisconnectList = new List<ServerClient>();
 
-    public ReadType _ReadType = ReadType.ByteArray;
+    public ReadType _ReadType = ReadType.String;
     public string _LocalIP;
     public int _Port = 6321;
     TcpListener _Server;
     bool _ServerStarted = false;
-
-    
-
 
     public string _TestMessage = "Test 1234";
 
@@ -103,27 +100,23 @@ public class Server : MonoBehaviour
         //--  DEBUG
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Broadcast(_TestMessage, _Clients);
+            if(_ReadType == ReadType.ByteArray)
+            {
+                WriteBytes(new byte[] { 8, 7, 6, 4 });
+                WriteBytes(new byte[] { 81, 71, 61, 41, 31, 91 });
+                BroadcastBytes(_Clients);
+            }
+            else
+            {
+                Broadcast(_TestMessage, _Clients);
+            }
         }
     }
 
-    private void OnIncomingData(ServerClient c, string data)
-    {
-        Debug.Log(c._ClientName + " has sent: " + data);
-    }
-
-    private void OnIncomingData(ServerClient c, byte[] data)
-    {
-        Debug.Log(c._ClientName + " has sent data of length : " + data.Length);
-        for (int i = 0; i < data.Length; i++)
-        {
-            Debug.Log(i + " - " + data[i]);
-        }       
-    }
-
+    #region CONNECTION
     private bool IsConnected(TcpClient tcp)
     {
-        try 
+        try
         {
             if (tcp != null && tcp.Client != null && tcp.Client.Connected)
             {
@@ -158,7 +151,25 @@ public class Server : MonoBehaviour
         //--  Send message to tell everyone a new client has joined
         Broadcast(_Clients[_Clients.Count - 1]._ClientName + " has connected", _Clients);
     }
+    #endregion
 
+    #region READ
+    private void OnIncomingData(ServerClient c, string data)
+    {
+        Debug.Log(c._ClientName + " has sent: " + data);
+    }
+
+    private void OnIncomingData(ServerClient c, byte[] data)
+    {
+        Debug.Log(c._ClientName + " has sent data of length : " + data.Length);
+        for (int i = 0; i < data.Length; i++)
+        {
+            Debug.Log(i + " - " + data[i]);
+        }       
+    }
+    #endregion
+
+    #region WRITE
     void Broadcast(string data, List<ServerClient> clients)
     {
         foreach (ServerClient c in clients)
@@ -175,6 +186,39 @@ public class Server : MonoBehaviour
             }
         }
     }
+
+    void BroadcastBytes(List<ServerClient> clients)
+    {
+        // Insert bytelist count at start of list
+        _BytesList.Insert(0, (byte)_BytesList.Count);
+        byte[] byteArray = _BytesList.ToArray();
+
+        foreach (ServerClient c in clients)
+        {
+            try
+            {
+                Stream stream = c._Tcp.GetStream();
+                stream.Write(byteArray, 0, byteArray.Length);
+                stream.Flush();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Write error: " + e.Message + " to clients " + c._ClientName);
+            }
+        }
+
+        _BytesList.Clear();
+    }
+
+    List<byte> _BytesList = new List<byte>();
+    void WriteBytes(byte[] data)
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            _BytesList.Add(data[i]);
+        }
+    }
+    #endregion
 
     public static string GetLocalIPAddress()
     {
