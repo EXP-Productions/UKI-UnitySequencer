@@ -99,8 +99,8 @@ public class Actuator : MonoBehaviour
     {
         float range = SROptions.Current.ActuatorArrivalRange;
 
-        if(_ReportedExtensionDiff > range)
-            print(_ActuatorIndex + "    _ReportedExtensionDiff: " + _ReportedExtensionDiff);
+        //if(_ReportedExtensionDiff > range)
+        //    print(_ActuatorIndex + "    _ReportedExtensionDiff: " + _ReportedExtensionDiff);
 
         return _ReportedExtensionDiff < range;
     }
@@ -297,12 +297,12 @@ public class Actuator : MonoBehaviour
             //TODO - cleanup
             if (_DEBUG)
             {
-                print("CurrentTargetExtensionMM: " + CurrentTargetExtensionMM);
-                print("_ReportedExtensionInMM: " + _ReportedExtensionInMM);
-                print("_ReportedExtensionDiff: " + _ReportedExtensionDiff);
-                print("TargetNormExtension: " + TargetNormExtension);
-                print("_RotationRange: " + _RotationRange);
-                print(AtTargetExtension);
+                //print("CurrentTargetExtensionMM: " + CurrentTargetExtensionMM);
+                //print("_ReportedExtensionInMM: " + _ReportedExtensionInMM);
+                //print("_ReportedExtensionDiff: " + _ReportedExtensionDiff);
+                //print("TargetNormExtension: " + TargetNormExtension);
+                //print("_RotationRange: " + _RotationRange);
+                //print(AtTargetExtension);
             }
 
             // IF REPORTED AND TARGET EXTENSION ARE EQUAL THEN SET TO ANIMATING

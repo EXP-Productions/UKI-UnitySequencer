@@ -244,9 +244,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         if (_UKIMode == UKIMode.Simulation)
             return;
-
+        
         if (_DebugSend)
-            Debug.LogWarning(" ----------------------------------- Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed + "     Time:" + _Timer );
+            Debug.Log(" ----- Sending: Setting encoder: " + actuator.ToString() + " too pos: " + position + " speed: " + speed + "     Time:" + _Timer );
 
         speed = Mathf.Clamp(speed, 0, 30);
         //position = Mathf.Clamp(speed, 0, 100);
@@ -256,16 +256,18 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         actuatorPosMsg[0] = (uint)actuator;
         actuatorPosMsg[1] = (uint)ModBusRegisters.MB_GOTO_POSITION;
         actuatorPosMsg[2] = (uint)position;
-        SendInts(actuatorPosMsg, true);
+        SendInts(actuatorPosMsg, true, _DebugSend);
 
         // Set speed
         uint[] actuatorSpeedMsg = new uint[3];
         actuatorSpeedMsg[0] = (uint)actuator;
         actuatorSpeedMsg[1] = (uint)ModBusRegisters.MB_GOTO_SPEED_SETPOINT;
         actuatorSpeedMsg[2] = (uint)speed;
-        SendInts(actuatorSpeedMsg, true);
+        SendInts(actuatorSpeedMsg, true, _DebugSend);
 
-       
+        // TODO - DEBUG ADDING PADDING
+        SendInts(_HeartBeatMessage, true);
+
 
         _SentMsgCount++;
 

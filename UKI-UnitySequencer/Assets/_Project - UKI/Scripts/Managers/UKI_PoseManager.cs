@@ -94,6 +94,22 @@ public class UKI_PoseManager : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C))
             _IgnoreCollission = !_IgnoreCollission;
 
+
+        //--  READY COUNT
+        _ReadyCount = 0;
+        foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
+        {
+            // make arse always ready bc sometimes it doesnt get the msg
+            if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
+                _ReadyCount++;
+            else if (actuator.Value.IsAtTargetPosition())
+                _ReadyCount++;
+        }
+
+
+        _CheckPoseTimeout -= Time.deltaTime;
+
+
         if (_SequencerState == SequencerState.Playing)
         {
             if(_ActiveSequencePoseList.Count == 0)
@@ -104,17 +120,17 @@ public class UKI_PoseManager : MonoBehaviour
 
             // CHECK IF ALL ACTUATORS ARE STOPPED
             float maxTimeToTaget = 0;
-            _ReadyCount = 0;
+            //_ReadyCount = 0;
 
             foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
             {
                 maxTimeToTaget = Mathf.Max(maxTimeToTaget, actuator.Value.TimeToTarget());
 
-                // make arse always ready bc sometimes it doesnt get the msg
-                if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
-                    _ReadyCount++;
-                else if (actuator.Value.IsAtTargetPosition())
-                    _ReadyCount++;
+                //// make arse always ready bc sometimes it doesnt get the msg
+                //if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
+                //    _ReadyCount++;
+                //else if (actuator.Value.IsAtTargetPosition())
+                //    _ReadyCount++;
             }
 
             if (_HoldDuration > 0)
@@ -131,7 +147,7 @@ public class UKI_PoseManager : MonoBehaviour
             }
 
             // If enough actuators are ready then go to next pose
-            if(_HoldDuration == 0 && _ReadyCount >= _RequiredReadyCount)
+            if(_HoldDuration == 0 && _ReadyCount >= _RequiredReadyCount && _CheckPoseTimeout <= 0)
             {
                 _PoseSequenceIndex++;
                 if (_PoseSequenceIndex >= _ActiveSequencePoseList.Count)
@@ -152,8 +168,6 @@ public class UKI_PoseManager : MonoBehaviour
         }
         else
         {
-           
-
             if (Input.GetKeyDown(KeyCode.P))
                 AssessSequenceDuration();
         }
@@ -228,7 +242,6 @@ public class UKI_PoseManager : MonoBehaviour
         _PoseSequenceIndex = poseSeqIndex;
         SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], _MaskWings);
         UKI_PoseManager_UI.Instance.HighlightPoseSequenceButton();
-
         UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex/(float)(_ActiveSequencePoseList.Count-1));
     }
 
@@ -314,12 +327,42 @@ public class UKI_PoseManager : MonoBehaviour
         print("Total sequence duration: " + totalDuration);
     }
 
+
+    float _CheckPoseTimeout = 1;
     public void SetPoseByName(string name, bool maskWings = false)
     {
         //print("Setting pose by name: " + name);
 
         PoseData poseData = _PoseLibrary.Single(s => s._Name == name);
+        bool testingOverTime = true; // TODO debugging
 
+        _CheckPoseTimeout = .5f;
+        if (testingOverTime)
+        {
+            StartCoroutine("SetPoseOverTime", poseData);
+        }
+        else
+        {
+            // for each actuator in pose data
+            for (int i = 0; i < poseData._ActuatorDataList.Count; i++)
+            {
+                Actuator actuator = UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex];
+
+                // set actuator target norm extension unless wing mask is active
+                if (maskWings && poseData._ActuatorDataList[i]._ActuatorIndex.ToString().Contains("Wing"))
+                    continue;
+                else
+                    UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorDataList[i]._NormalizedValue;
+            }
+
+            // Set UI
+            UKI_UIManager.Instance.SetActuatorSliders(true);
+        }
+    }
+
+    IEnumerator SetPoseOverTime(PoseData poseData)
+    {
+        bool maskWings = true;
         // for each actuator in pose data
         for (int i = 0; i < poseData._ActuatorDataList.Count; i++)
         {
@@ -330,6 +373,8 @@ public class UKI_PoseManager : MonoBehaviour
                 continue;
             else
                 UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorDataList[i]._NormalizedValue;
+
+            yield return new WaitForEndOfFrame();
         }
 
         // Set UI

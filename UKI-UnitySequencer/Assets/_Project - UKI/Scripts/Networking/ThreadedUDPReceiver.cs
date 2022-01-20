@@ -80,8 +80,8 @@ public class ThreadedUDPReceiver : MonoBehaviour
             }
             if (payloadBytes != null)
             {
-                if(UkiCommunicationsManager.Instance._DebugSend)
-                    Debug.LogWarning( DateTime.Now.ToString() + "  ---  UDP sending: " + ByteArrayToString(payloadBytes) );
+                if(UkiCommunicationsManager.Instance._DebugSend && payloadBytes[0] != 240)
+                    Debug.Log( DateTime.Now.ToString() + "  ---  UDP sending: " + ByteArrayToString(payloadBytes) );
 
                 _Client.Send(payloadBytes, payloadBytes.Length, _BroadcastIP, _BroadcastPort);
             }
@@ -110,7 +110,7 @@ public class ThreadedUDPReceiver : MonoBehaviour
     #endregion
 
     #region "Send Data Methods"
-    public void SendInts(uint[] intVals, bool littleEndian)
+    public void SendInts(uint[] intVals, bool littleEndian, bool debugPrint = false)
     {
         List<byte> payloadBytesList = new List<byte>();
 
@@ -129,10 +129,10 @@ public class ThreadedUDPReceiver : MonoBehaviour
         string debug = "";
         foreach(byte by in payloadBytesList)
         {
-            debug += by.ToString();
+            debug += by.ToString() +",";
         }
                 
-        //print(Time.timeSinceLevelLoad + "  -  Sending bytes array: " + debug);
+        if(debugPrint) Debug.Log(Time.timeSinceLevelLoad + "  -  Adding bytes array to stack: " + debug);
         Send(payloadBytesList.ToArray());
     }
 
