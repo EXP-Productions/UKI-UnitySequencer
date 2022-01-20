@@ -25,7 +25,7 @@ public class UI_ClickDragCameraMove : MonoBehaviour, IPointerDownHandler
         {
             _CamPivot.Rotate(Vector3.up * Input.GetAxis("Mouse X") * _XSpeed);
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
                 _Clicked = false;
         }
 

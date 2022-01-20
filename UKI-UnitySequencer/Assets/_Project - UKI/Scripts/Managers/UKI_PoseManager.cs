@@ -113,7 +113,7 @@ public class UKI_PoseManager : MonoBehaviour
                 // make arse always ready bc sometimes it doesnt get the msg
                 if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
                     _ReadyCount++;
-                else if (actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+                else if (actuator.Value.IsAtTargetPosition())
                     _ReadyCount++;
             }
 
@@ -418,7 +418,7 @@ public class UKI_PoseManager : MonoBehaviour
 
         foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
         {
-            if (!actuator.Value.IsNearTargetPos(SROptions.Current.ActuatorArrivalRange))
+            if (!actuator.Value.IsAtTargetPosition())
             {
                 print("ACTUATOR: " + actuator.Value + " Reported extension diff: " + actuator.Value._ReportedExtensionDiff + " Reported extension mm: " + actuator.Value._ReportedExtensionInMM);
                 outOfPlace++;
