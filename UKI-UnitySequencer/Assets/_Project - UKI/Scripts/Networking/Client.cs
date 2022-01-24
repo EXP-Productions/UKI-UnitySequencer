@@ -7,6 +7,20 @@ using UnityEngine;
 
 public class Client : MonoBehaviour
 {
+    #region EVENTS
+    public delegate void OnHandleByteData(byte[] bytes);
+    public static event OnHandleByteData onHandleByteData;
+
+    public delegate void OnHandleStringData(string s);
+    public static event OnHandleStringData onHandleStringData;
+
+    public delegate void OnConnected();
+    public static event OnConnected onConnected;
+
+    public delegate void OnDisconnected();
+    public static event OnDisconnected onDisconnected;
+    #endregion
+
     public ReadType _ReadType = ReadType.String;
     public int _Port = 8001;
     public string _Host = "127.0.0.1";
@@ -16,6 +30,11 @@ public class Client : MonoBehaviour
     NetworkStream _Stream;
     StreamWriter _Writer;
     StreamReader _Reader;
+
+    [Header("Debug")]
+    public bool _Debug = false;
+
+   
 
     private void Start()
     {
@@ -35,10 +54,10 @@ public class Client : MonoBehaviour
             _Writer = new StreamWriter(_Stream);
             _Reader = new StreamReader(_Stream);
             _SocketReady = true;
+            onConnected?.Invoke();
         }
         catch (Exception e)
         {
-
             Debug.Log("Socket error: " + e.Message);
         }
     }
@@ -47,7 +66,7 @@ public class Client : MonoBehaviour
     {
         if(_SocketReady)
         {
-            if(_Stream.DataAvailable)
+            if (_Stream.DataAvailable)
             {
                 if (_ReadType == ReadType.String)
                 {
@@ -85,15 +104,25 @@ public class Client : MonoBehaviour
     #region READ
     private void OnIncomingData(string data)
     {
-        Debug.Log("Server: " + data);
+        onHandleStringData?.Invoke(data);
+
+        if (_Debug)
+        {
+            Debug.Log("Server: " + data);
+        }
     }
 
     private void OnIncomingData(byte[] data)
     {
-        Debug.Log("Recieved data of length : " + data.Length);
-        for (int i = 0; i < data.Length; i++)
+        onHandleByteData?.Invoke(data);
+
+        if (_Debug)
         {
-            Debug.Log(i + " - " + data[i]);
+            Debug.Log("Recieved data of length : " + data.Length);
+            for (int i = 0; i < data.Length; i++)
+            {
+                Debug.Log(i + " - " + data[i]);
+            }
         }
     }
     #endregion
@@ -138,6 +167,8 @@ public class Client : MonoBehaviour
         _Reader.Close();
         _Socket.Close();
         _SocketReady = false;
+
+        onDisconnected?.Invoke();
     }
 
     private void OnApplicationQuit()

@@ -355,14 +355,16 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     {
         while (true)
         {
-            if (_UKIMode == UKIMode.SendUDP && !_EStopping)
+            if (!IsSimulating && !_EStopping)
             {
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.red;
+                
                 if (_UKIMode == UKIMode.SendUDP)
                     SendInts(_HeartBeatMessage, true);
-                else
+                else if (_UKIMode == UKIMode.SendTCP)
                     _TCPServer.WriteInts(_HeartBeatMessage, true);
+
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.white;
             }

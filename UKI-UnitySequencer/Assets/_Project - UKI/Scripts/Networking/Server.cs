@@ -14,6 +14,20 @@ public enum ReadType
 
 public class Server : MonoBehaviour
 {
+    #region EVENTS
+    public delegate void OnHandleByteData(byte[] bytes);
+    public static event OnHandleByteData onHandleByteData;
+
+    public delegate void OnHandleStringData(string s);
+    public static event OnHandleStringData onHandleStringData;
+
+    public delegate void OnClientConnected();
+    public static event OnClientConnected onClientConnected;
+
+    public delegate void OnClientDisconnected();
+    public static event OnClientDisconnected onClientDisconnected;
+    #endregion
+
     List<ServerClient> _Clients = new List<ServerClient>();
     List<ServerClient> _DisconnectList = new List<ServerClient>();
 
@@ -22,8 +36,11 @@ public class Server : MonoBehaviour
     public int _Port = 6321;
     TcpListener _Server;
     bool _ServerStarted = false;
-
-    public string _TestMessage = "Test 1234";
+       
+    [Header("Debug")]
+    public bool _Debug = false;
+    public string _DebugStringMessage = "Test 1234";
+    public byte[] _DebugByteMessage;
 
 
     private void Awake()
@@ -91,9 +108,9 @@ public class Server : MonoBehaviour
         for (int i = 0; i < _DisconnectList.Count - 1; i++)
         {
             Broadcast(_DisconnectList[i]._ClientName + " has disconnected.", _Clients);
-
             _Clients.Remove(_DisconnectList[i]);
             _DisconnectList.RemoveAt(i);
+            onClientDisconnected?.Invoke();
         }
 
 
@@ -108,7 +125,7 @@ public class Server : MonoBehaviour
             }
             else
             {
-                Broadcast(_TestMessage, _Clients);
+                Broadcast(_DebugStringMessage, _Clients);
             }
         }
     }
@@ -154,6 +171,8 @@ public class Server : MonoBehaviour
         _Clients.Add(new ServerClient(listener.EndAcceptTcpClient(asyncResult)));
         StartListening();
 
+        onClientConnected?.Invoke();
+
         //--  Send message to tell everyone a new client has joined
         Broadcast(_Clients[_Clients.Count - 1]._ClientName + " has connected", _Clients);
     }
@@ -162,11 +181,15 @@ public class Server : MonoBehaviour
     #region READ
     private void OnIncomingData(ServerClient c, string data)
     {
+        onHandleStringData?.Invoke(data);
+
         Debug.Log(c._ClientName + " has sent: " + data);
     }
 
     private void OnIncomingData(ServerClient c, byte[] data)
     {
+        onHandleByteData?.Invoke(data);
+
         Debug.Log(c._ClientName + " has sent data of length : " + data.Length);
         for (int i = 0; i < data.Length; i++)
         {
