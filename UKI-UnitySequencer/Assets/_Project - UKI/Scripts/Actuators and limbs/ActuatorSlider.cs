@@ -96,7 +96,7 @@ public class ActuatorSlider : MonoBehaviour
 
         if (!_Actuator.IsAtTargetPosition())
         {
-            _TextName.text = _ActuatorAssignment.ToString() + "  " + _Actuator._ReportedExtensionDiff.ToString("##");
+            _TextName.text = _ActuatorAssignment.ToString() + "  " + _Actuator._ReportedExtensionInMM.ToString("##") + "/" + _Actuator._CurrentTargetExtensionMM.ToString("##") + "   " + _Actuator._ReportedExtensionDiff.ToString("##");
             _ReportedSliderImage.rectTransform.anchorMax = new Vector2(_Actuator._ReportedNormExtension, 0);
         }
         else

@@ -32,5 +32,21 @@
       "all legs1",
       "all legs2"
     ]
+  },
+  {
+    "_Name": "LeftAllTest",
+    "_SequenceData": [
+      "LeftAllIn",
+      "LeftAllMid",
+      "LeftAllOut"
+    ]
+  },
+  {
+    "_Name": "TuckedLRTest",
+    "_SequenceData": [
+      "AllIn",
+      "All tucked 1",
+      "All tucked 2"
+    ]
   }
 ]

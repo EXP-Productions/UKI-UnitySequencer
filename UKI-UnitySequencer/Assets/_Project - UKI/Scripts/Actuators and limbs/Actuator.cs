@@ -83,7 +83,7 @@ public class Actuator : MonoBehaviour
             {
                 _TargetNormExtension = Mathf.Clamp(value, 0, 1); // TODO - may not needed with new safety features
                 _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
-
+                _RoundRobinTime = 0;
                 SendEncoderExtensionLength();
 
                 if(UkiCommunicationsManager.Instance._DebugActuatorInternal)
@@ -121,6 +121,7 @@ public class Actuator : MonoBehaviour
     public float _ReportedExtensionDiff;
 
     float CurrentTargetExtensionMM { get { return Mathf.Clamp(Mathf.Clamp01(TargetNormExtension) * _MaxEncoderExtension, 0, _MaxEncoderExtension); } }
+    public float _CurrentTargetExtensionMM;
 
     // The time taken to extend from 0 - 1
     public float _FullExtensionDuration = 10;
@@ -190,6 +191,9 @@ public class Actuator : MonoBehaviour
         //if (_ReportedActuatorTransform == null)
         //    return;
 
+        // debug 
+        _CurrentTargetExtensionMM = CurrentTargetExtensionMM;
+
         if (_ActuatorDisabled)
         {
             SetState(UKIEnums.State.Paused);
@@ -253,7 +257,7 @@ public class Actuator : MonoBehaviour
 
             if(newReportedExtensionMM != _ReportedExtensionInMM && _DEBUG_RoundRobin)
             {
-                Debug.Log(name + " reporting interval: " + (Time.time - _RoundRobinTime));
+                Debug.Log(name + " reporting interval: " + (Time.time - _RoundRobinTime) + "   extension current/target: " + newReportedExtensionMM + " / " + CurrentTargetExtensionMM);
                 _RoundRobinTime = Time.time;
             }
 

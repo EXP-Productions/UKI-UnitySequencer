@@ -70,6 +70,12 @@ public class Client : MonoBehaviour
 
     private void Update()
     {
+        if (_Socket == null)
+            return;
+
+
+        _SocketConnected = _Socket.Connected;
+
         if(_SocketConnected)
         {
             if (_Stream.DataAvailable)

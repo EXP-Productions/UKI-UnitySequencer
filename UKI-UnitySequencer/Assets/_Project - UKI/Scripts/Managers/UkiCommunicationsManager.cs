@@ -66,6 +66,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     public float msgPerSec = 0;
     float lastTime = 0;
 
+    [Header("DEBUG")]
     public bool _DebugActuatorInternal = false;
     public bool _DebugSend = false;
     public bool _DebugRecieve = false;
@@ -73,11 +74,20 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     int _PacketCounter = 0;
 
+    public Server _TCPServer;
+
     // Set singleton instance and start Threaded UDP reciever
     public override void Awake()
     {
         base.Awake();
-        _Instance = this;       
+        _Instance = this;
+
+        Server.onHandleByteData += WriteData;
+    }
+
+    void OnApplicationQuit()
+    {
+        Server.onHandleByteData -= WriteData;
     }
 
     void Start()
@@ -254,6 +264,36 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         }
     }
 
+    public void WriteData(byte[] packet)
+    {      
+        // Get actuator index
+        int actuatorIndex = GetLittleEndianIntegerFromByteArray(packet, 0);
+
+        // Start at index 2 (TODO why steeb?) and iterate with a step of 4
+        for (int i = 2; i < packet.Length; i += 4)
+        {
+            // get index and value for register
+            int registerIndex = GetLittleEndianIntegerFromByteArray(packet, i);
+            int registerValue = GetLittleEndianIntegerFromByteArray(packet, i + 2);
+
+            // Get actuator enum
+            UkiActuatorAssignments actuatorEnum = (UkiActuatorAssignments)actuatorIndex;
+            ModBusRegisters registerEnum = (ModBusRegisters)registerIndex;
+
+            if (_DebugRecieve)
+            {
+                Debug.LogWarning($"{Time.timeSinceLevelLoad}  Packet recieved {Time.time}  Actuator {actuatorEnum.ToString()}   Reg Index {registerIndex}  Reg Enum {registerEnum.ToString()}   Reg Value {registerValue}");
+            }
+
+            if (UkiStateDB._StateDB.ContainsKey(actuatorEnum))// && UkiStateDB._StateDB[actuatorEnum][registerEnum] != registerValue)
+            {                
+                UkiStateDB._StateDB[actuatorEnum][registerEnum] = registerValue;
+            }
+        }
+
+        _DBInitialized = true;
+    }
+
     public void SendActuatorSetPointCommand(UkiActuatorAssignments actuator, int position, int speed = 10)
     {
         if (IsSimulating)
@@ -308,9 +348,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
             msgPerSec = _SentMsgCount / _Timer;
             Debug.LogWarning("Total msg count: " + _SentMsgCount + "   Total run time: " + _Timer);
         }
-
-        
-
     }
     
     // Sends a message to set actuator accel to 90 and setpoint 0 

@@ -10077,9 +10077,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _UDPReceiverActive: 1
-  _ReceivePort: 10001
-  _BroadcastIP: 127.0.0.1
-  _BroadcastPort: 9000
+  _ReceivePort: 10005
+  _BroadcastIP: 192.168.1.102
+  _BroadcastPort: 9005
   _UIManager: {fileID: 0}
   _TCPClient: {fileID: 1884671274}
   _EStopping: 1
@@ -10094,6 +10094,7 @@ MonoBehaviour:
   _DebugSend: 1
   _DebugRecieve: 0
   _DebugUDP: 1
+  _TCPServer: {fileID: 0}
 --- !u!224 &988891199 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
@@ -11599,6 +11600,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 75
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459025955289303, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _ActuatorIndex
@@ -11659,6 +11665,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _ActuatorIndex
@@ -11698,6 +11709,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459025810450345, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -11819,6 +11835,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _ActuatorIndex
@@ -11864,6 +11885,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _Donotsend
@@ -11903,6 +11929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026355029637, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -12024,6 +12055,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 68
       objectReference: {fileID: 0}
+    - target: {fileID: 408755143254751138, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -12062,7 +12098,7 @@ PrefabInstance:
     - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _DEBUG_RoundRobin
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -12104,6 +12140,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 65
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144349596994, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -12139,6 +12180,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755143713368709, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -12173,6 +12219,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143713368709, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026471375122, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -16164,7 +16215,7 @@ MonoBehaviour:
   _LocalIP: 
   _Port: 10001
   _Debug: 0
-  _DebugRead: 0
+  _DebugRead: 1
   _DebugStringMessage: Test 1234
   _DebugByteMessage: 
 --- !u!1001 &1898799601
@@ -22096,6 +22147,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 75
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459025955289303, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -22151,6 +22207,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.z
@@ -22180,6 +22241,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459025810450345, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -22231,6 +22297,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -22266,6 +22337,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _Donotsend
@@ -22300,6 +22376,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 408755143254751137, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -22411,6 +22492,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 68
       objectReference: {fileID: 0}
+    - target: {fileID: 408755143254751138, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -22445,6 +22531,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755144833114213, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 408755144349596994, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -22481,6 +22572,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 65
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144349596994, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -22516,6 +22612,11 @@ PrefabInstance:
       propertyPath: _MaxReportedExtensionMM
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 408755144050071317, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 408755143713368709, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _InitialRotation.x
@@ -22545,6 +22646,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _MaxReportedExtensionMM
       value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 408755143713368709, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DEBUG_RoundRobin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026471375122, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}

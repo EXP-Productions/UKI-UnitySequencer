@@ -83,7 +83,7 @@ public class Server : MonoBehaviour
             else
             {
                 NetworkStream stream = c._Tcp.GetStream();
-                if(stream.DataAvailable)
+                while(stream.DataAvailable)
                 {
                     if (_ReadType == ReadType.ByteArray)
                     {
@@ -108,10 +108,11 @@ public class Server : MonoBehaviour
         //--  MANAGE DISCONNECTIONS
         for (int i = 0; i < _DisconnectList.Count - 1; i++)
         {
-            Broadcast(_DisconnectList[i]._ClientName + " has disconnected.", _Clients);
+            //Broadcast(_DisconnectList[i]._ClientName + " has disconnected.", _Clients);
             _Clients.Remove(_DisconnectList[i]);
             _DisconnectList.RemoveAt(i);
             onClientDisconnected?.Invoke();
+            Debug.Log("Client disconnected. ");
         }
 
 
@@ -162,7 +163,7 @@ public class Server : MonoBehaviour
 
     private void StartListening()
     {
-        _Server.BeginAcceptTcpClient(AcceptTcpClient, _Server);
+        _Server.BeginAcceptTcpClient(AcceptTcpClient, _Server);       
     }
 
     void AcceptTcpClient(IAsyncResult asyncResult)
@@ -174,8 +175,9 @@ public class Server : MonoBehaviour
 
         onClientConnected?.Invoke();
 
+        Debug.Log("Server: Client connected");
         //--  Send message to tell everyone a new client has joined
-        Broadcast(_Clients[_Clients.Count - 1]._ClientName + " has connected", _Clients);
+        //Broadcast(_Clients[_Clients.Count - 1]._ClientName + " has connected", _Clients);
     }
     #endregion
 
@@ -305,7 +307,24 @@ public class Server : MonoBehaviour
 
         throw new System.Exception("No network adapters with an IPv4 address in the system!");
     }
+
+    void OnApplicationQuit()
+    {
+        foreach (ServerClient c in _Clients)
+        {
+            // Is the client still connected?
+            //if (!IsConnected(c._Tcp))
+            {
+                c._Tcp.Close();
+                _DisconnectList.Add(c);
+                continue;
+            }
+        }
+
+        _Server.Stop();
+    }
 }
+
 
 public class ServerClient
 {
