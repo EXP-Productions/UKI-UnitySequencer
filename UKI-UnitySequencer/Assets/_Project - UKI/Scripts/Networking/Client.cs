@@ -22,17 +22,18 @@ public class Client : MonoBehaviour
     #endregion
 
     public ReadType _ReadType = ReadType.String;
-    public int _Port = 8001;
+    public int _Port = 9000;
     public string _Host = "127.0.0.1";
 
-    bool _SocketReady;
+    public bool _SocketConnected;
     TcpClient _Socket;
     NetworkStream _Stream;
     StreamWriter _Writer;
     StreamReader _Reader;
 
     [Header("Debug")]
-    public bool _Debug = false;
+    public bool _DebugWrite = false;
+    public bool _DebugRead = false;
 
    
 
@@ -41,10 +42,10 @@ public class Client : MonoBehaviour
         ConnectToServer();
     }
 
-    private void ConnectToServer()
+    public void ConnectToServer()
     {
         // If already connected return
-        if (_SocketReady)
+        if (_SocketConnected)
             return;
 
         try
@@ -53,8 +54,13 @@ public class Client : MonoBehaviour
             _Stream = _Socket.GetStream();
             _Writer = new StreamWriter(_Stream);
             _Reader = new StreamReader(_Stream);
-            _SocketReady = true;
+            _BytesList = new List<byte>();
+
+
             onConnected?.Invoke();
+            Debug.Log("Socket open too " + _Host + "   " + _Port);
+
+            _SocketConnected = true;
         }
         catch (Exception e)
         {
@@ -64,7 +70,7 @@ public class Client : MonoBehaviour
 
     private void Update()
     {
-        if(_SocketReady)
+        if(_SocketConnected)
         {
             if (_Stream.DataAvailable)
             {
@@ -76,12 +82,21 @@ public class Client : MonoBehaviour
                 }
                 else
                 {
-                    int count = _Stream.ReadByte();
+                    int count = 6;// _Stream.ReadByte(); // todo set byte read count
                     byte[] byteData = new byte[count];
                     _Stream.Read(byteData, 0, byteData.Length);
                     if (byteData != null)
                         OnIncomingData(byteData);
                 }
+            }
+
+            if(_ReadType == ReadType.ByteArray)
+            {
+                SendBytes();
+            }
+            else
+            {
+               // Send();
             }
         }
 
@@ -90,8 +105,8 @@ public class Client : MonoBehaviour
         {
             if (_ReadType == ReadType.ByteArray)
             {
-                WriteBytes(new byte[] { 0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19, 20 });
-                WriteBytes(new byte[] { 15, 16, 17, 18, 19, 20, 99, 98 });
+                WriteBytes(new byte[] { 0, 1, 2, 3, 4, 5 });
+                WriteBytes(new byte[] { 15, 16, 17, 18, 19, 20});
                 SendBytes();
             }
             else
@@ -106,7 +121,7 @@ public class Client : MonoBehaviour
     {
         onHandleStringData?.Invoke(data);
 
-        if (_Debug)
+        if (_DebugRead)
         {
             Debug.Log("Server: " + data);
         }
@@ -116,13 +131,16 @@ public class Client : MonoBehaviour
     {
         onHandleByteData?.Invoke(data);
 
-        if (_Debug)
+        if (_DebugRead)
         {
-            Debug.Log("Recieved data of length : " + data.Length);
-            for (int i = 0; i < data.Length; i++)
+           
+            string debug = "";
+            foreach (byte by in data)
             {
-                Debug.Log(i + " - " + data[i]);
+                debug += by.ToString() + ",";
             }
+
+            Debug.Log("Client recieved data: " + debug);
         }
     }
     #endregion
@@ -130,7 +148,7 @@ public class Client : MonoBehaviour
     #region WRITE
     void Send(string data)
     {
-        if (!_SocketReady)
+        if (!_SocketConnected)
             return;
 
         _Writer.WriteLine(data);
@@ -140,33 +158,68 @@ public class Client : MonoBehaviour
     List<byte> _BytesList = new List<byte>();
     void WriteBytes(byte[] data)
     {
+        if (!_SocketConnected)
+            return;
+
         for (int i = 0; i < data.Length; i++)
         {
             _BytesList.Add(data[i]);
         }
+
     }
 
-    void SendBytes()
+    void SendBytes(bool addByteCount = false)
     {
         // Insert bytelist count at start of list
-        _BytesList.Insert(0, (byte)_BytesList.Count);
+        if(addByteCount)_BytesList.Insert(0, (byte)_BytesList.Count); // Add byte array len
 
         _Stream.Write(_BytesList.ToArray(), 0, _BytesList.Count);
         _Stream.Flush();
         _BytesList.Clear();
+    }
+
+    public void WriteInts(uint[] intVals, bool littleEndian, bool debugPrint = true)
+    {
+        for (uint i = 0; i < intVals.Length; i++)
+        {
+            //if (littleEndian)
+            //{
+            //    _BytesList.AddRange(IntToLittleEndian((short)intVals[i]));
+            //}
+            //else
+            {
+                _BytesList.AddRange(System.BitConverter.GetBytes((short)intVals[i]));
+            }
+        }
+
+        string debug = "";
+        foreach (byte by in _BytesList)
+        {
+            debug += by.ToString() + ",";
+        }
+
+        if (_DebugWrite) Debug.Log(Time.timeSinceLevelLoad + "  -  Adding bytes array to stack: " + debug);
+    }
+
+    byte[] IntToLittleEndian(short data)
+    {
+        byte[] b = new byte[2];
+        b[0] = (byte)data;
+        b[1] = (byte)((data >> 8) & 0xFF);
+        return b;
     }
     #endregion
 
     #region CLEAN UP
     void CloseSocket()
     {
-        if (!_SocketReady)
+        if (!_SocketConnected)
             return;
 
         _Writer.Close();
         _Reader.Close();
         _Socket.Close();
-        _SocketReady = false;
+        _SocketConnected = false;
 
         onDisconnected?.Invoke();
     }

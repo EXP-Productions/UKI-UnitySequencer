@@ -31,7 +31,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     [HideInInspector]
     public UKI_UIManager _UIManager;
 
-    public Server _TCPServer;
+    public Client _TCPClient;
 
     Actuator[] _Actuators;
 
@@ -85,7 +85,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _Actuators = FindObjectsOfType<Actuator>();
         _UIManager = UKI_UIManager.Instance;
 
-        StartCoroutine(UDPStartupProcedure());
+        StartCoroutine(StartupProcedure());
         StartCoroutine(SendHeartBeat());
     }
 
@@ -97,12 +97,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         if(_UKIMode == UKIMode.SendUDP)
         {
-            StartCoroutine(UDPStartupProcedure());
+            StartCoroutine(StartupProcedure());
         }
         else if(_UKIMode == UKIMode.SendTCP)
         {
             print("SendTCP");
-            StartCoroutine(UDPStartupProcedure());
+            StartCoroutine(StartupProcedure());
+            _TCPClient.ConnectToServer();
         }
     }
 
@@ -134,7 +135,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if(_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorMessage, true);
         else
-            _TCPServer.WriteInts(actuatorMessage, true);
+            _TCPClient.WriteInts(actuatorMessage, true);
     }
     
     void ResetEStop()
@@ -151,7 +152,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorMessage, true);
         else
-            _TCPServer.WriteInts(actuatorMessage, true);
+            _TCPClient.WriteInts(actuatorMessage, true);
 
         _EStopping = false;
         _UIManager.UpdateEstopButton();
@@ -167,7 +168,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         _UIManager._EstopWarning.SetActive(false);
     }
 
-    IEnumerator UDPStartupProcedure()
+    IEnumerator StartupProcedure()
     {
         // Send estop at start
         EStop("Start E Stop");
@@ -272,7 +273,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorPosMsg, true);
         else
-            _TCPServer.WriteInts(actuatorPosMsg, true);
+            _TCPClient.WriteInts(actuatorPosMsg, true);
 
         // Set speed
         uint[] actuatorSpeedMsg = new uint[3];
@@ -282,13 +283,13 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorSpeedMsg, true);
         else
-            _TCPServer.WriteInts(actuatorSpeedMsg, true);
+            _TCPClient.WriteInts(actuatorSpeedMsg, true);
 
         // TODO - DEBUG ADDING PADDING
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(_HeartBeatMessage, true);
         else
-            _TCPServer.WriteInts(_HeartBeatMessage, true);
+            _TCPClient.WriteInts(_HeartBeatMessage, true);
 
 
         _SentMsgCount++;
@@ -325,7 +326,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorMessage1, true);
         else
-            _TCPServer.WriteInts(actuatorMessage1, true);
+            _TCPClient.WriteInts(actuatorMessage1, true);
 
         uint[] actuatorMessage2 = new uint[3];
         actuatorMessage2[0] = (uint)index;
@@ -334,7 +335,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         if (_UKIMode == UKIMode.SendUDP)
             SendInts(actuatorMessage2, true);
         else
-            _TCPServer.WriteInts(actuatorMessage2, true);
+            _TCPClient.WriteInts(actuatorMessage2, true);
     }
 
     /*
@@ -363,7 +364,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
                 if (_UKIMode == UKIMode.SendUDP)
                     SendInts(_HeartBeatMessage, true);
                 else if (_UKIMode == UKIMode.SendTCP)
-                    _TCPServer.WriteInts(_HeartBeatMessage, true);
+                    _TCPClient.WriteInts(_HeartBeatMessage, true);
 
                 yield return new WaitForSeconds(0.5f);
                 _UIManager._HeartBeatDisplay.color = Color.white;

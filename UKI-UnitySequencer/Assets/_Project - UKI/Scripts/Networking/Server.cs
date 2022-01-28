@@ -39,6 +39,7 @@ public class Server : MonoBehaviour
        
     [Header("Debug")]
     public bool _Debug = false;
+    public bool _DebugRead = false;
     public string _DebugStringMessage = "Test 1234";
     public byte[] _DebugByteMessage;
 
@@ -86,7 +87,7 @@ public class Server : MonoBehaviour
                 {
                     if (_ReadType == ReadType.ByteArray)
                     {
-                        int count = stream.ReadByte();
+                        int count = 6;// stream.ReadByte(); //todo set read length
                         byte[] byteData = new byte[count];
                         stream.Read(byteData, 0, byteData.Length);
                         if (byteData != null)
@@ -119,7 +120,7 @@ public class Server : MonoBehaviour
         {
             if(_ReadType == ReadType.ByteArray)
             {
-                WriteBytes(new byte[] { 8, 7, 6, 4 });
+                WriteBytes(new byte[] { 1, 2, 3, 4, 5, 6 });
                 WriteBytes(new byte[] { 81, 71, 61, 41, 31, 91 });
                 //BroadcastBytes(_Clients);
             }
@@ -190,11 +191,22 @@ public class Server : MonoBehaviour
     {
         onHandleByteData?.Invoke(data);
 
-        Debug.Log(c._ClientName + " has sent data of length : " + data.Length);
-        for (int i = 0; i < data.Length; i++)
+        if(_DebugRead)
         {
-            Debug.Log(i + " - " + data[i]);
-        }       
+            string debug = "";
+            foreach (byte by in data)
+            {
+                debug += by.ToString() + ",";
+            }
+
+            Debug.Log(c._ClientName + " has sent data of length : " + debug);
+        }
+           
+
+        //for (int i = 0; i < data.Length; i++)
+        //{
+        //    Debug.Log(i + " - " + data[i]);
+        //}       
     }
     #endregion
 
@@ -219,7 +231,7 @@ public class Server : MonoBehaviour
     void BroadcastBytes(List<ServerClient> clients)
     {
         // Insert bytelist count at start of list
-        _BytesList.Insert(0, (byte)_BytesList.Count);
+        //_BytesList.Insert(0, (byte)_BytesList.Count); // to do insert count
         byte[] byteArray = _BytesList.ToArray();
 
         foreach (ServerClient c in clients)
