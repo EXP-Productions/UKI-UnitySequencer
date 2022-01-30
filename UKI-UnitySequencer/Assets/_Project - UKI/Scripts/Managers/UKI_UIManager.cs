@@ -27,6 +27,13 @@ public class UKI_UIManager : MonoBehaviour
     public Image _HeartBeatDisplay;
     public Slider _OfflineSpeedScalerSlider;
 
+
+    [Header("UI - TCP")]
+    public Image _TCPIn;
+    public Image _TCPOut;
+    public Client _Client;
+    public Server _Server;
+
     [Header("UI - ACTUATORS")]
     public Toggle _LeftSendToggle;
     public Toggle _RightSendToggle;
@@ -80,6 +87,9 @@ public class UKI_UIManager : MonoBehaviour
                 UkiCommunicationsManager.Instance.EStop("ESTOP sent from C2");
             }
         }
+
+        _TCPOut.color = _Client.SocketConnected ? Color.yellow : Color.gray;
+        _TCPIn.color = _Server.ClientConnected ? Color.yellow : Color.gray;
     }
 
     void SetUKIModeFromDropDown(int i)

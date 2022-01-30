@@ -36,6 +36,7 @@ public class Server : MonoBehaviour
     public int _Port = 6321;
     TcpListener _Server;
     bool _ServerStarted = false;
+    public bool ClientConnected { get { return _Clients.Count > 0; } }
        
     [Header("Debug")]
     public bool _Debug = false;

@@ -4,9 +4,8 @@ using UnityEngine;
 public partial class SROptions
 {
     // Default Value for property
-    private float _ActuatorArrivalRange = 2f;
-
-    private float _RequiredReadyCount = 23;    
+    private float _ActuatorArrivalRange = 3f;
+    private float _RequiredReadyCount = 23;
 
     // Options will be grouped by category
     [NumberRange(0, 10)]   
@@ -83,6 +82,42 @@ public partial class SROptions
             UkiCommunicationsManager.Instance._DebugActuatorInternal = _DebugActuatorInternal;
         }
     }
+
+    [Category("Comms")]
+    public string TCPHostIPAddress
+    {
+        get { return Client.Instance._HostIP; }
+        set
+        {
+            Client.Instance._HostIP = value;
+        }
+    }
+
+    [Category("Comms")]
+    public int TCPHostPort
+    {
+        get { return Client.Instance._Port; }
+        set
+        {
+            Client.Instance._Port = value;
+        }
+    }
+
+    [Category("Comms")]
+    public void ConnectoToTCPHost()
+    {
+        Client.Instance.ConnectToServer();
+    }
+
+    //[Category("Comms")]
+    //public int ConnectToTCPHost
+    //{
+    //    get { return Client.Instance._Port; }
+    //    set
+    //    {
+    //        Client.Instance._Port = value;
+    //    }
+    //}
 
 
 

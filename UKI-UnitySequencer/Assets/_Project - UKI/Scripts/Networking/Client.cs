@@ -21,21 +21,29 @@ public class Client : MonoBehaviour
     public static event OnDisconnected onDisconnected;
     #endregion
 
+    public static Client Instance { get; private set; }
+
     public ReadType _ReadType = ReadType.String;
     public int _Port = 9000;
-    public string _Host = "127.0.0.1";
+    public string _HostIP = "127.0.0.1";
 
-    public bool _SocketConnected;
+    public bool SocketConnected { get { return _Socket != null && _Socket.Connected; } }
     TcpClient _Socket;
     NetworkStream _Stream;
     StreamWriter _Writer;
     StreamReader _Reader;
 
+    List<byte> _BytesList = new List<byte>();
+
     [Header("Debug")]
     public bool _DebugWrite = false;
     public bool _DebugRead = false;
 
-   
+    private void Awake()
+    {
+        Instance = this;
+    }
+
 
     private void Start()
     {
@@ -44,23 +52,21 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()
     {
-        // If already connected return
-        if (_SocketConnected)
+        //--  IF ALREADY CONNECTED RETURN
+        if (SocketConnected)
             return;
 
         try
         {
-            _Socket = new TcpClient(_Host, _Port);
+            _Socket = new TcpClient(_HostIP, _Port);
             _Stream = _Socket.GetStream();
             _Writer = new StreamWriter(_Stream);
             _Reader = new StreamReader(_Stream);
             _BytesList = new List<byte>();
-
+            _BytesList.Clear();
 
             onConnected?.Invoke();
-            Debug.Log("Socket open too " + _Host + "   " + _Port);
-
-            _SocketConnected = true;
+            Debug.Log("Socket open too " + _HostIP + "   " + _Port);
         }
         catch (Exception e)
         {
@@ -70,41 +76,36 @@ public class Client : MonoBehaviour
 
     private void Update()
     {
-        if (_Socket == null)
+        if (!SocketConnected)
             return;
 
-
-        _SocketConnected = _Socket.Connected;
-
-        if(_SocketConnected)
+        if (_Stream.DataAvailable)
         {
-            if (_Stream.DataAvailable)
+            if (_ReadType == ReadType.String)
             {
-                if (_ReadType == ReadType.String)
-                {
-                    string data = _Reader.ReadLine();
-                    if (data != null)
-                        OnIncomingData(data);
-                }
-                else
-                {
-                    int count = 6;// _Stream.ReadByte(); // todo set byte read count
-                    byte[] byteData = new byte[count];
-                    _Stream.Read(byteData, 0, byteData.Length);
-                    if (byteData != null)
-                        OnIncomingData(byteData);
-                }
-            }
-
-            if(_ReadType == ReadType.ByteArray)
-            {
-                SendBytes();
+                string data = _Reader.ReadLine();
+                if (data != null)
+                    OnIncomingData(data);
             }
             else
             {
-               // Send();
+                int count = 6;// _Stream.ReadByte(); // todo set byte read count
+                byte[] byteData = new byte[count];
+                _Stream.Read(byteData, 0, byteData.Length);
+                if (byteData != null)
+                    OnIncomingData(byteData);
             }
         }
+
+        if(_ReadType == ReadType.ByteArray)
+        {
+            SendBytes();
+        }
+        else
+        {
+            // Send();
+        }
+        
 
         //--  DEBUG
         if(Input.GetKeyDown(KeyCode.C))
@@ -154,17 +155,17 @@ public class Client : MonoBehaviour
     #region WRITE
     void Send(string data)
     {
-        if (!_SocketConnected)
+        if (!SocketConnected)
             return;
 
         _Writer.WriteLine(data);
         _Writer.Flush();
     }
 
-    List<byte> _BytesList = new List<byte>();
+   
     void WriteBytes(byte[] data)
     {
-        if (!_SocketConnected)
+        if (!SocketConnected)
             return;
 
         for (int i = 0; i < data.Length; i++)
@@ -177,7 +178,7 @@ public class Client : MonoBehaviour
     void SendBytes(bool addByteCount = false)
     {
         // Insert bytelist count at start of list
-        if(addByteCount)_BytesList.Insert(0, (byte)_BytesList.Count); // Add byte array len
+        if(addByteCount) _BytesList.Insert(0, (byte)_BytesList.Count); // Add byte array len
 
         _Stream.Write(_BytesList.ToArray(), 0, _BytesList.Count);
         _Stream.Flush();
@@ -219,13 +220,12 @@ public class Client : MonoBehaviour
     #region CLEAN UP
     void CloseSocket()
     {
-        if (!_SocketConnected)
+        if (!SocketConnected)
             return;
 
         _Writer.Close();
         _Reader.Close();
         _Socket.Close();
-        _SocketConnected = false;
 
         onDisconnected?.Invoke();
     }
