@@ -76,7 +76,7 @@ public class Client : MonoBehaviour
 
     private void Update()
     {
-        if (!SocketConnected)
+        if (!SocketConnected || UkiCommunicationsManager.Instance.IsSimulating)
             return;
 
         if (_Stream.DataAvailable)

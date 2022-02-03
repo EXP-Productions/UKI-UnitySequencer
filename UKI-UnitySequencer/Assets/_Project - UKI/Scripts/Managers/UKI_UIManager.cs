@@ -33,6 +33,7 @@ public class UKI_UIManager : MonoBehaviour
     public Image _TCPOut;
     public Client _Client;
     public Server _Server;
+    public Button _TCPConnectButton;
 
     [Header("UI - ACTUATORS")]
     public Toggle _LeftSendToggle;
@@ -75,6 +76,8 @@ public class UKI_UIManager : MonoBehaviour
         SetUKIModeFromDropDown((int)UKIMode.Simulation);
 
         _OfflineSpeedScalerSlider.onValueChanged.AddListener((float f) => SetOfflineSpeedScaler(f));
+
+        _TCPConnectButton.onClick.AddListener(() => _Client.ConnectToServer());
     }
 
     private void Update()
@@ -90,6 +93,8 @@ public class UKI_UIManager : MonoBehaviour
 
         _TCPOut.color = _Client.SocketConnected ? Color.yellow : Color.gray;
         _TCPIn.color = _Server.ClientConnected ? Color.yellow : Color.gray;
+
+       
     }
 
     void SetUKIModeFromDropDown(int i)

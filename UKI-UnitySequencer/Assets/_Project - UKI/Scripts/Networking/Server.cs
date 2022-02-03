@@ -202,7 +202,7 @@ public class Server : MonoBehaviour
                 debug += by.ToString() + ",";
             }
 
-            Debug.Log(c._ClientName + " has sent data of length : " + debug);
+            //Debug.Log(c._ClientName + " has sent data of length : " + debug);
         }
            
 

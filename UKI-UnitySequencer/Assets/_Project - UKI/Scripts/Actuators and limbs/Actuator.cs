@@ -84,6 +84,8 @@ public class Actuator : MonoBehaviour
                 _TargetNormExtension = Mathf.Clamp(value, 0, 1); // TODO - may not needed with new safety features
                 _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
                 _RoundRobinTime = 0;
+                _NormExtensionAtPrevSend = _ReportedNormExtension;
+                _ResendPositionTimeout = 5;
                 SendEncoderExtensionLength();
 
                 if(UkiCommunicationsManager.Instance._DebugActuatorInternal)
@@ -168,6 +170,10 @@ public class Actuator : MonoBehaviour
     #endregion
     float _RoundRobinTime = 0;
 
+
+    float _ResendPositionTimeout = 5;
+    float _NormExtensionAtPrevSend = 0;
+
     #region UNITY METHODS
 
     private void Awake()
@@ -193,7 +199,6 @@ public class Actuator : MonoBehaviour
 
         // debug 
         _CurrentTargetExtensionMM = CurrentTargetExtensionMM;
-
         if (_ActuatorDisabled)
         {
             SetState(UKIEnums.State.Paused);
@@ -201,7 +206,7 @@ public class Actuator : MonoBehaviour
         }
 
 
-            // CHECK BOOST
+        // CHECK BOOST
         if (_BoostSpeedToggled)
         {
             _BoostTimer += Time.deltaTime;
@@ -315,7 +320,22 @@ public class Actuator : MonoBehaviour
                     SetState(UKIEnums.State.NoiseMovement);
                 else
                     SetState(UKIEnums.State.Paused);
-            }           
+            }
+            else
+            {
+                _ResendPositionTimeout -= Time.deltaTime;
+
+                Debug.LogWarning(name + "  _ResendPositionTimeout: " + _ResendPositionTimeout);
+
+                // If timed out qnd position hasn't moved
+                if (_ResendPositionTimeout <= 0) // && _ReportedNormExtension == _NormExtensionAtPrevSend)
+                {
+                    _ResendPositionTimeout = 5;
+                    _NormExtensionAtPrevSend = _ReportedNormExtension;
+                    SendEncoderExtensionLength();
+                    Debug.LogWarning(name + "  resending extension due to timeout");
+                }
+            }
         }
         else if(_State == UKIEnums.State.NoiseMovement)
         {
