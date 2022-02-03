@@ -341,7 +341,7 @@ MonoBehaviour:
   _Side: 0
   _CollisionReporter: {fileID: 0}
   _CollidersToIgnore: {fileID: 0}
-  _Collided: 0
+  _CollidedEstop: 0
   _PairedActuator: {fileID: 0}
   _DEBUG_Waver: 0
   _TargetNormExtension: 0
@@ -361,10 +361,9 @@ MonoBehaviour:
   _ReportedNormExtension: 0
   _ReportedExtensionInMM: 0
   _MaxReportedExtensionMM: 110
-  prevPos: 0
   _DEBUG: 0
   _DEBUG_SelfInit: 0
-  _Donotsend: 0
+  _DisableActuator: 0
   _DEBUG_NoiseMovement: 0
   _DEBUG_RoundRobin: 0
 --- !u!224 &98601611 stripped
@@ -12257,6 +12256,16 @@ PrefabInstance:
       propertyPath: _DEBUG_RoundRobin
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _Donotsend
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DisableActuator
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _ActuatorIndex
@@ -23292,6 +23301,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _DEBUG_RoundRobin
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _Donotsend
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _DisableActuator
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}

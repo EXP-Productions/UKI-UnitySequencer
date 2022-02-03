@@ -105,15 +105,19 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
         _UKIMode = (UKIMode)i;
 
-        if(_UKIMode == UKIMode.SendUDP)
+        if (_UKIMode == UKIMode.SendUDP)
         {
             StartCoroutine(StartupProcedure());
         }
-        else if(_UKIMode == UKIMode.SendTCP)
+        else if (_UKIMode == UKIMode.SendTCP)
         {
             print("SendTCP");
             StartCoroutine(StartupProcedure());
             _TCPClient.ConnectToServer();
+        }
+        else if (_UKIMode == UKIMode.Simulation)
+        {
+            EStop("Switching to simulation");
         }
     }
 
@@ -127,6 +131,9 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     public void EStop(string reason)
     {
+        if (_UIManager == null)
+            _UIManager = UKI_UIManager.Instance;
+
         _UIManager._EstopWarning.SetActive(true);
         _UIManager._EstopWarning.GetComponentInChildren<TextMeshProUGUI>().text = reason;
         print("E Stop activated: " + reason);
@@ -151,18 +158,22 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
     void ResetEStop()
     {
         print("Resetting estop");
+
         //SendActuatorMessage((int)UkiTestActuatorAssignments.Global, ModBusRegisters.MB_RESET_ESTOP);
 
-        // Send message to wrapper
-        uint[] actuatorMessage = new uint[3];
-        actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
-        actuatorMessage[1] = (uint)ModBusRegisters.MB_RESET_ESTOP;
-        actuatorMessage[2] = (uint)20560;
+        if (!IsSimulating)
+        {
+            // Send message to wrapper
+            uint[] actuatorMessage = new uint[3];
+            actuatorMessage[0] = (uint)UkiTestActuatorAssignments.Global;
+            actuatorMessage[1] = (uint)ModBusRegisters.MB_RESET_ESTOP;
+            actuatorMessage[2] = (uint)20560;
 
-        if (_UKIMode == UKIMode.SendUDP)
-            SendInts(actuatorMessage, true);
-        else
-            _TCPClient.WriteInts(actuatorMessage, true);
+            if (_UKIMode == UKIMode.SendUDP)
+                SendInts(actuatorMessage, true);
+            else
+                _TCPClient.WriteInts(actuatorMessage, true);
+        }
 
         _EStopping = false;
         _UIManager.UpdateEstopButton();
@@ -170,7 +181,6 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         {
             Destroy(collisionMarker);
         }
-
 
         foreach (KeyValuePair<UkiActuatorAssignments, Actuator> actuator in UKI_UIManager.Instance._AllActuators)
             actuator.Value.ResetEStop();

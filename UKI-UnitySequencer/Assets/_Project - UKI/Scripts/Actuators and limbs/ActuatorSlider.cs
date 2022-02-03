@@ -72,7 +72,7 @@ public class ActuatorSlider : MonoBehaviour
     {
         if (_Actuator != null)
         {
-            _CollidedToggle.isOn = _Actuator._Collided;
+            _CollidedToggle.isOn = _Actuator._CollidedEstop;
         }
         else
             print(name);

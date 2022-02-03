@@ -59,7 +59,7 @@ public class Actuator : MonoBehaviour
 
     public CollisionReporter _CollisionReporter;
     [HideInInspector] public CollisionReporter _CollidersToIgnore;
-    public bool _Collided = false;
+    public bool _CollidedEstop = false;
 
     public Actuator _PairedActuator;
 
@@ -76,6 +76,9 @@ public class Actuator : MonoBehaviour
         get { return _TargetNormExtension; }
         set
         {
+            if (_DisableActuator)
+                return;
+
             float prevNorm = _TargetNormExtension;
 
             // if the new value isn't the target value then send set point to wrapper
@@ -83,8 +86,7 @@ public class Actuator : MonoBehaviour
             {
                 _TargetNormExtension = Mathf.Clamp(value, 0, 1); // TODO - may not needed with new safety features
                 _MovementAnimationDirection = _TargetNormExtension > prevNorm ? 1f : -1f;
-                _RoundRobinTime = 0;
-                _NormExtensionAtPrevSend = _ReportedNormExtension;
+                _DEBUG_RoundRobinTime = 0;
                 _ResendPositionTimeout = 5;
                 SendEncoderExtensionLength();
 
@@ -156,23 +158,18 @@ public class Actuator : MonoBehaviour
     public int ReportedAcceleration { private set; get; }
     #endregion
 
-    // Keeps the previous position so that the actuator only sends a position out if the new position is different
-    public float prevPos = 0;
-
+    // Keeps the previous position so that the actuator only sends a position out if the new position is different   
     public bool _DEBUG = false;   
     public bool _DEBUG_SelfInit = false;
-    public bool _Donotsend = false;
+    public bool _DisableActuator = false;
     public bool _DEBUG_NoiseMovement = false;
 
     float _ReportedToleranceMM = 2f;
 
     float _NoiseAmount = .15f;
     #endregion
-    float _RoundRobinTime = 0;
-
-
+    float _DEBUG_RoundRobinTime = 0;
     float _ResendPositionTimeout = 5;
-    float _NormExtensionAtPrevSend = 0;
 
     #region UNITY METHODS
 
@@ -254,16 +251,20 @@ public class Actuator : MonoBehaviour
                 _ReportedNormExtension = (float)_ReportedExtensionInMM / _MaxReportedExtensionMM;
             }
         }
-        // UDP MODE - read in actuators from udp
         else
         {
-            // READ IN
+            //--  READ IN FROM DB
             float newReportedExtensionMM = (float)UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_EXTENSION];
 
-            if(newReportedExtensionMM != _ReportedExtensionInMM && _DEBUG_RoundRobin)
+            if (_DEBUG)
+                print(name + " estop state: " + (UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_ESTOP_STATE] == 1));
+            
+            _CollidedEstop = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_ESTOP_STATE] == 1; // TODO check estop state
+
+            if (newReportedExtensionMM != _ReportedExtensionInMM && _DEBUG_RoundRobin)
             {
-                Debug.Log(name + " reporting interval: " + (Time.time - _RoundRobinTime) + "   extension current/target: " + newReportedExtensionMM + " / " + CurrentTargetExtensionMM);
-                _RoundRobinTime = Time.time;
+                Debug.Log(name + " reporting interval: " + (Time.time - _DEBUG_RoundRobinTime) + "   extension current/target: " + newReportedExtensionMM + " / " + CurrentTargetExtensionMM);
+                _DEBUG_RoundRobinTime = Time.time;
             }
 
             _ReportedExtensionInMM = newReportedExtensionMM;
@@ -331,7 +332,6 @@ public class Actuator : MonoBehaviour
                 if (_ResendPositionTimeout <= 0) // && _ReportedNormExtension == _NormExtensionAtPrevSend)
                 {
                     _ResendPositionTimeout = 5;
-                    _NormExtensionAtPrevSend = _ReportedNormExtension;
                     SendEncoderExtensionLength();
                     Debug.LogWarning(name + "  resending extension due to timeout");
                 }
@@ -423,9 +423,6 @@ public class Actuator : MonoBehaviour
         // Register the actuator
         UkiStateDB.RegisterActuator(_ActuatorIndex);
         _UKIManager.AddActuator(this);
-
-        // Start the send position coroutine
-        StartCoroutine(SendPosAtRate(10));
 
         // Set names of the actuators and the reported actuator transforms
         name = "Actuator - " + _ActuatorIndex.ToString();
@@ -557,7 +554,7 @@ public class Actuator : MonoBehaviour
         if (UkiCommunicationsManager.Instance._EStopping)
             return;
 
-        _Collided = true;
+        _CollidedEstop = true;
 
         UkiCommunicationsManager.Instance.EStop("COLLISION: " + _CollisionReporter.name + " / " + go.name);
 
@@ -581,14 +578,14 @@ public class Actuator : MonoBehaviour
 
     public void ResetEStop()
     {
-        // Resets prev pos to set the pos to dirty so it resends
-        prevPos = 0;        
-        _Collided = false;
+        // Resets prev pos to set the pos to dirty so it resends          
+        _CollidedEstop = false;
     }
 
+    // ONLY PATHWAY OF SENDING ACTUATOR POSITIONS
     void SendEncoderExtensionLength()
     {
-        if (_Donotsend)
+        if (_DisableActuator || _CollidedEstop)
             return;
 
         if (_DEBUG)
@@ -607,25 +604,6 @@ public class Actuator : MonoBehaviour
         UkiCommunicationsManager.Instance.SendCalibrationMessage((int)_ActuatorIndex, -(int)_ExtensionSpeed);      
     }
     
-    IEnumerator SendPosAtRate(float ratePerSecond)
-    {
-        float wait = 1;// 1f / ratePerSecond;
-       
-        while (true)
-        {
-            if( _State != UKIEnums.State.Paused && !AtTargetExtension  )
-            {
-                if (!_Donotsend)
-                {
-                    //prevPos = CurrentEncoderExtension;
-                    //SendEncoderExtensionLength();
-                }
-            }
-
-            yield return new WaitForSeconds(wait);
-        }
-    }
-
     #region HELPER METHODS
     
  

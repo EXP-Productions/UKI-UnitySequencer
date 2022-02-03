@@ -102,7 +102,7 @@ public class UKI_PoseManager : MonoBehaviour
             // make arse always ready bc sometimes it doesnt get the msg
             if (actuator.Value._ActuatorIndex == UkiActuatorAssignments.Arse)
                 _ReadyCount++;
-            else if (actuator.Value.IsAtTargetPosition())
+            else if (actuator.Value.IsAtTargetPosition() || actuator.Value._ActuatorDisabled)
                 _ReadyCount++;
         }
 
