@@ -149,13 +149,15 @@ namespace UkiConsole
                 _myManagers[portside].ShutDown();
                 //OnPropertyChanged(comport);
                 try { 
-                _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials);
-                _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
+                    _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials);
+                    _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
                
-                _mmRevMap[comport] = portside;
-                Thread manThread = new Thread(_myManagers[portside].Listen);
-                manThread.Start();
-                OnPropertyChanged(comport);
+                    _mmRevMap[comport] = portside;
+                    Thread manThread = new Thread(_myManagers[portside].Listen);
+                    manThread.Start();
+
+                    OnPropertyChanged(comport);
+                    _axes.ClearTimeouts();
                 }
                 catch (Exception e)
                 {
@@ -216,13 +218,32 @@ namespace UkiConsole
 
                     foreach (ModbusManager _myManager in _myManagers.Values)
                     {
+                        System.Diagnostics.Debug.WriteLine(command);
                         // Delegates, Jai, delegates....
-                        _myManager.Control.Enqueue(command);
+                        //_myManager.Control.Enqueue(command);
                         if (command.Equals("SHUTDOWN"))
                         {
                             ShutDown();
+                            
 
                         }
+                        else if (command.Equals("ESTOP"))
+                        {
+
+                            ModbusManager.command cmd = new ModbusManager.command() { address = 0, register = (int)ModMap.RegMap.MB_ESTOP, value = 1 };
+
+
+                            _myManager.Control.Enqueue(cmd);
+                        }
+                        else if (command.Equals("CLEAR_ESTOP"))
+                        {
+
+                            ModbusManager.command cmd = new ModbusManager.command() { address = 0, register = (int)ModMap.RegMap.MB_RESET_ESTOP, value = 0x5050 };
+
+
+                            _myManager.Control.Enqueue(cmd);
+                        }
+
                         else if (command.Equals("CALIBRATE"))
                         {
                             foreach (String ax in Axes.AddressList)
@@ -243,12 +264,13 @@ namespace UkiConsole
                         }
                         else if (command.Equals("HOME"))
                         {
+                            // Keep the foreach here - we don't want to magically start moving disabled axes. Not that we currently support enabled or disabled....
                             foreach (String ax in Axes.AddressList)
                             {
                                 if (Axes.IsEnabled(ax))
                                 {
                                     ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(ax), register = (int)ModMap.RegMap.MB_MOTOR_SETPOINT, value = -10 };
-                                    
+
 
                                     _myManager.Command.Enqueue(cmd);
                                     cmd = new ModbusManager.command() { address = int.Parse(ax), register = (int)ModMap.RegMap.MB_MOTOR_ACCEL, value = 30 };
@@ -271,7 +293,7 @@ namespace UkiConsole
                             String[] res = message.Split(":");
                             Axes.SetAxisConfig(res[1].Trim(), "enabled", "false");
                             Axes.SetAxisAttribute(res[1].Trim(), "estop", 8);
-                            System.Diagnostics.Debug.WriteLine("Set {0} timed out", res[1].Trim());
+                           // System.Diagnostics.Debug.WriteLine("Set {0} timed out", res[1].Trim());
                             _queryOut.Enqueue(new List<string>() { res[1].Trim() });
                             OnPropertyChanged("Toggle");
 
@@ -301,7 +323,13 @@ namespace UkiConsole
                                     _myManagers[port].Command.Enqueue(cmd);
                                 }
                             }
-                        }catch (Exception e)
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine(String.Format("Disabled: {0} ", addr));
+
+                            }
+                        }
+                        catch (Exception e)
                         {
                             System.Diagnostics.Debug.WriteLine(e.Message);
                         }
@@ -314,7 +342,7 @@ namespace UkiConsole
                     _rawIn.TryDequeue(out _mv);
                     if (_mv is not null)
                     {
-                       // System.Diagnostics.Debug.WriteLine("Got raw");
+                        System.Diagnostics.Debug.WriteLine("Got raw");
 
                         if (Axes.IsEnabled(_mv.Addr))
                         {
@@ -326,16 +354,13 @@ namespace UkiConsole
 
                             String port = Axes.GetAxisConfig(_mv.Addr, "port");
                             _myManagers[port].Command.Enqueue(cmd);
-                            // We then want to send actual position status as read from the Essential read.
+                            
+                           
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine(String.Format("Disabled: {0} ", _mv.Addr));
 
-                            if (Axes.HasStatus(_mv.Addr.ToString(), _mv.Reg.ToString()))
-                            {
-                                int val = Axes.GetAxisStatus(_mv.Addr.ToString(), _mv.Reg.ToString());
-                                
-
-                               // RawMove udpResponse = new RawMove(_mv.Addr, _mv.Reg, val);
-                              //  _udpSender.sendStatus(udpResponse);
-                            }
                         }
                     }
 

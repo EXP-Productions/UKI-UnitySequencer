@@ -78,12 +78,7 @@ namespace UkiConsole
                 mm.commsSender = _sender;
             }
         }
-        private void startComms()
-        {
-
-           
-           
-        }
+       
             public void changeConn(object sender, PropertyChangedEventArgs e)
         {
            
@@ -149,14 +144,13 @@ namespace UkiConsole
                     {
                         // Control messages can be for all axes - send to both ports.
                         ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
-                        if (_mv.Reg == 208)
-                        {
-                            //Setting Estop
+                       
                             if (_mv.Addr == "0")
                             {
                                 foreach (ModbusManager mm in _myManagers.Values)
                                 {
-                                    mm.SendStopToAll();
+                                    mm.Command.Enqueue(cmd);
+                                  //  mm.SendStopToAll();
                                 }
                             }
                             else
@@ -164,28 +158,7 @@ namespace UkiConsole
                                 String port = _axes.GetAxisConfig(_mv.Addr, "port");
                                 _myManagers[port].Command.Enqueue(cmd);
                             }
-                        }
-                        if ( _mv.Reg == 209)
-                        {
-                            if (_mv.Addr == "0")
-                            {
-                                foreach (ModbusManager mm in _myManagers.Values)
-                                {
-                                    mm.SendClearToAll();
-                                }
-                            }
-                            else
-                            {
-                                String port = _axes.GetAxisConfig(_mv.Addr, "port");
-                                _myManagers[port].Command.Enqueue(cmd);
-                            }
-                        }
-                        foreach (ModbusManager mm in _myManagers.Values)
-                        {
-                           // System.Diagnostics.Debug.Write("Parsing control");
-
-                            mm.Command.Enqueue(cmd);
-                        }
+                       
                     }
                 }
 
@@ -201,8 +174,7 @@ namespace UkiConsole
                 _sender.ShutDown();
                 spawn_comms();
                 startManagers();
-                startComms();
-
+                
             }
 
         }

@@ -31,7 +31,7 @@ namespace UkiConsole
         // _control is meta commands for the listener
         private ConcurrentQueue<Dictionary<String, int>> _query = new ConcurrentQueue<Dictionary<String, int>>();
         private ConcurrentQueue<command> _command = new ConcurrentQueue<command>();
-        private ConcurrentQueue<String> _controlIn = new ConcurrentQueue<String>();
+        private ConcurrentQueue<command> _controlIn = new ConcurrentQueue<command>();
         // _result is address, register and value
         // _messageOut is meta again.
         private ConcurrentQueue<Dictionary<String, int[]>> _results = new ConcurrentQueue<Dictionary<String, int[]>>();
@@ -45,7 +45,7 @@ namespace UkiConsole
         private SendWrapper _mysender ;
         private bool _run = true;
         public event PropertyChangedEventHandler PropertyChanged;
-        public ConcurrentQueue<String> Control { get => _controlIn; }
+        public ConcurrentQueue<command> Control { get => _controlIn; }
         public ConcurrentQueue<Dictionary<String, int[]>> Results { get => _results; }
         public ConcurrentQueue<Dictionary<String, int>> Query { get => _query; }
         internal ConcurrentQueue<command> Command { get => _command; }
@@ -62,6 +62,13 @@ namespace UkiConsole
             _axes = axes.Select(s => int.Parse(s)).ToList();
             _essential_reg = essentials;
             _comport = comport;
+
+            System.Diagnostics.Debug.WriteLine(String.Format("New MM Manager: {0}", comport));
+            foreach (int a in _axes)
+            {
+                System.Diagnostics.Debug.WriteLine(a);
+
+            }
             try
             {
 
@@ -159,7 +166,7 @@ namespace UkiConsole
         {
 
             OnPropertyChanged("Connected");
-            string myControl;
+            //string myControl;
 
             while (_run)
             {
@@ -173,27 +180,19 @@ namespace UkiConsole
                 while (!Control.IsEmpty)
                 {
                     
-                    Control.TryDequeue(out myControl);
                     // Convert all this to delegates....
-                    if (myControl.Equals("ESTOP"))
-                    {
-                        System.Diagnostics.Debug.WriteLine(myControl);
+                    command cm;
+                    Control.TryDequeue(out cm);
+                    // Control messages are probably for "0" so don't check. 
+                        sendRegister(cm.address, cm.register, cm.value);
+                        System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
 
-                        //miniPoll.Change(Timeout.Infinite, Timeout.Infinite);
-                        // Send Estop to everything
-                        SendStopToAll();
-                        // miniPoll.Change(5, 500);
-                        //_run = false;
-                    }
-                    else if (myControl.Equals("CLEAR_ESTOP"))
-                    {
-                        SendClearToAll();
-                    }
-                    else if (myControl.Equals("SHUTDOWN"))
-                    {
-                        SendStopToAll();
-                        _run = false;
-                    }
+                        if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+                        {
+                            confirmTarget(cm.address, cm.register, cm.value);
+
+                        }
+                    
 
 
 
@@ -206,7 +205,7 @@ namespace UkiConsole
 
                     command cm;
                     Command.TryDequeue(out cm);
-                    // System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                     System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
                     if (Axes.Contains(cm.address))
                     {
                         sendRegister(cm.address, cm.register, cm.value);
@@ -222,7 +221,7 @@ namespace UkiConsole
                 readEssential();
 
             }
-            Control.Enqueue("STOPPED");
+           // Control.Enqueue("STOPPED");
         }
 
         public void ShutDown()
@@ -303,23 +302,17 @@ namespace UkiConsole
         {
             System.Diagnostics.Debug.WriteLine("Stopping");
             int ESTOP = (int)ModMap.RegMap.MB_ESTOP;
-            foreach (int addr in Axes)
-            {
-                sendRegister(addr, ESTOP, 1);
-
-            }
+            
+            sendRegister(0, ESTOP, 1);
         }
         public void SendClearToAll()
         {
             _blacklist = new List<int>();
             // System.Diagnostics.Debug.WriteLine("Clearing");
             int CLEAR = (int)ModMap.RegMap.MB_RESET_ESTOP;
-            foreach (int addr in Axes)
-            {
-                sendRegister(addr, CLEAR, 0x5050);
+           
+            sendRegister(0, CLEAR, 0x5050);
 
-            }
-            
         }
         private void confirmTarget(int addr, int register, int value)
         {
