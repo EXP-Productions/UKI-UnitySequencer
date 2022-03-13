@@ -1,0 +1,98 @@
+﻿<Window x:Class="UkiConsole.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UkiConsole"
+        mc:Ignorable="d"
+        Title="UKI Axis Control" d:DesignWidth="945" d:DesignHeight="550" >
+    <Grid Margin="0,0,0,0">
+        <GroupBox x:Name="groupBox" Header="Axes" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Width="850
+                  " Height="410">
+            <Grid x:Name="axGrid" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+        </GroupBox>
+        <GroupBox x:Name="groupBox1" Header="Input type" HorizontalAlignment="Left" Height="108" Margin="47,420,0,0" VerticalAlignment="Top" Width="219">
+
+            <Grid>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <RadioButton x:Name="radioButton" Content="CSV" IsChecked="True" Checked="mode_Changed" Width="55"/>
+                    <RadioButton x:Name="radioButton1" Content="UDP" Checked="mode_Changed" Width="54"/>
+                    <RadioButton x:Name="radioButton2" Content="TCP" Checked="mode_Changed" Width="55" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,24,0,37">
+                    <Label x:Name="listenStatus" Content="No Listener" Height="24" Width="81"/>
+                    <Button x:Name="restartListener" Content="Restart" Click="startListener" Height="23"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,53,0,0">
+                    <Label x:Name="sendStatus" Content="No Sender" Height="24" Width="81"/>
+                    <Button x:Name="restartSender" Content="Restart" Click="startSender" Height="23"/>
+                </StackPanel>
+            </Grid>
+
+
+
+        </GroupBox>
+        <Button x:Name="stopbutton" Content="EStop" HorizontalAlignment="Left" Height="35" Margin="300,450,0,0" VerticalAlignment="Top" Width="79" Click="stopbutton_Click"/>
+        <Button x:Name="button" Content="Show" HorizontalAlignment="Left" Height="35" Margin="410,450,0,0" VerticalAlignment="Top" Width="79" Click="button_Click"/>
+        <Button x:Name="button1" Content="Clear Estop" HorizontalAlignment="Left" Height="20" Margin="500,450,0,0" VerticalAlignment="Top" Width="54" Click="button1_Click"/>
+        <Button x:Name="button2" Content="Zero Axes" HorizontalAlignment="Left" Height="19" Margin="844,453,0,0" VerticalAlignment="Top" Width="53" Click="button2_Click"/>
+        <Button x:Name="buttonConfig" Content="Config" HorizontalAlignment="Left" Height="19" Margin="844,480,0,0" VerticalAlignment="Top" Width="54" Click="buttonConfig_Click"/>
+        <Button x:Name="buttonHome" Content="Home" HorizontalAlignment="Left" Height="19" Margin="844,500,0,0" VerticalAlignment="Top" Width="54" Click="buttonHome_Click"/>
+
+
+        <GroupBox x:Name="groupBox2" Header="USB ports" HorizontalAlignment="Left" Height="99" Margin="640,425,0,0" VerticalAlignment="Top" Width="144">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Name="LeftUSBPanel">
+                    <Label Content="Left port" Name="LeftPortLabel"/>
+                    <ComboBox  Name="LeftUSBSelect" ItemsSource = "{Binding Comports}" SelectedValue="{Binding LeftComPort, UpdateSourceTrigger=PropertyChanged}">
+
+                    </ComboBox>
+                    <Button Name="LeftUSBButton" Content="Connect" Click="ConnectComPort" Tag="Left">
+
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Name="RightUSBPanel">
+                    <Label Content="Right port"/>
+
+                    <ComboBox Name="RightUSBSelect" ItemsSource = "{Binding Comports}" SelectedValue="{Binding RightComPort}">
+
+                    </ComboBox>
+                    <Button Name="RightUSBButton" Content="Connect" Click="ConnectComPort" Tag="Right">
+
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>
