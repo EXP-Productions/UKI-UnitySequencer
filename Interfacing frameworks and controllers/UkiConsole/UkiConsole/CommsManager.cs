@@ -161,9 +161,9 @@ namespace UkiConsole
                        
                     }
                 }
+                Thread.Sleep(50);
 
             }
-
         }
         public void setMode (String mode)
         {

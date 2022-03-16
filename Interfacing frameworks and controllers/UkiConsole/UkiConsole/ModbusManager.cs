@@ -15,6 +15,9 @@ namespace UkiConsole
 {
     class ModbusManager
     {
+        private int BAUD_RATE = 19200;
+        private int CHECKTIME = 1000; // milliseconds between USB checks.
+        private DateTime last_checked;
         public struct command
         {
             public int address;
@@ -37,7 +40,6 @@ namespace UkiConsole
         private ConcurrentQueue<Dictionary<String, int[]>> _results = new ConcurrentQueue<Dictionary<String, int[]>>();
         private ConcurrentQueue<String> _messageOut = new ConcurrentQueue<String>();
         private List<int> _axes;
-        private Timer miniPoll;
         private IModbusMaster _myStream;
         private bool _connected = false;
         private int _nextessential = 0;
@@ -63,7 +65,7 @@ namespace UkiConsole
             _essential_reg = essentials;
             _comport = comport;
 
-            System.Diagnostics.Debug.WriteLine(String.Format("New MM Manager: {0}", comport));
+           // System.Diagnostics.Debug.WriteLine(String.Format("New MM Manager: {0}", comport));
             foreach (int a in _axes)
             {
                 System.Diagnostics.Debug.WriteLine(a);
@@ -138,7 +140,7 @@ namespace UkiConsole
         {
             _serialPort = new SerialPort();
             _serialPort.PortName = _comport;
-            _serialPort.BaudRate = 19200;
+            _serialPort.BaudRate = BAUD_RATE;
             _serialPort.Parity = System.IO.Ports.Parity.None;
             _serialPort.StopBits = System.IO.Ports.StopBits.One;
             _serialPort.ReadTimeout = 100;
@@ -218,7 +220,9 @@ namespace UkiConsole
                         }
                     }
                 }
-                readEssential();
+                
+                    readEssential();
+
 
             }
            // Control.Enqueue("STOPPED");
@@ -261,7 +265,7 @@ namespace UkiConsole
                                 
                                 //ushort newdata = resp[0];
                                 // ushort nreg = resp[1];
-                                ushort _val = resp[0];
+                                short _val = (short)resp[0];
 
 
                                 RawMove _mv = new RawMove(addr.ToString(), reg, _val);
@@ -281,7 +285,7 @@ namespace UkiConsole
                             // Should set to disabled so we don't get constant errors
                             MessageOut.Enqueue(String.Format("TIMEOUT:{0}", addr));
                             _blacklist.Add(addr);
-                            System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
+                            //System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
 
                         }
 

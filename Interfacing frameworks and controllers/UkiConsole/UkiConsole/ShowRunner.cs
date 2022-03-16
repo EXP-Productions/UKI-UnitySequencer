@@ -367,7 +367,8 @@ namespace UkiConsole
                   //  System.Diagnostics.Debug.WriteLine("Done raw");
                 }
                 checkStatus();
-                
+                Thread.Sleep(50);
+
             }
         }
 
