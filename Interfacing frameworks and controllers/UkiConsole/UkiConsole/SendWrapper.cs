@@ -45,9 +45,11 @@ namespace UkiConsole
         public void Enqueue(RawMove mv)
         {
             RawMove valmv = _axes.AdjustOutgoingMove(mv);
-         //   System.Diagnostics.Debug.WriteLine("Queueing in wrapper");
-
-            NetworkSender.Enqueue(valmv);
+            // System.Diagnostics.Debug.WriteLine("Queueing in wrapper");
+            if (valmv is not null)
+            {
+                NetworkSender.Enqueue(valmv);
+            }
            
         }
         public void ShutDown()

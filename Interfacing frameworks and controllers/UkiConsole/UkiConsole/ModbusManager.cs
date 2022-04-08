@@ -15,7 +15,7 @@ namespace UkiConsole
 {
     class ModbusManager
     {
-        private int BAUD_RATE = 19200;
+        private int BAUD_RATE = 57600;
         private int CHECKTIME = 1000; // milliseconds between USB checks.
         private DateTime last_checked;
         public struct command
@@ -271,8 +271,12 @@ namespace UkiConsole
                                 RawMove _mv = new RawMove(addr.ToString(), reg, _val);
 
                                 if (commsSender is not null) {
-                                  
-                                    commsSender.Enqueue(_mv);
+
+                                    //  System.Diagnostics.Debug.WriteLine("Sending update to unity");
+                                    if (_mv is not null)
+                                    {
+                                        commsSender.Enqueue(_mv);
+                                    }
                                 }
 
                                 _result[addr.ToString()] = new int[2] { reg, _val };

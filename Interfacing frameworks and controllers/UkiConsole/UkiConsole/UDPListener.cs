@@ -77,7 +77,7 @@ namespace UkiConsole
            
             _udpsock.Dispose();
         }
-        public void Receive()
+        public void Run()
         {
             _udpsock.Bind(new IPEndPoint(IPAddress.Parse(_addr), _port));
 

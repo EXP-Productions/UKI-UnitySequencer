@@ -367,7 +367,7 @@ namespace UkiConsole
                   //  System.Diagnostics.Debug.WriteLine("Done raw");
                 }
                 checkStatus();
-                Thread.Sleep(50);
+                Thread.Sleep(1);
 
             }
         }
@@ -385,7 +385,7 @@ namespace UkiConsole
         {
             _heart_armed = true; // in case it wasn't
             _lastHeart = DateTime.Now;
-            System.Diagnostics.Debug.WriteLine("HEARTBEAT");
+          //  System.Diagnostics.Debug.WriteLine("HEARTBEAT");
             _heartbeat.Change(5000, Timeout.Infinite);
             
         }

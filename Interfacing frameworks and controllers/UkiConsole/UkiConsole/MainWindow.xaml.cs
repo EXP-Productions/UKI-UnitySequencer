@@ -29,7 +29,7 @@ namespace UkiConsole
     {
         private int axbuttonheight = 30;
         private int axbuttonwidth = 50;
-        
+        private bool _shutdown = false;
         private AxisManager _axes;
         private Dictionary<String, Button> _axisButtons = new Dictionary<string, Button>();
         private Dictionary<Button, axisWindow> popouts = new();
@@ -131,6 +131,10 @@ namespace UkiConsole
         }
         private void maintoggle(object sender, PropertyChangedEventArgs e)
         {
+            if (_shutdown)
+            {
+                return;
+            }
             System.Diagnostics.Debug.WriteLine(e.PropertyName.ToString());
             if (e.PropertyName.ToString().Equals("Toggle")) {
                 // 
@@ -180,9 +184,14 @@ namespace UkiConsole
                     bg = Brushes.Green;
                     //labelContent = e.PropertyName;
                 }
-                
-                Dispatcher.BeginInvoke(new Action<Button, Brush>(UpdateButtonBG), DispatcherPriority.Normal, _usbButtonMap[e.PropertyName]["Button"],  bg);
-
+                try
+                {
+                    Dispatcher.BeginInvoke(new Action<Button, Brush>(UpdateButtonBG), DispatcherPriority.Normal, _usbButtonMap[e.PropertyName]["Button"], bg);
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("COM doesn't exist");
+                }
             }
         }
         private void LoadConfig()
@@ -620,6 +629,7 @@ namespace UkiConsole
         }
         protected override void OnClosing(CancelEventArgs e)
         {
+            _shutdown = true;
             StopShow();
             
             //_udpListener.ShutDown();

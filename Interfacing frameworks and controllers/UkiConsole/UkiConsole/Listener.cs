@@ -12,7 +12,7 @@ namespace UkiConsole
         public bool listenerConnected { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Receive();
+        public void Run();
         public void ShutDown();
     }
 }

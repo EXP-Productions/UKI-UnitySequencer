@@ -161,7 +161,7 @@ namespace UkiConsole
                        
                     }
                 }
-                Thread.Sleep(50);
+                Thread.Sleep(1);
 
             }
         }
@@ -226,7 +226,7 @@ namespace UkiConsole
                 spawn_dummylistener();
             }
             _listener.PropertyChanged += new PropertyChangedEventHandler(changeConn);
-            Thread listenThread = new Thread(_listener.Receive);
+            Thread listenThread = new Thread(_listener.Run);
             listenThread.IsBackground = true;
             listenThread.Start();
 
@@ -267,12 +267,12 @@ namespace UkiConsole
        
         private void spawn_tcplistener()
         {
-            _listener = new TCPListener(_listenerAddr, _listenerPort,Moves, Control) as Listener;
+            _listener = new TCPServer(_listenerAddr, _listenerPort,Moves, Control) as Listener;
             
         }
         private void spawn_tcpsender()
         {
-            Sender _netsender = new TCPSender(_senderAddr, _senderPort) as Sender;
+            Sender _netsender = _listener as Sender;
             _sender = new SendWrapper(_netsender, _axes);
 
         }
