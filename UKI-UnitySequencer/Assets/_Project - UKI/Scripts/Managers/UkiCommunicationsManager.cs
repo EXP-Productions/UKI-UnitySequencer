@@ -74,7 +74,7 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
 
     int _PacketCounter = 0;
 
-    public Server _TCPServer;
+    //public Server _TCPServer;
 
     // Set singleton instance and start Threaded UDP reciever
     public override void Awake()
@@ -82,13 +82,16 @@ public class UkiCommunicationsManager : ThreadedUDPReceiver
         base.Awake();
         _Instance = this;
 
-        Server.onHandleByteData += WriteData;
+        Client.onHandleByteData += WriteData;
+        //Server.onHandleByteData += WriteData;
     }
 
     void OnApplicationQuit()
     {
-        Server.onHandleByteData -= WriteData;
+       //Server.onHandleByteData -= WriteData;
+        Client.onHandleByteData -= WriteData;
     }
+
 
     void Start()
     {

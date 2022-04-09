@@ -326,7 +326,7 @@ public class Actuator : MonoBehaviour
             {
                 _ResendPositionTimeout -= Time.deltaTime;
 
-                Debug.LogWarning(name + "  _ResendPositionTimeout: " + _ResendPositionTimeout);
+                
 
                 // If timed out qnd position hasn't moved
                 if (_ResendPositionTimeout <= 0) // && _ReportedNormExtension == _NormExtensionAtPrevSend)

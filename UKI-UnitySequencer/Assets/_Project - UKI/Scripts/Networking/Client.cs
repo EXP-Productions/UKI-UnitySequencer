@@ -140,7 +140,6 @@ public class Client : MonoBehaviour
 
         if (_DebugRead)
         {
-           
             string debug = "";
             foreach (byte by in data)
             {
@@ -172,7 +171,6 @@ public class Client : MonoBehaviour
         {
             _BytesList.Add(data[i]);
         }
-
     }
 
     void SendBytes(bool addByteCount = false)

@@ -122,6 +122,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
         // Clear the active seq buttons
         ClearActiveSequenceButtons();
 
+        print(seqData._Name + "    " + seqData._SequenceData[0]);
+
         for (int i = 0; i < seqData._SequenceData.Count; i++)
         {
             // Get pose name

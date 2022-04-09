@@ -32,7 +32,7 @@ public class UKI_UIManager : MonoBehaviour
     public Image _TCPIn;
     public Image _TCPOut;
     public Client _Client;
-    public Server _Server;
+    //public Server _Server;
     public Button _TCPConnectButton;
 
     [Header("UI - ACTUATORS")]
@@ -92,9 +92,7 @@ public class UKI_UIManager : MonoBehaviour
         }
 
         _TCPOut.color = _Client.SocketConnected ? Color.yellow : Color.gray;
-        _TCPIn.color = _Server.ClientConnected ? Color.yellow : Color.gray;
-
-       
+        _TCPIn.color = _Client.SocketConnected ? Color.yellow : Color.gray;       
     }
 
     void SetUKIModeFromDropDown(int i)
