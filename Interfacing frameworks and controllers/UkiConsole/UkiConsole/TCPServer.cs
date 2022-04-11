@@ -7,7 +7,7 @@ using System.Net.Sockets;    //required
 
 namespace UkiConsole
 {
-    class TCPServer : Listener,Sender, INotifyPropertyChanged
+    class TCPServer : iListener,iSender, INotifyPropertyChanged
     {
 
 
@@ -16,7 +16,7 @@ namespace UkiConsole
         private ConcurrentQueue<RawMove> _moveOut = new ConcurrentQueue<RawMove>();
         private ConcurrentQueue<RawMove> _movein = new ConcurrentQueue<RawMove>();
 
-        private ConcurrentQueue<RawMove> _commandOut = new ConcurrentQueue<RawMove>();
+        private ConcurrentQueue<RawMove> _controlOut = new ConcurrentQueue<RawMove>();
         private bool _run = false;
         private bool _connected = false;
         private String _addr;
@@ -26,7 +26,7 @@ namespace UkiConsole
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }
         public ConcurrentQueue<RawMove> MoveIn { get => _movein; }
 
-        public ConcurrentQueue<RawMove> CommandOut { get => _commandOut; }
+        public ConcurrentQueue<RawMove> ControlOut { get => _controlOut; }
         public bool listenerConnected { get => _connected; }
         public bool senderConnected { get => _connected; }
 
@@ -70,7 +70,7 @@ namespace UkiConsole
 
 
             _moveOut = Moves;
-            _commandOut = Control;
+            _controlOut = Control;
 
         }
 
@@ -116,7 +116,7 @@ namespace UkiConsole
 
                                 UInt16 reg = BitConverter.ToUInt16(msg, 2);
                                 UInt16 val = BitConverter.ToUInt16(msg, 4);
-                                System.Diagnostics.Debug.WriteLine("TCP MOVE: {0} : {1}, {2} ({3})", _addr.ToString(), reg, val, msg.Length);
+                              //  System.Diagnostics.Debug.WriteLine("TCP MOVE: {0} : {1}, {2} ({3})", _addr.ToString(), reg, val, msg.Length);
 
 
                                 RawMove _mv = new RawMove(_addr.ToString(), reg, val);
@@ -125,7 +125,7 @@ namespace UkiConsole
 
                                 if (ModMap.ControlRegisters.Contains(reg) || ModMap.ControlAddresses.Contains(_addr))
                                 {
-                                    CommandOut.Enqueue(_mv);
+                                    ControlOut.Enqueue(_mv);
 
                                 }
                                 else
@@ -149,7 +149,8 @@ namespace UkiConsole
                         while (!MoveIn.IsEmpty)
                         {
                             RawMove _mv;
-                           // System.Diagnostics.Debug.WriteLine("Sending TCP");
+                           
+                            System.Diagnostics.Debug.WriteLine("Sending TCP");
                             MoveIn.TryDequeue(out _mv);
                             if (_mv is not null)
                             {

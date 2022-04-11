@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class UDPListener: Listener
+    class UDPListener: iListener
     {
         private Socket _udpsock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         private const int bufSize = 8 * 1024;

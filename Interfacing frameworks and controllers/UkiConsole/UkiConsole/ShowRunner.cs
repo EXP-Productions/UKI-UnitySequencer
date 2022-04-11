@@ -70,7 +70,7 @@ namespace UkiConsole
         public bool ListenerConnected { get => _listenerConnected;  }
         public bool SenderConnected { get => _senderConnected;  }
         Dictionary<String, List<String>> _portlists = new();
-        public ShowRunner(Dictionary<String,String> comport, AxisManager axes , List<int> essentials)
+        public ShowRunner(Dictionary<String,String> comport, AxisManager axes , List<int> essentials, int baud)
         {
             Axes = axes;
             _essentials = essentials;
@@ -101,7 +101,7 @@ namespace UkiConsole
                 if (_portlists.ContainsKey(kvp.Value))
                 {
                     // So after all that, here we have "left => Com3"
-                    _myManagers[kvp.Key] = new ModbusManager(kvp.Value, _portlists[kvp.Value], Essentials);
+                    _myManagers[kvp.Key] = new ModbusManager(kvp.Value, _portlists[kvp.Value], Essentials, baud);
                     _myManagers[kvp.Key].PropertyChanged += new PropertyChangedEventHandler(mmConn);
                     //_myManagers[kvp.Key].Connect();
                     _mmRevMap[kvp.Value] = kvp.Key;
@@ -142,33 +142,35 @@ namespace UkiConsole
         {
             return _myManagers[comport].Connected;
         }
-        public void USBConnect(string portside, string comport)
+        public void USBConnect(string portside, string comport, int baud)
         {
             try
             {
                 _myManagers[portside].ShutDown();
                 //OnPropertyChanged(comport);
-                try { 
-                    _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials);
-                    _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
                
-                    _mmRevMap[comport] = portside;
-                    Thread manThread = new Thread(_myManagers[portside].Listen);
-                    manThread.Start();
-
-                    OnPropertyChanged(comport);
-                    _axes.ClearTimeouts();
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(String.Format("Cannot reconnect: {0}", e.Message));
-
-
-                }
             }
             catch ( Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(String.Format("Cannot disconnect: {0}", e.Message));
+
+
+            }
+            try
+            {
+                _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials, baud);
+                _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
+
+                _mmRevMap[comport] = portside;
+                Thread manThread = new Thread(_myManagers[portside].Listen);
+                manThread.Start();
+
+                OnPropertyChanged(comport);
+                _axes.ClearTimeouts();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(String.Format("Cannot reconnect: {0}", e.Message));
 
 
             }

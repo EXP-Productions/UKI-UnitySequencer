@@ -15,7 +15,7 @@ namespace UkiConsole
 {
     class ModbusManager
     {
-        private int BAUD_RATE = 57600;
+        private int BAUD_RATE ;
         private int CHECKTIME = 1000; // milliseconds between USB checks.
         private DateTime last_checked;
         public struct command
@@ -58,12 +58,13 @@ namespace UkiConsole
         private SerialPort _serialPort;
         private String _comport;
         // axes is the comport map - it gives Serial ports and the axes attached
-        public ModbusManager(String comport, List<String> axes, List<int> essentials)
+        public ModbusManager(String comport, List<String> axes, List<int> essentials, int baud)
         {
             var factory = new ModbusFactory();
             _axes = axes.Select(s => int.Parse(s)).ToList();
             _essential_reg = essentials;
             _comport = comport;
+            BAUD_RATE = baud;
 
            // System.Diagnostics.Debug.WriteLine(String.Format("New MM Manager: {0}", comport));
             foreach (int a in _axes)
@@ -181,53 +182,63 @@ namespace UkiConsole
 
                 while (!Control.IsEmpty)
                 {
-                    
+
                     // Convert all this to delegates....
-                    command cm;
-                    Control.TryDequeue(out cm);
-                    // Control messages are probably for "0" so don't check. 
-                        sendRegister(cm.address, cm.register, cm.value);
-                        System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
-
-                        if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
-                        {
-                            confirmTarget(cm.address, cm.register, cm.value);
-
-                        }
-                    
-
-
-
-
+                    manageControl();
 
                 }
                 while (!Command.IsEmpty)
                 {
-                    
 
-                    command cm;
-                    Command.TryDequeue(out cm);
-                     System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
-                    if (Axes.Contains(cm.address))
+                    if (Control.IsEmpty)
                     {
-                        sendRegister(cm.address, cm.register, cm.value);
-                        System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                        command cm;
 
-                        if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+                        Command.TryDequeue(out cm);
+                        //  System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                        if (Axes.Contains(cm.address))
                         {
-                            confirmTarget(cm.address, cm.register, cm.value);
+                            sendRegister(cm.address, cm.register, cm.value);
+                            //  System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
 
+                            if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+                            {
+                                confirmTarget(cm.address, cm.register, cm.value);
+
+                            }
                         }
+                    }
+                    else
+                    {
+                        manageControl();
+
                     }
                 }
                 
-                    readEssential();
+                readEssential();
 
 
             }
            // Control.Enqueue("STOPPED");
         }
 
+        public void manageControl()
+        {
+            command cm;
+
+            Control.TryDequeue(out cm);
+            // Control messages are probably for "0" so don't check. 
+            sendRegister(cm.address, cm.register, cm.value);
+            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+
+            if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+            {
+                confirmTarget(cm.address, cm.register, cm.value);
+
+            }
+            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+
+        }
         public void ShutDown()
         {
             System.Diagnostics.Debug.WriteLine("closing mm");
@@ -241,68 +252,71 @@ namespace UkiConsole
         }
         private void readEssential()
         {
-            Dictionary<String, int[]> _result = new Dictionary<string, int[]>();
+            
+                Dictionary<String, int[]> _result = new Dictionary<string, int[]>();
 
-            if (Axes.Count > 0)
-            {
-
-                // This should always be true, but just in case....
-                if (_nextessential < Axes.Count)
+                if (Axes.Count > 0)
                 {
-                    
-               
 
-                    byte addr = (byte) Axes[_nextessential];
-                    if (!_blacklist.Contains(addr))
+                    // This should always be true, but just in case....
+                    if (_nextessential < Axes.Count)
                     {
-                        try
+
+
+
+                        byte addr = (byte)Axes[_nextessential];
+                        if (!_blacklist.Contains(addr))
                         {
-                            foreach (int reg in _essential_reg)
+                            try
                             {
-                                ushort[] resp;
-                                resp = _myStream.ReadHoldingRegisters(addr, (ushort)reg, 1);
-
-                                
-                                //ushort newdata = resp[0];
-                                // ushort nreg = resp[1];
-                                short _val = (short)resp[0];
+                                foreach (int reg in _essential_reg)
+                                {
+                                    ushort[] resp;
+                                    resp = _myStream.ReadHoldingRegisters(addr, (ushort)reg, 1);
 
 
-                                RawMove _mv = new RawMove(addr.ToString(), reg, _val);
+                                    //ushort newdata = resp[0];
+                                    // ushort nreg = resp[1];
+                                    short _val = (short)resp[0];
 
-                                if (commsSender is not null) {
 
-                                    //  System.Diagnostics.Debug.WriteLine("Sending update to unity");
-                                    if (_mv is not null)
+                                    RawMove _mv = new RawMove(addr.ToString(), reg, _val);
+
+                                    if (commsSender is not null)
                                     {
-                                        commsSender.Enqueue(_mv);
+
+                                        //  System.Diagnostics.Debug.WriteLine("Sending update to unity");
+                                        if (_mv is not null)
+                                        {
+                                            commsSender.Enqueue(_mv);
+                                        }
                                     }
+
+                                    _result[addr.ToString()] = new int[2] { reg, _val };
+                                    Results.Enqueue(_result);
+                                    //  System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
                                 }
-
-                                _result[addr.ToString()] = new int[2] { reg, _val };
-                                Results.Enqueue(_result);
-                                //  System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
                             }
-                        }
-                        catch(Exception e)
-                        {
-                            // Should set to disabled so we don't get constant errors
-                            MessageOut.Enqueue(String.Format("TIMEOUT:{0}", addr));
-                            _blacklist.Add(addr);
-                            //System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
+                            catch (Exception e)
+                            {
+                                // Should set to disabled so we don't get constant errors
+                                MessageOut.Enqueue(String.Format("TIMEOUT:{0}", addr));
+                                _blacklist.Add(addr);
+                                //System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
+
+                            }
+
+                            // Might be better to do it in one hit. We'll see.
 
                         }
 
-                        // Might be better to do it in one hit. We'll see.
 
                     }
 
-
+                    _nextessential = (_nextessential + 1) % Axes.Count;
                 }
-
-                _nextessential = (_nextessential + 1) % Axes.Count;
-            }
-            //  System.Diagnostics.Debug.WriteLine("Updoot 2 {0}", _nextessential);
+                //  System.Diagnostics.Debug.WriteLine("Updoot 2 {0}", _nextessential);
+            
 
 
         }

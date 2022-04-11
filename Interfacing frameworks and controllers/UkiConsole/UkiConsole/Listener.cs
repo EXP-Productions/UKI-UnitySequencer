@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    interface Listener
+    interface iListener
     {
         public bool listenerConnected { get; }
         public event PropertyChangedEventHandler PropertyChanged;

@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class TCPSender : Sender
+    class TCPSender : iSender
     {
         private TcpClient _tcpClient;
         // private State state = new State();

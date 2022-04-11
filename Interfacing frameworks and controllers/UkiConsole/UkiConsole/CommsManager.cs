@@ -16,7 +16,7 @@ namespace UkiConsole
 {
     class CommsManager //: INotifyPropertyChanged
     {
-        private Listener _listener;
+        private iListener _listener;
         private SendWrapper _sender;
         private Dictionary<String, ModbusManager> _myManagers = new();
         private string _mode ;
@@ -242,7 +242,7 @@ namespace UkiConsole
             
             // delegates and dictionaries...
            
-            _listener =  new UDPListener(_listenerAddr, _listenerPort, Moves, Control) as Listener;
+            _listener =  new UDPListener(_listenerAddr, _listenerPort, Moves, Control) as iListener;
             
 
         }
@@ -251,7 +251,7 @@ namespace UkiConsole
            
                 try
                 {
-                    Sender _netsender = new UDPSender(_senderAddr, _senderPort) as Sender;
+                    iSender _netsender = new UDPSender(_senderAddr, _senderPort) as iSender;
                     _sender = new SendWrapper(_netsender, _axes);
 
 
@@ -267,12 +267,12 @@ namespace UkiConsole
        
         private void spawn_tcplistener()
         {
-            _listener = new TCPServer(_listenerAddr, _listenerPort,Moves, Control) as Listener;
+            _listener = new TCPServer(_listenerAddr, _listenerPort,Moves, Control) as iListener;
             
         }
         private void spawn_tcpsender()
         {
-            Sender _netsender = _listener as Sender;
+            iSender _netsender = _listener as iSender;
             _sender = new SendWrapper(_netsender, _axes);
 
         }
@@ -283,7 +283,7 @@ namespace UkiConsole
 
             // delegates and dictionaries...
 
-            _listener = new DummyListener(Moves, Control) as Listener;
+            _listener = new DummyListener(Moves, Control) as iListener;
 
 
         }
@@ -292,7 +292,7 @@ namespace UkiConsole
 
             try
             {
-                Sender _netsender = new DummySender() as Sender;
+                iSender _netsender = new DummySender() as iSender;
                 _sender = new SendWrapper(_netsender, _axes);
 
 

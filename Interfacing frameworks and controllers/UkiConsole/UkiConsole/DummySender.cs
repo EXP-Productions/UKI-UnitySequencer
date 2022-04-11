@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 namespace UkiConsole
 {
-    class DummySender : Sender
+    class DummySender : iSender
     {
         private TcpClient _tcpClient;
         // private State state = new State();

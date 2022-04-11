@@ -7,7 +7,7 @@ using System.Net.Sockets;    //required
 
 namespace UkiConsole
 {
-    class DummyListener : Listener
+    class DummyListener : iListener
     {
 
 

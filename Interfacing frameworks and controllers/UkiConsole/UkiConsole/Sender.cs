@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    interface Sender
+    interface iSender
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public bool senderConnected { get; }

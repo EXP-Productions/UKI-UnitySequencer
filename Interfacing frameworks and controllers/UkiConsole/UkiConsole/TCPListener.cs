@@ -7,7 +7,7 @@ using System.Net.Sockets;    //required
 
 namespace UkiConsole
 {
-    class TCPListener : Listener, INotifyPropertyChanged
+    class TCPListener : iListener, INotifyPropertyChanged
     {
 
 
