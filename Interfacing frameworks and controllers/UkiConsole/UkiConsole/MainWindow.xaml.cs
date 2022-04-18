@@ -20,6 +20,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Ports;
+using System.Diagnostics;
+using System.IO;
 namespace UkiConsole
 {
     /// <summary>
@@ -45,9 +47,9 @@ namespace UkiConsole
         private bool _running = false;
         private bool _estopped = true;
         private Dictionary<String,AxisMove> _nextMove;
-        private String _inputType = "CSV";
-       // private UDPListener _udpListener ;
-        
+        private String _inputType = "TCP";
+        // private UDPListener _udpListener ;
+        public  String TCPSendTime;
         // Portmap is "left => Com3"
         private Dictionary<String, String> _portmap = new();
         private bool _udp_armed = false;
@@ -67,12 +69,12 @@ namespace UkiConsole
           //  {(int)ModMap.RegMap.MB_MOTOR_ACCEL , "Accel" },
             {(int)ModMap.RegMap.MB_INWARD_ENDSTOP_STATE, "Micro" },
             };
-
+       
         public List<string> Comports { get => _comports;  }
         public String LeftComPort { get => _portmap["left"]; set => _portmap["left"] = value; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         public void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -83,7 +85,8 @@ namespace UkiConsole
         public String RightComPort { get => _portmap["right"]; set => _portmap["right"] = value; }
         public MainWindow()
         {
-           // Comports.AddRange(SerialPort.GetPortNames());
+            // Comports.AddRange(SerialPort.GetPortNames());
+            Trace.Listeners.Add(new TextWriterTraceListener("TextWriterOutput.log", "myListener"));
 
             LoadConfig();
             _axes = new AxisManager(_config["axisConfig"]);
@@ -106,7 +109,12 @@ namespace UkiConsole
                     {"Button", LeftUSBButton }
                     
                 };
-             }
+                _usbButtonMap[_portmap["right"]] = new Dictionary<String, Object> {
+                    { "Label", RightPortLabel },
+                    {"Button", RightUSBButton }
+
+                };
+            }
             _showrunner.PropertyChanged += new PropertyChangedEventHandler(maintoggle);
             Thread showThread = new Thread(_showrunner.Listen);
             showThread.Start();
@@ -135,7 +143,7 @@ namespace UkiConsole
             {
                 return;
             }
-            System.Diagnostics.Debug.WriteLine(e.PropertyName.ToString());
+           // System.Diagnostics.Debug.WriteLine(e.PropertyName.ToString());
             if (e.PropertyName.ToString().Equals("Toggle")) {
                 // 
                 List<String> changed;
@@ -161,18 +169,12 @@ namespace UkiConsole
                 }
 
                 Dispatcher.BeginInvoke(new Action<Label, String, Brush>(UpdateLabel), DispatcherPriority.Normal, listenStatus, labelContent,bg);
-            }else if (e.PropertyName.ToString().Equals("senderConnected"))
+            }
+            else if (e.PropertyName.ToString().Equals("TCPSendTime"))
             {
-                Brush bg = Brushes.Yellow;
-                String labelContent = "No Sender";
-                if (_showrunner.SenderConnected)
-                {
-                    bg = Brushes.Green;
-                    labelContent = "Sender connected";
+                TCPSendTime = DateTime.Now.ToString("HH:mm:ss");
+                Dispatcher.BeginInvoke(new Action<Label, String, Brush>(UpdateLabel), DispatcherPriority.Normal, sendtime, TCPSendTime, Brushes.Green);
 
-                }
-
-                Dispatcher.BeginInvoke(new Action<Label, String, Brush>(UpdateLabel), DispatcherPriority.Normal, sendStatus, labelContent, bg);
             }
             else if (_portmap.Values.Contains(e.PropertyName.ToString()))
             {

@@ -30,7 +30,13 @@ namespace UkiConsole
         public event PropertyChangedEventHandler PropertyChanged;
         public bool listenerConnected { get => _connected; }
 
-
+        public string Type
+        {
+            get
+            {
+                return "UDP";
+            }
+        }
 
 
         private void checkConnection(bool state)

@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class ModbusManager
+    public class ModbusManager
     {
         private int BAUD_RATE ;
         private int CHECKTIME = 1000; // milliseconds between USB checks.
@@ -50,7 +50,7 @@ namespace UkiConsole
         public ConcurrentQueue<command> Control { get => _controlIn; }
         public ConcurrentQueue<Dictionary<String, int[]>> Results { get => _results; }
         public ConcurrentQueue<Dictionary<String, int>> Query { get => _query; }
-        internal ConcurrentQueue<command> Command { get => _command; }
+        public ConcurrentQueue<command> Command { get => _command; }
         public ConcurrentQueue<string> MessageOut { get => _messageOut; }
         public List<int> Axes { get => _axes; }
         public SendWrapper commsSender { get => _mysender; set => _mysender = value; }
@@ -127,7 +127,7 @@ namespace UkiConsole
                         System.Diagnostics.Debug.WriteLine(String.Format(" {0} Connected", _comport));
 
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         System.Diagnostics.Debug.WriteLine("Could not connect");
                     }
@@ -180,18 +180,16 @@ namespace UkiConsole
                     return;
                 }
 
-                while (!Control.IsEmpty)
-                {
+               
 
                     // Convert all this to delegates....
                     manageControl();
 
-                }
+                
                 while (!Command.IsEmpty)
                 {
 
-                    if (Control.IsEmpty)
-                    {
+                    manageControl();
                         command cm;
 
                         Command.TryDequeue(out cm);
@@ -199,7 +197,7 @@ namespace UkiConsole
                         if (Axes.Contains(cm.address))
                         {
                             sendRegister(cm.address, cm.register, cm.value);
-                            //  System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                              System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
 
                             if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
                             {
@@ -207,12 +205,7 @@ namespace UkiConsole
 
                             }
                         }
-                    }
-                    else
-                    {
-                        manageControl();
-
-                    }
+                    
                 }
                 
                 readEssential();
@@ -224,20 +217,24 @@ namespace UkiConsole
 
         public void manageControl()
         {
+        // System.Diagnostics.Debug.WriteLine(" MM Control ");
+        while (!Control.IsEmpty)
+        {
             command cm;
 
             Control.TryDequeue(out cm);
+            System.Diagnostics.Debug.WriteLine(" MM Control Sending {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+
             // Control messages are probably for "0" so don't check. 
             sendRegister(cm.address, cm.register, cm.value);
-            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
 
             if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
             {
                 confirmTarget(cm.address, cm.register, cm.value);
 
             }
-            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
-
+            // System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+        }
         }
         public void ShutDown()
         {
@@ -263,21 +260,24 @@ namespace UkiConsole
                     {
 
 
-
-                        byte addr = (byte)Axes[_nextessential];
+                    byte addr = (byte)Axes[_nextessential];
                         if (!_blacklist.Contains(addr))
                         {
                             try
                             {
                                 foreach (int reg in _essential_reg)
                                 {
-                                    ushort[] resp;
+                               // System.Diagnostics.Debug.WriteLine("Reading {0} : {1} ", addr, reg);
+
+                                ushort[] resp;
+                                try
+                                {
                                     resp = _myStream.ReadHoldingRegisters(addr, (ushort)reg, 1);
+                               
 
-
-                                    //ushort newdata = resp[0];
-                                    // ushort nreg = resp[1];
-                                    short _val = (short)resp[0];
+                                //ushort newdata = resp[0];
+                                // ushort nreg = resp[1];
+                                short _val = (short)resp[0];
 
 
                                     RawMove _mv = new RawMove(addr.ToString(), reg, _val);
@@ -294,8 +294,14 @@ namespace UkiConsole
 
                                     _result[addr.ToString()] = new int[2] { reg, _val };
                                     Results.Enqueue(_result);
-                                    //  System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
+                                 //     System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
                                 }
+                                catch (Exception e)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("Trouble Reading {0} : {1} ", addr, e.Message);
+
+                                }
+                            }
                             }
                             catch (Exception e)
                             {
@@ -322,7 +328,6 @@ namespace UkiConsole
         }
         public void SendStopToAll()
         {
-            System.Diagnostics.Debug.WriteLine("Stopping");
             int ESTOP = (int)ModMap.RegMap.MB_ESTOP;
             
             sendRegister(0, ESTOP, 1);
@@ -360,7 +365,7 @@ namespace UkiConsole
             try
             {
                 _myStream.WriteSingleRegister((byte)addr, (ushort)register, (ushort)value);
-                System.Diagnostics.Debug.WriteLine(String.Format(" SENT IN REG {0}", addr));
+               // System.Diagnostics.Debug.WriteLine(String.Format(" SENT IN REG {0}", addr));
 
             }
             catch (Exception e)
@@ -387,7 +392,7 @@ namespace UkiConsole
                 _vals.Add(bval[3]);
 
             }
-            //int axis = int.Parse(addr);
+           
             _myStream.WriteMultipleRegistersAsync((byte)addr, (ushort)startAddr, _vals.ToArray());
 
         }

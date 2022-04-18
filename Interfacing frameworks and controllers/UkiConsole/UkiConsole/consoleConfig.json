@@ -2,8 +2,8 @@
   "appSettings": {
     "defaultComPorts": {
 
-      "Right": "COM5",
-      "Left": "COM4"
+      "Right": "COM6",
+      "Left": "COM5"
     },
     "baud": 19200,
     "axisConfig": "UkiConfig.json",

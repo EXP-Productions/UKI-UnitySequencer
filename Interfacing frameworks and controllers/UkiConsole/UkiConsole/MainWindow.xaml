@@ -41,18 +41,15 @@
             <Grid>
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <RadioButton x:Name="radioButton" Content="CSV" IsChecked="True" Checked="mode_Changed" Width="55"/>
-                    <RadioButton x:Name="radioButton1" Content="UDP" Checked="mode_Changed" Width="54"/>
-                    <RadioButton x:Name="radioButton2" Content="TCP" Checked="mode_Changed" Width="55" />
+                    <RadioButton x:Name="radioButton" Content="Local"  Checked="mode_Changed" Width="55"/>
+                    <RadioButton x:Name="radioButton2" Content="TCP" IsChecked="True" Checked="mode_Changed" Width="55" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,24,0,37">
-                    <Label x:Name="listenStatus" Content="No Listener" Height="24" Width="81"/>
+                    <Label x:Name="listenStatus" Content="TCP Connection" Height="24" Width="81"/>
                     <Button x:Name="restartListener" Content="Restart" Click="startListener" Height="23"/>
+                    <Label x:Name="sendtime" Content="{Binding TCPSendTime}"></Label>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,53,0,0">
-                    <Label x:Name="sendStatus" Content="No Sender" Height="24" Width="81"/>
-                    <Button x:Name="restartSender" Content="Restart" Click="startSender" Height="23"/>
-                </StackPanel>
+                
             </Grid>
 
 
@@ -81,8 +78,8 @@
 
                     </Button>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Name="RightUSBPanel">
-                    <Label Content="Right port"/>
+                <StackPanel Grid.Column="1" Name="RightUSBPanel" >
+                    <Label Content="Right port" Name="RightPortLabel"/>
 
                     <ComboBox Name="RightUSBSelect" ItemsSource = "{Binding Comports}" SelectedValue="{Binding RightComPort}">
 

@@ -19,9 +19,11 @@ namespace UkiConsole
         private bool _run = true;
         private string _addr;
         private int _port;
+        public string type = "TCP";
         private bool _connected = false;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private ConcurrentQueue<RawMove> _movein = new ConcurrentQueue<RawMove>();
+        public ConcurrentQueue<RawMove> MoveIn { get => _movein; }
 
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }
         public bool senderConnected { get => _connected; }
@@ -120,19 +122,7 @@ namespace UkiConsole
             data[5] = _val[0];
 
 
-           /* if (_mv.Addr == "21" && _mv.Reg == 299 && _mv.Val != _prevVal )
-            {
-                _prevVal = _mv.Val;
-                _toggle_UDPdat = true;
-                DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
-                string formtime = String.Format("IN WRAPPER QUEUE {0}", now.ToString("mm:ss:fff"));
-                System.Diagnostics.Debug.WriteLine(formtime);
-            }
-            else
-            {
-                _toggle_UDPdat = false;
-                _prevVal = 0;
-            }*/
+           
             Send(data);
 
         }

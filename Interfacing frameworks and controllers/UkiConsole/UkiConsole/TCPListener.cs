@@ -28,7 +28,13 @@ namespace UkiConsole
         public ConcurrentQueue<RawMove> CommandOut { get => _commandOut; }
         public bool listenerConnected { get => _connected; }
 
-
+        public string Type
+        {
+            get
+            {
+                return "TCP";
+            }
+        }
         protected void OnPropertyChanged(string propertyname)
         {
             PropertyChangedEventHandler eh = PropertyChanged;

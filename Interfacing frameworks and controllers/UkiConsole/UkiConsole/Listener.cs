@@ -11,6 +11,7 @@ namespace UkiConsole
     {
         public bool listenerConnected { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public string Type { get; }
 
         public void Run();
         public void ShutDown();
