@@ -79,7 +79,8 @@ public class Client : MonoBehaviour
         if (!SocketConnected || UkiCommunicationsManager.Instance.IsSimulating)
             return;
 
-        if (_Stream.DataAvailable)
+        _Stream = _Socket.GetStream();
+        while (_Stream.DataAvailable)
         {
             if (_ReadType == ReadType.String)
             {
@@ -105,10 +106,12 @@ public class Client : MonoBehaviour
         {
             // Send();
         }
-        
+
+        _Stream.Flush();
+
 
         //--  DEBUG
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             if (_ReadType == ReadType.ByteArray)
             {

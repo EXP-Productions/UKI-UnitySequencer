@@ -1903,7 +1903,6 @@ MonoBehaviour:
   _TCPIn: {fileID: 1494282477}
   _TCPOut: {fileID: 937602609}
   _Client: {fileID: 1884671274}
-  _Server: {fileID: 1884671275}
   _TCPConnectButton: {fileID: 553509292}
   _LeftSendToggle: {fileID: 933195047}
   _RightSendToggle: {fileID: 1482822117}
@@ -10132,7 +10131,6 @@ MonoBehaviour:
   _DebugSend: 1
   _DebugRecieve: 0
   _DebugUDP: 1
-  _TCPServer: {fileID: 0}
 --- !u!224 &988891199 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4497005732001359610, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
@@ -12264,7 +12262,7 @@ PrefabInstance:
     - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _DisableActuator
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -17118,7 +17116,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1884671273}
   - component: {fileID: 1884671274}
-  - component: {fileID: 1884671275}
   m_Layer: 0
   m_Name: TCP Comms
   m_TagString: Untagged
@@ -17155,27 +17152,8 @@ MonoBehaviour:
   _ReadType: 1
   _Port: 9000
   _HostIP: 127.0.0.1
-  _DebugWrite: 0
+  _DebugWrite: 1
   _DebugRead: 1
---- !u!114 &1884671275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884671272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbab7766d8114494ba614ebe09cbc005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ReadType: 1
-  _LocalIP: 
-  _Port: 10001
-  _Debug: 0
-  _DebugRead: 1
-  _DebugStringMessage: Test 1234
-  _DebugByteMessage: 
 --- !u!1001 &1898799601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23210,7 +23188,7 @@ PrefabInstance:
     - target: {fileID: 5059459027394719504, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _DEBUG_RoundRobin
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026719715200, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -23310,7 +23288,7 @@ PrefabInstance:
     - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _DisableActuator
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
