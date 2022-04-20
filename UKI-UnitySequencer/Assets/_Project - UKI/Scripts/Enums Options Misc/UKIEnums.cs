@@ -65,7 +65,7 @@ public enum UkiActuatorAssignments
     LeftWingRotate = 22,
     LeftWingRaise = 23,
     RightWingRotate = 25,
-    RightWingRaise = 26,
+    RightWingRaise = 6, //26
     Arse = 27,
     Pincer1 = 28,
     Pincer2 = 29,
