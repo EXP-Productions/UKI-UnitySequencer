@@ -193,7 +193,7 @@ namespace UkiConsole
                         command cm;
 
                         Command.TryDequeue(out cm);
-                        //  System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                          System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
                         if (Axes.Contains(cm.address))
                         {
                             sendRegister(cm.address, cm.register, cm.value);
