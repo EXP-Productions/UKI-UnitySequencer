@@ -16,7 +16,7 @@ namespace UkiConsole
 {
     class CommsManager //: INotifyPropertyChanged
     {
-        private Listener _listener;
+        private iListener _listener;
         private SendWrapper _sender;
         private Dictionary<String, ModbusManager> _myManagers = new();
         private string _mode ;
@@ -78,12 +78,7 @@ namespace UkiConsole
                 mm.commsSender = _sender;
             }
         }
-        private void startComms()
-        {
-
-           
-           
-        }
+       
             public void changeConn(object sender, PropertyChangedEventArgs e)
         {
            
@@ -149,14 +144,13 @@ namespace UkiConsole
                     {
                         // Control messages can be for all axes - send to both ports.
                         ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
-                        if (_mv.Reg == 208)
-                        {
-                            //Setting Estop
+                       
                             if (_mv.Addr == "0")
                             {
                                 foreach (ModbusManager mm in _myManagers.Values)
                                 {
-                                    mm.SendStopToAll();
+                                    mm.Command.Enqueue(cmd);
+                                  //  mm.SendStopToAll();
                                 }
                             }
                             else
@@ -164,33 +158,12 @@ namespace UkiConsole
                                 String port = _axes.GetAxisConfig(_mv.Addr, "port");
                                 _myManagers[port].Command.Enqueue(cmd);
                             }
-                        }
-                        if ( _mv.Reg == 209)
-                        {
-                            if (_mv.Addr == "0")
-                            {
-                                foreach (ModbusManager mm in _myManagers.Values)
-                                {
-                                    mm.SendClearToAll();
-                                }
-                            }
-                            else
-                            {
-                                String port = _axes.GetAxisConfig(_mv.Addr, "port");
-                                _myManagers[port].Command.Enqueue(cmd);
-                            }
-                        }
-                        foreach (ModbusManager mm in _myManagers.Values)
-                        {
-                           // System.Diagnostics.Debug.Write("Parsing control");
-
-                            mm.Command.Enqueue(cmd);
-                        }
+                       
                     }
                 }
+                Thread.Sleep(1);
 
             }
-
         }
         public void setMode (String mode)
         {
@@ -201,8 +174,7 @@ namespace UkiConsole
                 _sender.ShutDown();
                 spawn_comms();
                 startManagers();
-                startComms();
-
+                
             }
 
         }
@@ -254,7 +226,7 @@ namespace UkiConsole
                 spawn_dummylistener();
             }
             _listener.PropertyChanged += new PropertyChangedEventHandler(changeConn);
-            Thread listenThread = new Thread(_listener.Receive);
+            Thread listenThread = new Thread(_listener.Run);
             listenThread.IsBackground = true;
             listenThread.Start();
 
@@ -270,7 +242,7 @@ namespace UkiConsole
             
             // delegates and dictionaries...
            
-            _listener =  new UDPListener(_listenerAddr, _listenerPort, Moves, Control) as Listener;
+            _listener =  new UDPListener(_listenerAddr, _listenerPort, Moves, Control) as iListener;
             
 
         }
@@ -279,7 +251,7 @@ namespace UkiConsole
            
                 try
                 {
-                    Sender _netsender = new UDPSender(_senderAddr, _senderPort) as Sender;
+                    iSender _netsender = new UDPSender(_senderAddr, _senderPort) as iSender;
                     _sender = new SendWrapper(_netsender, _axes);
 
 
@@ -295,12 +267,12 @@ namespace UkiConsole
        
         private void spawn_tcplistener()
         {
-            _listener = new TCPListener(_listenerAddr, _listenerPort,Moves, Control) as Listener;
+            _listener = new TCPServer(_listenerAddr, _listenerPort,Moves, Control) as iListener;
             
         }
         private void spawn_tcpsender()
         {
-            Sender _netsender = new TCPSender(_senderAddr, _senderPort) as Sender;
+            iSender _netsender = _listener as iSender;
             _sender = new SendWrapper(_netsender, _axes);
 
         }
@@ -311,7 +283,7 @@ namespace UkiConsole
 
             // delegates and dictionaries...
 
-            _listener = new DummyListener(Moves, Control) as Listener;
+            _listener = new DummyListener(Moves, Control) as iListener;
 
 
         }
@@ -320,7 +292,7 @@ namespace UkiConsole
 
             try
             {
-                Sender _netsender = new DummySender() as Sender;
+                iSender _netsender = new DummySender() as iSender;
                 _sender = new SendWrapper(_netsender, _axes);
 
 

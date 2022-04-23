@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class UDPSender : Sender
+    class UDPSender : iSender
     {
 
         private Socket _udpsock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

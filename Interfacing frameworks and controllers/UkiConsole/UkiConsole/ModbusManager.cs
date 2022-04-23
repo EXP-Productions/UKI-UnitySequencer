@@ -15,6 +15,9 @@ namespace UkiConsole
 {
     class ModbusManager
     {
+        private int BAUD_RATE ;
+        private int CHECKTIME = 1000; // milliseconds between USB checks.
+        private DateTime last_checked;
         public struct command
         {
             public int address;
@@ -31,13 +34,12 @@ namespace UkiConsole
         // _control is meta commands for the listener
         private ConcurrentQueue<Dictionary<String, int>> _query = new ConcurrentQueue<Dictionary<String, int>>();
         private ConcurrentQueue<command> _command = new ConcurrentQueue<command>();
-        private ConcurrentQueue<String> _controlIn = new ConcurrentQueue<String>();
+        private ConcurrentQueue<command> _controlIn = new ConcurrentQueue<command>();
         // _result is address, register and value
         // _messageOut is meta again.
         private ConcurrentQueue<Dictionary<String, int[]>> _results = new ConcurrentQueue<Dictionary<String, int[]>>();
         private ConcurrentQueue<String> _messageOut = new ConcurrentQueue<String>();
         private List<int> _axes;
-        private Timer miniPoll;
         private IModbusMaster _myStream;
         private bool _connected = false;
         private int _nextessential = 0;
@@ -45,7 +47,7 @@ namespace UkiConsole
         private SendWrapper _mysender ;
         private bool _run = true;
         public event PropertyChangedEventHandler PropertyChanged;
-        public ConcurrentQueue<String> Control { get => _controlIn; }
+        public ConcurrentQueue<command> Control { get => _controlIn; }
         public ConcurrentQueue<Dictionary<String, int[]>> Results { get => _results; }
         public ConcurrentQueue<Dictionary<String, int>> Query { get => _query; }
         internal ConcurrentQueue<command> Command { get => _command; }
@@ -56,12 +58,20 @@ namespace UkiConsole
         private SerialPort _serialPort;
         private String _comport;
         // axes is the comport map - it gives Serial ports and the axes attached
-        public ModbusManager(String comport, List<String> axes, List<int> essentials)
+        public ModbusManager(String comport, List<String> axes, List<int> essentials, int baud)
         {
             var factory = new ModbusFactory();
             _axes = axes.Select(s => int.Parse(s)).ToList();
             _essential_reg = essentials;
             _comport = comport;
+            BAUD_RATE = baud;
+
+           // System.Diagnostics.Debug.WriteLine(String.Format("New MM Manager: {0}", comport));
+            foreach (int a in _axes)
+            {
+                System.Diagnostics.Debug.WriteLine(a);
+
+            }
             try
             {
 
@@ -131,7 +141,7 @@ namespace UkiConsole
         {
             _serialPort = new SerialPort();
             _serialPort.PortName = _comport;
-            _serialPort.BaudRate = 19200;
+            _serialPort.BaudRate = BAUD_RATE;
             _serialPort.Parity = System.IO.Ports.Parity.None;
             _serialPort.StopBits = System.IO.Ports.StopBits.One;
             _serialPort.ReadTimeout = 100;
@@ -159,7 +169,7 @@ namespace UkiConsole
         {
 
             OnPropertyChanged("Connected");
-            string myControl;
+            //string myControl;
 
             while (_run)
             {
@@ -172,59 +182,63 @@ namespace UkiConsole
 
                 while (!Control.IsEmpty)
                 {
-                    
-                    Control.TryDequeue(out myControl);
+
                     // Convert all this to delegates....
-                    if (myControl.Equals("ESTOP"))
-                    {
-                        System.Diagnostics.Debug.WriteLine(myControl);
-
-                        //miniPoll.Change(Timeout.Infinite, Timeout.Infinite);
-                        // Send Estop to everything
-                        SendStopToAll();
-                        // miniPoll.Change(5, 500);
-                        //_run = false;
-                    }
-                    else if (myControl.Equals("CLEAR_ESTOP"))
-                    {
-                        SendClearToAll();
-                    }
-                    else if (myControl.Equals("SHUTDOWN"))
-                    {
-                        SendStopToAll();
-                        _run = false;
-                    }
-
-
-
-
+                    manageControl();
 
                 }
                 while (!Command.IsEmpty)
                 {
-                    
 
-                    command cm;
-                    Command.TryDequeue(out cm);
-                    // System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
-                    if (Axes.Contains(cm.address))
+                    if (Control.IsEmpty)
                     {
-                        sendRegister(cm.address, cm.register, cm.value);
-                        System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                        command cm;
 
-                        if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+                        Command.TryDequeue(out cm);
+                        //  System.Diagnostics.Debug.WriteLine(" MM Got {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+                        if (Axes.Contains(cm.address))
                         {
-                            confirmTarget(cm.address, cm.register, cm.value);
+                            sendRegister(cm.address, cm.register, cm.value);
+                            //  System.Diagnostics.Debug.WriteLine(" MM Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
 
+                            if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+                            {
+                                confirmTarget(cm.address, cm.register, cm.value);
+
+                            }
                         }
                     }
+                    else
+                    {
+                        manageControl();
+
+                    }
                 }
+                
                 readEssential();
 
+
             }
-            Control.Enqueue("STOPPED");
+           // Control.Enqueue("STOPPED");
         }
 
+        public void manageControl()
+        {
+            command cm;
+
+            Control.TryDequeue(out cm);
+            // Control messages are probably for "0" so don't check. 
+            sendRegister(cm.address, cm.register, cm.value);
+            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+
+            if (cm.register.Equals(ModMap.RegMap.MB_GOTO_POSITION))
+            {
+                confirmTarget(cm.address, cm.register, cm.value);
+
+            }
+            System.Diagnostics.Debug.WriteLine(" MM Control Sent {0} : {1}, {2}", cm.address, ModMap.RevMap(cm.register), cm.value);
+
+        }
         public void ShutDown()
         {
             System.Diagnostics.Debug.WriteLine("closing mm");
@@ -238,64 +252,71 @@ namespace UkiConsole
         }
         private void readEssential()
         {
-            Dictionary<String, int[]> _result = new Dictionary<string, int[]>();
+            
+                Dictionary<String, int[]> _result = new Dictionary<string, int[]>();
 
-            if (Axes.Count > 0)
-            {
-
-                // This should always be true, but just in case....
-                if (_nextessential < Axes.Count)
+                if (Axes.Count > 0)
                 {
-                    
-               
 
-                    byte addr = (byte) Axes[_nextessential];
-                    if (!_blacklist.Contains(addr))
+                    // This should always be true, but just in case....
+                    if (_nextessential < Axes.Count)
                     {
-                        try
+
+
+
+                        byte addr = (byte)Axes[_nextessential];
+                        if (!_blacklist.Contains(addr))
                         {
-                            foreach (int reg in _essential_reg)
+                            try
                             {
-                                ushort[] resp;
-                                resp = _myStream.ReadHoldingRegisters(addr, (ushort)reg, 1);
-
-                                
-                                //ushort newdata = resp[0];
-                                // ushort nreg = resp[1];
-                                ushort _val = resp[0];
+                                foreach (int reg in _essential_reg)
+                                {
+                                    ushort[] resp;
+                                    resp = _myStream.ReadHoldingRegisters(addr, (ushort)reg, 1);
 
 
-                                RawMove _mv = new RawMove(addr.ToString(), reg, _val);
+                                    //ushort newdata = resp[0];
+                                    // ushort nreg = resp[1];
+                                    short _val = (short)resp[0];
 
-                                if (commsSender is not null) {
-                                  
-                                    commsSender.Enqueue(_mv);
+
+                                    RawMove _mv = new RawMove(addr.ToString(), reg, _val);
+
+                                    if (commsSender is not null)
+                                    {
+
+                                        //  System.Diagnostics.Debug.WriteLine("Sending update to unity");
+                                        if (_mv is not null)
+                                        {
+                                            commsSender.Enqueue(_mv);
+                                        }
+                                    }
+
+                                    _result[addr.ToString()] = new int[2] { reg, _val };
+                                    Results.Enqueue(_result);
+                                    //  System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
                                 }
-
-                                _result[addr.ToString()] = new int[2] { reg, _val };
-                                Results.Enqueue(_result);
-                                //  System.Diagnostics.Debug.WriteLine("It worked! {0}: {1} ({2}) : {3}",addr, ModMap.RevMap(reg), reg, _val);
                             }
-                        }
-                        catch(Exception e)
-                        {
-                            // Should set to disabled so we don't get constant errors
-                            MessageOut.Enqueue(String.Format("TIMEOUT:{0}", addr));
-                            _blacklist.Add(addr);
-                            System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
+                            catch (Exception e)
+                            {
+                                // Should set to disabled so we don't get constant errors
+                                MessageOut.Enqueue(String.Format("TIMEOUT:{0}", addr));
+                                _blacklist.Add(addr);
+                                //System.Diagnostics.Debug.WriteLine("TIMEOUT, {0}", e.Message);
+
+                            }
+
+                            // Might be better to do it in one hit. We'll see.
 
                         }
 
-                        // Might be better to do it in one hit. We'll see.
 
                     }
 
-
+                    _nextessential = (_nextessential + 1) % Axes.Count;
                 }
-
-                _nextessential = (_nextessential + 1) % Axes.Count;
-            }
-            //  System.Diagnostics.Debug.WriteLine("Updoot 2 {0}", _nextessential);
+                //  System.Diagnostics.Debug.WriteLine("Updoot 2 {0}", _nextessential);
+            
 
 
         }
@@ -303,23 +324,17 @@ namespace UkiConsole
         {
             System.Diagnostics.Debug.WriteLine("Stopping");
             int ESTOP = (int)ModMap.RegMap.MB_ESTOP;
-            foreach (int addr in Axes)
-            {
-                sendRegister(addr, ESTOP, 1);
-
-            }
+            
+            sendRegister(0, ESTOP, 1);
         }
         public void SendClearToAll()
         {
             _blacklist = new List<int>();
             // System.Diagnostics.Debug.WriteLine("Clearing");
             int CLEAR = (int)ModMap.RegMap.MB_RESET_ESTOP;
-            foreach (int addr in Axes)
-            {
-                sendRegister(addr, CLEAR, 0x5050);
+           
+            sendRegister(0, CLEAR, 0x5050);
 
-            }
-            
         }
         private void confirmTarget(int addr, int register, int value)
         {

@@ -29,7 +29,7 @@ namespace UkiConsole
     {
         private int axbuttonheight = 30;
         private int axbuttonwidth = 50;
-        
+        private bool _shutdown = false;
         private AxisManager _axes;
         private Dictionary<String, Button> _axisButtons = new Dictionary<string, Button>();
         private Dictionary<Button, axisWindow> popouts = new();
@@ -83,11 +83,11 @@ namespace UkiConsole
         public String RightComPort { get => _portmap["right"]; set => _portmap["right"] = value; }
         public MainWindow()
         {
-            Comports.AddRange(SerialPort.GetPortNames());
+           // Comports.AddRange(SerialPort.GetPortNames());
 
             LoadConfig();
             _axes = new AxisManager(_config["axisConfig"]);
-            _showrunner = new ShowRunner(_portmap, _axes, _essentials.Keys.ToList<int>());
+            _showrunner = new ShowRunner(_portmap, _axes, _essentials.Keys.ToList<int>(), int.Parse( _config["baud"]));
             SetMap();
             InitializeComponent();
             AddAxisButtons();
@@ -111,7 +111,7 @@ namespace UkiConsole
             Thread showThread = new Thread(_showrunner.Listen);
             showThread.Start();
             _axes.PropertyChanged += new PropertyChangedEventHandler(Estopped);
-           
+            ConfigAll();
             // _showrunner.PropertyChanged += new PropertyChangedEventHandler(listenConn);
         }
 
@@ -131,6 +131,10 @@ namespace UkiConsole
         }
         private void maintoggle(object sender, PropertyChangedEventArgs e)
         {
+            if (_shutdown)
+            {
+                return;
+            }
             System.Diagnostics.Debug.WriteLine(e.PropertyName.ToString());
             if (e.PropertyName.ToString().Equals("Toggle")) {
                 // 
@@ -175,14 +179,19 @@ namespace UkiConsole
                 System.Diagnostics.Debug.WriteLine(String.Format("Main says change in connection for serial {0}", e.PropertyName));
                // String labelContent = "Disconn";
                 Brush bg = Brushes.Red;
-                if (_showrunner.portStatus( _revPortMap[e.PropertyName]))
+                if (_showrunner.portStatus(_revPortMap[e.PropertyName]))
                 {
                     bg = Brushes.Green;
                     //labelContent = e.PropertyName;
                 }
-                
-                Dispatcher.BeginInvoke(new Action<Button, Brush>(UpdateButtonBG), DispatcherPriority.Normal, _usbButtonMap[e.PropertyName]["Button"],  bg);
-
+                try
+                {
+                    Dispatcher.BeginInvoke(new Action<Button, Brush>(UpdateButtonBG), DispatcherPriority.Normal, _usbButtonMap[e.PropertyName]["Button"], bg);
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("COM doesn't exist");
+                }
             }
         }
         private void LoadConfig()
@@ -580,11 +589,14 @@ namespace UkiConsole
 
         private void buttonHome_Click(object sender, RoutedEventArgs e)
         {
+            
             HomeAll();
         }
 
         private void HomeAll()
         {
+            radioButton.IsChecked = true;
+            _showrunner.setMode("CSV");
 
             _showrunner.Control.Enqueue("HOME");
         }
@@ -615,11 +627,12 @@ namespace UkiConsole
             string portside = (((Button)sender).Tag.ToString()).ToLower();
             string port = _portmap[portside] ;
             System.Diagnostics.Debug.WriteLine(port);
-            _showrunner.USBConnect(portside, port);
+            _showrunner.USBConnect(portside, port, int.Parse(_config["baud"]));
 
         }
         protected override void OnClosing(CancelEventArgs e)
         {
+            _shutdown = true;
             StopShow();
             
             //_udpListener.ShutDown();

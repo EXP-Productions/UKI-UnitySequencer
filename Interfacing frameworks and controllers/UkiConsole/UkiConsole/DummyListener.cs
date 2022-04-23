@@ -7,7 +7,7 @@ using System.Net.Sockets;    //required
 
 namespace UkiConsole
 {
-    class DummyListener : Listener
+    class DummyListener : iListener
     {
 
 
@@ -45,7 +45,7 @@ namespace UkiConsole
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }
         public ConcurrentQueue<RawMove> CommandOut { get => _commandOut; }
         
-        public void Receive()
+        public void Run()
         {
             _run = true;
             // this will start the server

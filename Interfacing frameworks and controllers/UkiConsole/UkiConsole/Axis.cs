@@ -94,6 +94,14 @@ namespace UkiConsole
             return Validated;
             
         }
+
+        public void ClearTimeouts()
+        {
+            foreach (KeyValuePair<String, Axis> kvp in _axes)
+            {
+                kvp.Value.ClearTimeout();
+            }
+        }
         public bool IsEnabled(String addr)
         {
             try
@@ -394,6 +402,16 @@ namespace UkiConsole
 
             }
             return val;
+        }
+
+        public void ClearTimeout()
+        {
+            if( GetStatus("estop") == 8)
+            {
+                Set("estop", 0);
+                SetConfig("enabled", "true");
+
+            }
         }
         // public int AdjustPosition(string reg, int val)
         ///{

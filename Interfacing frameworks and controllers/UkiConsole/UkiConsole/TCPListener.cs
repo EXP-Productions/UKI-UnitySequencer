@@ -7,12 +7,14 @@ using System.Net.Sockets;    //required
 
 namespace UkiConsole
 {
-    class TCPListener : Listener, INotifyPropertyChanged
+    class TCPListener : iListener, INotifyPropertyChanged
     {
 
 
         private System.Net.Sockets.TcpListener _server;
         private ConcurrentQueue<RawMove> _moveOut = new ConcurrentQueue<RawMove>();
+        private ConcurrentQueue<RawMove> _movein = new ConcurrentQueue<RawMove>();
+
         private ConcurrentQueue<RawMove> _commandOut = new ConcurrentQueue<RawMove>();
         private bool _run = false;
         private bool _connected = false;
@@ -21,6 +23,8 @@ namespace UkiConsole
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }
+        public ConcurrentQueue<RawMove> MoveIn { get => _movein; }
+
         public ConcurrentQueue<RawMove> CommandOut { get => _commandOut; }
         public bool listenerConnected { get => _connected; }
 
@@ -69,8 +73,14 @@ namespace UkiConsole
            
             }
 
+        public void Enqueue(RawMove mv)
+        {
 
-        public void Receive()
+            MoveIn.Enqueue(mv);
+        }
+
+    
+        public void Run()
         {
             _run = true;
            

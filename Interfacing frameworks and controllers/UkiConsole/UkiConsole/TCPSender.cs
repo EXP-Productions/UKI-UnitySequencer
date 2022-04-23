@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class TCPSender : Sender
+    class TCPSender : iSender
     {
         private TcpClient _tcpClient;
         // private State state = new State();
@@ -68,6 +68,8 @@ namespace UkiConsole
                 {
                     while (!MoveOut.IsEmpty)
                     {
+                        //System.Diagnostics.Debug.WriteLine("In TCP to unity");
+
                         RawMove _mv;
 
                         MoveOut.TryDequeue(out _mv);
@@ -136,20 +138,6 @@ namespace UkiConsole
         }
         public void Send(byte[] message)
         {
-            // System.Diagnostics.Debug.WriteLine("TCP trying");
-
-
-            if (!_tcpClient.Connected)
-            {
-                if (_connected) { 
-                    _connected = false;
-                OnPropertyChanged("senderConnected");
-                }
-                System.Diagnostics.Debug.WriteLine("reconnecting");
-                _tcpClient = new TcpClient();
-                _tcpClient.Connect(_addr, _port);
-                _networkStream = _tcpClient.GetStream();
-            }
 
             if (_networkStream is null)
             {
@@ -157,28 +145,57 @@ namespace UkiConsole
 
                 _networkStream = _tcpClient.GetStream();
             }
-            if (_tcpClient.Connected)
+            System.Diagnostics.Debug.WriteLine("TCP trying");
+            try
             {
-                if (senderConnected == false)
-                {
+                System.Diagnostics.Debug.WriteLine("TCP sending");
 
-                    OnPropertyChanged("senderConnected");
-                    _connected = true;
-                }
-                    try{
-                  
-                    _networkStream.Write(message, 0, message.Length);
-                    _networkStream.Flush();
-                  //  System.Diagnostics.Debug.WriteLine("TCP sending");
+                _networkStream.Write(message, 0, message.Length);
+                _networkStream.Flush();
+                
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("No TCP connection to send to");
 
-                }
-                catch (Exception ex)
+
+
+                if (!_tcpClient.Connected)
                 {
-                        System.Diagnostics.Debug.WriteLine("No TCP connection to send to");
+                    if (_connected)
+                    {
+                        _connected = false;
+                        OnPropertyChanged("senderConnected");
+                    }
+                    System.Diagnostics.Debug.WriteLine("reconnecting");
+                    _tcpClient = new TcpClient();
+                    _tcpClient.Connect(_addr, _port);
+                    _networkStream = _tcpClient.GetStream();
+                    try
+                    {
+
+
+                        _networkStream.Write(message, 0, message.Length);
+                        _networkStream.Flush();
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Still no TCP connection to send to");
+
+                    }
+                }
                    
+                if (_tcpClient.Connected)
+                {
+                    if (senderConnected == false)
+                    {
+
+                        OnPropertyChanged("senderConnected");
+                        _connected = true;
+                    }
+
                 }
             }
-
 
         }
         

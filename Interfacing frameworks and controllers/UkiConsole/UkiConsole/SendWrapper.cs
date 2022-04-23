@@ -17,15 +17,15 @@ namespace UkiConsole
         private ConcurrentQueue<RawMove> _commsin = new ConcurrentQueue<RawMove>();
         private ConcurrentQueue<RawMove> _commsout = new ConcurrentQueue<RawMove>();
         bool _run = true;
-        private Sender _networkSender;
+        private iSender _networkSender;
         private AxisManager _axes;
         private bool _connected = false;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal Sender NetworkSender { get => _networkSender; }
+        internal iSender NetworkSender { get => _networkSender; }
         public bool senderConnected { get => _connected;  }
 
-        public SendWrapper(Sender netsender, AxisManager axes)
+        public SendWrapper(iSender netsender, AxisManager axes)
         {
             _networkSender = netsender;
             _networkSender.PropertyChanged += new PropertyChangedEventHandler(connChange);
@@ -45,9 +45,11 @@ namespace UkiConsole
         public void Enqueue(RawMove mv)
         {
             RawMove valmv = _axes.AdjustOutgoingMove(mv);
-         //   System.Diagnostics.Debug.WriteLine("Queueing in wrapper");
-
-            NetworkSender.Enqueue(valmv);
+            // System.Diagnostics.Debug.WriteLine("Queueing in wrapper");
+            if (valmv is not null)
+            {
+                NetworkSender.Enqueue(valmv);
+            }
            
         }
         public void ShutDown()

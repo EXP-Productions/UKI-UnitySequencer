@@ -70,7 +70,7 @@ namespace UkiConsole
         public bool ListenerConnected { get => _listenerConnected;  }
         public bool SenderConnected { get => _senderConnected;  }
         Dictionary<String, List<String>> _portlists = new();
-        public ShowRunner(Dictionary<String,String> comport, AxisManager axes , List<int> essentials)
+        public ShowRunner(Dictionary<String,String> comport, AxisManager axes , List<int> essentials, int baud)
         {
             Axes = axes;
             _essentials = essentials;
@@ -101,7 +101,7 @@ namespace UkiConsole
                 if (_portlists.ContainsKey(kvp.Value))
                 {
                     // So after all that, here we have "left => Com3"
-                    _myManagers[kvp.Key] = new ModbusManager(kvp.Value, _portlists[kvp.Value], Essentials);
+                    _myManagers[kvp.Key] = new ModbusManager(kvp.Value, _portlists[kvp.Value], Essentials, baud);
                     _myManagers[kvp.Key].PropertyChanged += new PropertyChangedEventHandler(mmConn);
                     //_myManagers[kvp.Key].Connect();
                     _mmRevMap[kvp.Value] = kvp.Key;
@@ -142,31 +142,35 @@ namespace UkiConsole
         {
             return _myManagers[comport].Connected;
         }
-        public void USBConnect(string portside, string comport)
+        public void USBConnect(string portside, string comport, int baud)
         {
             try
             {
                 _myManagers[portside].ShutDown();
                 //OnPropertyChanged(comport);
-                try { 
-                _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials);
-                _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
                
-                _mmRevMap[comport] = portside;
-                Thread manThread = new Thread(_myManagers[portside].Listen);
-                manThread.Start();
-                OnPropertyChanged(comport);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(String.Format("Cannot reconnect: {0}", e.Message));
-
-
-                }
             }
             catch ( Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(String.Format("Cannot disconnect: {0}", e.Message));
+
+
+            }
+            try
+            {
+                _myManagers[portside] = new ModbusManager(comport, _portlists[comport], Essentials, baud);
+                _myManagers[portside].PropertyChanged += new PropertyChangedEventHandler(mmConn);
+
+                _mmRevMap[comport] = portside;
+                Thread manThread = new Thread(_myManagers[portside].Listen);
+                manThread.Start();
+
+                OnPropertyChanged(comport);
+                _axes.ClearTimeouts();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(String.Format("Cannot reconnect: {0}", e.Message));
 
 
             }
@@ -216,13 +220,32 @@ namespace UkiConsole
 
                     foreach (ModbusManager _myManager in _myManagers.Values)
                     {
+                        System.Diagnostics.Debug.WriteLine(command);
                         // Delegates, Jai, delegates....
-                        _myManager.Control.Enqueue(command);
+                        //_myManager.Control.Enqueue(command);
                         if (command.Equals("SHUTDOWN"))
                         {
                             ShutDown();
+                            
 
                         }
+                        else if (command.Equals("ESTOP"))
+                        {
+
+                            ModbusManager.command cmd = new ModbusManager.command() { address = 0, register = (int)ModMap.RegMap.MB_ESTOP, value = 1 };
+
+
+                            _myManager.Control.Enqueue(cmd);
+                        }
+                        else if (command.Equals("CLEAR_ESTOP"))
+                        {
+
+                            ModbusManager.command cmd = new ModbusManager.command() { address = 0, register = (int)ModMap.RegMap.MB_RESET_ESTOP, value = 0x5050 };
+
+
+                            _myManager.Control.Enqueue(cmd);
+                        }
+
                         else if (command.Equals("CALIBRATE"))
                         {
                             foreach (String ax in Axes.AddressList)
@@ -243,12 +266,13 @@ namespace UkiConsole
                         }
                         else if (command.Equals("HOME"))
                         {
+                            // Keep the foreach here - we don't want to magically start moving disabled axes. Not that we currently support enabled or disabled....
                             foreach (String ax in Axes.AddressList)
                             {
                                 if (Axes.IsEnabled(ax))
                                 {
                                     ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(ax), register = (int)ModMap.RegMap.MB_MOTOR_SETPOINT, value = -10 };
-                                    
+
 
                                     _myManager.Command.Enqueue(cmd);
                                     cmd = new ModbusManager.command() { address = int.Parse(ax), register = (int)ModMap.RegMap.MB_MOTOR_ACCEL, value = 30 };
@@ -271,7 +295,7 @@ namespace UkiConsole
                             String[] res = message.Split(":");
                             Axes.SetAxisConfig(res[1].Trim(), "enabled", "false");
                             Axes.SetAxisAttribute(res[1].Trim(), "estop", 8);
-                            System.Diagnostics.Debug.WriteLine("Set {0} timed out", res[1].Trim());
+                           // System.Diagnostics.Debug.WriteLine("Set {0} timed out", res[1].Trim());
                             _queryOut.Enqueue(new List<string>() { res[1].Trim() });
                             OnPropertyChanged("Toggle");
 
@@ -301,7 +325,13 @@ namespace UkiConsole
                                     _myManagers[port].Command.Enqueue(cmd);
                                 }
                             }
-                        }catch (Exception e)
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine(String.Format("Disabled: {0} ", addr));
+
+                            }
+                        }
+                        catch (Exception e)
                         {
                             System.Diagnostics.Debug.WriteLine(e.Message);
                         }
@@ -314,7 +344,7 @@ namespace UkiConsole
                     _rawIn.TryDequeue(out _mv);
                     if (_mv is not null)
                     {
-                       // System.Diagnostics.Debug.WriteLine("Got raw");
+                        System.Diagnostics.Debug.WriteLine("Got raw");
 
                         if (Axes.IsEnabled(_mv.Addr))
                         {
@@ -326,23 +356,21 @@ namespace UkiConsole
 
                             String port = Axes.GetAxisConfig(_mv.Addr, "port");
                             _myManagers[port].Command.Enqueue(cmd);
-                            // We then want to send actual position status as read from the Essential read.
+                            
+                           
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine(String.Format("Disabled: {0} ", _mv.Addr));
 
-                            if (Axes.HasStatus(_mv.Addr.ToString(), _mv.Reg.ToString()))
-                            {
-                                int val = Axes.GetAxisStatus(_mv.Addr.ToString(), _mv.Reg.ToString());
-                                
-
-                               // RawMove udpResponse = new RawMove(_mv.Addr, _mv.Reg, val);
-                              //  _udpSender.sendStatus(udpResponse);
-                            }
                         }
                     }
 
                   //  System.Diagnostics.Debug.WriteLine("Done raw");
                 }
                 checkStatus();
-                
+                Thread.Sleep(1);
+
             }
         }
 
@@ -359,7 +387,7 @@ namespace UkiConsole
         {
             _heart_armed = true; // in case it wasn't
             _lastHeart = DateTime.Now;
-            System.Diagnostics.Debug.WriteLine("HEARTBEAT");
+          //  System.Diagnostics.Debug.WriteLine("HEARTBEAT");
             _heartbeat.Change(5000, Timeout.Infinite);
             
         }

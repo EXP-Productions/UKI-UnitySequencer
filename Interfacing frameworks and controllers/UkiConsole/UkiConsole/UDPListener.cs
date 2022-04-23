@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class UDPListener: Listener
+    class UDPListener: iListener
     {
         private Socket _udpsock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         private const int bufSize = 8 * 1024;
@@ -77,7 +77,7 @@ namespace UkiConsole
            
             _udpsock.Dispose();
         }
-        public void Receive()
+        public void Run()
         {
             _udpsock.Bind(new IPEndPoint(IPAddress.Parse(_addr), _port));
 
