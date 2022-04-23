@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UkiConsole
 {
-    class ModMap
+    public class ModMap
     {
         // This is entirely the wrong place for this, I think
         public static List<int> PositionRegisters = new List<int>(){ 218, 299};

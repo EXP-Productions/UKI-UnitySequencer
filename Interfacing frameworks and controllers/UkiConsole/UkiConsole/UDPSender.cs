@@ -24,7 +24,8 @@ namespace UkiConsole
         private int _port;
         private bool _connected;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private ConcurrentQueue<RawMove> _movein = new ConcurrentQueue<RawMove>();
+        public ConcurrentQueue<RawMove> MoveIn { get => _movein; }
 
         IPEndPoint _endpoint;
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }

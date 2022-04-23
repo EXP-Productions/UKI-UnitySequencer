@@ -6,10 +6,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Net;
 
-using System.Net;      //required
-using System.Net.Sockets;    //required
 
 
 namespace UkiConsole
@@ -94,63 +91,68 @@ namespace UkiConsole
 
         public void Run()
         {
-            while (_run )
+            while (_run)
             {
-
-
-                if (Control.IsEmpty)
+                if (_mode == "TCP")
                 {
-                   // System.Diagnostics.Debug.Write("Control is empty");
+                    //Change all this to pub/sub
 
-                    if (!Moves.IsEmpty)
+                    if (Control.IsEmpty)
                     {
+                        // System.Diagnostics.Debug.Write("Control is empty");
 
-                      // System.Diagnostics.Debug.Write("Parsing move");
-                        RawMove _mv;
-                        Moves.TryDequeue(out _mv);
-                        if (_mv is not null)
+                        if (!Moves.IsEmpty)
                         {
-                            if ( _axes.IsEnabled(_mv.Addr))
+
+                            // System.Diagnostics.Debug.Write("Parsing move");
+                            RawMove _mv;
+                            Moves.TryDequeue(out _mv);
+                            if (_mv is not null)
                             {
-                                // XXX Check max values and convert (max motor speed, etc)
-                                _mv = _axes.Validate(_mv);
-                               // System.Diagnostics.Debug.WriteLine("Commsman - {0} :{1} :{2}", _mv.Addr, _mv.Reg, _mv.Val);
 
-                                ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
+                                if (_axes.IsEnabled(_mv.Addr))
+                                {
+                                    // XXX Check max values and convert (max motor speed, etc)
+                                    _mv = _axes.Validate(_mv);
+                                    // System.Diagnostics.Debug.WriteLine("Commsman - {0} :{1} :{2}", _mv.Addr, _mv.Reg, _mv.Val);
+                                    if (_mode == "TCP")
+                                    {
+                                        ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
 
-                                String port = _axes.GetAxisConfig(_mv.Addr, "port");
-                                _myManagers[port].Command.Enqueue(cmd);
+                                        String port = _axes.GetAxisConfig(_mv.Addr, "port");
+                                        _myManagers[port].Command.Enqueue(cmd);
+                                    }
 
-
+                                }
                             }
+
                         }
-
-                    }
-                }
-                else
-                {
-
-                    
-                    RawMove _mv;
-                    Control.TryDequeue(out _mv);
-                    if (_mv.Addr == "240")
-                    {
-
-                        // return;
-                        //heartbeat stuff
-                        _showrunner.Heartbeat();
                     }
                     else
                     {
-                        // Control messages can be for all axes - send to both ports.
-                        ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
-                       
+
+
+                        RawMove _mv;
+                        Control.TryDequeue(out _mv);
+                        if (_mv.Addr == "240")
+                        {
+
+                            _showrunner.Heartbeat();
+                        }
+                        else
+                        {
+                            // Control messages can be for all axes - send to both ports.
+                            ModbusManager.command cmd = new ModbusManager.command() { address = int.Parse(_mv.Addr), register = _mv.Reg, value = _mv.Val };
+                            System.Diagnostics.Debug.WriteLine("Control message: {0} : {1} : {2}", _mv.Addr, _mv.Reg, _mv.Val);
+
                             if (_mv.Addr == "0")
                             {
+                                System.Diagnostics.Debug.WriteLine("Control for all: {0}: {1} : {2}", cmd.address, cmd.register, cmd.value);
+
                                 foreach (ModbusManager mm in _myManagers.Values)
                                 {
-                                    mm.Command.Enqueue(cmd);
-                                  //  mm.SendStopToAll();
+                                    mm.Control.Enqueue(cmd);
+
                                 }
                             }
                             else
@@ -158,26 +160,28 @@ namespace UkiConsole
                                 String port = _axes.GetAxisConfig(_mv.Addr, "port");
                                 _myManagers[port].Command.Enqueue(cmd);
                             }
-                       
+
+                        }
                     }
+
                 }
                 Thread.Sleep(1);
 
             }
         }
-        public void setMode (String mode)
+        public void setMode(String mode)
         {
             if (mode != _mode)
             {
-                _mode = mode;
-                _listener.ShutDown();
-                _sender.ShutDown();
-                spawn_comms();
-                startManagers();
-                
-            }
 
+                _mode = mode;
+            }
         }
+              
+                
+            
+
+        
         public void startSender()
         {
             if (_sender is not null)
@@ -213,7 +217,6 @@ namespace UkiConsole
             }
             if (_mode == "TCP")
             {
-
 
                 spawn_tcplistener();
             }

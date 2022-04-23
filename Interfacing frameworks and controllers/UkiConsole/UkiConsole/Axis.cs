@@ -13,7 +13,7 @@ namespace UkiConsole
 
 {
    
-    class AxisManager : INotifyPropertyChanged
+    public class AxisManager : INotifyPropertyChanged
     {
         private Dictionary<String, Axis> _axes = new Dictionary<string, Axis>();
        // private Dictionary<String, Axis> _labelmap = new Dictionary<string, Axis>();
@@ -110,7 +110,7 @@ namespace UkiConsole
                 {
                     return true;
                 }
-            }catch (Exception e)
+            }catch 
             {
                 return false;
             }

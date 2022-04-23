@@ -46,8 +46,8 @@ namespace UkiConsole
         public ConcurrentQueue<AxisMove> MoveIn { get => _moveIn;  }
         public ConcurrentQueue<RawMove> RawIn { get => _rawIn; }
         private CommsManager _commsManager;
-        private string _mode = "CSV";
-        private DateTime _lastHeart = DateTime.Now;
+        private string _mode = "TCP";
+       // private DateTime _lastHeart = DateTime.Now;
         private bool _heart_armed = false;
        
         AutoResetEvent _heart = new AutoResetEvent(false);
@@ -120,7 +120,7 @@ namespace UkiConsole
             try
             {
                 bool conn = _myManagers[_mmRevMap[e.PropertyName]].Connected;
-                System.Diagnostics.Debug.WriteLine(String.Format("Conn status for {0} : {1}", e.PropertyName, conn));
+                System.Diagnostics.Trace.WriteLine(String.Format("Conn status for {0} : {1}", e.PropertyName, conn));
             }
             finally
             {
@@ -386,8 +386,8 @@ namespace UkiConsole
         public void Heartbeat()
         {
             _heart_armed = true; // in case it wasn't
-            _lastHeart = DateTime.Now;
-          //  System.Diagnostics.Debug.WriteLine("HEARTBEAT");
+          //  _lastHeart = DateTime.Now;
+           // System.Diagnostics.Debug.WriteLine("HEARTBEAT");
             _heartbeat.Change(5000, Timeout.Infinite);
             
         }

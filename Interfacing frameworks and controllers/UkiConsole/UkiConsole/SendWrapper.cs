@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace UkiConsole
 {
-    class SendWrapper 
+    public class SendWrapper 
     {
         private ConcurrentQueue<RawMove> _commsin = new ConcurrentQueue<RawMove>();
         private ConcurrentQueue<RawMove> _commsout = new ConcurrentQueue<RawMove>();
@@ -48,7 +48,7 @@ namespace UkiConsole
             // System.Diagnostics.Debug.WriteLine("Queueing in wrapper");
             if (valmv is not null)
             {
-                NetworkSender.Enqueue(valmv);
+                NetworkSender.MoveIn.Enqueue(valmv);
             }
            
         }

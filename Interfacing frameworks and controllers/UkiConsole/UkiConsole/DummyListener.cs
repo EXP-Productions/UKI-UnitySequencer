@@ -22,7 +22,13 @@ namespace UkiConsole
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-
+        public string Type
+        {
+            get
+            {
+                return "CSV";
+            }
+        }
 
         private void checkConnection(bool state)
         {

@@ -22,7 +22,8 @@ namespace UkiConsole
        
         public ConcurrentQueue<RawMove> MoveOut { get => _moveOut; }
         public bool senderConnected { get => _connected; set => _connected = value; }
-
+        private ConcurrentQueue<RawMove> _movein = new ConcurrentQueue<RawMove>();
+        public ConcurrentQueue<RawMove> MoveIn { get => _movein; }
         public DummySender()
         {
 
