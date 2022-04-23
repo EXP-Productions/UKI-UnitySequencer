@@ -201,7 +201,9 @@ namespace UkiConsole
 
             if (_mv is not null)
             {
-               // System.Diagnostics.Debug.WriteLine("Sending TCP");
+             //   System.Diagnostics.Debug.WriteLine("TCP SENDING: {0} : {1}, {2}", _mv.Addr.ToString(), _mv.Reg, _mv.Val);
+
+                // System.Diagnostics.Debug.WriteLine("Sending TCP");
                 // This should be a static singleton....
                 byte[] data = new byte[6];
                 byte[] _add = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(short.Parse(_mv.Addr)));
@@ -236,7 +238,7 @@ namespace UkiConsole
            // System.Diagnostics.Debug.WriteLine("TCP trying");
             try
             {
-                System.Diagnostics.Debug.WriteLine("TCP sending");
+              //  System.Diagnostics.Debug.WriteLine("TCP sending");
                 TCPSendTime = DateTime.Now;
                 OnPropertyChanged("TCPSendTime");
                 _ns.Write(message, 0, message.Length);
