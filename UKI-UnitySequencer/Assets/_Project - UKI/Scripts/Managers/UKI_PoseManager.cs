@@ -339,7 +339,7 @@ public class UKI_PoseManager : MonoBehaviour
         _CheckPoseTimeout = .5f;
         if (testingOverTime)
         {
-            StartCoroutine("SetPoseOverTime", poseData);
+            StartCoroutine(SetPoseOverTime(poseData, maskWings));//   nameof(SetPoseOverTime), poseData);
         }
         else
         {
@@ -360,9 +360,9 @@ public class UKI_PoseManager : MonoBehaviour
         }
     }
 
-    IEnumerator SetPoseOverTime(PoseData poseData)
+    IEnumerator SetPoseOverTime(PoseData poseData, bool maskWings)
     {
-        bool maskWings = true;
+        //bool maskWings = true;
         // for each actuator in pose data
         for (int i = 0; i < poseData._ActuatorDataList.Count; i++)
         {

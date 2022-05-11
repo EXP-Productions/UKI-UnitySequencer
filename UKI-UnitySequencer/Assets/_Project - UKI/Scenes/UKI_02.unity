@@ -10127,7 +10127,7 @@ MonoBehaviour:
   _DBInitialized: 0
   _UKIMode: 1
   msgPerSec: 0
-  _DebugActuatorInternal: 0
+  _DebugActuatorInternal: 1
   _DebugSend: 1
   _DebugRecieve: 0
   _DebugUDP: 1
@@ -22781,7 +22781,7 @@ PrefabInstance:
     - target: {fileID: 7213589028162771168, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_IsOn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6114629389434238441, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
