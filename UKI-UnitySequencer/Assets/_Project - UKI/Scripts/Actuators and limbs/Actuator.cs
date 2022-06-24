@@ -267,7 +267,7 @@ public class Actuator : MonoBehaviour
                 _DEBUG_RoundRobinTime = Time.time;
             }
 
-            _ReportedExtensionInMM = newReportedExtensionMM;
+            _ReportedExtensionInMM = Mathf.Clamp(newReportedExtensionMM, 0, 1000);
             ReportedAcceleration = UkiStateDB._StateDB[_ActuatorIndex][ModBusRegisters.MB_MOTOR_ACCEL];
 
             // Update the readin actuator transform
