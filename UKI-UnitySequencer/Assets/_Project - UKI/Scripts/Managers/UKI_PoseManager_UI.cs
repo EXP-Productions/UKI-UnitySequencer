@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using System.Linq;
+using UnityEngine.Serialization;
 
 public class UKI_PoseManager_UI : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class UKI_PoseManager_UI : MonoBehaviour
     public Button _PlayButton, _PauseButton, _StopButton;
     public Button _ClearSequenceButton;
 
-    public Toggle _MaskWingsToggle;
+    [FormerlySerializedAs("_MaskWingsToggle")]
+    public Toggle excludeWingsFromPoses;
 
     public RectTransform _PoseLibraryContentParent;
 
@@ -62,7 +64,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
         _PauseButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetState(SequencerState.Paused));
         _StopButton.onClick.AddListener(() => UKI_PoseManager.Instance.SetState(SequencerState.Stopped));
 
-        _MaskWingsToggle.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance._MaskWings = b);
+        excludeWingsFromPoses.onValueChanged.AddListener((bool b) => UKI_PoseManager.Instance.excludeWingsFromPose = b);
         _SavePoseButton.onClick.AddListener(() => SavePose());
 
         _PoseLibraryList.OnElementDropped.AddListener(call => HandleSequenceListUpdated(call));
@@ -108,7 +110,7 @@ public class UKI_PoseManager_UI : MonoBehaviour
         newBtn.GetComponentInChildren<Text>().text = name;
         newBtn.name = "Pose button - " + name;
         // Add listener to set pose
-        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance._MaskWings));
+        newBtn.onClick.AddListener(() => UKI_PoseManager.Instance.SetPoseByName(name, UKI_PoseManager.Instance.excludeWingsFromPose));
         // Add listener to set active button name
         newBtn.onClick.AddListener(() => _ActiveButtonName = name);
 

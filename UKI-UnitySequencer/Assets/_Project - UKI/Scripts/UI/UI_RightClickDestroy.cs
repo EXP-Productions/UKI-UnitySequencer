@@ -11,13 +11,6 @@ public class UI_RightClickDestroy : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            /*
-            //OnRightClickEvent.Invoke();
-            Destroy(gameObject);
-            Debug.Log("Right Mouse Button Clicked on: " + name);
-            UKI_PoseManager_UI.Instance.UpdateSequenceListButtonsAfterWait();
-            */
-
             ContextMenuGUI.Instance.Open(new string[]{ "Delete" }, Select );
         }
     }

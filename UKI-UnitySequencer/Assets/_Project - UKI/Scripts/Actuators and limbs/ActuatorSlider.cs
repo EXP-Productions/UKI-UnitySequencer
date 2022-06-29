@@ -21,12 +21,11 @@ public class ActuatorSlider : MonoBehaviour
 
     public Slider _Slider;
 
+
+    // COLOURS
     Color _BGNormalCol = new Color(.2f, .2f, .2f);
     Color _BGAnimatingCol = new Color(.68f, .68f, .1f);
-
-    public Color _NormalCol;
-    public Color _CollidedCol;
-    public Color _AnimatingCol = Color.green;
+    Color disabledCol = new Color(.8f, .8f, .8f);
 
     ColorBlock _ColBlock;
 
@@ -78,21 +77,33 @@ public class ActuatorSlider : MonoBehaviour
             print(name);
 
 
-        switch (_Actuator._State)
+        _Slider.interactable = !_Actuator._ActuatorDisabled;
+
+        // SET COLS
+        if (_Actuator._ActuatorDisabled)
         {
-            case UKIEnums.State.Animating:
-                _BackgroundImage.color = _BGAnimatingCol;
-                _ColBlock.normalColor = Color.yellow;
-                break;
-            case UKIEnums.State.Paused:
-                _BackgroundImage.color = _BGNormalCol;
-                _ColBlock.normalColor = Color.gray;
-                break;
-            case UKIEnums.State.NoiseMovement:
-                _BackgroundImage.color = _BGAnimatingCol;
-                _ColBlock.normalColor = Color.blue;
-                break;
+            _BackgroundImage.color = disabledCol * .85f;
+            _ColBlock.normalColor = disabledCol;
         }
+        else
+        {
+            switch (_Actuator._State)
+            {
+                case UKIEnums.State.Animating:
+                    _BackgroundImage.color = _BGAnimatingCol;
+                    _ColBlock.normalColor = Color.yellow;
+                    break;
+                case UKIEnums.State.Paused:
+                    _BackgroundImage.color = _BGNormalCol;
+                    _ColBlock.normalColor = Color.gray;
+                    break;
+                case UKIEnums.State.NoiseMovement:
+                    _BackgroundImage.color = _BGAnimatingCol;
+                    _ColBlock.normalColor = Color.blue;
+                    break;
+            }
+        }
+
 
         if (!_Actuator.IsAtTargetPosition())
         {

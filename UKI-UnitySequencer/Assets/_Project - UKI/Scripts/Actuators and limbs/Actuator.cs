@@ -76,7 +76,7 @@ public class Actuator : MonoBehaviour
         get { return _TargetNormExtension; }
         set
         {
-            if (_DisableActuator)
+            if (_ActuatorDisabled)
                 return;
 
             float prevNorm = _TargetNormExtension;
@@ -161,7 +161,6 @@ public class Actuator : MonoBehaviour
     // Keeps the previous position so that the actuator only sends a position out if the new position is different   
     public bool _DEBUG = false;   
     public bool _DEBUG_SelfInit = false;
-    public bool _DisableActuator = false;
     public bool _DEBUG_NoiseMovement = false;
 
     float _ReportedToleranceMM = 2f;
@@ -585,7 +584,7 @@ public class Actuator : MonoBehaviour
     // ONLY PATHWAY OF SENDING ACTUATOR POSITIONS
     void SendEncoderExtensionLength()
     {
-        if (_DisableActuator || _CollidedEstop)
+        if (_ActuatorDisabled || _CollidedEstop)
             return;
 
         if (_DEBUG)

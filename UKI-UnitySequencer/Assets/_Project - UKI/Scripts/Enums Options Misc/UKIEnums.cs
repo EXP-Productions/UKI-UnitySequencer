@@ -10,7 +10,7 @@ public class UKIEnums
         Calibrating,
         CalibratedToZero,
         Animating,
-        NoiseMovement,
+        NoiseMovement
     }
 }
 

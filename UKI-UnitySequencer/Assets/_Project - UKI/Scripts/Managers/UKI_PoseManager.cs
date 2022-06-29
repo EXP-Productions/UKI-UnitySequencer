@@ -57,7 +57,7 @@ public class UKI_PoseManager : MonoBehaviour
     public int _PoseSequenceIndex = 0;
 
     // Whether or not to mask out the wings
-    public bool _MaskWings = false;
+    public bool excludeWingsFromPose = false;
 
     // The range within which an actuator has to be to be considered in that pose
     // i.e. actuator told ot move to 200 and it gets too 170 with an _InPositionRange of 30 it would be considered finished and able to go to the next pose
@@ -158,7 +158,7 @@ public class UKI_PoseManager : MonoBehaviour
                     _HoldDuration = 10;
                 }
 
-                SetPoseFromSequence(_PoseSequenceIndex, _MaskWings);
+                SetPoseFromSequence(_PoseSequenceIndex, excludeWingsFromPose);
                 UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex / (float)(_ActiveSequencePoseList.Count - 1));
                 //UKI_PoseManager_UI.Instance._PlaybackStatusText.text = _SequencerState.ToString() + "[" + _PoseSequenceIndex / _ActiveSequencePoseList.Count + "]";
                 print("POSE MANAGER - Setting pose index: " + _PoseSequenceIndex + "   ready count: " + _ReadyCount + " / " + UKI_UIManager.Instance._AllActuators.Count);
@@ -240,7 +240,7 @@ public class UKI_PoseManager : MonoBehaviour
         print("Setting pose by sequence index: " + poseSeqIndex);
 
         _PoseSequenceIndex = poseSeqIndex;
-        SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], _MaskWings);
+        SetPoseByName(_ActiveSequencePoseList[_PoseSequenceIndex], excludeWingsFromPose);
         UKI_PoseManager_UI.Instance.HighlightPoseSequenceButton();
         UKI_PoseManager_UI.Instance.SetSequencePlayheadSlider((float)_PoseSequenceIndex/(float)(_ActiveSequencePoseList.Count-1));
     }
@@ -329,7 +329,7 @@ public class UKI_PoseManager : MonoBehaviour
 
 
     float _CheckPoseTimeout = 1;
-    public void SetPoseByName(string name, bool maskWings = false)
+    public void SetPoseByName(string name, bool excludeWingsFromPose = false)
     {
         //print("Setting pose by name: " + name);
 
@@ -339,7 +339,7 @@ public class UKI_PoseManager : MonoBehaviour
         _CheckPoseTimeout = .5f;
         if (testingOverTime)
         {
-            StartCoroutine(SetPoseOverTime(poseData, maskWings));//   nameof(SetPoseOverTime), poseData);
+            StartCoroutine(SetPoseOverTime(poseData, excludeWingsFromPose));//   nameof(SetPoseOverTime), poseData);
         }
         else
         {
@@ -349,7 +349,7 @@ public class UKI_PoseManager : MonoBehaviour
                 Actuator actuator = UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex];
 
                 // set actuator target norm extension unless wing mask is active
-                if (maskWings && poseData._ActuatorDataList[i]._ActuatorIndex.ToString().Contains("Wing"))
+                if (excludeWingsFromPose && poseData._ActuatorDataList[i]._ActuatorIndex.ToString().Contains("Wing"))
                     continue;
                 else
                     UKI_UIManager.Instance._AllActuators[poseData._ActuatorDataList[i]._ActuatorIndex].TargetNormExtension = poseData._ActuatorDataList[i]._NormalizedValue;
