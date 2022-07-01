@@ -363,7 +363,6 @@ MonoBehaviour:
   _MaxReportedExtensionMM: 110
   _DEBUG: 0
   _DEBUG_SelfInit: 0
-  _DisableActuator: 0
   _DEBUG_NoiseMovement: 0
   _DEBUG_RoundRobin: 0
 --- !u!224 &98601611 stripped
@@ -12264,6 +12263,11 @@ PrefabInstance:
       propertyPath: _DisableActuator
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5059459026471375125, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorDisabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
       propertyPath: _ActuatorIndex
@@ -17910,7 +17914,7 @@ MonoBehaviour:
   _PauseButton: {fileID: 2146180104}
   _StopButton: {fileID: 862228320}
   _ClearSequenceButton: {fileID: 1096674825}
-  _MaskWingsToggle: {fileID: 570131747}
+  excludeWingsFromPoses: {fileID: 570131747}
   _PoseLibraryContentParent: {fileID: 1815402561}
   _IgnoreCollisionToggle: {fileID: 1850779490}
   _DEBUG_SequenceText: {fileID: 598606323}
@@ -17980,7 +17984,7 @@ MonoBehaviour:
   _PoseLibrary: []
   _ActiveSequencePoseList: []
   _PoseSequenceIndex: 0
-  _MaskWings: 0
+  excludeWingsFromPose: 0
   _InPositionRange: 30
   _Debug: 0
   _IgnoreCollission: 0
@@ -22616,7 +22620,7 @@ PrefabInstance:
     - target: {fileID: 6956333462089492411, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_Name
-      value: Toggle - Wing mask
+      value: Toggle - Exclude wings
       objectReference: {fileID: 0}
     - target: {fileID: 3462947632115418976, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
@@ -22751,12 +22755,12 @@ PrefabInstance:
     - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_text
-      value: WING MASK
+      value: EXCLUDE WINGS
       objectReference: {fileID: 0}
     - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 9
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
@@ -22771,13 +22775,23 @@ PrefabInstance:
     - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_textInfo.materialCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_subTextObjects.Array.data[1]
       value: 
       objectReference: {fileID: 819183750}
+    - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7433908466975851618, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7213589028162771168, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_IsOn
@@ -22801,17 +22815,22 @@ PrefabInstance:
     - target: {fileID: 4204565201695056119, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.37647063
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 4204565201695056119, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.37647063
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 4204565201695056119, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.37647063
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204565201695056119, guid: 2fea2206d0c74524d8b0df6dca1bd04e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fea2206d0c74524d8b0df6dca1bd04e, type: 3}
@@ -23329,6 +23348,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _DEBUG_RoundRobin
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059459026254860928, guid: 152fe134b9c70734e94f533441f0e9d4,
+        type: 3}
+      propertyPath: _ActuatorDisabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 408755143022337525, guid: 152fe134b9c70734e94f533441f0e9d4,
         type: 3}
@@ -27776,6 +27800,11 @@ PrefabInstance:
       propertyPath: _ActuatorAssignment
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3295621192534789299, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4497005732609822230, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -27785,6 +27814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497005733500909171, guid: 6de3dfa6b761aff44b4ceb8c5173e96a,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6de3dfa6b761aff44b4ceb8c5173e96a, type: 3}
