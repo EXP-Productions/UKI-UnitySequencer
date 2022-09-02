@@ -1,45 +1,24 @@
 [
   {
-    "_Name": "Mid leg test seq",
+    "_Name": "Seq 00",
     "_SequenceData": [
-      "MidLeftLegTest1",
-      "MidLeftLegTest2",
-      "MidLeftLegTest3",
-      "MidLeftLegTest4"
+      "Front up",
+      "flying back mid",
+      "speed tuck wing up",
+      "mid out B-dwn W-up",
+      "Mid All",
+      "Splayed mid wing",
+      "semi Splayed high wing"
     ]
   },
   {
-    "_Name": "LeftTest",
+    "_Name": "Seq01",
     "_SequenceData": [
-      "LeftTest1",
-      "LeftTest2",
-      "LeftTest3",
-      "LeftTest4",
-      "LeftTest5"
-    ]
-  },
-  {
-    "_Name": "all legs test",
-    "_SequenceData": [
-      "all legs0",
-      "all legs1",
-      "all legs2"
-    ]
-  },
-  {
-    "_Name": "LeftAllTest",
-    "_SequenceData": [
-      "LeftAllIn",
-      "LeftAllMid",
-      "LeftAllOut"
-    ]
-  },
-  {
-    "_Name": "TuckedLRTest",
-    "_SequenceData": [
-      "AllIn",
-      "All tucked 1",
-      "All tucked 2"
+      "s1-01",
+      "s1-03",
+      "s1-04",
+      "s1-02",
+      "s1-05"
     ]
   }
 ]
